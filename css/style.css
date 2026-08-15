@@ -26,7 +26,395 @@
 
 
 /* ---------------------------------------------------------------------------
-   2. HEADER — 1fr auto 1fr, not space-between: unequal end widths would push
+   2. FUNDAL DECORATIV — o viță care urcă prin mijlocul secțiunii cu fructe.
+
+   Trei desene gravate: ramura, frunza, mărul. Nu sunt împrăștiate pe pagină;
+   au o singură treabă și o singură linie. Blocurile de fruct se schimbă
+   stânga-dreapta, deci mijlocul paginii este liber pe toată înălțimea lor, iar
+   vița crește exact pe acolo, printre ele. Ramura pusă pe orizontală leagă
+   secțiunile una de alta, iar mărul umple colțurile rămase goale.
+
+   Fiecare desen este copilul secțiunii sau al blocului lângă care stă, nu al
+   unui strat cât toată pagina. Așa rămâne legat de conținut oricât s-ar
+   lungi pagina — versiunea de dinainte îl așeza la un procent din înălțimea
+   documentului și se muta de fiecare dată când se adăuga text.
+   --------------------------------------------------------------------------- */
+
+/* Ca să funcționeze multiply, gazda trebuie să aibă DOUĂ lucruri: context de
+   stivuire propriu (isolation: isolate) și fundal propriu. mix-blend-mode
+   înmulțește peste ce s-a pictat sub el ÎN acel context, iar fundalul gazdei
+   este exact acel „sub”. Fără fundal pe gazdă, albul din PNG rămâne alb.
+   Vezi .orchard, .film și .faq mai jos.
+
+   z-index -1: sub textul secțiunii, peste fundalul ei. Un bloc care găzduiește
+   un desen (.grove) are voie să fie position: relative, dar nu are voie să
+   capete z-index, opacity sau filter — oricare din ele l-ar face context de
+   stivuire și desenul ar rămâne fără cremă de înmulțit.
+
+   max-width: none — base.css taie orice img la 100%, iar desenele ies
+   intenționat peste marginea gazdei. */
+.motif {
+    position: absolute;
+    z-index: -1;
+    height: auto;
+    max-width: none;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* VIȚA. Frunza singură este desenul care urcă prin mijloc, patru bucăți în
+   fiecare bloc, de sus până jos: ea, repetată, este linia. Ramura nu mai stă
+   aici — a trecut pe margini, mai jos.
+
+   Așezarea nu se face cu inset-inline: 0 plus margin auto, pentru că vița
+   trebuie să șerpuiască în jurul liniei din mijloc, nu să stea fix pe ea:
+   50% plus o margine negativă cât jumătate din lățime o aduce pe linie, iar
+   --shift o trage de o parte sau de alta. Blocul oglindit întoarce shift-ul,
+   ca zigzagul să continue în loc să se repete.
+
+   translate nu se folosește la așezare: îl scrie animația de derulare de mai
+   jos și cele două s-ar șterge una pe alta. rotate și scale sunt tot
+   proprietăți de sine stătătoare, din același motiv. */
+.motif--vine {
+    inset-inline-start: 50%;
+    width: var(--w);
+    margin-inline-start: calc(var(--w) / -2 + var(--shift, 0rem));
+    opacity: 0.72;
+    --drift: 4rem;
+}
+
+.grove--flip .motif--vine {
+    margin-inline-start: calc(var(--w) / -2 - var(--shift, 0rem));
+    scale: -1 1;
+}
+
+/* Perechile de unghiuri sunt 180 minus celălalt: cu scale: -1 1 pe blocul
+   oglindit, asta ține frunza înclinată în aceeași parte a paginii.
+
+   Ieșirile de sus și de jos ale unui bloc (leaf-c și leaf-b) trebuie să
+   acopere împreună distanța dintre două blocuri (--space-section), altfel
+   vița se citește ca patru bucăți separate și nu ca o linie. */
+.motif--vine-leaf-c {
+    inset-block-start: -4.5rem;
+    --w: clamp(7rem, 12vw, 12rem);
+    --shift: 1.5rem;
+    rotate: 102deg;
+}
+
+.grove--flip .motif--vine-leaf-c {
+    rotate: 78deg;
+}
+
+.motif--vine-leaf-a {
+    inset-block-start: 24%;
+    --w: clamp(6.5rem, 11vw, 11rem);
+    --shift: -2rem;
+    rotate: 76deg;
+}
+
+.grove--flip .motif--vine-leaf-a {
+    rotate: 104deg;
+}
+
+.motif--vine-leaf-d {
+    inset-block-start: 54%;
+    --w: clamp(7.5rem, 13vw, 13rem);
+    --shift: 2rem;
+    rotate: 104deg;
+}
+
+.grove--flip .motif--vine-leaf-d {
+    rotate: 76deg;
+}
+
+.motif--vine-leaf-b {
+    inset-block-end: -4.5rem;
+    --w: clamp(6rem, 10vw, 10rem);
+    --shift: -1.5rem;
+    rotate: 78deg;
+}
+
+.grove--flip .motif--vine-leaf-b {
+    rotate: 102deg;
+}
+
+/* Ramurile blocului. Intră din marginea ferestrei și se opresc peste colțul
+   blocului; latura se schimbă de la un bloc la altul, așa că cele patru
+   împreună încarcă și stânga și dreapta secțiunii, fără să atingă culoarul din
+   mijloc unde crește vița.
+   Cea mai mare bucată de desen din secțiune, deci cea mai palidă. Tăietura o
+   face overflow: clip de pe .orchard, adică fix pe marginea ferestrei. */
+.motif--grove-branch {
+    inset-block-start: 6%;
+    inset-inline-end: -20rem;
+    width: clamp(18rem, 34vw, 34rem);
+    opacity: 0.4;
+    rotate: -7deg;
+    --drift: 5rem;
+}
+
+.grove--flip .motif--grove-branch {
+    inset-inline-end: auto;
+    inset-inline-start: -20rem;
+    rotate: 7deg;
+    scale: -1 1;
+}
+
+/* Mărul atârnă de tulpină, în golul dintre două blocuri. Colțurile blocului
+   sunt toate patru ocupate — fotografie, text, text, fotografie — deci nu
+   există colț gol de umplut; singurul loc liber este chiar culoarul din
+   mijloc, unde crește vița. Un măr agățat acolo este și singurul loc unde are
+   un motiv să fie, nu doar spațiu.
+   inset-inline-start: 50% plus o margine negativă, nu margin auto: îl vreau
+   lângă tulpină, nu pe ea. Se schimbă partea la blocul oglindit. */
+.motif--fill-apple {
+    inset-block-end: -1rem;
+    inset-inline-start: 50%;
+    margin-inline-start: -1rem;
+    width: clamp(4.5rem, 7vw, 8rem);
+    opacity: 0.6;
+    rotate: -8deg;
+    --drift: 3rem;
+}
+
+.grove--flip .motif--fill-apple {
+    margin-inline-start: -7rem;
+    rotate: 8deg;
+}
+
+/* Ramurile care traversează. Intră dintr-o margine a ferestrei și ies pe
+   cealaltă parte a conținutului, la trecerea dintre secțiuni: ele sunt ce ține
+   viața din mijloc legată de restul paginii.
+   Cea mai mare bucată de desen din pagină, deci cea mai palidă: la aceeași
+   intensitate ca frunzele ar cântări cât o secțiune. */
+.motif--cross {
+    width: clamp(20rem, 42vw, 40rem);
+    opacity: 0.5;
+    --drift: 5rem;
+}
+
+/* Lângă declarație, intrând din dreapta. */
+.motif--head {
+    inset-block-start: 0;
+    inset-inline-end: -14rem;
+    rotate: -8deg;
+}
+
+/* scale: -1 1 întoarce ramura pe orizontală, ca să intre din stânga. Este
+   același fișier, nu un al doilea desen. */
+.motif--film {
+    inset-block-end: 0;
+    inset-inline-start: -15rem;
+    rotate: 6deg;
+    scale: -1 1;
+}
+
+.motif--faq {
+    inset-block-start: 1rem;
+    inset-inline-end: -16rem;
+    rotate: 4deg;
+}
+
+.motif--faq-apple {
+    inset-block-end: 4rem;
+    inset-inline-start: 3%;
+    rotate: 8deg;
+}
+
+/* Ramura de deasupra filmului. Stă în plinul de sub ultimul fruct și se
+   termină fix pe marginea de jos a secțiunii, acolo unde overflow: clip o
+   taie — iar linia aceea este chiar muchia de sus a ramei video. Ramura se
+   citește deci ca și cum intră în spatele filmului, nu ca și cum a fost tăiată.
+   Copil al .orchard, nu al .film: .film nu are padding sus, deci în ea locul
+   acesta nu există. */
+.motif--film-branch {
+    inset-block-end: 0;
+    inset-inline-end: -4rem;
+    width: clamp(16rem, 28vw, 28rem);
+    opacity: 0.46;
+    /* Fără scale: desenul stă cum a fost făcut, cu tulpina venind din
+       stânga-jos și coroana deschisă spre dreapta-sus, exact ca ramurile
+       neoglindite din livadă. Oglindită, tulpina ieșea din colțul de sus și
+       coroana cădea peste video. */
+    rotate: -8deg;
+    --drift: 4rem;
+}
+
+/* Frunze răzlețe peste golul dintre film și întrebări. Culoarul din mijloc se
+   termină odată cu fructele și de acolo până la subsol pagina rămâne fără
+   niciun desen: astea sunt câteva frunze duse de vânt peste gol, nu o a doua
+   viță. Mai mici și mai palide decât frunzele viței tocmai ca să nu ceară să
+   fie citite ca o linie — nicio pereche nu are aceeași mărime sau înclinare.
+
+   Fiecare frunză stă întreagă în secțiunea ei. overflow: clip taie pe granița
+   dintre .film și .faq, iar o frunză călare pe ea s-ar reteza în două.
+   Se feresc și de colțurile ocupate: .motif--film intră din stânga-jos, iar
+   .motif--faq din dreapta-sus. */
+.motif--band-leaf {
+    opacity: 0.5;
+    --drift: 3.5rem;
+}
+
+.motif--band-leaf-a {
+    inset-block-end: 1.75rem;
+    inset-inline-start: 34%;
+    width: clamp(4.5rem, 7vw, 7rem);
+    rotate: 28deg;
+}
+
+.motif--band-leaf-b {
+    inset-block-end: 4.5rem;
+    inset-inline-end: 20%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.4;
+    rotate: -16deg;
+}
+
+/* 20%, nu mai spre centru: la 28% frunza atingea Î-ul din titlu. */
+.motif--band-leaf-c {
+    inset-block-start: 1.25rem;
+    inset-inline-start: 20%;
+    width: clamp(4rem, 6.5vw, 6.5rem);
+    opacity: 0.42;
+    rotate: 156deg;
+}
+
+.motif--band-leaf-d {
+    inset-block-start: 5rem;
+    inset-inline-start: 10%;
+    width: clamp(6rem, 10vw, 10rem);
+    rotate: 200deg;
+}
+
+/* e și f umplu golul din dreapta-sus a benzii, de o parte și de alta a
+   graniței dintre secțiuni: e este ultima frunză din .film, f prima din .faq.
+   Nu au aceeași mărime tocmai ca granița să nu se ghicească din ele. */
+.motif--band-leaf-e {
+    inset-block-end: 1.5rem;
+    inset-inline-start: 50%;
+    width: clamp(4rem, 6.5vw, 6.5rem);
+    opacity: 0.44;
+    rotate: -42deg;
+}
+
+/* 28%, nu 30%: colțul cutiei ei ajungea peste ultimul e din titlu. */
+.motif--band-leaf-f {
+    inset-block-start: 1.5rem;
+    inset-inline-end: 28%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.38;
+    rotate: 132deg;
+}
+
+/* g stă în golul din mijlocul ramurii .motif--faq, la înălțimea titlului:
+   acolo desenul are o pauză și se citește ca ruptă. Aceeași intensitate ca
+   ramura, nu ca celelalte frunze răzlețe — asta chiar trebuie să pară a ei. */
+.motif--band-leaf-g {
+    inset-block-start: 9rem;
+    inset-inline-end: 10%;
+    width: clamp(5rem, 8vw, 8rem);
+    opacity: 0.46;
+    rotate: 20deg;
+}
+
+/* h, i și j îndesesc cele două capete ale benzii: colțul din stânga, care
+   rămăsese gol între ramura filmului și frunza d, și partea dreaptă, unde
+   banda este cea mai lată.
+   Nicio frunză nu repetă unghiul vecinei: la aceeași înclinare două frunze
+   apropiate se citesc ca un tipar, nu ca ceva căzut acolo. */
+.motif--band-leaf-h {
+    inset-block-end: 2.5rem;
+    inset-inline-start: 4%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.42;
+    rotate: 62deg;
+}
+
+.motif--band-leaf-i {
+    inset-block-end: 3.5rem;
+    inset-inline-end: 6%;
+    width: clamp(3.5rem, 6vw, 6rem);
+    opacity: 0.36;
+    rotate: -70deg;
+}
+
+/* k, l și m stau peste titlu și peste subtitlu, nu în jurul lor: până acum
+   toate frunzele se fereau de text și mijlocul benzii rămânea o gaură.
+   0.3, mai palide decât toate celelalte, tocmai pentru că trec pe sub litere.
+   Sunt z-index -1, deci textul rămâne deasupra; multiply doar închide puțin
+   crema, adică nu scade contrastul textului, îl urcă. */
+.motif--band-leaf-k {
+    inset-block-start: 3.5rem;
+    inset-inline-start: 32%;
+    width: clamp(4rem, 6.5vw, 6.5rem);
+    opacity: 0.3;
+    rotate: 118deg;
+}
+
+.motif--band-leaf-l {
+    inset-block-start: 9rem;
+    inset-inline-end: 34%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.3;
+    rotate: 46deg;
+}
+
+.motif--band-leaf-m {
+    inset-block-start: 13.5rem;
+    inset-inline-start: 40%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.28;
+    rotate: 168deg;
+}
+
+/* Sub g și puțin spre interior, dar la dreapta de unde se termină subtitlul:
+   la 22% intra peste ultimul cuvânt. */
+.motif--band-leaf-j {
+    inset-block-start: 19rem;
+    inset-inline-end: 16%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.4;
+    rotate: 172deg;
+}
+
+/* Desenele se mișcă mai încet decât pagina, ceea ce spune un singur lucru:
+   sunt în spatele hârtiei, nu pe ea. Legat de derulare prin animation-timeline,
+   nu prin JavaScript — nu există buclă, nu se citește nicio poziție, iar acolo
+   unde browserul nu cunoaște proprietatea desenul stă pur și simplu pe loc,
+   adică exact desenul de dinainte de mișcare. */
+@supports (animation-timeline: view()) {
+
+    @media (prefers-reduced-motion: no-preference) {
+
+        .motif {
+            animation: motif-drift linear both;
+            animation-timeline: view();
+            animation-range: cover;
+        }
+    }
+}
+
+@keyframes motif-drift {
+
+    from {
+        translate: 0 var(--drift, 3rem);
+    }
+
+    to {
+        translate: 0 calc(var(--drift, 3rem) * -1);
+    }
+}
+
+/* Antetul este fix, cu z-index propriu, deci nu apare aici. */
+main,
+.site-footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   3. HEADER — 1fr auto 1fr, not space-between: unequal end widths would push
    nav off centre.
    --------------------------------------------------------------------------- */
 
@@ -141,7 +529,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   3. BUTTON — drawn pill, hairline + on-dark label over the hero film.
+   4. BUTTON — drawn pill, hairline + on-dark label over the hero film.
    Hover sweeps orange, label flips to ink (4.7:1; cream would be 3.8 and
    fail). Resting colours assume it sits on the film; a light-ground use
    needs a variant.
@@ -226,7 +614,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   4. HERO — svh not vh: vh is the bars-hidden height, so the hero would
+   5. HERO — svh not vh: vh is the bars-hidden height, so the hero would
    sit under the address bar on first paint.
    --------------------------------------------------------------------------- */
 
@@ -322,7 +710,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   5. BANDA CU CIFRE — negative margin is half the band's own height;
+   6. BANDA CU CIFRE — negative margin is half the band's own height;
    change the padding here and the overlap moves with it.
    Numbers count up on arrival: tabular-nums keeps columns still as digit
    width changes.
@@ -405,15 +793,29 @@
 
 
 /* ---------------------------------------------------------------------------
-   6. DECLARAȚIE ȘI CELE PATRU FRUCTE — statement left, note right, then four
-   photographic plates, two across, dark at rest and lit under the pointer.
+   7. DECLARAȚIE ȘI CELE PATRU FRUCTE — declarația sus, apoi patru blocuri,
+   câte unul de fruct, în ordinea culesului. Un bloc este DOUĂ COLOANE care
+   curg fiecare pe cont propriu: într-una fotografia mare și al doilea
+   paragraf, în cealaltă numele, primul paragraf și a doua fotografie.
+   Blocurile se oglindesc de la un fruct la altul, așa încât ochiul să
+   traverseze pagina în zigzag și nu pe o coloană.
    --------------------------------------------------------------------------- */
 
-/* Less top padding than usual: the green band above already fills that
-   space. */
+/* isolation + background: cele două condiții ale desenelor din fundal (vezi
+   secțiunea 2). Fundalul a fost scos cândva ca să se vadă un desen așezat pe
+   toată pagina; desenele stau acum în secțiune, deci fundalul se întoarce. */
 .orchard {
-    padding: var(--space-2xl) var(--gutter) var(--space-section);
+    position: relative;
+    isolation: isolate;
     background: var(--paper);
+    /* overflow: clip (nu hidden, nu doar pe o axă) — desenele ies dincolo de
+       marginile secțiunii și fără asta pagina capătă derulare laterală:
+       overflow-x: clip pe html nu o oprește. Tăietura cade exact pe marginea
+       ferestrei, adică acolo unde oricum nu se vede că este o tăietură. clip
+       nu derulează niciodată, deci nu apare un al doilea container de scroll.
+       Ce iese pe verticală trebuie să rămână în secțiune. */
+    overflow: clip;
+    padding: var(--space-section) var(--gutter);
 }
 
 .orchard__inner {
@@ -421,13 +823,15 @@
     margin-inline: auto;
 }
 
+/* Aer de jur împrejurul declarației. Banda cu cifre stă chiar deasupra și îi
+   sufla în ceafă; sub ea începe imediat primul fruct. */
 .orchard__head {
     display: flex;
     flex-wrap: wrap;
     align-items: end;
     justify-content: space-between;
     gap: var(--space-m) var(--space-2xl);
-    padding-top: var(--space-xl);
+    padding-block: var(--space-2xl) var(--space-xl);
 }
 
 .orchard__statement {
@@ -444,312 +848,216 @@
     text-align: end;
 }
 
-/* One row of four, in picking order, read left to right. The gap is tight on
-   purpose: at this size four plates close together read as one band, which is
-   what the section is — the four fruits, together, and nothing else. */
-.orchard__list {
-    margin-block-start: var(--space-2xl);
-    padding-bottom: var(--space-2xl);
-    padding-top: var(--space-2xl);
-    display: grid;
-    /* Declared, not auto-fit: a known set of 4 that must stay in one row.
-       auto-fit would strand one on its own line. */
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-s);
+/* Mai îngust decât containerul: pe toată lățimea de 78rem paragraful din
+   dreapta se rupe de fotografia din stânga și blocul nu se mai citește ca un
+   întreg. Distanța dintre blocuri este --space-section, adică ritmul dintre
+   secțiunile site-ului: fiecare fruct este o secțiune, nu un rând de listă. */
+.orchard__groves {
+    max-width: 64rem;
+    margin: var(--space-2xl) auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-section);
 }
 
-/* Local, not a token: this is the one dark colour on the site and it exists
-   only inside the fruit plate. It is --bark-deep taken further down, dark
-   enough that cream text clears 4.5 to 1 over any of the four photographs.
-   The rgba in .fruit__frame::after is the same colour and must move with it. */
-.fruit {
-    --wash: #1F150B;
-}
+/* Două coloane, fiecare cu curgerea ei — NU o grilă cu rânduri comune. Într-o
+   grilă, a doua fotografie era ținută pe linia rândului al doilea și rămânea o
+   gaură mare între ea și paragraful de deasupra ei. Aici fiecare coloană își
+   pune lucrurile unul sub altul și nimic nu așteaptă cealaltă coloană.
 
-.fruit__link {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-}
+   row-reverse este starea normală, nu oglindirea: în DOM coloana cu numele
+   este prima, ca un cititor de ecran să audă întâi ce fruct este, iar pe ecran
+   fotografia mare stă în stânga.
 
-/* Base sets --radius-s on every focus ring; on a card this size that reads as
-   square corners around a rounded plate. */
-.fruit__link:focus-visible {
-    border-radius: var(--radius-l);
-    outline-offset: 6px;
-}
+   Cutia de referință pentru desenele din fundal ale blocului. NU-i dați
+   z-index, opacity sau filter: oricare l-ar face context de stivuire propriu
+   și vița din el n-ar mai avea crema secțiunii de înmulțit. */
+.grove {
+    /* Colțurile frunzei. Rotunjirea mare este în procente, nu în rem, din două
+       motive: un procent dă o rază eliptică, adică un colț care urmează forma
+       cutiei în loc să taie un sfert de cerc din ea, iar cele două fotografii
+       ale unui bloc au proporții diferite și trebuie să iasă din aceeași
+       formă, nu din aceeași măsură. Sub ~25% nu se mai citește ca frunză. */
+    --leaf-round: 34%;
+    --leaf-tight: var(--radius-l);
 
-/* The plate. isolation keeps the wash, the ring and the caption stacking
-   against each other and not against the page. */
-.fruit__frame {
     position: relative;
-    display: block;
-    isolation: isolate;
-    overflow: hidden;
-    aspect-ratio: 3 / 4;
-    border-radius: var(--radius-l);
-    background: var(--wash);
-    box-shadow: var(--shadow-lift);
-    transition: box-shadow var(--duration-slow) var(--ease-out);
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: start;
+    gap: var(--space-2xl);
 }
 
-.fruit__link:hover .fruit__frame,
-.fruit__link:focus-visible .fruit__frame {
-    box-shadow: var(--shadow-raise);
+.grove--flip {
+    flex-direction: row;
 }
 
-.fruit__photo {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
+/* Coloana fotografiei mari este puțin mai lată decât coloana textului: egale,
+   blocul se citește ca un tabel. flex-basis 0 pe amândouă, ca raportul să fie
+   dat de flex-grow și nu de cât text a nimerit în ele. */
+.grove__lead {
+    flex: 1.08 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+}
+
+.grove__tell {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+    /* Aliniere optică cu marginea fotografiei: colțul ei rotund începe mai
+       jos decât marginea cutiei. */
+    padding-block-start: var(--space-s);
+}
+
+/* Forma de frunză: două colțuri rotunjite mult, celelalte două aproape
+   drepte. clip-path face și forma, și dezvelirea de la sosire, într-un singur
+   element — de aceea nu există aici nici border-radius, nici overflow.
+   O umbră ar fi tăiată de clip-path; fotografiile stau plat pe hârtie, ceea ce
+   este oricum tonul secțiunii.
+   Fundalul --sand-soft se vede cât timp fotografia încă nu a ajuns. */
+.grove__frame {
+    --clip-round: var(--leaf-round) var(--leaf-tight) var(--leaf-round) var(--leaf-tight);
+
+    clip-path: inset(0 round var(--clip-round));
+    background: var(--sand-soft);
+    transition: clip-path 900ms var(--ease-out);
+}
+
+/* A doua fotografie ia diagonala cealaltă, deci cele două se oglindesc în
+   interiorul blocului la fel cum blocurile se oglindesc între ele. */
+.grove__frame--b {
+    --clip-round: var(--leaf-tight) var(--leaf-round) var(--leaf-tight) var(--leaf-round);
+
+    /* Puțin sub paragraful de deasupra ei: lipită, coloana se citește ca o
+       coloană de ziar, nu ca o pagină. */
+    margin-block-start: var(--space-s);
+}
+
+.grove--flip .grove__frame--a {
+    --clip-round: var(--leaf-tight) var(--leaf-round) var(--leaf-tight) var(--leaf-round);
+}
+
+.grove--flip .grove__frame--b {
+    --clip-round: var(--leaf-round) var(--leaf-tight) var(--leaf-round) var(--leaf-tight);
+}
+
+/* Proporția stă pe IMAGINE, nu pe ramă: cele patru fotografii mari trebuie să
+   fie exact la fel de înalte, oricare ar fi tăietura sursei, iar aspect-ratio
+   pe ramă este ignorat cât timp imaginea dinăuntru o împinge la înălțimea ei
+   naturală. Pe img, aspect-ratio bate raportul fișierului, iar object-fit
+   taie ce prisosește. */
+.grove__photo {
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
-    /* Colour drains out at rest and comes back on hover. The wash alone was
-       not enough: a bright photograph like the caise stayed lively under it
-       and the four cards woke up at four different speeds. */
-    filter: saturate(0.68);
-    transition: transform 900ms var(--ease-out),
+    transition: transform var(--duration-slow) var(--ease-out),
         filter var(--duration-slow) var(--ease-out);
 }
 
-.fruit__link:hover .fruit__photo,
-.fruit__link:focus-visible .fruit__photo {
-    transform: scale(1.05);
-    filter: saturate(1);
+.grove__frame--a .grove__photo {
+    aspect-ratio: 1 / 1;
 }
 
-/* Two layers over the photograph. ::before is the wash that lifts on hover —
-   the whole point of the card, dark at rest and full colour under the pointer.
-   ::after is a permanent scrim under the caption, so the name stays legible
-   once the wash has gone. Both need an explicit z-index: they are siblings of
-   the ring and the caption, and DOM order alone would put ::after on top of
-   them. */
-.fruit__frame::before,
-.fruit__frame::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
+.grove__frame--b .grove__photo {
+    aspect-ratio: 4 / 3;
 }
 
-.fruit__frame::before {
-    background: var(--wash);
-    opacity: 0.68;
-    transition: opacity var(--duration-slow) var(--ease-out);
+/* Răspuns la pointer, nu invitație la clic: fotografia nu duce nicăieri, așa
+   că mișcarea rămâne sub pragul la care ar părea buton. */
+.grove__frame:hover .grove__photo {
+    transform: scale(1.02);
+    filter: saturate(1.08);
 }
 
-.fruit__link:hover .fruit__frame::before,
-.fruit__link:focus-visible .fruit__frame::before {
-    opacity: 0.14;
+/* Sosirea: fotografia se descoperă de jos în sus, în propria formă de frunză.
+   .wipe este pusă numai de main.js — fără script, fotografia este întreagă de
+   la prima pictare. */
+.grove__frame.wipe {
+    clip-path: inset(100% 0 0 0 round var(--clip-round));
 }
 
-.fruit__frame::after {
-    background: linear-gradient(to top,
-            rgba(31, 21, 11, 0.8) 0%,
-            rgba(31, 21, 11, 0.5) 28%,
-            rgba(31, 21, 11, 0) 64%);
+.grove__frame.wipe.is-in {
+    clip-path: inset(0 round var(--clip-round));
 }
 
-/* Holds the name and the season only, so its height is the same on all four
-   cards and the four names sit on one line across the row. The sentence is
-   taken out of this flow below — in flow it is two lines on one card and three
-   on another, and that difference walks the names up and down. */
-.fruit__plate {
-    position: absolute;
-    z-index: 2;
-    isolation: isolate;
-    inset-inline: 0;
-    inset-block-end: 0;
-    padding: var(--space-s);
+.grove__name {
+    font-size: var(--step-3);
+    color: var(--forest);
 }
 
-/* Deepens the foot of the card while the sentence is showing. The wash above
-   is dropping from 0.68 to 0.14 at the same time, so the card still reads as
-   opening up; this only keeps the small text off the bright part of the
-   photograph. */
-.fruit__plate::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset-inline: 0;
-    inset-block-end: 0;
-    height: 18rem;
-    background: linear-gradient(to top,
-            rgba(31, 21, 11, 0.82) 0%,
-            rgba(31, 21, 11, 0.62) 34%,
-            rgba(31, 21, 11, 0) 100%);
-    opacity: 0;
-    transition: opacity var(--duration) var(--ease-out);
-}
-
-.fruit__link:hover .fruit__plate::before,
-.fruit__link:focus-visible .fruit__plate::before {
-    opacity: 1;
-}
-
-.fruit__name {
-    font-size: var(--step-2);
-    color: var(--on-dark);
-}
-
-.fruit__season {
+.grove__season {
     margin-block-start: var(--space-2xs);
     max-width: none;
-    color: var(--on-dark-soft);
+    color: var(--ink-soft);
     font-size: var(--step--1);
     font-weight: var(--weight-mid);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    line-height: var(--leading-snug);
 }
 
-.fruit__season span {
-    /* Dash is structure, not a word: no letter-spacing. */
+.grove__season span {
+    /* Linia este structură, nu cuvânt: fără spațiere de literă. */
     letter-spacing: 0;
     padding-inline: 0.1em;
 }
 
-/* Sits at the centre of the plate and is moved from there by --rx / --ry,
-   which main.js writes as an offset in pixels from that centre. Offsets, not
-   absolute coordinates, so the resting position with no script and on keyboard
-   focus is the middle of the card. The long transform transition is what makes
-   the ring trail the cursor instead of sticking to it. */
-.fruit__ring {
-    --ring: clamp(4rem, 6vw, 5.5rem);
-
-    position: absolute;
-    z-index: 2;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    width: var(--ring);
-    height: var(--ring);
-    display: grid;
-    place-items: center;
-    border: var(--hairline) solid var(--on-dark);
-    border-radius: 50%;
-    color: var(--on-dark);
-    opacity: 0;
-    transform: translate(var(--rx, 0px), var(--ry, 0px)) translate(-50%, -50%) scale(0.7);
-    transition: opacity var(--duration) var(--ease-out),
-        transform 620ms var(--ease-out);
-    pointer-events: none;
+.grove__intro {
+    font-size: var(--step-1);
+    color: var(--ink);
 }
 
-.fruit__link:hover .fruit__ring,
-.fruit__link:focus-visible .fruit__ring {
-    opacity: 1;
-    transform: translate(var(--rx, 0px), var(--ry, 0px)) translate(-50%, -50%) scale(1);
+.grove__detail {
+    color: var(--ink-soft);
 }
 
-/* Pressed: the ring closes in under the finger, then ::after throws the click
-   back out as a second ring. */
-.fruit__link:active .fruit__ring {
-    transform: translate(var(--rx, 0px), var(--ry, 0px)) translate(-50%, -50%) scale(0.9);
-    transition-duration: var(--duration), var(--duration-fast);
-}
-
-.fruit__ring::after {
-    content: "";
-    position: absolute;
-    inset: calc(-1 * var(--hairline));
-    border: var(--hairline) solid var(--on-dark);
-    border-radius: 50%;
-    opacity: 0;
-}
-
-/* Class added by main.js on pointerdown and removed when the run ends, so a
-   second click can replay it. */
-.fruit__link.is-pressed .fruit__ring::after {
-    animation: ring-out 700ms var(--ease-out);
-}
-
-@keyframes ring-out {
-    from {
-        opacity: 0.7;
-        transform: scale(1);
-    }
-
-    to {
-        opacity: 0;
-        transform: scale(2);
-    }
-}
-
-.fruit__ring-word {
+/* Aceeași notă ca sub banda cu cifre și sub întrebări: lunile de pe pagină nu
+   sunt încă cele ale fermei. Se șterge în aceeași editare în care sosesc. */
+.orchard__foot {
+    margin: var(--space-2xl) auto 0;
+    max-width: 64rem;
+    color: var(--ink-soft);
     font-size: var(--step--1);
-    font-weight: var(--weight-mid);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-}
-
-/* The sentence about the fruit lives on the plate, under the name. It is the
-   third thing you need, not the first, so where the pointer can ask for it the
-   card holds it back and gives it on hover. */
-/* Sits directly above the name, out of the plate's flow. inset-block-end: 100%
-   puts its foot on the plate's top edge, which is one --space-s clear of the
-   name because that is the plate's own padding. */
-.fruit__note {
-    position: absolute;
-    inset-inline: var(--space-s);
-    inset-block-end: 100%;
-    margin: 0;
-    max-width: none;
-    color: var(--on-dark-soft);
-    font-size: var(--step--1);
-}
-
-/* Scoped to hover-capable pointers, so a phone — which never gets a hover and
-   would simply never see this — keeps the sentence on the card. */
-@media (hover: hover) {
-
-    .fruit__note {
-        opacity: 0;
-        transform: translateY(0.5rem);
-        transition: opacity var(--duration) var(--ease-out),
-            transform var(--duration-slow) var(--ease-out);
-    }
-
-    .fruit__link:hover .fruit__note,
-    .fruit__link:focus-visible .fruit__note {
-        opacity: 1;
-        transform: none;
-    }
+    text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
 
-    /* Snapping between these two is worse than not moving: the wash still
-       lifts, which is the part that carries meaning. */
-    .fruit__link:hover .fruit__photo,
-    .fruit__link:focus-visible .fruit__photo {
-        transform: none;
+    /* Dezvelirea este mișcare, nu informație: starea finală este oricum cea
+       implicită, deci aici nu rămâne decât să nu pornească. base.css taie
+       duratele; regula de mai jos taie și starea de plecare, ca să nu existe
+       niciun cadru cu fotografia ascunsă. */
+    .grove__frame.wipe {
+        clip-path: inset(0 round var(--clip-round));
     }
 
-    .fruit__ring,
-    .fruit__link:hover .fruit__ring,
-    .fruit__link:focus-visible .fruit__ring,
-    .fruit__link:active .fruit__ring {
-        transform: translate(-50%, -50%);
-    }
-
-    /* The sentence still arrives on hover; it just stops sliding to get
-       there. */
-    .fruit__note {
+    .grove__frame:hover .grove__photo {
         transform: none;
     }
 }
 
 
 /* ---------------------------------------------------------------------------
-   7. BANDA VIDEO — framed with a margin, not full bleed (full bleed read
+   8. BANDA VIDEO — framed with a margin, not full bleed (full bleed read
    as a second hero).
    --------------------------------------------------------------------------- */
 
+/* position + isolation + background: condițiile desenelor din fundal, vezi
+   secțiunea 2. */
 .film {
-    padding: 0 var(--gutter) var(--space-section);
+    position: relative;
+    isolation: isolate;
     background: var(--paper);
+    /* overflow: clip (nu hidden, nu doar pe o axă) — desenele ies dincolo de
+       marginile secțiunii și fără asta pagina capătă derulare laterală:
+       overflow-x: clip pe html nu o oprește. Tăietura cade exact pe marginea
+       ferestrei, adică acolo unde oricum nu se vede că este o tăietură. clip
+       nu derulează niciodată, deci nu apare un al doilea container de scroll.
+       Ce iese pe verticală trebuie să rămână în secțiune. */
+    overflow: clip;
+    padding: 0 var(--gutter) var(--space-section);
 }
 
 .film__inner {
@@ -783,14 +1091,25 @@
 
 
 /* ---------------------------------------------------------------------------
-   8. ÎNTREBĂRI FRECVENTE — centred title, questions as stacked plates.
+   9. ÎNTREBĂRI FRECVENTE — centred title, questions as stacked plates.
    --paper ground, the page's own: last light section before the green
    subsol. Native <details>, no JS.
    --------------------------------------------------------------------------- */
 
+/* position + isolation + background: condițiile desenelor din fundal, vezi
+   secțiunea 2. */
 .faq {
-    padding: var(--space-m) var(--gutter);
+    position: relative;
+    isolation: isolate;
     background: var(--paper);
+    /* overflow: clip (nu hidden, nu doar pe o axă) — desenele ies dincolo de
+       marginile secțiunii și fără asta pagina capătă derulare laterală:
+       overflow-x: clip pe html nu o oprește. Tăietura cade exact pe marginea
+       ferestrei, adică acolo unde oricum nu se vede că este o tăietură. clip
+       nu derulează niciodată, deci nu apare un al doilea container de scroll.
+       Ce iese pe verticală trebuie să rămână în secțiune. */
+    overflow: clip;
+    padding: var(--space-m) var(--gutter) var(--space-2xl);
 }
 
 .faq__inner {
@@ -958,7 +1277,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   9. SUBSOL — farm name and place. Phone/email markup parked in an
+   10. SUBSOL — farm name and place. Phone/email markup parked in an
    index.html comment until supplied.
    --------------------------------------------------------------------------- */
 
@@ -1050,7 +1369,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   10. PARTENERI — o linie de încheiere în subsol, nu o bandă a ei. O riglă o
+   11. PARTENERI — o linie de încheiere în subsol, nu o bandă a ei. O riglă o
    desparte de datele fermei. Siglele ies crem prin currentColor; --knockout
    este fundalul care se vede prin decupajele din ele și trebuie schimbat dacă
    blocul ajunge pe alt fundal.
@@ -1121,7 +1440,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   11. REVEAL — card laid on a table: arrives low, tilted, settles flat.
+   12. REVEAL — card laid on a table: arrives low, tilted, settles flat.
    CSS below is the fallback / reduced-motion end state; GSAP drives it
    where loaded. .reveal is added only by main.js, so content stays
    visible with no script.

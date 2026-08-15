@@ -84,17 +84,22 @@
        the fruit in the logo: if it is orange, it is clickable. The four fruits
        are not four palettes; their colour arrives in their photo.
 
-       THE FRUITS: one row of four photographic plates, in the order they are
-       picked. The order on the page IS the calendar; do not re-sort them
-       alphabetically or by anything else. A plate is dark at rest and comes up
-       to full colour under the pointer, with a ring that trails the cursor
-       across it. Everything the card says is ON the card — nothing sits under
-       it. At rest that is the name and the weeks it is picked; the sentence
-       about the fruit arrives with the hover.
+       THE FRUITS: four blocks, one per fruit, in the order they are picked.
+       The order on the page IS the calendar; do not re-sort them
+       alphabetically or by anything else. Each block is two photographs cut
+       to a leaf silhouette and two paragraphs, laid diagonally and mirrored
+       from one fruit to the next. The fruits are described here, on this
+       page; there is no fruit page.
+
+       FUNDAL: a vine climbing the middle of the fruit section, through the
+       lane the alternating blocks leave open — the branch drawing turned
+       upright is a length of stem, the leaves carry it on, the apple fills
+       the corner left over. Branches lie across the page at the joins between
+       sections. Three drawings, one engraving hand, one line.
 
        STORY: A visitor who already ate the fruit looks the farm up, sees the
-       orchard moving, sees which shops carry it, meets the four fruits by
-       name, and contacts the farm.
+       orchard moving, meets the four fruits by name and reads what each one
+       is like, sees which shops carry it, and contacts the farm.
 
        FIRST VIEWPORT: The orchard film full bleed and moving, the round farm
        mark centred over it, the name under it in Fraunces, one line, and the
@@ -195,17 +200,34 @@
 
     <!-- ======================================================================
          3. DECLARAȚIE ȘI CELE PATRU FRUCTE
-         Four large photographic plates, two across, in the order the fruit is
-         picked. Each plate is dark at rest and lifts to its full colour under
-         the pointer, with a ring that follows the cursor and names the action.
-         The ring is decoration to a screen reader: the link text under it is
-         what gets read.
+         Fiecare fruct primește un bloc întreg: numele, săptămânile în care se
+         culege, două fotografii și două paragrafe. Blocurile alternează
+         stânga-dreapta, în ordinea culesului. Ordinea de pe pagină ESTE
+         calendarul; nu se rearanjează alfabetic.
 
-         Every card points at fructe.html, which DOES NOT EXIST YET. Until it
-         is built these four links go nowhere — build that page or blank the
-         hrefs before this goes live.
+         Fotografiile sunt tăiate în formă de frunză: două colțuri rotunjite
+         mult, celelalte două aproape drepte. A doua fotografie a fiecărui
+         fruct este deocamdată o altă tăietură din aceeași sursă — se
+         înlocuiește cu poza a doua când o trimite ferma.
+
+         Lunile sunt orientative, vezi nota de la finalul secțiunii.
+
+         Blocul are două coloane care curg fiecare pe cont propriu, nu o
+         grilă cu rânduri comune. În DOM, coloana cu numele vine prima, ca un
+         cititor de ecran să audă întâi ce fruct este; pe ecran, CSS o mută la
+         dreapta pentru blocurile nerăsturnate.
+
+         Vița urcă prin mijlocul secțiunii, prin culoarul lăsat liber de
+         blocurile care se schimbă stânga-dreapta: patru frunze pe bloc, de sus
+         până jos, plus mărul agățat la capăt. Ramura stă pe margini, o latură
+         la fiecare bloc, alternând. Sunt copii ale blocului, nu ale paginii, ca
+         să rămână legate de conținut dacă pagina se lungește. alt gol plus
+         aria-hidden: sunt hârtia, nu conținut.
          ====================================================================== -->
     <section class="orchard" id="fructe">
+
+      <img class="motif motif--cross motif--head" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
       <div class="orchard__inner">
 
         <div class="orchard__head">
@@ -213,74 +235,152 @@
           <p class="orchard__note">Aceleași patru în fiecare an, pe același deal. Nimic altceva nu se plantează aici.</p>
         </div>
 
-        <ul class="orchard__list">
+        <ul class="orchard__groves">
 
-          <li class="fruit">
-            <a class="fruit__link" href="fructe.html#cirese">
-              <div class="fruit__frame">
-                <img class="fruit__photo" src="img/cirese-p640.webp" srcset="img/cirese-p320.webp 320w, img/cirese-p640.webp 640w"
-                     sizes="(min-width: 62rem) 20vw, 44vw" width="640" height="853" loading="lazy"
-                     alt="Cireșe roșii coapte pe ram, în lumina soarelui">
-                <span class="fruit__ring" aria-hidden="true"><span class="fruit__ring-word">Vezi</span></span>
-                <div class="fruit__plate">
-                  <h3 class="fruit__name">Cireșe</h3>
-                  <p class="fruit__season">Mai <span>—</span> Iunie</p>
-                  <p class="fruit__note">Primele care se culeg. Se mănâncă direct din ladă, înainte să ajungă în bucătărie.</p>
-                </div>
+          <li class="grove" id="cirese">
+            <img class="motif motif--grove-branch" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-c" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-d" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--fill-apple" src="img/apple-480.webp" width="480" height="480" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+            <div class="grove__tell">
+              <div class="grove__head">
+                <h3 class="grove__name">Cireșe</h3>
+                <p class="grove__season">Mai <span>—</span> Iunie</p>
               </div>
-            </a>
+
+              <p class="grove__intro">Primele care se culeg și primele care se termină. Se coc pe pom până la capăt, iar pielița crapă dacă mai stau o zi în plus, așa că sezonul lor se măsoară în zile, nu în săptămâni.</p>
+
+              <div class="grove__frame grove__frame--b">
+                <img class="grove__photo" src="img/cirese-b420.webp" srcset="img/cirese-b420.webp 420w, img/cirese-b640.webp 640w"
+                     sizes="(min-width: 68rem) 28rem, 44vw" width="640" height="480" loading="lazy" decoding="async"
+                     alt="Frunze de cireș și cireșe coapte, văzute de aproape">
+              </div>
+            </div>
+
+            <div class="grove__lead">
+              <div class="grove__frame grove__frame--a">
+                <img class="grove__photo" src="img/cirese-a480.webp" srcset="img/cirese-a480.webp 480w, img/cirese-a640.webp 640w"
+                     sizes="(min-width: 68rem) 30rem, 46vw" width="640" height="800" loading="lazy" decoding="async"
+                     alt="Cireșe roșii coapte, atârnând în ciorchine pe ram">
+              </div>
+
+              <p class="grove__detail">Se mănâncă din ladă, înainte să apuce cineva să le spele. Cine a copilărit cu un cireș în curte le recunoaște gustul din prima; de aceea nu le culegem devreme, oricât ar fi de comod.</p>
+            </div>
           </li>
 
-          <li class="fruit">
-            <a class="fruit__link" href="fructe.html#caise">
-              <div class="fruit__frame">
-                <img class="fruit__photo" src="img/caise-p640.webp" srcset="img/caise-p320.webp 320w, img/caise-p640.webp 640w"
-                     sizes="(min-width: 62rem) 20vw, 44vw" width="640" height="853" loading="lazy"
-                     alt="Caise portocalii coapte în pom">
-                <span class="fruit__ring" aria-hidden="true"><span class="fruit__ring-word">Vezi</span></span>
-                <div class="fruit__plate">
-                  <h3 class="fruit__name">Caise</h3>
-                  <p class="fruit__season">Iunie <span>—</span> Iulie</p>
-                  <p class="fruit__note">Cele mai scurte pe sezon dintre toate patru. Când sunt, sunt.</p>
-                </div>
+          <li class="grove grove--flip" id="caise">
+            <img class="motif motif--grove-branch" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-c" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-d" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--fill-apple" src="img/apple-480.webp" width="480" height="480" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+            <div class="grove__tell">
+              <div class="grove__head">
+                <h3 class="grove__name">Caise</h3>
+                <p class="grove__season">Iunie <span>—</span> Iulie</p>
               </div>
-            </a>
+
+              <p class="grove__intro">Cel mai scurt sezon dintre toate patru. Se coc aproape toate deodată, iar drumul de la galben la portocaliu îl fac în două zile.</p>
+
+              <div class="grove__frame grove__frame--b">
+                <img class="grove__photo" src="img/caise-b420.webp" srcset="img/caise-b420.webp 420w, img/caise-b840.webp 840w"
+                     sizes="(min-width: 68rem) 28rem, 44vw" width="1200" height="900" loading="lazy" decoding="async"
+                     alt="Ramură încărcată cu caise coapte">
+              </div>
+            </div>
+
+            <div class="grove__lead">
+              <div class="grove__frame grove__frame--a">
+                <img class="grove__photo" src="img/caise-a480.webp" srcset="img/caise-a480.webp 480w, img/caise-a960.webp 960w"
+                     sizes="(min-width: 68rem) 30rem, 46vw" width="1200" height="1500" loading="lazy" decoding="async"
+                     alt="Caise galben-portocalii coapte, pe creangă">
+              </div>
+
+              <p class="grove__detail">Sunt moi la atingere și se simt de la un rând distanță. Le culegem coapte, nu tari, ceea ce înseamnă că nu au timp să stea prin depozite.</p>
+            </div>
           </li>
 
-          <li class="fruit">
-            <a class="fruit__link" href="fructe.html#prune">
-              <div class="fruit__frame">
-                <img class="fruit__photo" src="img/prune-p640.webp" srcset="img/prune-p320.webp 320w, img/prune-p640.webp 640w"
-                     sizes="(min-width: 62rem) 20vw, 44vw" width="640" height="853" loading="lazy"
-                     alt="Prune vinete cu brumă pe ele, pe creangă">
-                <span class="fruit__ring" aria-hidden="true"><span class="fruit__ring-word">Vezi</span></span>
-                <div class="fruit__plate">
-                  <h3 class="fruit__name">Prune</h3>
-                  <p class="fruit__season">August <span>—</span> Septembrie</p>
-                  <p class="fruit__note">Cu bruma încă pe ele când ajung în ladă. Se coc târziu și se țin bine.</p>
-                </div>
+          <li class="grove" id="prune">
+            <img class="motif motif--grove-branch" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-c" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-d" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--fill-apple" src="img/apple-480.webp" width="480" height="480" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+            <div class="grove__tell">
+              <div class="grove__head">
+                <h3 class="grove__name">Prune</h3>
+                <p class="grove__season">August <span>—</span> Septembrie</p>
               </div>
-            </a>
+
+              <p class="grove__intro">Vin cu bruma încă pe ele, stratul acela fin care se șterge dacă le atingi. Este semnul că nu au fost umblate după cules.</p>
+
+              <div class="grove__frame grove__frame--b">
+                <img class="grove__photo" src="img/prune-b420.webp" srcset="img/prune-b420.webp 420w, img/prune-b840.webp 840w"
+                     sizes="(min-width: 68rem) 28rem, 44vw" width="1530" height="1147" loading="lazy" decoding="async"
+                     alt="Prune coapte între frunzele pomului">
+              </div>
+            </div>
+
+            <div class="grove__lead">
+              <div class="grove__frame grove__frame--a">
+                <img class="grove__photo" src="img/prune-a480.webp" srcset="img/prune-a480.webp 480w, img/prune-a960.webp 960w"
+                     sizes="(min-width: 68rem) 30rem, 46vw" width="1280" height="1600" loading="lazy" decoding="async"
+                     alt="Prune vinete cu brumă, strânse pe creangă">
+              </div>
+
+              <p class="grove__detail">Se coc târziu și se țin bine. Sunt singurele dintre cele patru care suportă un drum lung fără să-și piardă forma, iar dulceața li se așază abia după câteva zile de odihnă.</p>
+            </div>
           </li>
 
-          <li class="fruit">
-            <a class="fruit__link" href="fructe.html#pere">
-              <div class="fruit__frame">
-                <img class="fruit__photo" src="img/pere-p640.webp" srcset="img/pere-p320.webp 320w, img/pere-p640.webp 640w"
-                     sizes="(min-width: 62rem) 20vw, 44vw" width="640" height="853" loading="lazy"
-                     alt="Pere galben-verzui atârnând în pom">
-                <span class="fruit__ring" aria-hidden="true"><span class="fruit__ring-word">Vezi</span></span>
-                <div class="fruit__plate">
-                  <h3 class="fruit__name">Pere</h3>
-                  <p class="fruit__season">August <span>—</span> Octombrie</p>
-                  <p class="fruit__note">Culese ferme și lăsate să se înmoaie singure. Zeama se simte de la prima mușcătură.</p>
-                </div>
+          <li class="grove grove--flip" id="pere">
+            <img class="motif motif--grove-branch" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-c" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-d" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--vine motif--vine-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <img class="motif motif--fill-apple" src="img/apple-480.webp" width="480" height="480" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+            <div class="grove__tell">
+              <div class="grove__head">
+                <h3 class="grove__name">Pere</h3>
+                <p class="grove__season">August <span>—</span> Octombrie</p>
               </div>
-            </a>
+
+              <p class="grove__intro">Se culeg ferme și se lasă să se înmoaie singure, câteva zile, la temperatura camerei. Este singura parte pe care o lăsăm în seama celui care le mănâncă.</p>
+
+              <div class="grove__frame grove__frame--b">
+                <img class="grove__photo" src="img/pere-b420.webp" srcset="img/pere-b420.webp 420w, img/pere-b840.webp 840w"
+                     sizes="(min-width: 68rem) 28rem, 44vw" width="1086" height="814" loading="lazy" decoding="async"
+                     alt="Pere coapte printre frunzele pomului">
+              </div>
+            </div>
+
+            <div class="grove__lead">
+              <div class="grove__frame grove__frame--a">
+                <img class="grove__photo" src="img/pere-a480.webp" srcset="img/pere-a480.webp 480w, img/pere-a960.webp 960w"
+                     sizes="(min-width: 68rem) 30rem, 46vw" width="1086" height="1357" loading="lazy" decoding="async"
+                     alt="Pere galben-roșiatice atârnând în pom">
+              </div>
+
+              <p class="grove__detail">Închid sezonul livezii, în octombrie, când ceilalți pomi sunt deja goi. Zeama se simte de la prima mușcătură; dacă nu curge pe mână, mai au nevoie de o zi.</p>
+            </div>
           </li>
 
         </ul>
+
+        <p class="orchard__foot">Lunile de recoltă sunt orientative, până la datele reale de la fermă.</p>
       </div>
+
+      <!-- Ultimul desen al secțiunii: se termină pe muchia de jos, adică pe
+           muchia de sus a ramei video de dedesubt. -->
+      <img class="motif motif--film-branch" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
     </section>
 
     <!-- ======================================================================
@@ -290,6 +390,17 @@
          second hero and said what the first one already said.
          ====================================================================== -->
     <section class="film">
+      <img class="motif motif--cross motif--film" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+      <!-- Prima jumătate a frunzelor răzlețe din golul de sub film. Cealaltă
+           jumătate stă în .faq: granița dintre secțiuni taie, deci nicio
+           frunză nu are voie să stea călare pe ea. -->
+      <img class="motif motif--band-leaf motif--band-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-e" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-h" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-i" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
       <div class="film__inner">
         <div class="film__frame">
           <video class="film__video" poster="img/orchard-band-poster.webp" width="1920" height="1080"
@@ -317,6 +428,20 @@
          se șterge în aceeași editare în care sosesc răspunsurile reale.
          ====================================================================== -->
     <section class="faq" id="intrebari">
+      <img class="motif motif--cross motif--faq" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--fill-apple motif--faq-apple" src="img/apple-480.webp" width="480" height="480" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+      <!-- A doua jumătate a frunzelor din gol; primele două sunt în .film. -->
+      <img class="motif motif--band-leaf motif--band-leaf-c" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-d" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-f" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-g" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-j" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+      <!-- Cele trei care trec pe sub titlu și subtitlu. -->
+      <img class="motif motif--band-leaf motif--band-leaf-k" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-l" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--band-leaf motif--band-leaf-m" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <div class="faq__inner">
 
         <div class="faq__head">

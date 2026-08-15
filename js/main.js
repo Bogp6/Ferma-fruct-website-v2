@@ -6,7 +6,8 @@
 
    The movement is one idea used everywhere: a card laid on a table. It arrives
    from slightly below, tilted a hair, and settles flat. Nothing fades in place,
-   nothing slides in from the side.
+   nothing slides in from the side. The fruit photographs are the one exception
+   and they say so in job 7: they do not arrive, they are uncovered.
    ============================================================================ */
 
 (function () {
@@ -339,7 +340,10 @@
     var groups = [
         { selector: '.brief__item', stagger: 0.08 },
         { selector: '.orchard__statement, .orchard__note', stagger: 0.1 },
-        { selector: '.fruit', stagger: 0.09 },
+        /* within: numărătoarea pentru decalaj repornește în fiecare bloc de
+           fruct. Fără el, indicii ar curge peste toate cele patru blocuri și
+           ultimul paragraf ar aștepta aproape o secundă înainte să pornească. */
+        { within: '.grove', selector: '.grove__head, .grove__intro, .grove__detail', stagger: 0.08 },
         { selector: '.film__frame, .film__caption', stagger: 0.12 },
         { selector: '.faq__head, .faq__item', stagger: 0.07 },
         /* Subsolul, inclusiv siglele: un singur grup, ordinea din pagină.
@@ -399,71 +403,63 @@
     groups.forEach(function (group) {
         var observer = group.atBottom ? watcherAtBottom : watcher;
 
-        Array.prototype.forEach.call(document.querySelectorAll(group.selector), function (el, i) {
-            el.classList.add('reveal');
-            /* Turns off the CSS transition: with GSAP writing an inline
-               transform every frame, the transition would try to ease to each
-               of those frames as well and the move smears. */
-            if (gsap) {
-                el.classList.add('reveal--js');
-            }
-            el.dataset.delay = (i * group.stagger).toFixed(2);
-            observer.observe(el);
-        });
+        var arm = function (root) {
+            Array.prototype.forEach.call(root.querySelectorAll(group.selector), function (el, i) {
+                el.classList.add('reveal');
+                /* Turns off the CSS transition: with GSAP writing an inline
+                   transform every frame, the transition would try to ease to each
+                   of those frames as well and the move smears. */
+                if (gsap) {
+                    el.classList.add('reveal--js');
+                }
+                el.dataset.delay = (i * group.stagger).toFixed(2);
+                observer.observe(el);
+            });
+        };
+
+        if (group.within) {
+            Array.prototype.forEach.call(document.querySelectorAll(group.within), arm);
+        } else {
+            arm(document);
+        }
     });
 
 
     /* ---------------------------------------------------------------------
-       7. THE FRUIT RING
-       The ring is drawn and shown by CSS; this only tells it where the pointer
-       is, as an offset in pixels from the centre of the card. The trailing lag
-       is the CSS transition on transform, not a loop here — there is no
-       requestAnimationFrame in this, and moving the pointer only writes two
-       custom properties.
+       7. FOTOGRAFIILE FRUCTELOR
+       Fiecare fotografie se descoperă de jos în sus, în propria formă de
+       frunză. Mișcarea este un singur clip-path în CSS; aici se pune doar
+       clasa care o pornește.
 
-       Nothing below is needed for the card to work: with this file gone the
-       ring still appears on hover, centred. */
+       Nu intră în grupurile de mai sus fiindcă nu este aceeași sosire: acolo
+       blocul urcă și se așază, aici imaginea se dezvelește pe loc. Un element
+       cu amândouă ar face două mișcări deodată.
 
-    if (!reduced) {
-        Array.prototype.forEach.call(document.querySelectorAll('.fruit__link'), function (link) {
-            var ring = link.querySelector('.fruit__ring');
+       Cele două fotografii ale unui fruct pornesc la distanță de o jumătate de
+       secundă, în ordinea din pagină, așa încât ochiul să fie plimbat pe
+       diagonala blocului — adică exact pe direcția în care este așezat.
 
-            if (!ring) {
+       .wipe este pusă numai de aici, deci fără script fotografia este
+       întreagă de la prima pictare. */
+
+    var frameWatcher = new IntersectionObserver(function (entries, self) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) {
                 return;
             }
 
-            link.addEventListener('pointermove', function (event) {
-                /* A coarse pointer has no hover to follow: on a phone this
-                   fires once on tap and would leave the ring parked off
-                   centre. */
-                if (event.pointerType === 'touch') {
-                    return;
-                }
-
-                var box = link.getBoundingClientRect();
-
-                ring.style.setProperty('--rx', (event.clientX - box.left - box.width / 2).toFixed(1) + 'px');
-                ring.style.setProperty('--ry', (event.clientY - box.top - box.height / 2).toFixed(1) + 'px');
-            });
-
-            /* Back to the middle, so the next hover starts from the centre
-               rather than from wherever the pointer left. */
-            link.addEventListener('pointerleave', function () {
-                ring.style.removeProperty('--rx');
-                ring.style.removeProperty('--ry');
-            });
-
-            link.addEventListener('pointerdown', function () {
-                link.classList.add('is-pressed');
-            });
-
-            /* The animation runs on the ring's ::after, and its animationend
-               reports against the ring itself. Removing the class here is what
-               lets a second click start the animation again. */
-            ring.addEventListener('animationend', function () {
-                link.classList.remove('is-pressed');
-            });
+            self.unobserve(entry.target);
+            entry.target.classList.add('is-in');
         });
-    }
+    }, { rootMargin: '0px 0px -12% 0px' });
+
+    Array.prototype.forEach.call(document.querySelectorAll('.grove'), function (grove) {
+        Array.prototype.forEach.call(grove.querySelectorAll('.grove__frame'), function (frame, i) {
+            frame.classList.add('wipe');
+            frame.style.transitionDelay = (i * 0.5) + 's';
+            frameWatcher.observe(frame);
+        });
+    });
+
 
 }());
