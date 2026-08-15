@@ -443,21 +443,16 @@
     text-align: end;
 }
 
-/* Two large plates across, in picking order. Not four across: at four the
-   photograph stops being the card and becomes a thumbnail, which is what the
-   fruit had before. */
+/* One row of four, in picking order, read left to right. The gap is tight on
+   purpose: at this size four plates close together read as one band, which is
+   what the section is — the four fruits, together, and nothing else. */
 .orchard__list {
     margin-block-start: var(--space-2xl);
     display: grid;
-    /* Declared, not auto-fit: a known set of 4 that must stay 2 by 2.
-       auto-fit drops to 3 at this container width and strands one. */
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xl) var(--space-l);
-}
-
-/* Second column dropped half a step: a hand of cards, not a shelf. */
-.fruit:nth-child(even) {
-    margin-block-start: var(--space-2xl);
+    /* Declared, not auto-fit: a known set of 4 that must stay in one row.
+       auto-fit would strand one on its own line. */
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-s);
 }
 
 /* Local, not a token: this is the one dark colour on the site and it exists
@@ -488,7 +483,7 @@
     display: block;
     isolation: isolate;
     overflow: hidden;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 4;
     border-radius: var(--radius-l);
     background: var(--wash);
     box-shadow: var(--shadow-lift);
@@ -549,21 +544,50 @@
 
 .fruit__frame::after {
     background: linear-gradient(to top,
-            rgba(31, 21, 11, 0.72) 0%,
-            rgba(31, 21, 11, 0.34) 22%,
-            rgba(31, 21, 11, 0) 46%);
+            rgba(31, 21, 11, 0.8) 0%,
+            rgba(31, 21, 11, 0.5) 28%,
+            rgba(31, 21, 11, 0) 64%);
 }
 
+/* Holds the name and the season only, so its height is the same on all four
+   cards and the four names sit on one line across the row. The sentence is
+   taken out of this flow below — in flow it is two lines on one card and three
+   on another, and that difference walks the names up and down. */
 .fruit__plate {
     position: absolute;
     z-index: 2;
-    inset-inline-start: 0;
+    isolation: isolate;
+    inset-inline: 0;
     inset-block-end: 0;
-    padding: var(--space-m);
+    padding: var(--space-s);
+}
+
+/* Deepens the foot of the card while the sentence is showing. The wash above
+   is dropping from 0.68 to 0.14 at the same time, so the card still reads as
+   opening up; this only keeps the small text off the bright part of the
+   photograph. */
+.fruit__plate::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: 18rem;
+    background: linear-gradient(to top,
+            rgba(31, 21, 11, 0.82) 0%,
+            rgba(31, 21, 11, 0.62) 34%,
+            rgba(31, 21, 11, 0) 100%);
+    opacity: 0;
+    transition: opacity var(--duration) var(--ease-out);
+}
+
+.fruit__link:hover .fruit__plate::before,
+.fruit__link:focus-visible .fruit__plate::before {
+    opacity: 1;
 }
 
 .fruit__name {
-    font-size: var(--step-3);
+    font-size: var(--step-2);
     color: var(--on-dark);
 }
 
@@ -590,7 +614,7 @@
    focus is the middle of the card. The long transform transition is what makes
    the ring trail the cursor instead of sticking to it. */
 .fruit__ring {
-    --ring: clamp(5.5rem, 10vw, 8.5rem);
+    --ring: clamp(4rem, 6vw, 5.5rem);
 
     position: absolute;
     z-index: 2;
@@ -657,14 +681,38 @@
     text-transform: uppercase;
 }
 
-/* On paper, not on the photograph: over a picture this size the wash would
-   have to stay dark to keep small text legible, and staying dark is the one
-   thing the card must not do on hover. */
+/* The sentence about the fruit lives on the plate, under the name. It is the
+   third thing you need, not the first, so where the pointer can ask for it the
+   card holds it back and gives it on hover. */
+/* Sits directly above the name, out of the plate's flow. inset-block-end: 100%
+   puts its foot on the plate's top edge, which is one --space-s clear of the
+   name because that is the plate's own padding. */
 .fruit__note {
-    margin-block-start: var(--space-s);
-    max-width: 46ch;
-    color: var(--ink-soft);
+    position: absolute;
+    inset-inline: var(--space-s);
+    inset-block-end: 100%;
+    margin: 0;
+    max-width: none;
+    color: var(--on-dark-soft);
     font-size: var(--step--1);
+}
+
+/* Scoped to hover-capable pointers, so a phone — which never gets a hover and
+   would simply never see this — keeps the sentence on the card. */
+@media (hover: hover) {
+
+    .fruit__note {
+        opacity: 0;
+        transform: translateY(0.5rem);
+        transition: opacity var(--duration) var(--ease-out),
+            transform var(--duration-slow) var(--ease-out);
+    }
+
+    .fruit__link:hover .fruit__note,
+    .fruit__link:focus-visible .fruit__note {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -681,6 +729,12 @@
     .fruit__link:focus-visible .fruit__ring,
     .fruit__link:active .fruit__ring {
         transform: translate(-50%, -50%);
+    }
+
+    /* The sentence still arrives on hover; it just stops sliding to get
+       there. */
+    .fruit__note {
+        transform: none;
     }
 }
 
