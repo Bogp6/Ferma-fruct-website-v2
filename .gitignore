@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Impeccable: per-developer overrides and hook consent. The shared
+# .impeccable/config.json IS committed — it carries the detector decisions.
+.impeccable/config.local.json
+.impeccable/questions/
+
+# Claude Code machine-local settings
+.claude/settings.local.json

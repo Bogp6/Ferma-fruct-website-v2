@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Ferma Fruct Brabova">
+  <!-- Drawn as mass, not as detail: at 16 pixels a tree reads as a blob, so the
+       mark is a sky, a field and one fruit. -->
+  <circle cx="16" cy="16" r="16" fill="#A9C9E6" />
+  <path d="M0 20c6-4 10-4 16-1s10 2 16-1v14H0z" fill="#2E6B34" />
+  <path d="M0 26c6-3 10-3 16-1s10 1 16-1v8H0z" fill="#14301C" />
+  <circle cx="16" cy="11" r="6" fill="#4E9A45" />
+  <circle cx="16" cy="10" r="2.4" fill="#D8610C" />
+</svg>

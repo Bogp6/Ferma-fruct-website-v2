@@ -1,0 +1,366 @@
+/* ============================================================================
+   SALVAGE — kept from the previous project at Bogdan's request.
+
+   Bogdan liked the navbar and the button in the old build and wants them
+   within easy reach here, so they are parked in this file rather than lost in
+   git history. NOTHING IN THIS FILE IS LIVE. index.html does not link it.
+
+   To use a piece: copy the block into style.css, or add
+   <link rel="stylesheet" href="salvage/salvage.css"> to the head.
+
+   The old project's tokens.css is deliberately NOT in this project. Every
+   variable these rules need is therefore redefined at the top of this file,
+   with the real values copied across, so the code works standing alone.
+   Those values belong to the OLD palette and the OLD fonts. When the new
+   visual direction is decided, delete the :root block below and point the
+   rules at the new tokens; keep the layout, the states and the motion, which
+   are the parts worth keeping.
+   ============================================================================ */
+
+
+/* ---------------------------------------------------------------------------
+   1. VARIABLES THE SALVAGED CODE NEEDS
+   Copied from the old css/tokens.css and css/style.css. Old palette, old
+   fonts. Here only so this file runs on its own.
+   --------------------------------------------------------------------------- */
+
+:root {
+    /* Fonts. The .woff2 files are NOT in this project yet. Without them the
+       browser falls back to a system face and the navbar will look wrong
+       while still behaving correctly. */
+    --font-heading: 'Bricolage Grotesque', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-wordmark: 'Caveat Brush', cursive;
+
+    --weight-normal: 400;
+    --weight-bold: 700;
+
+    /* Fluid type steps. --step--1 is the nav and button size. */
+    --step--1: clamp(0.8333rem, 0.7754rem + 0.2899vw, 1rem);
+    --step-3: clamp(1.728rem, 1.4799rem + 1.2407vw, 2.4414rem);
+
+    /* Fluid spacing. */
+    --space-3xs: clamp(0.25rem, 0.2283rem + 0.1087vw, 0.3125rem);
+    --space-2xs: clamp(0.5rem, 0.4565rem + 0.2174vw, 0.625rem);
+    --space-s: clamp(1rem, 0.913rem + 0.4348vw, 1.25rem);
+    --space-m: clamp(1.5rem, 1.3696rem + 0.6522vw, 1.875rem);
+    --gutter: clamp(1rem, 0.4783rem + 2.6087vw, 2.5rem);
+
+    --container-wide: 90rem;
+
+    /* Old palette. */
+    --bg: #FDF9F3;
+    --surface: #F4F1EA;
+    --text: #22301A;
+    --text-muted: #6B5F55;
+    --border: #EBE3D9;
+    --brand-green: #62A94F;
+    --caisa: #C2610C;
+
+    --btn-bg: var(--surface);
+    --btn-text: var(--text);
+
+    --leading-tight: 1.1;
+    --tracking-normal: 0;
+
+    --duration-fast: 120ms;
+    --duration: 200ms;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Height of the nav row. Keeps the three header zones on one line. */
+    --nav-h: 2.75rem;
+
+    /* Cream over the photograph, and the darkening under it. */
+    --on-photo: #FDF9F3;
+    --on-photo-dim: rgba(253, 249, 243, 0.72);
+
+    /* The only see-through line value, dividing RO from EN. A solid palette
+       cannot supply it. */
+    --on-photo-line: rgba(253, 249, 243, 0.35);
+
+    /* Page cream at zero alpha. Never write `transparent` here: that is black
+       with no alpha, and the gradient would fade through grey. */
+    --bg-clear: rgba(253, 249, 243, 0);
+
+    /* Written by salvage.js. 0 at the top of the page, exactly 1 when the
+       hero's last pixel leaves. Without the script it stays 0, which is the
+       correct look at the top of the page. */
+    --p: 0;
+}
+
+
+/* ---------------------------------------------------------------------------
+   2. NAVBAR
+   Bogdan liked this one and asked for it to be carried over.
+
+   Needs: the HTML in salvage.html section 2, and salvage.js for --p.
+   Without the script the bar simply never fills; nothing errors.
+   --------------------------------------------------------------------------- */
+
+/* The fill is one continuous quantity, --p, not two states with a switch. A
+   cream front travels down the bar and is complete as the hero leaves. No
+   transition on the ground: a transition on a scroll-driven value drags
+   behind the thumb. */
+.site-header {
+    /* The lettering travels on --t, not --p: 0.35 to 0.6 is where the cream
+       front crosses the words. Driven from --p directly the links sit at an
+       illegible mid tone through the middle of the scroll. */
+    --t: clamp(0, calc((var(--p) - 0.35) / 0.25), 1);
+
+    --hdr-text: color-mix(in oklab,
+            var(--text-muted) calc(var(--t) * 100%),
+            var(--on-photo-dim));
+    --hdr-text-strong: color-mix(in oklab,
+            var(--text) calc(var(--t) * 100%),
+            var(--on-photo));
+    --hdr-rule: color-mix(in oklab,
+            var(--border) calc(var(--t) * 100%),
+            var(--on-photo-line));
+
+    /* --front is where the cream has reached. It travels further than the bar
+       is tall so the trailing soft edge has room to finish; if the soft edge
+       moves ahead of the front, a haze sits over the photograph at --p 0. */
+    --front: calc(var(--p) * (100% + 2rem));
+
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 2;
+    padding: var(--space-s) var(--gutter);
+    background: linear-gradient(to bottom,
+            var(--bg) 0%,
+            var(--bg) calc(var(--front) - 2rem),
+            var(--bg-clear) var(--front));
+}
+
+/* box-sizing is content-box: padding on the outer element, max-width on the
+   inner one, never both on the same element, or the width blows out. */
+.site-header__inner {
+    max-width: var(--container-wide);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--space-s);
+}
+
+/* Colour pinned through hover and focus. In the old project base.css turned
+   every link orange, which would have turned all of the wordmark except the
+   two F's. Kept pinned so the mark survives whatever the new base does. */
+.brand,
+.brand:hover,
+.brand:focus {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    text-decoration: none;
+    color: var(--brand-green);
+}
+
+/* The wordmark as live text, not SVG: the two-colour split is a plain colour
+   change on the F's. The face already leans, so no extra tracking. */
+.brand__word {
+    font-family: var(--font-wordmark);
+    font-weight: var(--weight-normal);
+    font-size: var(--step-3);
+    line-height: var(--leading-tight);
+}
+
+.brand__f {
+    color: var(--caisa);
+}
+
+/* No panel and no backdrop-filter. Lettering straight on the photograph,
+   separated by space rather than by a container. */
+.nav__list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    min-height: var(--nav-h);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.nav__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: var(--space-3xs) 0;
+    color: var(--hdr-text);
+    font-family: var(--font-heading);
+    font-weight: var(--weight-bold);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-normal);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--duration) var(--ease);
+}
+
+/* The mark under a link is a separate rounded bar, not text-decoration, which
+   cannot animate from nothing and threads the descenders. Grows from the left
+   on transform and opacity only. */
+.nav__link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--hdr-text-strong);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration) var(--ease),
+        background-color var(--duration) var(--ease);
+}
+
+.nav__link:hover {
+    color: var(--hdr-text-strong);
+}
+
+.nav__link:hover::after {
+    transform: scaleX(1);
+}
+
+/* Current page: the same stroke, already drawn, at full strength. */
+.nav__link[aria-current="page"] {
+    color: var(--hdr-text-strong);
+}
+
+.nav__link[aria-current="page"]::after {
+    transform: scaleX(1);
+}
+
+/* Bare like the navigation and the same height, so the three parts of the
+   header read as one row. */
+.lang {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    justify-self: end;
+    min-height: var(--nav-h);
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+}
+
+.lang__current {
+    color: var(--hdr-text-strong);
+    transition: color var(--duration) var(--ease);
+}
+
+.lang__soon {
+    padding-inline-start: var(--space-2xs);
+    border-inline-start: 1px solid var(--hdr-rule);
+    color: var(--hdr-text);
+    transition: color var(--duration) var(--ease),
+        border-color var(--duration) var(--ease);
+}
+
+/* Hides visually, still read by screen readers. The header markup uses it. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------------------------
+   3. BUTTON
+   Bogdan liked this one and asked for it to be carried over.
+
+   Needs: the HTML in salvage.html section 3. No JavaScript. The hover fill is
+   pure CSS.
+
+   Built to sit on a photograph: a cream hairline and a cream label with the
+   picture showing through. On a flat pale background it will be invisible
+   until --on-photo is repointed at a colour that contrasts with it.
+   --------------------------------------------------------------------------- */
+
+.btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-s) var(--space-m);
+    border: 1px solid var(--on-photo);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--on-photo);
+    font-family: var(--font-heading);
+    font-weight: var(--weight-bold);
+    font-size: var(--step--1);
+    line-height: 1;
+    letter-spacing: var(--tracking-normal);
+    text-decoration: none;
+    transition: color var(--duration) var(--ease),
+        transform var(--duration-fast) var(--ease);
+}
+
+/* The sweeping ground is a pseudo-element so only a transform moves. It has no
+   radius of its own: scaling a rounded box stretches its corners, so the
+   parent's overflow does the clipping instead. */
+.btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-bg);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration) var(--ease);
+}
+
+.btn:hover {
+    color: var(--btn-text);
+}
+
+.btn:hover::before {
+    transform: scaleX(1);
+}
+
+/* Takes the press. */
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:active::before {
+    transform: scaleX(1);
+}
+
+/* Inert and still drawn rather than filled: line and label drop to faint
+   cream, sweep disabled. */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+    border-color: var(--on-photo-line);
+    background: transparent;
+    color: var(--on-photo-dim);
+    cursor: not-allowed;
+}
+
+.btn:disabled:hover::before,
+.btn[aria-disabled="true"]:hover::before {
+    transform: scaleX(0);
+}
+
+.btn:disabled:hover,
+.btn[aria-disabled="true"]:hover {
+    color: var(--on-photo-dim);
+}
+
+
+/* ---------------------------------------------------------------------------
+   4. WHAT WAS NOT CARRIED OVER
+   The old build also had a load-in animation on the header and the button:
+   each element rose from below in reading order, wordmark at 60ms, nav 120ms,
+   language 180ms, button 420ms. It is not here, because it was written
+   against the hero's own markup and would only be half of itself on its own.
+   Ask for it and it can be lifted across with the hero.
+   --------------------------------------------------------------------------- */

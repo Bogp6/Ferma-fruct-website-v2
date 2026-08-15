@@ -1,0 +1,231 @@
+/* ============================================================================
+   TOKENS — Ferma Fruct Brabova
+   Every value the site is allowed to use. Nothing here is page-specific.
+
+   The palette is sampled pixel by pixel from the farm's round logo: the leaf
+   green of the tree, the forest green of the fields, the cream of the hall,
+   the orange of the fruit. Nothing is invented and nothing is darkened for
+   effect. The old near-black green ground is gone; the page now sits on the
+   logo's own two greens, which are lighter and warmer.
+
+   One rule holds the colour together: the page is green. The four fruits are
+   NOT four palettes; their colour arrives in their own photograph. Orange is
+   the single action colour and appears only on things you can click.
+   ============================================================================ */
+
+/* Fraunces, variable. Four axes ride in one file: opsz (optical size), wght,
+   SOFT (rounding of the terminals) and WONK (the alternate swashy forms that
+   only make sense large). Split latin / latin-ext by unicode-range so the
+   Romanian ș, ț, ă, î, â load from the second file and nobody else pays for
+   them. */
+@font-face {
+    font-family: 'Fraunces';
+    src: url('../fonts/fraunces-var-latin.woff2') format('woff2');
+    font-weight: 300 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Fraunces';
+    src: url('../fonts/fraunces-var-latin-ext.woff2') format('woff2');
+    font-weight: 300 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Chivo';
+    src: url('../fonts/chivo-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Chivo';
+    src: url('../fonts/chivo-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Chivo';
+    src: url('../fonts/chivo-900.woff2') format('woff2');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+
+    /* --- Fonts ---------------------------------------------------------- */
+
+    --font-display: 'Fraunces', Georgia, serif;
+
+    /* Everything you actually read. */
+    --font-text: 'Chivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --weight-normal: 400;
+    --weight-mid: 600;
+    --weight-heavy: 900;
+
+    /* Display weight and axes. WONK 1 turns on the alternate letterforms; they
+       are drawn for large sizes and turn to mush under about 1.5rem, which is
+       why --axes-label below switches them off. opsz 144 is the display
+       optical size: thinner hairlines, sharper joins. */
+    --weight-display: 800;
+    --axes-display: 'opsz' 144, 'SOFT' 0, 'WONK' 1;
+    --axes-label: 'opsz' 24, 'SOFT' 0, 'WONK' 0;
+
+    /* --- Colour --------------------------------------------------------- */
+
+    /* Grounds. All five creams the client chose, lightest to deepest. There is
+       no white anywhere on this site, and no near-white either: --paper-lift is
+       the closest thing to one and it is only ever a small raised surface, not
+       a page.
+         --paper-lift #FAF9EF  raised cards sitting on the page
+         --paper      #F6F1E1  THE PAGE
+         --cream      #F4EDDB  the warm alternate section
+         --sand-soft  #E9E3D6  hairlines and edges
+         --sand       #D8CFBD  plates: the stat band, the partners band
+       --paper and --cream are only 1.03 apart, so they never touch each other
+       edge to edge; they are the page and a band far down it. */
+    --paper-lift: #FAF9EF;
+    --paper: #F6F1E1;
+    --cream: #F4EDDB;
+    --sand-soft: #E9E3D6;
+    --sand: #D8CFBD;
+
+    /* ONE green, the client's. It is the footer, the header fill once the hero
+       has gone, and every green accent. There is deliberately no dark variant:
+       the darker greens that used to live here were the thing that read wrong
+       against cream. --forest and --forest-deep are the same hex on purpose, so
+       nothing has to be renamed to keep one green on the page.
+
+       It is 4.08 against --paper-lift, so cream text on it is under the 4.5
+       floor. That is accepted: the client chose this green knowing it. Never
+       put small light text on it — the footer's fine print takes --sand, on the
+       cream side of a band, not on the green. */
+    --forest: #698240;
+    --forest-deep: #698240;
+    --leaf: #698240;
+    /* Decoration only: rules, icon fills, never text. */
+    --leaf-bright: #8EAE5B;
+
+    /* Text is brown, not green. --bark carries everything on every cream:
+       10.8 on the page, 7.9 on --sand. --bark-deep is the one place it has to
+       go darker, on the orange action colour, where --bark alone is 4.09.  */
+    --bark: #493017;
+    --bark-soft: #6E4F30;
+    --bark-deep: #3A2611;
+
+    /* Sky from the logo. An accent on small things only. It is NOT a band
+       ground: a pale blue field under a green page reads as a different site. */
+    --sky: #AECBE1;
+
+    /* The dirt track. Rules, hairlines, ticket edges. */
+    --earth: #C3A278;
+
+    /* The orange of the fruit in the logo. The ONLY action colour on the
+       site: if it is orange, you can click it. --action-ink is the darkened
+       version, used when orange has to be text on a light ground. */
+    --action: #E87614;
+    --action-hot: #C85E08;
+    /* Deep enough that white text on it reaches 5.8 to 1. The button's hover
+       fill, and the only orange white type is ever allowed to sit on. */
+    --action-deep: #A8490A;
+    --action-ink: #A54D07;
+
+    /* Text. Brown throughout: there is no dark green type left on this site.
+       --ink is 10.8 on the page, --ink-soft 6.58. The on-dark pair sits on the
+       green and takes the lightest two creams. */
+    --ink: #493017;
+    --ink-soft: #6E4F30;
+    --on-dark: #FAF9EF;
+    --on-dark-soft: #F4EDDB;
+
+    /* --- Type scale ------------------------------------------------------
+       Fluid: every step grows with the window, none of them are fixed pixels.
+       --step-5 is capped at 6rem; past that a fruit name stops being a word
+       and starts being wallpaper. */
+
+    --step--1: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+    --step-1: clamp(1.1875rem, 1.11rem + 0.38vw, 1.4375rem);
+    --step-2: clamp(1.4375rem, 1.28rem + 0.78vw, 1.9375rem);
+    --step-3: clamp(1.75rem, 1.42rem + 1.63vw, 2.8125rem);
+    --step-4: clamp(2.125rem, 1.53rem + 2.97vw, 4rem);
+    --step-5: clamp(2.75rem, 1.6rem + 5.75vw, 6rem);
+
+    --leading-tight: 1.04;
+    --leading-snug: 1.2;
+    --leading-body: 1.6;
+
+    --tracking-tight: -0.02em;
+    --tracking-label: 0.09em;
+
+    /* Longest a paragraph is allowed to get before it is hard to read. */
+    --measure: 66ch;
+
+    /* --- Space -----------------------------------------------------------
+       Also fluid. --space-section is the gap between two sections of the
+       page; changing it changes the rhythm of the whole site. */
+
+    --space-3xs: clamp(0.25rem, 0.23rem + 0.11vw, 0.3125rem);
+    --space-2xs: clamp(0.5rem, 0.46rem + 0.22vw, 0.625rem);
+    --space-xs: clamp(0.75rem, 0.69rem + 0.33vw, 0.9375rem);
+    --space-s: clamp(1rem, 0.91rem + 0.43vw, 1.25rem);
+    --space-m: clamp(1.5rem, 1.37rem + 0.65vw, 1.875rem);
+    --space-l: clamp(2rem, 1.83rem + 0.87vw, 2.5rem);
+    --space-xl: clamp(3rem, 2.74rem + 1.3vw, 3.75rem);
+    --space-2xl: clamp(4rem, 3.48rem + 2.61vw, 5.5rem);
+    --space-section: clamp(4.5rem, 3.2rem + 6.5vw, 8.5rem);
+
+    /* Page side padding. Sits on the outer element only, never together with
+       a max-width on the same element: box-sizing is content-box here. */
+    --gutter: clamp(1.25rem, 0.6rem + 3.25vw, 3.5rem);
+
+    --container: 78rem;
+    --container-narrow: 46rem;
+
+    /* --- Lines, corners, depth ------------------------------------------- */
+
+    --hairline: 1px;
+    --rule: 2px;
+
+    --radius-s: 3px;
+    --radius-m: 6px;
+    /* Photographs and the video frame. Generous, so the pictures read as
+       objects laid on the page rather than as holes cut in it. */
+    --radius-l: 14px;
+    --radius-xl: 22px;
+    --radius-pill: 999px;
+
+    /* Offset plus blur, always. A blur with no offset is a halo, not a
+       shadow, and reads as decoration. */
+    --shadow-lift: 0 2px 6px rgba(33, 48, 26, 0.10),
+        0 12px 28px rgba(33, 48, 26, 0.12);
+    --shadow-raise: 0 4px 10px rgba(33, 48, 26, 0.14),
+        0 20px 44px rgba(33, 48, 26, 0.18);
+    --shadow-press: 0 1px 3px rgba(33, 48, 26, 0.16);
+
+    /* On the dark bands the paper shadows vanish. These are the same two-layer
+       shape mixed far darker so a photo still sits above the green. */
+    --shadow-deep: 0 4px 10px rgba(0, 0, 0, 0.24),
+        0 22px 46px rgba(0, 0, 0, 0.28);
+    --shadow-deep-raise: 0 10px 20px rgba(0, 0, 0, 0.28),
+        0 34px 64px rgba(0, 0, 0, 0.34);
+
+    /* --- Motion ----------------------------------------------------------
+       --ease-out is exponential: fast away from the start, long settle. It is
+       what makes a reveal look released rather than driven. */
+    --duration-fast: 140ms;
+    --duration: 320ms;
+    --duration-slow: 720ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}

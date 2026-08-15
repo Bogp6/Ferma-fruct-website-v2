@@ -1,0 +1,131 @@
+/* ============================================================================
+   BASE — Ferma Fruct Brabova
+   Element defaults. No component lives here; components are in style.css.
+
+   box-sizing is left at the browser default, content-box. Padding is therefore
+   put on an outer element and max-width on an inner one, never both on the
+   same element, or its width blows out.
+   ============================================================================ */
+
+html {
+    /* Anchor links land below the fixed header instead of under it. */
+    scroll-padding-block-start: 5.5rem;
+    scroll-behavior: smooth;
+    /* The green field behind each fruit photo is measured out to the viewport
+       edge with calc(50% - 50vw), which overshoots by the scrollbar width. clip,
+       not hidden: hidden here would turn the page into a scroll container and
+       break every position: sticky element later. */
+    overflow-x: clip;
+}
+
+body {
+    margin: 0;
+    /* White, not paper: the green band under the hero has no ground of its own
+       so that the film shows through above it, which means the body colour is
+       what fills the strip between the hero and the section below. */
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-weight: var(--weight-normal);
+    font-size: var(--step-0);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Display face for every heading. Fraunces is variable: the weight and the
+   four axes come from tokens, so changing the display voice is one line there
+   and not a hunt through this file. */
+h1,
+h2,
+h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-variation-settings: var(--axes-display);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+}
+
+h1 {
+    font-size: var(--step-5);
+}
+
+h2 {
+    font-size: var(--step-4);
+}
+
+h3 {
+    font-size: var(--step-2);
+}
+
+/* Fraunces sets its own optical size from the font-size unless it is told
+   otherwise, and the browser default fights the axes above. Locking it here
+   keeps every heading on the display cut. */
+h1,
+h2,
+h3 {
+    font-optical-sizing: none;
+}
+
+p {
+    margin: 0;
+    max-width: var(--measure);
+    text-wrap: pretty;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    color: inherit;
+}
+
+img,
+picture,
+video,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* One focus ring for the whole site, on the action colour, offset so it never
+   sits on top of the thing it is marking. */
+:focus-visible {
+    outline: 3px solid var(--action);
+    outline-offset: 3px;
+    border-radius: var(--radius-s);
+}
+
+/* Hidden on screen, still read aloud by a screen reader. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Everything the site animates is opt-in through this class, so switching all
+   motion off is one rule. Content is visible by default: the reveal only ever
+   removes an offset, it never creates the content. */
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Core four (part 1): title and description -->
+  <title>Ferma Fruct Brabova</title>
+  <meta name="description" content="Ferma Fruct Brabova - Fructe de calitate superioară.">
+
+  <!-- Canonical: ignores the ?fbclid junk from Facebook clicks -->
+  <link rel="canonical" href="">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- The display face draws the first words on the page; without this the
+       hero line lands in a fallback and then jumps when the real face arrives.
+       Only the latin file is preloaded: latin-ext carries the ș and ț and is
+       fetched a moment later by the unicode-range rule. -->
+  <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Open Graph: how the link looks when shared on Facebook/WhatsApp -->
+  <meta property="og:title" content="TODO: titlu pentru distribuire">
+  <meta property="og:description" content="TODO: descriere pentru distribuire">
+  <meta property="og:image" content="TODO: adresa completă a imaginii de distribuire">
+  <meta property="og:url" content="TODO: adresa site-ului">
+  <meta property="og:type" content="website">
+
+  <!-- Same page in English. No English page exists yet; fill both when it does. -->
+  <link rel="alternate" hreflang="en" href="TODO">
+
+  <!-- Which version to serve when the visitor's language matches none of the above -->
+  <link rel="alternate" hreflang="x-default" href="TODO">
+
+  <!-- Language of THIS page for Facebook and WhatsApp previews -->
+  <meta property="og:locale" content="ro_RO">
+
+  <!-- Tab icon, modern browsers. SVG scales to any size and can react to dark mode -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- The .ico fallback for old browsers is not linked yet, because the file does not exist and the browser was fetching a 404 on every page load. Add the link back at the same time as the file. -->
+  <meta name="theme-color" content="#3E6027">
+  <!-- Makes the shared link on Twitter show a wide banner instead of a small square thumbnail -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Alt text for the share image, read by screen readers on social feeds -->
+  <meta property="og:image:alt" content="TODO: ce se vede în imaginea de distribuire">
+
+  <!-- LocalBusiness structured data: clean facts for Google, NO stars.
+       Every TODO below is a fact the client has not supplied. A field that stays
+       TODO is deleted before launch, never guessed: wrong structured data is worse
+       than none. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Farm",
+      "name": "Ferma Fruct Brabova",
+      "telephone": "TODO",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "TODO",
+        "addressLocality": "Brabova",
+        "addressRegion": "Dolj",
+        "addressCountry": "RO"
+      },
+      "areaServed": "România"
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       DIRECTION CONTRACT — do not delete. Every edit to this page is judged
+       against it.
+
+
+       OWN-WORLD: The two greens of the farm's own logo, leaf and forest,
+       sampled off the artwork. No near-black ground and no pale blue field.
+       Fraunces, variable, at weight 800 with the WONK axis on for the display
+       cut; plain Chivo for everything read. One action colour, the orange of
+       the fruit in the logo: if it is orange, it is clickable. The four fruits
+       are not four palettes; their colour arrives in their photo.
+
+       THE FRUITS: four across, in the order they are picked, each dropped
+       half a step from its neighbour. Under every name the weeks it is picked,
+       hung off a green upright. The order on the page IS the calendar; do not
+       re-sort them alphabetically or by anything else.
+
+       STORY: A visitor who already ate the fruit looks the farm up, sees the
+       orchard moving, sees which shops carry it, meets the four fruits by
+       name, and contacts the farm.
+
+       FIRST VIEWPORT: The orchard film full bleed and moving, the round farm
+       mark centred over it, the name under it in Fraunces, one line, and the
+       orange contact button. Everything on the centre line, nothing in a box.
+       ========================================================================== -->
+
+  <a class="skip" href="#main">Sari la conținut</a>
+
+  <header class="site-header" id="acasa">
+    <div class="site-header__inner">
+
+      <a class="brand" href="index.html" aria-label="Ferma Fruct Brabova, pagina principală">
+        <img class="brand__mark" src="img/logo-160.webp" srcset="img/logo-160.webp 160w, img/logo-320.webp 320w"
+             sizes="48px" width="320" height="320" alt="" loading="eager">
+        <span class="brand__word" aria-hidden="true">Ferma Fruct</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigare principală">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#acasa" aria-current="page">Acasă</a></li>
+          <li><a class="nav__link" href="#fructe">Fructe</a></li>
+          <li><a class="nav__link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Româna este singura limbă publicată. EN rămâne <span>, nu <a>: nimic
+           nu trimite către o pagină care nu există. -->
+      <p class="lang">
+        <span class="visually-hidden">Limba paginii:</span>
+        <span class="lang__current">RO</span>
+        <span class="lang__soon">EN</span>
+      </p>
+
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ======================================================================
+         1. HERO
+         The film is the first thing on the screen. preload="metadata", never
+         "none": "none" tells the browser not to fetch the file and autoplay
+         then has nothing to play, which is silence with no way to start it.
+         muted is what makes autoplay legal at all; playsinline stops iPhone
+         taking the video fullscreen.
+         ====================================================================== -->
+    <section class="hero">
+
+      <video class="hero__film" poster="img/orchard-hero-poster.webp" width="1920" height="1080"
+             autoplay muted loop playsinline preload="metadata"
+             aria-label="Filmare din dronă deasupra livezii înflorite">
+        <source src="img/orchard-hero-1080.mp4" type="video/mp4">
+      </video>
+
+      <div class="hero__inner">
+        <img class="hero__mark" src="img/logo-320.webp" width="320" height="320" alt="" loading="eager">
+        <h1 class="hero__title">Patru fructe, o singură livadă</h1>
+        <p class="hero__lead">Cireșe, pere, prune și caise, crescute la Brabova, în județul Dolj.</p>
+        <p class="hero__cta"><a class="btn" href="#contact">Contactați-ne</a></p>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         2. BANDA CU CIFRE
+         Sits half over the film and half over the section below it, so the two
+         are stitched together instead of butting up against each other. The
+         farm has not given us hectares, years or tonnage yet, so every value
+         here is a round, obviously-made-up placeholder, said plainly in the
+         note under the band: replace all three the day the real figures
+         arrive, and delete the note in the same edit.
+
+         The numbers count up from zero, so the 0 in the markup is the start of
+         that count and not a fact. Anyone without the script, or with motion
+         turned down, gets the finished figure written in by main.js instead.
+         ====================================================================== -->
+    <section class="brief" aria-label="Ferma în cifre">
+      <ul class="brief__list">
+
+        <li class="brief__item">
+          <span class="brief__number" data-count-to="12">0</span>
+          <span class="brief__unit">hectare de livadă</span>
+        </li>
+
+        <li class="brief__item">
+          <span class="brief__number" data-count-to="8">0</span>
+          <span class="brief__unit">ani de recoltă</span>
+        </li>
+
+        <li class="brief__item">
+          <span class="brief__number" data-count-to="40">0</span>
+          <span class="brief__unit">tone culese anual</span>
+        </li>
+
+      </ul>
+      <p class="brief__note">Cifre exemplificative, până la valorile reale de la fermă.</p>
+    </section>
+
+    <!-- ======================================================================
+         3. DECLARAȚIE ȘI CELE PATRU FRUCTE
+         One white section carrying both: the sentence about the fruit, then the
+         four of them side by side. Each one is a photograph, its name, and the
+         weeks it is picked, hung on a green rule.
+         ====================================================================== -->
+    <section class="orchard" id="fructe">
+      <div class="orchard__inner">
+
+        <div class="orchard__head">
+          <h2 class="orchard__statement">Fructele se coc puțin altfel aici. Se simte de la prima mușcătură.</h2>
+          <p class="orchard__note">Aceleași patru în fiecare an, pe același deal. Nimic altceva nu se plantează aici.</p>
+        </div>
+
+        <ul class="orchard__list">
+
+          <li class="fruit">
+            <img class="fruit__photo" src="img/cirese-560.webp" srcset="img/cirese-280.webp 280w, img/cirese-560.webp 560w"
+                 sizes="(min-width: 62rem) 20vw, 80vw" width="560" height="995" loading="lazy"
+                 alt="Cireșe roșii coapte pe ram, în lumina soarelui">
+            <h3 class="fruit__name">Cireșe</h3>
+            <p class="fruit__season">Mai <span>—</span> Iunie</p>
+            <p class="fruit__note">Primele care se culeg. Se mănâncă direct din ladă, înainte să ajungă în bucătărie.</p>
+          </li>
+
+          <li class="fruit">
+            <img class="fruit__photo" src="img/caise-560.webp" srcset="img/caise-280.webp 280w, img/caise-560.webp 560w"
+                 sizes="(min-width: 62rem) 20vw, 80vw" width="560" height="995" loading="lazy"
+                 alt="Caise portocalii coapte în pom">
+            <h3 class="fruit__name">Caise</h3>
+            <p class="fruit__season">Iunie <span>—</span> Iulie</p>
+            <p class="fruit__note">Cele mai scurte pe sezon dintre toate patru. Când sunt, sunt.</p>
+          </li>
+
+          <li class="fruit">
+            <img class="fruit__photo" src="img/prune-560.webp" srcset="img/prune-280.webp 280w, img/prune-560.webp 560w"
+                 sizes="(min-width: 62rem) 20vw, 80vw" width="560" height="995" loading="lazy"
+                 alt="Prune vinete cu brumă pe ele, pe creangă">
+            <h3 class="fruit__name">Prune</h3>
+            <p class="fruit__season">August <span>—</span> Septembrie</p>
+            <p class="fruit__note">Cu bruma încă pe ele când ajung în ladă. Se coc târziu și se țin bine.</p>
+          </li>
+
+          <li class="fruit">
+            <img class="fruit__photo" src="img/pere-560.webp" srcset="img/pere-280.webp 280w, img/pere-560.webp 560w"
+                 sizes="(min-width: 62rem) 20vw, 80vw" width="560" height="995" loading="lazy"
+                 alt="Pere galben-verzui atârnând în pom">
+            <h3 class="fruit__name">Pere</h3>
+            <p class="fruit__season">August <span>—</span> Octombrie</p>
+            <p class="fruit__note">Culese ferme și lăsate să se înmoaie singure. Zeama se simte de la prima mușcătură.</p>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. BANDA VIDEO
+         The second passage of the same drone flight, set into the page with a
+         margin all round rather than run to the edges: full bleed it read as a
+         second hero and said what the first one already said.
+         ====================================================================== -->
+    <section class="film">
+      <div class="film__inner">
+        <div class="film__frame">
+          <video class="film__video" poster="img/orchard-band-poster.webp" width="1920" height="1080"
+                 autoplay muted loop playsinline preload="metadata"
+                 aria-label="Filmare din dronă printre rândurile de pomi">
+            <source src="img/orchard-band-1080.mp4" type="video/mp4">
+          </video>
+        </div>
+        <p class="film__caption">Livada, filmată din dronă, în primăvara aceasta.</p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         5. PARTENERI
+         The last thing before the subsol: you have seen the fruit, here is who
+         sells it. Quiet on purpose; four foreign brand palettes must not fight
+         the farm's own green.
+         ====================================================================== -->
+    <section class="partners">
+      <div class="partners__inner">
+        <h2 class="partners__label">Fructele noastre ajung la</h2>
+        <ul class="partners__list">
+          <li><img class="partners__logo" src="img/carrefour-transparent.svg" width="200" height="60" loading="lazy"
+                   alt="Carrefour"></li>
+          <li><img class="partners__logo" src="img/auchan-transparent.svg" width="200" height="60" loading="lazy"
+                   alt="Auchan"></li>
+          <li><img class="partners__logo" src="img/big-family-market.svg" width="200" height="60" loading="lazy"
+                   alt="Big Family Market"></li>
+          <!-- Al patrulea partener. Fișierul a fost livrat fără nume, așa că
+               textul alternativ este generic; se înlocuiește cu numele real
+               al lanțului în momentul în care îl primim. -->
+          <li><img class="partners__logo" src="img/yellow-logo-transparent.svg" width="200" height="60" loading="lazy"
+                   alt="Partener comercial"></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       7. SUBSOL
+       Carries what the farm has actually given us and nothing else. The phone
+       and the email are not written here yet: the markup for them is parked in
+       the comment below and goes live the moment the numbers arrive. A link to
+       a number that does not exist is worse than no link.
+       ======================================================================== -->
+  <footer class="site-footer" id="contact">
+    <div class="site-footer__inner">
+
+      <div class="site-footer__lead">
+        <img class="site-footer__mark" src="img/logo-160.webp" width="320" height="320" alt="" loading="lazy">
+        <p class="site-footer__name">Ferma Fruct Brabova</p>
+      </div>
+
+      <div class="site-footer__where">
+        <p class="site-footer__place">Brabova<span>județul Dolj, România</span></p>
+
+        <!-- DE PUS ÎN PAGINĂ CÂND FERMA TRIMITE DATELE:
+        <ul class="site-footer__contact">
+          <li><a class="site-footer__link" href="tel:+40XXXXXXXXX">+40 XXX XXX XXX</a></li>
+          <li><a class="site-footer__link" href="mailto:NUME@DOMENIU.ro">NUME@DOMENIU.ro</a></li>
+        </ul>
+        -->
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="js/gsap.min.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
