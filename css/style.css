@@ -427,6 +427,7 @@
     align-items: end;
     justify-content: space-between;
     gap: var(--space-m) var(--space-2xl);
+    padding-top: var(--space-xl);
 }
 
 .orchard__statement {
@@ -448,6 +449,8 @@
    what the section is — the four fruits, together, and nothing else. */
 .orchard__list {
     margin-block-start: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+    padding-top: var(--space-2xl);
     display: grid;
     /* Declared, not auto-fit: a known set of 4 that must stay in one row.
        auto-fit would strand one on its own line. */
@@ -780,97 +783,13 @@
 
 
 /* ---------------------------------------------------------------------------
-   8. PARTENERI — thin strip like .brief: one ground, one brown, hairline
-   dividers. Logos are recoloured to --bark (foreign brand colours don't
-   sit calm together); see .partners__logo.
-   --------------------------------------------------------------------------- */
-
-/* Same --sand as .brief: same job, same colour. Padding sets height —
-   space-2xl was too much air for this little content. */
-.partners {
-    padding: var(--space-xl) var(--gutter);
-    background: var(--sand);
-    border-block: var(--hairline) solid var(--sand-soft);
-}
-
-.partners__inner {
-    max-width: var(--container);
-    margin-inline: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-m);
-}
-
-/* Same voice as .brief__unit — display size made it compete with the
-   fruit section above. */
-.partners__label {
-    margin: 0;
-    color: rgba(73, 48, 23, 0.78);
-    font-family: var(--font-text);
-    font-size: var(--step--1);
-    font-weight: var(--weight-mid);
-    letter-spacing: var(--tracking-label);
-    text-transform: uppercase;
-    text-align: center;
-}
-
-/* No inline gap: dividers stand in for it, same as .brief__list. */
-.partners__list {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-s) 0;
-}
-
-.partners__item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-inline: clamp(1.5rem, 3.5vw, 3.5rem);
-}
-
-/* Drawn on the item, same as .brief; avoids a stray rule on wrap. */
-.partners__item + .partners__item {
-    border-inline-start: var(--hairline) solid rgba(73, 48, 23, 0.3);
-}
-
-/* currentColor on inline SVG fills/strokes — why the logos are inline
-   HTML, not linked files (a linked SVG can't be recoloured from page CSS).
-   Do NOT switch to mask-image: didn't render in Firefox.
-   Square box matches the square-ish source canvases; check viewBox before
-   replacing a file. */
-.partners__logo {
-    display: block;
-    width: clamp(2.5rem, 2rem + 2vw, 3.5rem);
-    height: clamp(2.5rem, 2rem + 2vw, 3.5rem);
-    color: var(--bark);
-    transition: color var(--duration) var(--ease);
-}
-
-/* Hover to green — brand colours are deliberately not used here. */
-.partners__item:hover .partners__logo,
-.partners__item:focus-within .partners__logo {
-    color: var(--forest);
-}
-
-/* Optical correction: 4th logo's artwork sits small in a 240 square, reads
-   undersized at the same box size as the others. Re-measure when the real
-   4th partner's file arrives. */
-.partners__item:last-child .partners__logo {
-    transform: scale(1.3);
-}
-
-
-/* ---------------------------------------------------------------------------
-   9. ÎNTREBĂRI FRECVENTE — centred title, questions as stacked plates.
-   --paper ground: sits between --sand above and green below, no third
-   band colour. Native <details>, no JS.
+   8. ÎNTREBĂRI FRECVENTE — centred title, questions as stacked plates.
+   --paper ground, the page's own: last light section before the green
+   subsol. Native <details>, no JS.
    --------------------------------------------------------------------------- */
 
 .faq {
-    padding: var(--space-section) var(--gutter);
+    padding: var(--space-m) var(--gutter);
     background: var(--paper);
 }
 
@@ -1039,7 +958,7 @@
 
 
 /* ---------------------------------------------------------------------------
-   10. SUBSOL — farm name and place. Phone/email markup parked in an
+   9. SUBSOL — farm name and place. Phone/email markup parked in an
    index.html comment until supplied.
    --------------------------------------------------------------------------- */
 
@@ -1127,6 +1046,77 @@
 
 .site-footer__link:hover {
     color: var(--action);
+}
+
+
+/* ---------------------------------------------------------------------------
+   10. PARTENERI — o linie de încheiere în subsol, nu o bandă a ei. O riglă o
+   desparte de datele fermei. Siglele ies crem prin currentColor; --knockout
+   este fundalul care se vede prin decupajele din ele și trebuie schimbat dacă
+   blocul ajunge pe alt fundal.
+   --------------------------------------------------------------------------- */
+
+.partners {
+    /* Citit din style="fill:var(--knockout)" în siglele din index.html. */
+    --knockout: var(--forest-deep);
+    --logo-size: clamp(2.25rem, 1.95rem + 1.2vw, 3rem);
+    max-width: var(--container);
+    margin-inline: auto;
+    margin-block-start: var(--space-l);
+    padding-block-start: var(--space-l);
+    border-block-start: var(--hairline) solid rgba(244, 237, 219, 0.22);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s) var(--space-l);
+}
+
+.partners__label {
+    margin: 0;
+    color: var(--on-dark-soft);
+    font-family: var(--font-text);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+/* Spațiu simplu, fără linii despărțitoare: pe verde ar fi a doua riglă
+   într-un bloc care are deja una deasupra. */
+.partners__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-s) var(--space-l);
+}
+
+.partners__item {
+    display: flex;
+    align-items: center;
+}
+
+/* currentColor pe SVG scris în pagină — de aceea siglele sunt HTML, nu
+   fișiere legate (un SVG legat nu poate fi recolorat din CSS-ul paginii).
+   NU treceți pe mask-image: nu se randa în Firefox.
+   Mai mici decât în banda de dinainte: aici sunt un detaliu de subsol, nu
+   secțiunea principală. Cutia pătrată urmează pânzele pătrate ale surselor;
+   verificați viewBox înainte de a înlocui un fișier. */
+.partners__logo {
+    display: block;
+    width: var(--logo-size);
+    height: var(--logo-size);
+    color: var(--paper);
+}
+
+/* Corecție optică: desenul siglei a patra stă mic într-un pătrat de 240 și
+   pare mai mică decât celelalte la aceeași cutie. Cutie mărită, nu scale():
+   rândul se termină la marginea din dreapta a subsolului, iar un transform ar
+   lăsa desenul să iasă câțiva pixeli peste ea. De remăsurat când sosește
+   fișierul partenerului real. */
+.partners__item:last-child .partners__logo {
+    width: calc(var(--logo-size) * 1.3);
+    height: calc(var(--logo-size) * 1.3);
 }
 
 

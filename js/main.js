@@ -341,48 +341,64 @@
         { selector: '.orchard__statement, .orchard__note', stagger: 0.1 },
         { selector: '.fruit', stagger: 0.09 },
         { selector: '.film__frame, .film__caption', stagger: 0.12 },
-        { selector: '.partners__list li', stagger: 0.06 },
         { selector: '.faq__head, .faq__item', stagger: 0.07 },
-        { selector: '.site-footer__inner > *', stagger: 0.08 }
+        /* Subsolul, inclusiv siglele: un singur grup, ordinea din pagină.
+           Ca grupuri separate, rândul cu sigle și datele fermei porneau în
+           același moment și se citeau ca două sosiri suprapuse.
+
+           atBottom: fără marginea de 15% de jos. Rândul cu sigle este ultimul
+           lucru din pagină și stă chiar în banda aceea; cu marginea pusă, nu
+           intră niciodată în zona urmărită și rămâne invizibil oricât s-ar
+           derula. Orice bloc lipit de capătul paginii are nevoie de asta. */
+        {
+            selector: '.site-footer__inner > *, .partners__label, .partners__item',
+            stagger: 0.08,
+            atBottom: true
+        }
     ];
 
-    var watcher = new IntersectionObserver(function (entries, self) {
-        entries.forEach(function (entry) {
-            if (!entry.isIntersecting) {
-                return;
-            }
+    function makeWatcher(rootMargin) {
+        return new IntersectionObserver(function (entries, self) {
+            entries.forEach(function (entry) {
+                if (!entry.isIntersecting) {
+                    return;
+                }
 
-            var el = entry.target;
-            self.unobserve(el);
+                var el = entry.target;
+                self.unobserve(el);
 
-            if (gsap) {
-                gsap.to(el, {
-                    y: 0,
-                    rotate: 0,
-                    opacity: 1,
-                    duration: 1.1,
-                    ease: 'expo.out',
-                    delay: Number(el.dataset.delay || 0),
-                    onComplete: function () {
-                        /* .is-in must land before the inline transform goes.
-                           Clearing it on its own drops the block back to
-                           .reveal's offset and tilt. */
-                        el.classList.add('is-in');
-                        gsap.set(el, { clearProps: 'transform,opacity' });
-                    }
-                });
-            } else {
-                /* No GSAP: the CSS transition on .reveal does the same move. */
-                el.classList.add('is-in');
-            }
-        });
-    }, {
-        /* 15% up from the bottom: the block has properly entered the screen
-           before it starts moving, rather than animating off the edge. */
-        rootMargin: '0px 0px -15% 0px'
-    });
+                if (gsap) {
+                    gsap.to(el, {
+                        y: 0,
+                        rotate: 0,
+                        opacity: 1,
+                        duration: 1.1,
+                        ease: 'expo.out',
+                        delay: Number(el.dataset.delay || 0),
+                        onComplete: function () {
+                            /* .is-in must land before the inline transform goes.
+                               Clearing it on its own drops the block back to
+                               .reveal's offset and tilt. */
+                            el.classList.add('is-in');
+                            gsap.set(el, { clearProps: 'transform,opacity' });
+                        }
+                    });
+                } else {
+                    /* No GSAP: the CSS transition on .reveal does the same move. */
+                    el.classList.add('is-in');
+                }
+            });
+        }, { rootMargin: rootMargin });
+    }
+
+    /* 15% up from the bottom: the block has properly entered the screen before
+       it starts moving, rather than animating off the edge. */
+    var watcher = makeWatcher('0px 0px -15% 0px');
+    var watcherAtBottom = makeWatcher('0px');
 
     groups.forEach(function (group) {
+        var observer = group.atBottom ? watcherAtBottom : watcher;
+
         Array.prototype.forEach.call(document.querySelectorAll(group.selector), function (el, i) {
             el.classList.add('reveal');
             /* Turns off the CSS transition: with GSAP writing an inline
@@ -392,7 +408,7 @@
                 el.classList.add('reveal--js');
             }
             el.dataset.delay = (i * group.stagger).toFixed(2);
-            watcher.observe(el);
+            observer.observe(el);
         });
     });
 

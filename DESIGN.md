@@ -12,11 +12,11 @@ Cream ground, photos are the colour. Green appears three times: hero wash, heade
 
 ## Section order
 
-Hero → banda cu cifre → declarație + fruits → video → parteneri → FAQ → subsol.
+Hero → banda cu cifre → declarație + fruits → video → FAQ → subsol (cu parteneri).
 
 Chosen from three wireframes in `mockups/landing-layouts.html` (client picked C, "Benzi", then swapped parteneri/cifre order). Not to be re-litigated without asking.
 
-Parteneri sits after the fruit section — proof after product, not before. FAQ sits between parteneri and subsol, last thing before the page ends; wording is provisional, remove `.faq__note` once the farm confirms real answers.
+Parteneri was a `--sand` band after the fruit section; client read it as heavily out of place there and it moved into the subsol on 2026-08-15, under a rule, as a closing fact rather than a proof band. FAQ is now the last thing before the page ends; wording is provisional, remove `.faq__note` once the farm confirms real answers.
 
 Testimoniale: deleted (was all placeholder brackets, client rejected that outright). Comes back with real quotes.
 
@@ -32,7 +32,7 @@ Grounds (lightest to deepest):
 | `--paper` | `#F6F1E1` | the page |
 | `--cream` | `#F4EDDB` | warm alternate section |
 | `--sand-soft` | `#E9E3D6` | hairlines |
-| `--sand` | `#D8CFBD` | plates (stat band, parteneri) |
+| `--sand` | `#D8CFBD` | plates (stat band) |
 
 `--paper`/`--cream` only 1.03 apart — never touch edge to edge.
 
@@ -80,11 +80,12 @@ Do not reintroduce `salvage/salvage.css` fonts (Bricolage Grotesque, DM Mono, Ca
 
 - `.film__frame` — height not aspect-ratio (Chrome shrinks width if both are set). Excluded from the reveal tilt (rotated video reads as crooked).
 - `.site-header__inner` — `1fr auto 1fr`, not space-between (unequal end widths push the nav off centre).
-- `.partners__logo` — all four SVGs are inlined in `index.html` with `fill`/`stroke` changed to `currentColor`, so `.partners__logo`'s `color` recolours them and hover flips them to `--forest`. A linked SVG can't be recoloured from CSS, which is why they're inline. Whatever was white inside a mark carries `style="fill:var(--sand)"` so it stays knocked out.
+- `.partners` — a row inside `.site-footer`, not a section: label at the start, four logos at the end, one hairline above it. No dividers between logos and no hover state — they are not links, and a hover to `--forest` would have been invisible on green anyway.
+- `.partners__logo` — all four SVGs are inlined in `index.html` with `fill`/`stroke` changed to `currentColor`, so `.partners__logo`'s `color` recolours them, all four in `--paper` on the green. A linked SVG can't be recoloured from CSS, which is why they're inline. Whatever was white inside a mark carries `style="fill:var(--knockout)"`; `--knockout` is declared on `.partners` as the ground beneath it, so a move to another background is one line, not seven inline edits.
   - Markup is `<svg role="img" aria-label="...">`, not `<img>` — keep the label or the partner is unnamed to a screen reader.
   - Do not switch back to `mask-image` + `--logo-src`: that version didn't render in Firefox.
   - Check any edit to these four blocks in Firefox, not only Chrome — a malformed self-closing tag (`/ style="..."` instead of `style="..."/`) rendered fine in Chrome but swallowed its siblings in Firefox, leaving one logo an empty ring.
-  - All four source files are square-ish canvases with inset artwork — check `viewBox` before swapping one. Fourth logo carries `transform: scale(1.3)`, an optical correction for its small artwork; re-measure when the real 4th partner's file arrives.
+  - All four source files are square-ish canvases with inset artwork — check `viewBox` before swapping one. Fourth logo is `calc(var(--logo-size) * 1.3)`, an optical correction for its small artwork — a box, not `transform: scale()`, because the row ends flush with the subsol's right edge and a transform let the artwork hang past it. Re-measure when the real 4th partner's file arrives.
   - Big Family Market's wordmark is set in `<text>` with Arial (from the supplied artwork) — renders slightly differently without Arial installed. `overused-font=arial` is suppressed in `.impeccable/config.json` for this reason; it's a vendor logo, not a site typeface.
 - `.faq` — native `<details>`, no JS. Rows are the only place `--sand-soft` is a surface, not a hairline; flat, no border, no hover/open colour change (both were tried, read as damage). Answer hangs off the same green-upright device as the fruit months; bottom padding lives on `.faq__body`, not `.faq__a`, so the rule doesn't run into empty space on a closed row.
 
@@ -100,12 +101,13 @@ Can't judge in a headless/hidden Chrome tab — rendering throttles there and In
 
 `.reveal` is added only by JS, never in HTML — script-less page shows everything. Two traps already sprung: GSAP must add `.is-in` before clearing its inline transform (order matters, or it snaps back to the offset). `.reveal--js` turns off the CSS transition while GSAP owns the frame — without it the two fight.
 
-## Four bugs already fixed — don't reintroduce
+## Five bugs already fixed — don't reintroduce
 
 1. `preload="none"` + `autoplay` together silently does nothing in several browsers. Both videos use `preload="metadata"`. Neither ever gets `controls`.
 2. `min-height: 100svh` on the hero without subtracting padding (content-box adds it on top) — the two padding values in `.hero` must stay in step.
 3. Hero timeline started in a background tab freezes mid-fade — now waits for `visibilitychange`.
 4. Source video was letterboxed (1920x1248 containing a 1920x1080 picture). Cropped with `ffmpeg -vf crop=1920:1080:0:72`. Check new footage with `cropdetect` first.
+5. The reveal observer's `rootMargin: '0px 0px -15% 0px'` means anything sitting in the bottom 15% of the last screenful never intersects and stays at opacity 0 forever — first hit when parteneri moved to the end of the subsol. Groups flagged `atBottom: true` in `main.js` get a second observer with no bottom inset. Any block added at the very end of the page needs that flag.
 
 ## Viewing it
 
