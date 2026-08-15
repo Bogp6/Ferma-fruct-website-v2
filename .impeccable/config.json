@@ -32,7 +32,7 @@
         "rule": "overused-font",
         "value": "arial",
         "createdAt": "2026-08-15T11:27:42.974Z",
-        "reason": "Agent: Arial is inside the Big Family Market logo's own <style> block, supplied vendor artwork inlined as SVG. Not a site typeface; the site's faces are Fraunces and Chivo."
+        "reason": "partner logo SVG (Big Family Market) reproduces the real brand mark's typeface, not site typography"
       }
     ]
   }
