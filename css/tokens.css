@@ -1,23 +1,9 @@
-/* ============================================================================
-   TOKENS — Ferma Fruct Brabova
-   Every value the site is allowed to use. Nothing here is page-specific.
+/* TOKENS — Ferma Fruct Brabova. Five creams + one green, client-supplied hex,
+   not logo-sampled. Page is green; the four fruits are not four palettes,
+   their colour is in the photo. Orange is the one action colour. */
 
-   The palette is sampled pixel by pixel from the farm's round logo: the leaf
-   green of the tree, the forest green of the fields, the cream of the hall,
-   the orange of the fruit. Nothing is invented and nothing is darkened for
-   effect. The old near-black green ground is gone; the page now sits on the
-   logo's own two greens, which are lighter and warmer.
-
-   One rule holds the colour together: the page is green. The four fruits are
-   NOT four palettes; their colour arrives in their own photograph. Orange is
-   the single action colour and appears only on things you can click.
-   ============================================================================ */
-
-/* Fraunces, variable. Four axes ride in one file: opsz (optical size), wght,
-   SOFT (rounding of the terminals) and WONK (the alternate swashy forms that
-   only make sense large). Split latin / latin-ext by unicode-range so the
-   Romanian ș, ț, ă, î, â load from the second file and nobody else pays for
-   them. */
+/* Fraunces variable: opsz, wght, SOFT, WONK in one file. Split
+   latin/latin-ext so Romanian diacritics don't cost everyone. */
 @font-face {
     font-family: 'Fraunces';
     src: url('../fonts/fraunces-var-latin.woff2') format('woff2');
@@ -73,85 +59,69 @@
     --weight-mid: 600;
     --weight-heavy: 900;
 
-    /* Display weight and axes. WONK 1 turns on the alternate letterforms; they
-       are drawn for large sizes and turn to mush under about 1.5rem, which is
-       why --axes-label below switches them off. opsz 144 is the display
-       optical size: thinner hairlines, sharper joins. */
+    /* WONK 1 = alternate letterforms, mush under ~1.5rem — --axes-label
+       below turns it off. opsz 144 = display optical size. */
     --weight-display: 800;
     --axes-display: 'opsz' 144, 'SOFT' 0, 'WONK' 1;
     --axes-label: 'opsz' 24, 'SOFT' 0, 'WONK' 0;
 
     /* --- Colour --------------------------------------------------------- */
 
-    /* Grounds. All five creams the client chose, lightest to deepest. There is
-       no white anywhere on this site, and no near-white either: --paper-lift is
-       the closest thing to one and it is only ever a small raised surface, not
-       a page.
-         --paper-lift #FAF9EF  raised cards sitting on the page
-         --paper      #F6F1E1  THE PAGE
-         --cream      #F4EDDB  the warm alternate section
-         --sand-soft  #E9E3D6  hairlines and edges
-         --sand       #D8CFBD  plates: the stat band, the partners band
-       --paper and --cream are only 1.03 apart, so they never touch each other
-       edge to edge; they are the page and a band far down it. */
+    /* Grounds, lightest to deepest. No white on this site — --paper-lift is
+       the closest thing to one, small raised surfaces only.
+         --paper-lift  raised cards
+         --paper       THE PAGE
+         --cream       warm alternate section
+         --sand-soft   hairlines/edges
+         --sand        plates (stat band, partners band)
+       --paper/--cream only 1.03 apart: never touch edge to edge. */
     --paper-lift: #FAF9EF;
     --paper: #F6F1E1;
     --cream: #F4EDDB;
     --sand-soft: #E9E3D6;
     --sand: #D8CFBD;
 
-    /* ONE green, the client's. It is the footer, the header fill once the hero
-       has gone, and every green accent. There is deliberately no dark variant:
-       the darker greens that used to live here were the thing that read wrong
-       against cream. --forest and --forest-deep are the same hex on purpose, so
-       nothing has to be renamed to keep one green on the page.
-
-       It is 4.08 against --paper-lift, so cream text on it is under the 4.5
-       floor. That is accepted: the client chose this green knowing it. Never
-       put small light text on it — the footer's fine print takes --sand, on the
-       cream side of a band, not on the green. */
+    /* ONE green: footer, header fill, accents. No dark variant on purpose.
+       Same hex on all three tokens.
+       4.08 on --paper-lift, under the 4.5 floor — accepted by the client.
+       Never put small light text on it. */
     --forest: #698240;
     --forest-deep: #698240;
     --leaf: #698240;
     /* Decoration only: rules, icon fills, never text. */
     --leaf-bright: #8EAE5B;
 
-    /* Text is brown, not green. --bark carries everything on every cream:
-       10.8 on the page, 7.9 on --sand. --bark-deep is the one place it has to
-       go darker, on the orange action colour, where --bark alone is 4.09.  */
+    /* Brown, not green. --bark: 10.8 on --paper, 7.9 on --sand.
+       --bark-deep only for --action, where --bark alone is 4.09. */
     --bark: #493017;
     --bark-soft: #6E4F30;
     --bark-deep: #3A2611;
 
-    /* Sky from the logo. An accent on small things only. It is NOT a band
-       ground: a pale blue field under a green page reads as a different site. */
+    /* Accent only, never a band ground — pale blue under a green page reads
+       as a different site. */
     --sky: #AECBE1;
 
     /* The dirt track. Rules, hairlines, ticket edges. */
     --earth: #C3A278;
 
-    /* The orange of the fruit in the logo. The ONLY action colour on the
-       site: if it is orange, you can click it. --action-ink is the darkened
-       version, used when orange has to be text on a light ground. */
+    /* The one action colour: orange means clickable. --action-ink is the
+       darkened version for text on a light ground. */
     --action: #E87614;
     --action-hot: #C85E08;
-    /* Deep enough that white text on it reaches 5.8 to 1. The button's hover
-       fill, and the only orange white type is ever allowed to sit on. */
+    /* White text reaches 5.8:1 on this — the only orange white type may sit
+       on. Button hover fill. */
     --action-deep: #A8490A;
     --action-ink: #A54D07;
 
-    /* Text. Brown throughout: there is no dark green type left on this site.
-       --ink is 10.8 on the page, --ink-soft 6.58. The on-dark pair sits on the
-       green and takes the lightest two creams. */
+    /* --ink 10.8 on the page, --ink-soft 6.58 — no dark green type left.
+       on-dark pair takes the lightest two creams over green. */
     --ink: #493017;
     --ink-soft: #6E4F30;
     --on-dark: #FAF9EF;
     --on-dark-soft: #F4EDDB;
 
-    /* --- Type scale ------------------------------------------------------
-       Fluid: every step grows with the window, none of them are fixed pixels.
-       --step-5 is capped at 6rem; past that a fruit name stops being a word
-       and starts being wallpaper. */
+    /* --- Type scale — fluid, capped at 6rem (--step-5): past that a fruit
+       name reads as wallpaper. --- */
 
     --step--1: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
     --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
@@ -171,9 +141,7 @@
     /* Longest a paragraph is allowed to get before it is hard to read. */
     --measure: 66ch;
 
-    /* --- Space -----------------------------------------------------------
-       Also fluid. --space-section is the gap between two sections of the
-       page; changing it changes the rhythm of the whole site. */
+    /* --- Space — fluid. --space-section sets the whole site's rhythm. --- */
 
     --space-3xs: clamp(0.25rem, 0.23rem + 0.11vw, 0.3125rem);
     --space-2xs: clamp(0.5rem, 0.46rem + 0.22vw, 0.625rem);
@@ -185,8 +153,8 @@
     --space-2xl: clamp(4rem, 3.48rem + 2.61vw, 5.5rem);
     --space-section: clamp(4.5rem, 3.2rem + 6.5vw, 8.5rem);
 
-    /* Page side padding. Sits on the outer element only, never together with
-       a max-width on the same element: box-sizing is content-box here. */
+    /* Outer element only, never with max-width on the same element —
+       content-box. */
     --gutter: clamp(1.25rem, 0.6rem + 3.25vw, 3.5rem);
 
     --container: 78rem;
@@ -199,30 +167,29 @@
 
     --radius-s: 3px;
     --radius-m: 6px;
-    /* Photographs and the video frame. Generous, so the pictures read as
-       objects laid on the page rather than as holes cut in it. */
+    /* Generous, so photos read as objects laid on the page, not holes cut
+       in it. */
     --radius-l: 14px;
     --radius-xl: 22px;
     --radius-pill: 999px;
 
-    /* Offset plus blur, always. A blur with no offset is a halo, not a
-       shadow, and reads as decoration. */
+    /* Always offset + blur — blur alone is a halo, reads as decoration not
+       shadow. */
     --shadow-lift: 0 2px 6px rgba(33, 48, 26, 0.10),
         0 12px 28px rgba(33, 48, 26, 0.12);
     --shadow-raise: 0 4px 10px rgba(33, 48, 26, 0.14),
         0 20px 44px rgba(33, 48, 26, 0.18);
     --shadow-press: 0 1px 3px rgba(33, 48, 26, 0.16);
 
-    /* On the dark bands the paper shadows vanish. These are the same two-layer
-       shape mixed far darker so a photo still sits above the green. */
+    /* Paper shadows vanish on dark bands — same two-layer shape, mixed
+       darker. */
     --shadow-deep: 0 4px 10px rgba(0, 0, 0, 0.24),
         0 22px 46px rgba(0, 0, 0, 0.28);
     --shadow-deep-raise: 0 10px 20px rgba(0, 0, 0, 0.28),
         0 34px 64px rgba(0, 0, 0, 0.34);
 
-    /* --- Motion ----------------------------------------------------------
-       --ease-out is exponential: fast away from the start, long settle. It is
-       what makes a reveal look released rather than driven. */
+    /* --- Motion — --ease-out is exponential: fast start, long settle,
+       reads as released not driven. --- */
     --duration-fast: 140ms;
     --duration: 320ms;
     --duration-slow: 720ms;

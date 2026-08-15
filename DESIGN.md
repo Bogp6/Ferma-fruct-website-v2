@@ -1,355 +1,133 @@
 # Design — Ferma Fruct Brabova
 
-Written from the built page, not from a plan. If the code and this file
-disagree, the code is right and this file is out of date.
+Written from the built page, not a plan. Code wins if they disagree.
 
-Scope right now: **`index.html` only.** The client asked for the landing page to
-be finished before any other page is started.
+Scope: `index.html` only.
 
-## The idea
+## Idea
 
-**The page runs light and the photographs are the colour.** The ground is a
-warm cream and green appears three times only: the wash over the hero film, the
-header's fill once the hero has gone, and the subsol. On any given screen the
-loudest thing is a fruit.
+Cream ground, photos are the colour. Green appears three times: hero wash, header fill after scroll, subsol. Four fruits run in calendar order (cireșe, caise, prune, pere) — not to be re-sorted without checking PRODUCT.md, which says this farm's actual harvest windows differ from the placeholder ones now on the page (see Still open).
 
-This replaced a white page with a cool dark green on it, at the client's
-direction, on 2026-08-15. He supplied both the creams and the green.
+`.ticket` component (label/hole/perforation) is gone, not recoverable — rebuild from scratch if wanted back.
 
-The four fruits run **four across, in the order they are picked**, each one
-dropped half a step from its neighbour so the row is a hand of cards rather than
-a shelf. Under every name are the weeks it is picked, hung off a green upright.
-**The order on the page is the calendar** — cireșe, caise, prune, pere — and it
-is not to be re-sorted.
+## Section order
 
-The band under the hero laps over the foot of the film by half its own height.
-It is the one place the page overlaps itself, and it is what stops the hero and
-the section below it reading as two unrelated screens. A haze in the page's own
-cream carries the last 16% of the film down into it so the two never meet at a
-cut edge.
+Hero → banda cu cifre → declarație + fruits → video → parteneri → FAQ → subsol.
 
-What it deliberately is not: no thin elegant serif, no muted sage, no photo with
-a whispered headline over it. **The cream ground is now the brief, not a thing to
-avoid** — an earlier version of this file warned against it and that warning is
-void.
+Chosen from three wireframes in `mockups/landing-layouts.html` (client picked C, "Benzi", then swapped parteneri/cifre order). Not to be re-litigated without asking.
 
-### The market-ticket object is gone
+Parteneri sits after the fruit section — proof after product, not before. FAQ sits between parteneri and subsol, last thing before the page ends; wording is provisional, remove `.faq__note` once the farm confirms real answers.
 
-The earlier build was built around a `.ticket` component — label, punched hole,
-perforation. Every ticket on the page held a fact the farm had not supplied, so
-when the placeholders were removed the tickets went with them. **It is not
-recoverable — this project is not under version control.** If that treatment is
-wanted back it has to be rebuilt from scratch.
-
-## How the arrangement was chosen
-
-Three arrangements were drawn as grey wireframes in
-`mockups/landing-layouts.html` and the client picked **C (Benzi)**, then asked
-for **parteneri and cifre to swap places**. The order below is that decision and
-is not to be re-litigated without asking.
-
-Hero → banda cu cifre → declarație și cele patru fructe → video → parteneri →
-subsol.
-
-**`.figures` no longer exists as a section.** Its three counted numbers moved
-into the band under the hero on 2026-08-15 and the white section they sat in was
-deleted. The band is the only place the numbers appear.
-
-Parteneri moved to the end: the logos are proof, and proof lands after you have
-seen the fruit, not before. The declarație no longer has a band of its own; it
-opens the cream section that the four fruits sit in.
-
-Testimoniale and întrebări frecvente are still **deleted**, not hidden: every
-line in both was a square-bracket placeholder and the client rejected
-placeholders outright for those two. They come back, in their old position, the
-day the farm supplies real quotes and real answers.
-
-Cifre is a reversal of that same call: the client asked for it back with the
-numbers filled in as obvious, round placeholders — 12 hectares, 8 years, 40
-tonnes — said plainly on the page in a note under the row, rather than left
-deleted until the real figures arrive. Replace all three numbers and delete the
-note in the same edit once the farm answers.
-
-`mockups/` is a working folder. Delete it when it stops being useful.
+Testimoniale: deleted (was all placeholder brackets, client rejected that outright). Comes back with real quotes.
 
 ## Colour
 
-**Chosen by the client, not sampled off the logo.** The five creams and the one
-green were supplied as hex codes on 2026-08-15. The logo-sampled palette this
-file used to describe is gone.
+Client-supplied hex, not sampled from the logo.
 
-### The grounds — all five creams, lightest to deepest
+Grounds (lightest to deepest):
 
-| Token | Value | What it is |
+| Token | Hex | Use |
 |---|---|---|
-| `--paper-lift` | `#FAF9EF` | Raised cards sitting on the page. |
-| `--paper` | `#F6F1E1` | **The page.** |
-| `--cream` | `#F4EDDB` | Text on the green. |
-| `--sand-soft` | `#E9E3D6` | Hairlines and edges. |
-| `--sand` | `#D8CFBD` | Plates: the band under the hero, and parteneri. |
+| `--paper-lift` | `#FAF9EF` | raised cards |
+| `--paper` | `#F6F1E1` | the page |
+| `--cream` | `#F4EDDB` | warm alternate section |
+| `--sand-soft` | `#E9E3D6` | hairlines |
+| `--sand` | `#D8CFBD` | plates (stat band, parteneri) |
 
-`--paper` and `--cream` are 1.03 apart, so they must never touch edge to edge.
-They are the page and a colour used far down it.
+`--paper`/`--cream` only 1.03 apart — never touch edge to edge.
 
-### The green — one, and only one
+Green: one hex `#698240`, three token names (`--forest`/`--forest-deep`/`--leaf`), no dark variant.
 
-| Token | Value | What it is |
+Text is brown: `--ink`/`--bark` `#493017`, `--ink-soft`/`--bark-soft` `#6E4F30`, `--bark-deep` `#3A2611` (only on `--action`). `--action` `#E87614` is the one clickable colour. `--sky` is accent only, never a band ground. No white token anywhere on the site.
+
+Four contrast pairs fail and are signed off by the client — don't "fix" without asking:
+
+| Pair | Ratio | Where |
 |---|---|---|
-| `--forest` / `--forest-deep` / `--leaf` | `#698240` | Subsol, header fill, hero wash, display headings. |
-| `--leaf-bright` | `#8EAE5B` | Decoration only. Never text. |
+| `#698240` on `#F6F1E1` | 3.8 | Display headings, large size only |
+| `#F4EDDB` on `#698240` | 3.7 | Subsol secondary text |
+| `#F6F1E1` on `#698240` | 3.8 | Nav links, filled header |
+| `#FAF9EF` on `#E87614` | 2.8 | Button mid-hover — still worth fixing |
 
-The three names are **the same hex on purpose** so that one green could be put
-across the page without renaming anything. Do not reintroduce a darker variant:
-the darker greens were exactly what the client rejected.
-
-### Text is brown, not green
-
-| Token | Value | What it is |
-|---|---|---|
-| `--ink` / `--bark` | `#493017` | Everything read, on every cream. |
-| `--ink-soft` / `--bark-soft` | `#6E4F30` | Secondary text and the harvest months. |
-| `--bark-deep` | `#3A2611` | Only on `--action`, where `--bark` is 4.09. |
-| `--action` | `#E87614` | The orange fruit in the logo. |
-| `--sky` | `#AECBE1` | Accent on small things. **Never a band ground.** |
-| `--earth` | `#C3A278` | Hairlines only. |
-
-**There is no white on this site.** `--white` does not exist as a token and
-nothing references one. A white surface among these creams reads as a hole.
-
-**Rules that still hold.** The four fruits are not four palettes — their colour
-arrives inside their own photograph. Orange means clickable. No pale blue field.
-
-**Contrast, measured.** `--ink` on `--paper` 10.8, on `--sand` 7.9.
-`--ink-soft` on `--paper` 6.58. `--bark-deep` on `--action` 4.8.
-
-**Four knowingly-failing pairs, signed off by the client.** All four are the
-price of `#698240`, and none is to be "fixed" without asking him:
-
-| Pair | Measured | Where |
-|---|---|---|
-| `#698240` on `#F6F1E1` | 3.8 | Display headings. Passes at large size, which is the only place it appears. |
-| `#F4EDDB` on `#698240` | 3.7 | Subsol secondary text. |
-| `#F6F1E1` on `#698240` | 3.8 | Nav links over the filled header. |
-| `#FAF9EF` on `#E87614` | 2.8 | The contact button mid-hover. **Predates the palette change and is still worth fixing.** |
-
-The cream page ground and Fraunces are recorded as accepted in
-`.impeccable/config.json`, so the detector no longer reports them. The contrast
-pairs above are **deliberately not** suppressed.
+Cream ground + Fraunces are accepted exceptions in `.impeccable/config.json`. The pairs above are not suppressed.
 
 ## Type
 
-Both faces are self-hosted in `fonts/`.
+Self-hosted in `fonts/`. Fraunces (variable, opsz/wght/SOFT/WONK, split latin/latin-ext for Romanian diacritics) — display cut is weight 800 at opsz 144 WONK 1; anything under ~1.5rem uses `--axes-label` (opsz 24, WONK 0) or it turns to mush. Chivo — 400 body, 600 labels, 900 button.
 
-- **Fraunces**, variable, split latin / latin-ext by `unicode-range` so the
-  Romanian ș, ț, ă, î, â come from the second file. Four axes travel in the one
-  file: `opsz`, `wght`, `SOFT` and `WONK`. The display cut is weight **800** at
-  `opsz 144, SOFT 0, WONK 1` — WONK turns on the alternate letterforms, which
-  are drawn for large sizes. Anything under about 1.5rem (the wordmark, the
-  county line) uses `--axes-label`, `opsz 24, WONK 0`, or the forms turn to
-  mush.
-- **Chivo** — everything read. 400 body, 600 small tracked uppercase labels,
-  900 button.
+Alfa Slab One: unused, file still in `fonts/`, delete at launch.
 
-**Alfa Slab One is gone.** The client called it horrendous. The file is still in
-`fonts/` but nothing references it; delete it at launch.
+Scale is fluid `clamp()`, `--step--1` to `--step-5`, capped at 6rem. Hero title uses `--step-4` not `--step-5` (step-5 wraps to 3 lines, pushes the button off screen).
 
-**Impeccable's detector flags Fraunces as an overused face** and it is right
-about plain Fraunces. What is on this page is weight 800 at display optical size
-with WONK on, which is a different animal from the Fraunces regular that ships on
-every AI landing page. If it ever starts to look generic, that warning is the
-reason and the swap is one line in `tokens.css`.
+Do not reintroduce `salvage/salvage.css` fonts (Bricolage Grotesque, DM Mono, Caveat Brush) — previous project.
 
-Sizes are a fluid `clamp()` scale, `--step--1` to `--step-5`, capped at 6rem.
-The hero title deliberately uses `--step-4`, not `--step-5`: at the largest step
-it runs to three lines and pushes the button off the first screen.
+## Components — gotchas not obvious from the CSS
 
-**Do not reintroduce the fonts in `salvage/salvage.css`** (Bricolage Grotesque,
-DM Mono, Caveat Brush). They belong to the previous project.
+- `.brief` — negative margin is half its own height; change the padding, the overlap moves with it. Number/unit sit side by side on purpose (stacking makes it tall). Shadow is load-bearing (`--sand` is only 1.46 against `--paper`).
+- `.fruit` — four large photographic plates, two across, in picking order. Rebuilt 2026-08-15 from a reference the client sent (webflow-path-two.webflow.io). The plate is dark and desaturated at rest and comes up to full colour under the pointer, with a ring that trails the cursor and says "Vezi".
+  - `--wash` `#1F150B` is declared on `.fruit`, not in `tokens.css`. It is the only dark colour on the site and it exists only inside this card. The `rgba(31, 21, 11, …)` in `.fruit__frame::after` is the same colour written out and must move with it.
+  - Two layers over the photo. `::before` is the wash that lifts on hover, `0.68` to `0.14`; `::after` is a permanent bottom scrim so the name survives once the wash has gone. Both carry an explicit `z-index`: they are siblings of the ring and the caption, and DOM order alone would paint `::after` over both.
+  - The wash on its own was not enough — a bright photo (caise) stayed lively under it while a dark one (prune) went flat, so the four woke up at four different rates. `filter: saturate()` on the photo is what evens them.
+  - The ring sits at the centre of the plate and is moved from there by `--rx` / `--ry`, which `main.js` writes as **offsets in pixels from that centre**, not absolute coordinates. That is what makes the no-script and keyboard-focus resting position the middle of the card. The trailing lag is the 620ms transform transition, not a rAF loop; pointermove only writes two custom properties.
+  - Touch pointers are skipped in the JS: on a phone `pointermove` fires once on tap and would park the ring off centre with no hover to correct it.
+  - The click ring is an animation on `.fruit__ring::after`, started by `.is-pressed` on pointerdown and removed on `animationend` — removing the class is what lets a second click replay it. `animationend` from a pseudo-element reports against its own element, which is why the listener is on the ring.
+  - Grid is `repeat(2, minmax(0, 1fr))`, declared not auto-fit: auto-fit drops a known set of 4 to 3 columns at this container width and strands one.
+  - The note sits **under** the plate on paper, not on the photograph. Over an image this size the wash would have to stay dark to keep small text legible, and staying dark is the one thing the card must not do on hover.
+  - Photos re-exported 2026-08-15 as 4:3 centre crops at card width (`*-w640/-w1086/-w1180.webp`). **Cireșe is the exception:** its only source is 640px wide, so that card has no 2x file and will be soft on a retina screen. A bigger cireșe photo is owed by the farm. The old `*-280/-560.webp` files are now unused.
+  - Every card links to `fructe.html`, **which does not exist**. Client chose to point at the future page. Build it or blank the hrefs before launch.
 
-## Components
-
-- **`.brief`** — the band under the hero, in `--sand`, carrying the three
-  counted numbers. Pulled up by half its own height with a negative margin, so
-  **changing its vertical padding changes the overlap and both values move
-  together.** It is a wide, thin strip: number and unit sit side by side on one
-  baseline, because stacking them is what makes it tall, and the client is
-  explicit that widening it must never raise it. Text is `--bark`. `--sand` is
-  only 1.46 against `--paper`, so **the `box-shadow` is load-bearing** — it is
-  the only thing holding the plate off the page on the half that is not over the
-  film.
-- **`.fruit`** — photograph, name, harvest months, one line of note. Four in a
-  grid, every second one dropped by `--space-xl`. The months hang off a
-  `border-inline-start` in `--leaf` with `padding-block` on the same element:
-  without that padding the rule is one line's cap height and reads as a speck.
-  The month text is `--ink-soft`. It used to be a dark green; there is no dark
-  green type left on this site.
-- **`.btn`** — a soft pill in sentence case. It was a square-cut block in heavy
-  tracked capitals and read as a warning notice on a page about fruit. Dark ink
-  on `--action` at rest; on hover the fill sweeps in and the label goes to
-  `--bark-deep`, which is 4.8 on orange where plain `--bark` is 4.09.
-- **The count** — lives on `.brief__number` now. It runs when the band arrives
-  and **resets to zero when the band leaves**, so it replays every time you come
-  back to it. Each number holds a handle on both its stagger timer and its frame
-  request, because a reset mid-count has to cancel both or an old count keeps
-  writing digits over the new one. The finished value is written immediately,
-  with no count and no reset, for `prefers-reduced-motion` and for a browser
-  with no `IntersectionObserver`, so a number is never stuck at zero.
-- **`.film__frame`** — the video set into the page with a margin all round,
-  `height: clamp(15rem, 34vw, 27rem)`, rounded, with the video cropped into it.
-  **Do not give it an `aspect-ratio` plus a `max-height`:** Chrome runs the
-  ratio the other way and shrinks the frame's width. It is also the one thing
-  excluded from the reveal's tilt — a rotated block of moving film reads as
-  crooked, not as an arrival.
-- **`.site-header__inner`** — `grid-template-columns: 1fr auto 1fr`, not
-  `space-between`. With space-between the nav centres between the wordmark and
-  the language switch, which are different widths, so it sits off the middle of
-  the page.
-- **`.partners`** — one centred column, label over logos, one gap value in both
-  directions. Grey until hover. Its ground is `--sand`, **the same cream as
-  `.brief`**: two bands doing the same job in two different creams is a thing
-  the client rejected by name.
+- `.film__frame` — height not aspect-ratio (Chrome shrinks width if both are set). Excluded from the reveal tilt (rotated video reads as crooked).
+- `.site-header__inner` — `1fr auto 1fr`, not space-between (unequal end widths push the nav off centre).
+- `.partners__logo` — all four SVGs are inlined in `index.html` with `fill`/`stroke` changed to `currentColor`, so `.partners__logo`'s `color` recolours them and hover flips them to `--forest`. A linked SVG can't be recoloured from CSS, which is why they're inline. Whatever was white inside a mark carries `style="fill:var(--sand)"` so it stays knocked out.
+  - Markup is `<svg role="img" aria-label="...">`, not `<img>` — keep the label or the partner is unnamed to a screen reader.
+  - Do not switch back to `mask-image` + `--logo-src`: that version didn't render in Firefox.
+  - Check any edit to these four blocks in Firefox, not only Chrome — a malformed self-closing tag (`/ style="..."` instead of `style="..."/`) rendered fine in Chrome but swallowed its siblings in Firefox, leaving one logo an empty ring.
+  - All four source files are square-ish canvases with inset artwork — check `viewBox` before swapping one. Fourth logo carries `transform: scale(1.3)`, an optical correction for its small artwork; re-measure when the real 4th partner's file arrives.
+  - Big Family Market's wordmark is set in `<text>` with Arial (from the supplied artwork) — renders slightly differently without Arial installed. `overused-font=arial` is suppressed in `.impeccable/config.json` for this reason; it's a vendor logo, not a site typeface.
+- `.faq` — native `<details>`, no JS. Rows are the only place `--sand-soft` is a surface, not a hairline; flat, no border, no hover/open colour change (both were tried, read as damage). Answer hangs off the same green-upright device as the fruit months; bottom padding lives on `.faq__body`, not `.faq__a`, so the rule doesn't run into empty space on a closed row.
 
 ## Motion
 
-One idea used everywhere: **a card laid on a table.** It arrives from slightly
-below, tilted a hair, and settles flat. Nothing fades in place, nothing slides
-in from the side.
+One idea: a card laid on a table — arrives low, tilted, settles flat. Video frame is the one exception (no tilt). The fruit plates keep the tilt — they are literally cards. Their hover behaviour is separate from the arrival and is described under `.fruit`.
 
-GSAP core (`js/gsap.min.js`, no ScrollTrigger) runs the hero as one timeline
-with overlapping starts. Scroll arrivals are IntersectionObserver plus a GSAP
-tween, one stagger group per section so nothing is held back by a count running
-the whole page. The video frame is the single exception to the tilt.
+GSAP core runs the hero as one timeline. Scroll arrivals are IntersectionObserver + GSAP tween, one stagger group per section. Header fill is the one exception to IntersectionObserver: reads `scrollY` in `requestAnimationFrame`, publishes `--p` (0 to 1) that both header and hero read in CSS.
 
-The header ground is the one exception to IntersectionObserver: it reads
-`window.scrollY` directly, inside `requestAnimationFrame`, and publishes a
-single `--p` custom property (0 at the top of the page, 1 once the hero has
-fully scrolled past) that both the header's fill and the hero's own words are
-written against in CSS, so the two always agree. Everything else on the page
-is a state change with a trigger; this is a quantity tracking the scroll
-thumb, which is the one place that justifies reading it every frame.
+`.film__video` plays only on-screen, tab visible, reduced-motion off, synced live. `.brief` numbers count on arrival, reset on leaving, with reduced-motion and no-IntersectionObserver fallbacks (never stuck at zero).
 
-The second video (`.film__video`, in the film band) plays only while it is on
-screen, the tab is visible, and `prefers-reduced-motion` is not set, synced
-live so a mid-session setting change takes effect immediately. The three
-numbers in `.brief` count up on arrival and reset on leaving, on the same kind
-of watcher as the reveal system, with their own reduced-motion and
-no-`IntersectionObserver` fallbacks so a number is never left stuck at zero.
+Can't judge in a headless/hidden Chrome tab — rendering throttles there and IntersectionObserver never fires. Judge in a real window.
 
-**Watching it in an automated Chrome tab does not work.** A hidden tab throttles
-the rendering pipeline, and IntersectionObserver callbacks ride on it: the
-header's green ground and every scroll reveal simply never fire, and a
-screenshot forces one frame and catches the transition half done. Nothing is
-broken. Judge the motion in a real window.
+`.reveal` is added only by JS, never in HTML — script-less page shows everything. Two traps already sprung: GSAP must add `.is-in` before clearing its inline transform (order matters, or it snaps back to the offset). `.reveal--js` turns off the CSS transition while GSAP owns the frame — without it the two fight.
 
-`.reveal` is only ever added by JavaScript, never written into the HTML: with
-the script removed nothing is hidden. An early build put the reveal on every
-section, which left real content at opacity 0 waiting on an observer.
+## Four bugs already fixed — don't reintroduce
 
-**Two traps in the reveal, both already sprung.** The GSAP tween must add
-`.is-in` *before* it clears its inline transform — clearing it alone drops the
-block straight back to `.reveal`'s 28px offset and tilt, which looked like every
-element on the page falling the instant it arrived. And `.reveal` carries a CSS
-`transition` on `transform` and `opacity`, which fights GSAP writing an inline
-transform every frame; `.reveal--js`, added only when GSAP is present, turns that
-transition off. Remove either and the whole page misbehaves at once.
-
-## Four bugs already fixed here — do not reintroduce
-
-1. **`preload="none"` with `autoplay`.** Tells the browser never to fetch the
-   file and also to play it; several browsers resolve that by doing nothing,
-   silently. Both videos use `preload="metadata"`. **Neither video ever grows
-   `controls`** — they are wallpaper, not something to watch. `main.js` used to
-   add controls on a rejected `play()`, and the film band triggered that against
-   itself: the autoplay loop called `play()`, then the on-screen watcher called
-   `pause()` a moment later, and pausing a video with a `play()` promise in
-   flight rejects it. The loop now skips `.film__video` entirely, because the
-   watcher owns when that one runs.
-2. **`min-height: 100svh` on the hero.** `box-sizing` is `content-box` by house
-   rule, so `min-height` measures the content box and the padding is added on
-   top: the hero came out a whole screen *plus* its padding and pushed the
-   scroll cue past the fold. The padding is subtracted in the same tokens and
-   **the two lines must be kept in step.**
-3. **Hero timeline in a background tab.** Animation frames are suspended there,
-   so a timeline begun in a hidden tab freezes part-way and the visitor arrives
-   at a half-faded hero. It now waits for `visibilitychange`.
-4. **Letterboxed source video.** `orchard-hero.mp4` and `orchard-band.mp4` were
-   1920x1248 files containing a 1920x1080 picture with 72px of black above and
-   96px below, baked in. The strip showed both bands. `ffmpeg -vf
-   crop=1920:1080:0:72` produced `orchard-hero-1080.mp4` and
-   `orchard-band-1080.mp4`, which is what the page loads; the posters were
-   re-cut from the cropped files. **Check any new footage with
-   `ffmpeg -vf cropdetect` before wiring it up.**
+1. `preload="none"` + `autoplay` together silently does nothing in several browsers. Both videos use `preload="metadata"`. Neither ever gets `controls`.
+2. `min-height: 100svh` on the hero without subtracting padding (content-box adds it on top) — the two padding values in `.hero` must stay in step.
+3. Hero timeline started in a background tab freezes mid-fade — now waits for `visibilitychange`.
+4. Source video was letterboxed (1920x1248 containing a 1920x1080 picture). Cropped with `ffmpeg -vf crop=1920:1080:0:72`. Check new footage with `cropdetect` first.
 
 ## Viewing it
 
-`file://` will not do: the Chrome tooling refuses it and video behaves
-differently. Serve the folder and open over http:
+`file://` breaks video and Chrome tooling. Serve it:
 
 ```
 python3 -m http.server 8811
 ```
 
-**Hard-refresh after any CSS edit.** A normal reload served stale stylesheets for
-a whole round of work and the colours read back wrong. If what you measure does
-not match what you just wrote, this is why: re-point the `<link>` hrefs with a
-cache-busting query and measure again.
+Hard-refresh after CSS edits — stale stylesheets have caused false reads before.
 
 ## Still open
 
-- **The client has a list of changes to the landing page.** Ask for it; do not
-  start guessing improvements.
-- **The motion has still never been watched at full speed.** Chrome keeps the
-  automation tab hidden, which suspends animation and video, so everything has
-  been verified by measuring the DOM and by forcing end states before a
-  screenshot. Reveal, count-up, count-reset and the header fill are all
-  confirmed correct as values; none of their *timings* has been judged by eye.
-- **Responsive pass has not happened.** No media queries exist, on purpose. The
-  layout is fluid (`clamp`, `auto-fit`, `flex-wrap`, scroll-snap) but no width
-  has been tested. House rule: this is a separate job at the end, using
-  Playwright at 320, 768 and 1280.
-- **Other pages.** Three or four in total, undecided which, and deliberately not
-  started.
-- **Square-bracket placeholders are still banned; obvious round numbers are
-  not.** A section with no real *words* stays deleted rather than filled with
-  brackets — that is still the rule for testimoniale and întrebări frecvente.
-  Cifre is the one exception, at the client's explicit request: its three
-  numbers are visible, obviously made up, and labelled as such in the note
-  under the row, rather than the section being deleted. Still owed by the
-  farm:
-  - **phone and email** — the markup is parked in a comment in the subsol and
-    goes live the moment they arrive. **Until then the "Contactați-ne" button
-    and the Contact nav link land on a footer that cannot be contacted.** This
-    is the one open hole in the page.
-  - **real hectares, years, tonnage** — replaces the three placeholder numbers
-    in the band and removes `.brief__note`.
-  - **two real quotes with names** — brings back testimoniale.
-  - **five answers** — brings back întrebări frecvente.
-  - **the four harvest windows — CONFIRM THESE.** The page now carries Mai to
-    Iunie for cireșe, Iunie to Iulie for caise, August to Septembrie for prune,
-    August to Octombrie for pere. Those are the ordinary Romanian windows, put
-    in at the client's request so the green upright beside each name has
-    something to hold. PRODUCT.md says this farm's harvest runs **slightly
-    differently from the usual window** and that the difference is one of its
-    real selling points, so these four lines are the first thing to correct
-    when the farm answers. They also set the order the fruits appear in.
-  - **the fourth partner's name.** `img/yellow-logo-transparent.svg` is in the
-    band with `alt="Partener comercial"`, because the file arrived without a
-    name. Replace the alt with the real one.
-- **Dead files are gone.** Deleted on 2026-08-15: the three letterboxed
-  originals (`orchard.mp4`, `orchard-hero.mp4`, `orchard-band.mp4`),
-  `orchard-poster.webp`, the unused `logo-56/112.webp` srcset steps, and
-  `fonts/alfa-slab-one-regular.woff2`. All recoverable from the first commit.
-  **`img/hero-*.webp` was on that list by mistake and has been kept** —
-  `salvage/salvage.html` uses all four sizes.
-- **Kept on purpose, though nothing on the page links to them:**
-  - `img/cirese.png`, `img/prune.png`, `img/pere ultim.png`,
-    `img/caise (3).jpeg`, `img/ferma-fruct-logo-cropped.png` — about 10 MB of
-    camera originals. These are what the `-280` and `-560` webps were exported
-    from. **The responsive pass will very likely need new sizes, and you cannot
-    upscale a webp to get them.** Delete only after that pass is finished.
-  - `salvage/` — the old navbar, button and hero, kept at the client's explicit
-    request. Not a page; nothing loads it.
-  - `mockups/landing-layouts.html` — the three wireframes the arrangement was
-    chosen from. It is the record of that decision.
-- **Image generation is unavailable** (the connected account is out of credits),
-  which is why the mockups are HTML wireframes rather than rendered pictures.
+- Client has a list of landing-page changes — ask, don't guess.
+- Motion timing never watched at full speed in a real window (only verified as DOM/CSS end states).
+- Responsive pass hasn't happened — no media queries yet, on purpose.
+- Other pages: 3-4 planned, not started.
+- Placeholder policy: square-bracket placeholders banned; obvious round numbers are the one exception (cifre, FAQ), both flagged with a note to remove once real. Still owed by the farm:
+  - phone + email (markup parked in an index.html comment — until then Contact links go nowhere)
+  - real hectares/years/tonnage (removes `.brief__note`)
+  - two quotes with names (brings back testimoniale)
+  - FAQ answers in the farm's own words (removes `.faq__note`)
+  - **harvest windows — CONFIRM.** Current dates (Mai-Iunie cireșe, Iunie-Iulie caise, August-Septembrie prune, August-Octombrie pere) are generic placeholders. PRODUCT.md says this farm's actual harvest differs from the usual window and that's a real selling point — check before launch. Also sets fruit order.
+  - fourth partner's name (`img/yellow-logo-transparent.svg`, alt is a placeholder)
+- Deleted 2026-08-15, recoverable from first commit: letterboxed video originals, unused webp srcset steps, alfa-slab-one font.
+- Kept on purpose though unused: camera-original images in `img/` (source for exported webps, needed for the responsive pass), `salvage/` (old design, client wants it kept), `mockups/landing-layouts.html` (record of the layout decision).
+- Image generation unavailable (account out of credits) — mockups are HTML wireframes, not renders.

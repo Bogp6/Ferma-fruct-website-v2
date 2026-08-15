@@ -1,8 +1,8 @@
 /* ============================================================================
    Ferma Fruct Brabova — pagina principală
 
-   Six jobs. Every one of them is optional: the page is complete, readable and
-   navigable with this file removed. Nothing here creates content.
+   Seven jobs. Every one of them is optional: the page is complete, readable
+   and navigable with this file removed. Nothing here creates content.
 
    The movement is one idea used everywhere: a card laid on a table. It arrives
    from slightly below, tilted a hair, and settles flat. Nothing fades in place,
@@ -342,6 +342,7 @@
         { selector: '.fruit', stagger: 0.09 },
         { selector: '.film__frame, .film__caption', stagger: 0.12 },
         { selector: '.partners__list li', stagger: 0.06 },
+        { selector: '.faq__head, .faq__item', stagger: 0.07 },
         { selector: '.site-footer__inner > *', stagger: 0.08 }
     ];
 
@@ -394,5 +395,59 @@
             watcher.observe(el);
         });
     });
+
+
+    /* ---------------------------------------------------------------------
+       7. THE FRUIT RING
+       The ring is drawn and shown by CSS; this only tells it where the pointer
+       is, as an offset in pixels from the centre of the card. The trailing lag
+       is the CSS transition on transform, not a loop here — there is no
+       requestAnimationFrame in this, and moving the pointer only writes two
+       custom properties.
+
+       Nothing below is needed for the card to work: with this file gone the
+       ring still appears on hover, centred. */
+
+    if (!reduced) {
+        Array.prototype.forEach.call(document.querySelectorAll('.fruit__link'), function (link) {
+            var ring = link.querySelector('.fruit__ring');
+
+            if (!ring) {
+                return;
+            }
+
+            link.addEventListener('pointermove', function (event) {
+                /* A coarse pointer has no hover to follow: on a phone this
+                   fires once on tap and would leave the ring parked off
+                   centre. */
+                if (event.pointerType === 'touch') {
+                    return;
+                }
+
+                var box = link.getBoundingClientRect();
+
+                ring.style.setProperty('--rx', (event.clientX - box.left - box.width / 2).toFixed(1) + 'px');
+                ring.style.setProperty('--ry', (event.clientY - box.top - box.height / 2).toFixed(1) + 'px');
+            });
+
+            /* Back to the middle, so the next hover starts from the centre
+               rather than from wherever the pointer left. */
+            link.addEventListener('pointerleave', function () {
+                ring.style.removeProperty('--rx');
+                ring.style.removeProperty('--ry');
+            });
+
+            link.addEventListener('pointerdown', function () {
+                link.classList.add('is-pressed');
+            });
+
+            /* The animation runs on the ring's ::after, and its animationend
+               reports against the ring itself. Removing the class here is what
+               lets a second click start the animation again. */
+            ring.addEventListener('animationend', function () {
+                link.classList.remove('is-pressed');
+            });
+        });
+    }
 
 }());

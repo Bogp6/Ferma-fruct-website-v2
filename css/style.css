@@ -1,12 +1,4 @@
-/* ============================================================================
-   STYLE — Ferma Fruct Brabova, pagina principală
-
-   The long middle of the page is a warm cream, so the photographs are the
-   colour. There is no pure white surface anywhere: one would read as a hole.
-
-   Layout is fluid throughout: no media queries yet, on purpose. The responsive
-   pass is a separate job once every page of the site exists.
-   ============================================================================ */
+/* STYLE — Ferma Fruct Brabova. Cream ground, no white surfaces. Fluid layout, no media queries yet. */
 
 
 /* ---------------------------------------------------------------------------
@@ -21,8 +13,7 @@
     padding: var(--space-2xs) var(--space-s);
     border-radius: var(--radius-pill);
     background: var(--action);
-    /* --bark-deep, not --ink: on --action the plain brown is 4.09 and this is
-       4.8. Orange is the only ground on the site that needs the darker one. */
+    /* --bark-deep not --ink: 4.09 fails on --action, 4.8 passes. */
     color: var(--bark-deep);
     font-weight: var(--weight-mid);
     text-decoration: none;
@@ -35,23 +26,13 @@
 
 
 /* ---------------------------------------------------------------------------
-   2. HEADER
-   Three columns, not space-between: with space-between the nav is centred
-   between the wordmark and the language switch, which are different widths, so
-   it sits off the middle of the page. The outer columns are equal 1fr and the
-   nav is the auto column, which puts it on the page's centre line whatever the
-   two ends weigh.
+   2. HEADER — 1fr auto 1fr, not space-between: unequal end widths would push
+   nav off centre.
    --------------------------------------------------------------------------- */
 
-/* --p is published by main.js: 0 at the top of the page, 1 once the hero has
-   fully scrolled past. No transition on either property below — --p already
-   arrives once per painted frame, so a transition would only add lag between
-   the bar and the thumb. Without the script --p is unset and both fall back
-   to 0, which leaves the bar transparent, exactly as before.
-   background-color is rgba with --forest's own numbers spelled out (105, 130,
-   64) rather than color-mix(): color-mix needs a newer engine than this
-   project can assume, and on one that lacks it the whole declaration is
-   dropped, which leaves the bar transparent forever with no error to see. */
+/* --p: 0..1 scroll progress from main.js, unset falls back to 0. No
+   transition, arrives per frame. rgba spelled out, not color-mix:
+   unsupported engines drop the whole rule. */
 .site-header {
     position: fixed;
     inset-block-start: 0;
@@ -90,14 +71,12 @@
 .brand__word {
     font-family: var(--font-display);
     font-weight: var(--weight-display);
-    /* The wordmark is small; the display axes turn the letterforms to mush at
-       this size, so it runs on the label cut. */
+    /* Small size: label axes, not display (display turns to mush here). */
     font-variation-settings: var(--axes-label);
     font-size: var(--step-1);
     line-height: 1;
     letter-spacing: var(--tracking-tight);
-    /* The film behind the header is bright; without this the wordmark loses
-       its edges against the sky. */
+    /* Shadow needed: bright film washes out the wordmark without it. */
     text-shadow: 0 1px 3px rgba(33, 48, 26, 0.6);
 }
 
@@ -123,8 +102,8 @@
     transition: color var(--duration) var(--ease);
 }
 
-/* A separate bar rather than text-decoration: an underline cannot animate
-   from nothing and it threads the descenders. Grows from the left. */
+/* Separate bar not text-decoration: underline can't animate from 0 and
+   cuts descenders. Grows from the left. */
 .nav__link::after {
     content: "";
     position: absolute;
@@ -162,24 +141,15 @@
 
 
 /* ---------------------------------------------------------------------------
-   3. BUTTON
-   Drawn, not filled: a hairline and a label in --on-dark, with the hero film
-   showing through, in a full-round pill. On hover the orange sweeps in from the
-   left and the label turns to ink.
-
-   Orange rather than white on hover, because orange is the one colour on this
-   site that means clickable, and the sweep is the fruit arriving. Ink on
-   --action is 4.7 to 1 and passes; cream on it is 3.8 and does not, which is
-   why the label flips.
-
-   The button sits over the hero film, so the resting colours are the on-dark
-   pair. Moving it onto a light ground needs a light-ground variant.
+   3. BUTTON — drawn pill, hairline + on-dark label over the hero film.
+   Hover sweeps orange, label flips to ink (4.7:1; cream would be 3.8 and
+   fail). Resting colours assume it sits on the film; a light-ground use
+   needs a variant.
    --------------------------------------------------------------------------- */
 
 .btn {
     position: relative;
-    /* Keeps the pseudo-element's z-index: -1 inside the button, so the sweep
-       cannot fall behind the hero film. */
+    /* isolation: keeps ::before's z-index -1 from falling behind the hero film. */
     isolation: isolate;
     /* Clips the sweep to the pill. */
     overflow: hidden;
@@ -201,9 +171,8 @@
         transform var(--duration-fast) var(--ease);
 }
 
-/* The sweeping ground as a pseudo-element, so only a transform moves. It has no
-   radius of its own: scaling a rounded box stretches its corners, so the
-   parent's overflow does the clipping instead. */
+/* No radius of its own: scaling a rounded box stretches its corners.
+   Parent overflow clips instead. */
 .btn::before {
     content: "";
     position: absolute;
@@ -215,9 +184,8 @@
     transition: transform var(--duration) var(--ease);
 }
 
-/* The line goes orange with the fill. overflow clips to the padding box, so the
-   sweep can never reach the border itself: left as cream it reads as a white
-   ring around an orange pill. */
+/* Border must go orange too: overflow clips the sweep to the padding box,
+   a cream border would ring the orange fill. */
 .btn:hover {
     border-color: var(--action);
     color: var(--bark-deep);
@@ -237,9 +205,7 @@
     transform: scaleX(1);
 }
 
-/* Inert and still drawn rather than filled: line and label drop to a faint
-   cream, sweep disabled. Local rgba values because the page has no token for
-   on-dark at this weight. */
+/* Faint cream, sweep off. Local rgba: no token for on-dark at this alpha. */
 .btn:disabled,
 .btn[aria-disabled="true"] {
     border-color: rgba(243, 244, 232, 0.35);
@@ -260,23 +226,19 @@
 
 
 /* ---------------------------------------------------------------------------
-   4. HERO
-   svh, not vh: on a phone vh is the height with the browser bars hidden, so
-   the bottom of the hero would sit under the address bar on first paint.
+   4. HERO — svh not vh: vh is the bars-hidden height, so the hero would
+   sit under the address bar on first paint.
    --------------------------------------------------------------------------- */
 
 .hero {
     position: relative;
-    /* box-sizing is content-box, so min-height measures the content box only
-       and the padding below is added on top of it. Written as a plain 100svh
-       the hero comes out a whole screen PLUS its padding. The two padding
-       values are subtracted here and must be kept in step with the padding
-       line below. */
+    /* content-box: min-height excludes padding. Subtracted here to net out
+       at 100svh — keep in step with the padding line below. */
     min-height: calc(100svh - (var(--space-xl) + 3rem) - var(--space-2xl));
     display: grid;
     place-items: center;
-    /* Top padding clears the fixed header, bottom padding clears the green
-       band that laps over the foot of the film. */
+    /* Top clears the fixed header, bottom clears the green band overlapping
+       the film's foot. */
     padding: calc(var(--space-xl) + 3rem) var(--gutter) var(--space-2xl);
     overflow: hidden;
     background: var(--forest);
@@ -290,29 +252,12 @@
     object-fit: cover;
 }
 
-/* The film is bright and busy; the words need their own ground. A wash, not a
-   panel: the orchard keeps showing through it. It is --forest's own numbers
-   (105, 130, 64), the one green on the site, so the hero is not washed in a
-   green that appears nowhere else. The alphas are a little higher than they
-   were under the old darker green — a lighter wash has to be laid on thicker
-   to hold the same amount of film back off the words.
-
-   The top layer is the haze that carries the film into the cream section under
-   it, so the two do not meet at a cut edge. It is --paper's own numbers
-   (246, 241, 225). If --paper ever changes, change these nine stops with it:
-   fading a picture out to a colour the page no longer uses leaves a pale ring
-   along the seam.
-
-   Deliberately faint. It is only solid in the last 1% of the hero, which is
-   the hairline where the film's cut edge would otherwise show, and it is gone
-   by 16%. Anything stronger fogs the bottom of the orchard and the film stops
-   being a film.
-
-   Eight stops rather than four. Two things need them: an even two-stop fade
-   bands visibly across a moving picture, and any single jump larger than about
-   0.25 in alpha reads as an edge of its own — which is worse than the cut edge
-   the haze exists to hide. No two neighbouring stops here differ by more than
-   0.22. */
+/* Wash for text legibility over the film: --forest's own rgb (105,130,64),
+   not a new green.
+   Top layer: haze fading to --paper's rgb (246,241,225), hides the film's
+   cut edge — update both if --paper changes.
+   8 stops not 4: fewer stops band visibly on moving video; no jump over
+   ~0.22 alpha. */
 .hero::after {
     content: "";
     position: absolute;
@@ -332,11 +277,8 @@
         radial-gradient(ellipse 70% 55% at 50% 55%, rgba(105, 130, 64, 0.56), rgba(105, 130, 64, 0) 100%);
 }
 
-/* Reads the same --p the header ground does, and clears out ahead of it: by
-   69% of the hero's travel the words are gone, well before that much of the
-   hero has scrolled behind the bar. Without this the words would still be
-   sliding up under the header's fill and showing through it, tinted, which
-   is the one thing the two effects have to agree on. */
+/* Same --p as header. Words gone by 69% of travel, well ahead of the
+   header fill, so they never show through it tinted. */
 .hero__inner {
     position: relative;
     z-index: 1;
@@ -357,8 +299,8 @@
     box-shadow: var(--shadow-raise);
 }
 
-/* --step-4, not --step-5: at the largest step this line runs to three rows and
-   pushes the button off the screen. The measure holds it to two rows. */
+/* --step-4 not step-5: step-5 wraps to 3 lines and pushes the button off
+   screen. */
 .hero__title {
     margin-block-start: var(--space-2xs);
     max-width: 15ch;
@@ -380,13 +322,10 @@
 
 
 /* ---------------------------------------------------------------------------
-   5. BANDA CU CIFRE
-   Pulled up so it laps over the foot of the film. The negative margin is half
-   the band's own height, so the same value cannot be reused anywhere: change
-   the padding here and the overlap changes with it.
-
-   The three figures count up on arrival, so the digits change width mid-count:
-   tabular-nums on the number keeps each column standing still while it does.
+   5. BANDA CU CIFRE — negative margin is half the band's own height;
+   change the padding here and the overlap moves with it.
+   Numbers count up on arrival: tabular-nums keeps columns still as digit
+   width changes.
    --------------------------------------------------------------------------- */
 
 .brief {
@@ -399,29 +338,24 @@
 .brief__list {
     max-width: var(--container);
     margin-inline: auto;
-    /* Vertical padding is what sets the band's height, and the band is meant to
-       be a thin strip: widen it here on the inline axis only. */
+    /* Vertical padding sets the band's height (thin strip) — widen inline
+       only. */
     padding: var(--space-m) var(--space-l);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    /* No gap on the inline axis: the dividers below stand in for it, and a gap
-       as well would leave the rules floating in the middle of nothing. */
+    /* No inline gap: dividers below stand in for it. */
     gap: var(--space-s) 0;
     border-radius: var(--radius-xl);
-    /* --sand, the deepest of the three creams, and the only one that separates
-       from --paper at all: 1.46, against 1.0 to 1.21 for the others. That is
-       still a whisper, so the shadow is doing real work here — do not remove
-       it. Over the top half of the band, where the film is behind it, the plate
-       reads strongly on its own. */
+    /* --sand only separates from --paper at 1.46 — shadow does real work
+       here, don't remove it. */
     background: var(--sand);
     color: var(--bark);
     box-shadow: var(--shadow-raise);
 }
 
-/* Number and unit sit side by side, not stacked: stacking them is what makes
-   the band tall, and this band is a strip laid across the seam. */
+/* Side by side, not stacked: stacking would make the band tall. */
 .brief__item {
     flex: 1 1 auto;
     display: flex;
@@ -432,12 +366,10 @@
     text-align: center;
 }
 
-/* Hairline between items, never before the first one. It is drawn on the item
-   rather than as a separate element so a wrapped row cannot leave a rule
-   hanging at the start of a line. */
+/* Drawn on the item, not a separate divider: avoids a stray rule when a
+   row wraps. */
 .brief__item + .brief__item {
-    /* --bark at low alpha, not white: the ground is light now, so the rule has
-       to be darker than it, not lighter. */
+    /* --bark at low alpha: ground is light, rule must be darker not lighter. */
     border-inline-start: var(--hairline) solid rgba(73, 48, 23, 0.3);
 }
 
@@ -445,8 +377,8 @@
     font-family: var(--font-display);
     font-weight: var(--weight-display);
     font-variation-settings: var(--axes-display);
-    /* --step-2, not the display size the old white section used: on one line
-       with its unit, anything larger drives the strip's height up. */
+    /* --step-2, not the old display size: larger drives the strip's height
+       up. */
     font-size: var(--step-2);
     line-height: 1;
     color: var(--bark);
@@ -458,8 +390,7 @@
     font-weight: var(--weight-mid);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    /* Same --bark as the number, held back with alpha rather than with a
-       second brown: one colour, two weights of presence. */
+    /* Same --bark as the number, held back with alpha not a second brown. */
     color: rgba(73, 48, 23, 0.78);
 }
 
@@ -474,14 +405,12 @@
 
 
 /* ---------------------------------------------------------------------------
-   6. DECLARAȚIE ȘI CELE PATRU FRUCTE
-   White, and the longest section on the page. The sentence sits on the left at
-   display size with the note beside it on the right, then the four fruits run
-   across underneath.
+   6. DECLARAȚIE ȘI CELE PATRU FRUCTE — statement left, note right, then four
+   photographic plates, two across, dark at rest and lit under the pointer.
    --------------------------------------------------------------------------- */
 
-/* Less air on top than a section normally gets: the green band already sits in
-   that space and doing both leaves a hole. */
+/* Less top padding than usual: the green band above already fills that
+   space. */
 .orchard {
     padding: var(--space-2xl) var(--gutter) var(--space-section);
     background: var(--paper);
@@ -514,56 +443,134 @@
     text-align: end;
 }
 
-/* A known set of four, so the columns are declared rather than auto-fitted:
-   auto-fit would drop them to three and leave one fruit alone on a row. The
-   minmax floor is what lets it fall to two and then one on its own. */
+/* Two large plates across, in picking order. Not four across: at four the
+   photograph stops being the card and becomes a thumbnail, which is what the
+   fruit had before. */
 .orchard__list {
     margin-block-start: var(--space-2xl);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    /* Declared, not auto-fit: a known set of 4 that must stay 2 by 2.
+       auto-fit drops to 3 at this container width and strands one. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-xl) var(--space-l);
 }
 
-/* Every second fruit is dropped half a step, so the row is a hand of cards
-   rather than a shelf. */
+/* Second column dropped half a step: a hand of cards, not a shelf. */
 .fruit:nth-child(even) {
-    margin-block-start: var(--space-xl);
+    margin-block-start: var(--space-2xl);
 }
 
-.fruit__photo {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
+/* Local, not a token: this is the one dark colour on the site and it exists
+   only inside the fruit plate. It is --bark-deep taken further down, dark
+   enough that cream text clears 4.5 to 1 over any of the four photographs.
+   The rgba in .fruit__frame::after is the same colour and must move with it. */
+.fruit {
+    --wash: #1F150B;
+}
+
+.fruit__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Base sets --radius-s on every focus ring; on a card this size that reads as
+   square corners around a rounded plate. */
+.fruit__link:focus-visible {
     border-radius: var(--radius-l);
-    box-shadow: var(--shadow-lift);
-    transition: transform var(--duration-slow) var(--ease-out),
-        box-shadow var(--duration-slow) var(--ease-out);
+    outline-offset: 6px;
 }
 
-.fruit:hover .fruit__photo {
-    transform: translateY(-8px);
+/* The plate. isolation keeps the wash, the ring and the caption stacking
+   against each other and not against the page. */
+.fruit__frame {
+    position: relative;
+    display: block;
+    isolation: isolate;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-l);
+    background: var(--wash);
+    box-shadow: var(--shadow-lift);
+    transition: box-shadow var(--duration-slow) var(--ease-out);
+}
+
+.fruit__link:hover .fruit__frame,
+.fruit__link:focus-visible .fruit__frame {
     box-shadow: var(--shadow-raise);
 }
 
-.fruit__name {
-    margin-block-start: var(--space-m);
-    font-size: var(--step-3);
-    color: var(--forest);
+.fruit__photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Colour drains out at rest and comes back on hover. The wash alone was
+       not enough: a bright photograph like the caise stayed lively under it
+       and the four cards woke up at four different speeds. */
+    filter: saturate(0.68);
+    transition: transform 900ms var(--ease-out),
+        filter var(--duration-slow) var(--ease-out);
 }
 
-/* The green upright is the whole device: the months hang off a line the way
-   they hang off a calendar's edge. Padding, not a margin, so the rule runs the
-   full height of the text however many lines it takes. */
+.fruit__link:hover .fruit__photo,
+.fruit__link:focus-visible .fruit__photo {
+    transform: scale(1.05);
+    filter: saturate(1);
+}
+
+/* Two layers over the photograph. ::before is the wash that lifts on hover —
+   the whole point of the card, dark at rest and full colour under the pointer.
+   ::after is a permanent scrim under the caption, so the name stays legible
+   once the wash has gone. Both need an explicit z-index: they are siblings of
+   the ring and the caption, and DOM order alone would put ::after on top of
+   them. */
+.fruit__frame::before,
+.fruit__frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.fruit__frame::before {
+    background: var(--wash);
+    opacity: 0.68;
+    transition: opacity var(--duration-slow) var(--ease-out);
+}
+
+.fruit__link:hover .fruit__frame::before,
+.fruit__link:focus-visible .fruit__frame::before {
+    opacity: 0.14;
+}
+
+.fruit__frame::after {
+    background: linear-gradient(to top,
+            rgba(31, 21, 11, 0.72) 0%,
+            rgba(31, 21, 11, 0.34) 22%,
+            rgba(31, 21, 11, 0) 46%);
+}
+
+.fruit__plate {
+    position: absolute;
+    z-index: 2;
+    inset-inline-start: 0;
+    inset-block-end: 0;
+    padding: var(--space-m);
+}
+
+.fruit__name {
+    font-size: var(--step-3);
+    color: var(--on-dark);
+}
+
 .fruit__season {
     margin-block-start: var(--space-2xs);
     max-width: none;
-    /* The block padding is what gives the green upright something to be. With
-       none of it the rule is the cap height of one line and reads as a speck. */
-    padding-block: var(--space-3xs);
-    padding-inline-start: var(--space-s);
-    border-inline-start: var(--rule) solid var(--leaf);
-    color: var(--ink-soft);
+    color: var(--on-dark-soft);
     font-size: var(--step--1);
     font-weight: var(--weight-mid);
     letter-spacing: var(--tracking-label);
@@ -572,23 +579,115 @@
 }
 
 .fruit__season span {
-    /* The dash is structure, not a word; it does not need the tracking that
-       holds the month names apart. */
+    /* Dash is structure, not a word: no letter-spacing. */
     letter-spacing: 0;
     padding-inline: 0.1em;
 }
 
+/* Sits at the centre of the plate and is moved from there by --rx / --ry,
+   which main.js writes as an offset in pixels from that centre. Offsets, not
+   absolute coordinates, so the resting position with no script and on keyboard
+   focus is the middle of the card. The long transform transition is what makes
+   the ring trail the cursor instead of sticking to it. */
+.fruit__ring {
+    --ring: clamp(5.5rem, 10vw, 8.5rem);
+
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    width: var(--ring);
+    height: var(--ring);
+    display: grid;
+    place-items: center;
+    border: var(--hairline) solid var(--on-dark);
+    border-radius: 50%;
+    color: var(--on-dark);
+    opacity: 0;
+    transform: translate(var(--rx, 0px), var(--ry, 0px)) translate(-50%, -50%) scale(0.7);
+    transition: opacity var(--duration) var(--ease-out),
+        transform 620ms var(--ease-out);
+    pointer-events: none;
+}
+
+.fruit__link:hover .fruit__ring,
+.fruit__link:focus-visible .fruit__ring {
+    opacity: 1;
+    transform: translate(var(--rx, 0px), var(--ry, 0px)) translate(-50%, -50%) scale(1);
+}
+
+/* Pressed: the ring closes in under the finger, then ::after throws the click
+   back out as a second ring. */
+.fruit__link:active .fruit__ring {
+    transform: translate(var(--rx, 0px), var(--ry, 0px)) translate(-50%, -50%) scale(0.9);
+    transition-duration: var(--duration), var(--duration-fast);
+}
+
+.fruit__ring::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--hairline));
+    border: var(--hairline) solid var(--on-dark);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+/* Class added by main.js on pointerdown and removed when the run ends, so a
+   second click can replay it. */
+.fruit__link.is-pressed .fruit__ring::after {
+    animation: ring-out 700ms var(--ease-out);
+}
+
+@keyframes ring-out {
+    from {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+.fruit__ring-word {
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+/* On paper, not on the photograph: over a picture this size the wash would
+   have to stay dark to keep small text legible, and staying dark is the one
+   thing the card must not do on hover. */
 .fruit__note {
     margin-block-start: var(--space-s);
+    max-width: 46ch;
     color: var(--ink-soft);
     font-size: var(--step--1);
 }
 
+@media (prefers-reduced-motion: reduce) {
+
+    /* Snapping between these two is worse than not moving: the wash still
+       lifts, which is the part that carries meaning. */
+    .fruit__link:hover .fruit__photo,
+    .fruit__link:focus-visible .fruit__photo {
+        transform: none;
+    }
+
+    .fruit__ring,
+    .fruit__link:hover .fruit__ring,
+    .fruit__link:focus-visible .fruit__ring,
+    .fruit__link:active .fruit__ring {
+        transform: translate(-50%, -50%);
+    }
+}
+
 
 /* ---------------------------------------------------------------------------
-   7. BANDA VIDEO
-   Set into the page with a margin all round. Full bleed it read as a second
-   hero; inside a frame it reads as a piece of film someone shot.
+   7. BANDA VIDEO — framed with a margin, not full bleed (full bleed read
+   as a second hero).
    --------------------------------------------------------------------------- */
 
 .film {
@@ -601,9 +700,8 @@
     margin-inline: auto;
 }
 
-/* Height, not aspect-ratio: with a max-height on it Chrome runs the ratio the
-   other way and shrinks the frame's WIDTH. The video is cropped into whatever
-   shape this gives, so the strip can be any height without letterboxing. */
+/* Height not aspect-ratio: Chrome shrinks the frame's width instead when
+   both are set. */
 .film__frame {
     height: clamp(15rem, 34vw, 27rem);
     overflow: hidden;
@@ -628,17 +726,15 @@
 
 
 /* ---------------------------------------------------------------------------
-   8. PARTENERI
-   The label and the logos are two blocks in one centred column, and the row of
-   logos is spaced by one gap value in both directions, so the band cannot end
-   up with more air on one side than the other.
+   8. PARTENERI — thin strip like .brief: one ground, one brown, hairline
+   dividers. Logos are recoloured to --bark (foreign brand colours don't
+   sit calm together); see .partners__logo.
    --------------------------------------------------------------------------- */
 
-/* --sand, the same cream as the stat band. Two bands on one page reading as
-   two different creams is what made this section look wrong; they are the same
-   surface doing the same job, so they are the same colour. */
+/* Same --sand as .brief: same job, same colour. Padding sets height —
+   space-2xl was too much air for this little content. */
 .partners {
-    padding: var(--space-2xl) var(--gutter);
+    padding: var(--space-xl) var(--gutter);
     background: var(--sand);
     border-block: var(--hairline) solid var(--sand-soft);
 }
@@ -649,12 +745,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-l);
+    gap: var(--space-m);
 }
 
+/* Same voice as .brief__unit — display size made it compete with the
+   fruit section above. */
 .partners__label {
     margin: 0;
-    color: var(--ink-soft);
+    color: rgba(73, 48, 23, 0.78);
     font-family: var(--font-text);
     font-size: var(--step--1);
     font-weight: var(--weight-mid);
@@ -663,40 +761,232 @@
     text-align: center;
 }
 
+/* No inline gap: dividers stand in for it, same as .brief__list. */
 .partners__list {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: var(--space-l) var(--space-2xl);
+    gap: var(--space-s) 0;
 }
 
-/* Each supplied logo has its own proportions, one of them nearly square. Given
-   only a height they come out at wildly different optical sizes, so every one
-   sits in the same box and is fitted inside it. */
+.partners__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: clamp(1.5rem, 3.5vw, 3.5rem);
+}
+
+/* Drawn on the item, same as .brief; avoids a stray rule on wrap. */
+.partners__item + .partners__item {
+    border-inline-start: var(--hairline) solid rgba(73, 48, 23, 0.3);
+}
+
+/* currentColor on inline SVG fills/strokes — why the logos are inline
+   HTML, not linked files (a linked SVG can't be recoloured from page CSS).
+   Do NOT switch to mask-image: didn't render in Firefox.
+   Square box matches the square-ish source canvases; check viewBox before
+   replacing a file. */
 .partners__logo {
-    width: clamp(5.5rem, 4.2rem + 5.5vw, 8rem);
-    height: clamp(2.25rem, 1.8rem + 1.8vw, 3.25rem);
-    object-fit: contain;
-    object-position: center;
-    filter: grayscale(1);
-    opacity: 0.65;
-    transition: filter var(--duration) var(--ease), opacity var(--duration) var(--ease);
+    display: block;
+    width: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    height: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    color: var(--bark);
+    transition: color var(--duration) var(--ease);
 }
 
-/* Colour on hover: the band stays quiet while you read past it, and rewards a
-   look. */
-.partners__logo:hover {
-    filter: grayscale(0);
-    opacity: 1;
+/* Hover to green — brand colours are deliberately not used here. */
+.partners__item:hover .partners__logo,
+.partners__item:focus-within .partners__logo {
+    color: var(--forest);
+}
+
+/* Optical correction: 4th logo's artwork sits small in a 240 square, reads
+   undersized at the same box size as the others. Re-measure when the real
+   4th partner's file arrives. */
+.partners__item:last-child .partners__logo {
+    transform: scale(1.3);
 }
 
 
 /* ---------------------------------------------------------------------------
-   9. SUBSOL
-   The page ends on the farm's name at full size and the place it is in. The
-   phone and the email are not here yet; the markup for them is parked in a
-   comment in index.html and goes live when the farm supplies them.
+   9. ÎNTREBĂRI FRECVENTE — centred title, questions as stacked plates.
+   --paper ground: sits between --sand above and green below, no third
+   band colour. Native <details>, no JS.
+   --------------------------------------------------------------------------- */
+
+.faq {
+    padding: var(--space-section) var(--gutter);
+    background: var(--paper);
+}
+
+.faq__inner {
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.faq__head {
+    text-align: center;
+}
+
+.faq__title {
+    font-size: var(--step-4);
+    color: var(--forest);
+}
+
+/* margin-inline: auto needed: p's measure cap would otherwise sit it left
+   of centre. */
+.faq__lead {
+    margin: var(--space-m) auto 0;
+    max-width: 46ch;
+    color: var(--ink-soft);
+}
+
+/* Narrower than the container: full 78rem width reads as a table of
+   contents. */
+.faq__list {
+    max-width: 58rem;
+    margin: var(--space-xl) auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+}
+
+/* Flat --sand-soft, no border, no state change on open/hover — both were
+   tried and read as damage. 1.09 against --paper on purpose: quiet, reads
+   from the column of five, not from an outline. */
+.faq__row {
+    border-radius: var(--radius-xl);
+    background: var(--sand-soft);
+}
+
+.faq__q {
+    /* list-style kills the marker triangle; ::-webkit- line needed for
+       Safari too. */
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+    padding: var(--space-m) var(--space-l);
+    cursor: pointer;
+    color: var(--ink);
+    /* --step-0, body size: step-1 read as five headlines shouting over the
+       fruit above. */
+    font-size: var(--step-0);
+    font-weight: var(--weight-mid);
+    line-height: var(--leading-snug);
+    transition: color var(--duration) var(--ease);
+}
+
+.faq__q::-webkit-details-marker {
+    display: none;
+}
+
+.faq__q:hover,
+.faq__row[open] .faq__q {
+    color: var(--forest);
+}
+
+/* Ring inset, not offset: offset draws half outside the plate's rounded
+   corner. */
+.faq__q:focus-visible {
+    outline-offset: -6px;
+    border-radius: var(--radius-xl);
+}
+
+.faq__qtext {
+    text-wrap: balance;
+}
+
+/* Drawn plus, not a glyph: a character sits on Chivo's baseline, not the
+   page's rule line. --action-ink not --action: plain --action is 2.4 on
+   the fill, under the 3:1 floor. */
+.faq__sign {
+    position: relative;
+    flex: none;
+    width: 0.9rem;
+    height: 0.9rem;
+}
+
+.faq__sign::before,
+.faq__sign::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: 0;
+    height: var(--rule);
+    border-radius: 1px;
+    background: var(--action-ink);
+    transition: transform var(--duration) var(--ease-out);
+}
+
+.faq__sign::before {
+    transform: translateY(-50%);
+}
+
+.faq__sign::after {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.faq__row[open] .faq__sign::after {
+    transform: translateY(-50%) rotate(0deg);
+}
+
+/* Same green-upright device as the fruit months. Inline margin lines the
+   rule under the question, not the plate edge. */
+.faq__a {
+    margin-inline: var(--space-l);
+    padding-block: var(--space-3xs);
+    padding-inline-start: var(--space-s);
+    /* Bottom space lives on .faq__body, not here, so the rule stops at the
+       last line. */
+    border-inline-start: var(--rule) solid var(--leaf);
+    color: var(--ink-soft);
+}
+
+.faq__a p {
+    max-width: 62ch;
+    font-size: var(--step--1);
+}
+
+/* Padding here, not on the row: row padding would leave dead space when
+   closed. */
+.faq__body {
+    padding-block-end: var(--space-m);
+}
+
+/* Progressive enhancement: unsupported browsers still open, just jump
+   instead of unroll. */
+@supports (interpolate-size: allow-keywords) {
+
+    html {
+        interpolate-size: allow-keywords;
+    }
+
+    .faq__row::details-content {
+        overflow: hidden;
+        block-size: 0;
+        transition: block-size var(--duration) var(--ease-out),
+            content-visibility var(--duration) allow-discrete;
+    }
+
+    .faq__row[open]::details-content {
+        block-size: auto;
+    }
+}
+
+.faq__note {
+    margin: var(--space-l) auto 0;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    text-align: center;
+}
+
+
+/* ---------------------------------------------------------------------------
+   10. SUBSOL — farm name and place. Phone/email markup parked in an
+   index.html comment until supplied.
    --------------------------------------------------------------------------- */
 
 .site-footer {
@@ -740,8 +1030,7 @@
     letter-spacing: var(--tracking-tight);
 }
 
-/* The locality on its own line and larger than the county: on an address the
-   town is the fact somebody is looking for. */
+/* Town larger than county: it's the fact someone is looking for. */
 .site-footer__place {
     margin: 0;
     max-width: none;
@@ -762,8 +1051,8 @@
     font-size: var(--step-0);
 }
 
-/* Written now so the parked phone and email markup in index.html only has to
-   be uncommented when the farm sends the two values. */
+/* Styled ahead of content: index.html markup just needs uncommenting when
+   the farm sends phone/email. */
 .site-footer__contact {
     margin-block-start: var(--space-m);
     display: flex;
@@ -788,13 +1077,10 @@
 
 
 /* ---------------------------------------------------------------------------
-   10. REVEAL
-   The page's one movement: a card laid on a table. It arrives from slightly
-   below, tilted a hair, and settles flat. GSAP runs it where GSAP is loaded;
-   the CSS below is the fallback and the reduced-motion end state.
-
-   Content is visible by default. .reveal is only ever added by main.js, so
-   with the script gone nothing is hidden.
+   11. REVEAL — card laid on a table: arrives low, tilted, settles flat.
+   CSS below is the fallback / reduced-motion end state; GSAP drives it
+   where loaded. .reveal is added only by main.js, so content stays
+   visible with no script.
    --------------------------------------------------------------------------- */
 
 .reveal {
@@ -804,15 +1090,14 @@
         transform var(--duration-slow) var(--ease-out);
 }
 
-/* The video frame does NOT tilt. A rotated block of moving film shows its own
-   corners lifting off the white and the eye reads it as the video being
-   crooked rather than as an arrival. */
+/* No tilt: a rotated block of moving film reads as crooked, not as an
+   arrival. */
 .film__frame.reveal {
     transform: translateY(1.75rem);
 }
 
-/* Added by main.js only when GSAP is driving the tween. GSAP owns transform
-   and opacity from that point, so the transition has to be out of the way. */
+/* Added only when GSAP drives the tween — GSAP owns transform/opacity,
+   transition must be off. */
 .reveal--js {
     transition: none;
 }

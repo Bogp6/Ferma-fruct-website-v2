@@ -27,6 +27,12 @@
         "value": "rgb(246, 241, 225)",
         "createdAt": "2026-08-15T10:25:32.466Z",
         "reason": "User confirmed: client supplied the five creams and chose this one as the page ground, explicitly rejecting white"
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-08-15T11:27:42.974Z",
+        "reason": "Agent: Arial is inside the Big Family Market logo's own <style> block, supplied vendor artwork inlined as SVG. Not a site typeface; the site's faces are Fraunces and Chivo."
       }
     ]
   }
