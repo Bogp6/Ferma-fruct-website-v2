@@ -1,7 +1,7 @@
 /* ============================================================================
    Ferma Fruct Brabova — pagina principală
 
-   Seven jobs. Every one of them is optional: the page is complete, readable
+   Eight jobs. Every one of them is optional: the page is complete, readable
    and navigable with this file removed. Nothing here creates content.
 
    The movement is one idea used everywhere: a card laid on a table. It arrives
@@ -460,6 +460,259 @@
             frameWatcher.observe(frame);
         });
     });
+
+
+    /* ---------------------------------------------------------------------
+       8. LINIA SECȚIUNII
+       O singură trăsătură desenată, din capul cireșelor până sub pere. Nu este
+       chenarul niciunei liste: un chenar e drept, iar aici linia trebuie să
+       șerpuiască.
+
+       Are două purtări, după bloc:
+       - pe margine (cireșe, pere) merge lipită de calendar și îi poartă
+         bulinele, cu o legănare mică, numai în afară, ca să nu intre în text;
+       - la mijloc (caise, prune) se desprinde de calendar și se leagănă lat
+         stânga-dreapta pe coridorul de padding lăsat anume pentru ea. Acolo
+         bulinele nu o mai urmăresc — rămân semne lipite de textul etapei.
+
+       De ce cod și nu CSS: nicio regulă nu poate ști pe ce x iese o coloană
+       flexibilă, nici cât de lat e coridorul după ce s-au așezat toate. Se
+       măsoară, se scrie o cale, gata — nimic citit la scroll, nicio buclă.
+
+       Toată calea este un singur spline Catmull-Rom prin punctele de mai jos,
+       deci trece prin fiecare punct exact și nu are colțuri nicăieri: de asta
+       se citește ca o trăsătură de mână și nu ca niște arce lipite cap la cap.
+
+       .has-spine, pusă numai de aici, e ce stinge chenarul drept și cârligele
+       lui. Fără script rămân patru calendare drepte, întregi. */
+
+    var groves = document.querySelector('.orchard__groves');
+    var rails = groves ? Array.prototype.slice.call(groves.querySelectorAll('.grove__rail')) : [];
+
+    if (groves && rails.length > 1) {
+        var NS = 'http://www.w3.org/2000/svg';
+        var spine = document.createElementNS(NS, 'svg');
+        var spinePath = document.createElementNS(NS, 'path');
+        var spineHead = document.createElementNS(NS, 'circle');
+        var spineFoot = document.createElementNS(NS, 'circle');
+
+        /* Cât se abate linia de la coloana ei, ca fracțiune din legănarea
+           maximă. Pozitiv înseamnă spre text, negativ dinspre el.
+           Pe margine sunt cinci trepte fiindcă acolo punctele sunt chiar
+           bulinele: patru etape plus cele două capete. */
+        var SWAY_EDGE = [0, -0.42, -1, -0.68, -0.24, 0];
+        var SWAY_MID = [0, 0.9, -0.55, 0.9, -0.45, 0];
+        /* Pe ce înălțime a blocului cad punctele din blocul de mijloc. Nu sunt
+           legate de etape: acolo linia nu mai are ce urmări. */
+        var STOP_MID = [0, 0.16, 0.36, 0.58, 0.79, 1];
+        /* Legănarea de pe margine, în pixeli. Peste vreo 18 bulina se rupe de
+           rândul ei de text și nu se mai citește ca semnul lui. */
+        var SWAY_EDGE_PX = 16;
+        /* Cât din coridor ia legănarea din mijloc spre text. Restul până la
+           text este garda care o ține să nu-l atingă. */
+        var SWAY_MID_KEEP = 0.82;
+        /* Spre partea cealaltă nu mai există coridor, ci numai golul dintre
+           coloanele blocului: legănarea ia din el tot în afară de garda asta.
+           Constantă ar fi mers până la prima lățime de fereastră la care golul
+           iese mai mic decât ea, și de acolo linia ar fi trecut peste proză. */
+        var SWAY_MID_GUARD = 18;
+
+        /* Latura chenarului se citește o singură dată, ÎNAINTE ca .has-spine
+           să-l stingă — pe urmă nu mai are de unde fi citită. */
+        var plots = rails.map(function (rail) {
+            return {
+                rail: rail,
+                mid: rail.closest('.grove').classList.contains('grove--mid'),
+                /* Chenarul pe stânga înseamnă text la dreapta lui. */
+                toward: parseFloat(getComputedStyle(rail).borderLeftWidth) > 0 ? 1 : -1,
+                stages: Array.prototype.slice.call(rail.querySelectorAll('.grove__stage'))
+            };
+        });
+
+        spine.setAttribute('class', 'orchard__spine');
+        spine.setAttribute('aria-hidden', 'true');
+        spineHead.setAttribute('r', 3.5);
+        spineFoot.setAttribute('r', 3.5);
+        spine.appendChild(spinePath);
+        spine.appendChild(spineHead);
+        spine.appendChild(spineFoot);
+
+        /* Catmull-Rom prin puncte, scris în cubice Bézier. Direcția mânerului
+           într-un punct este cea dintre vecinii lui; LUNGIMEA lui însă se ia
+           din segmentul pe care îl deservește, nu din distanța dintre vecini.
+
+           Asta e tot ce contează aici: punctele nu sunt la distanțe egale —
+           între prima lună și capul blocului sunt 25 de pixeli, între blocuri
+           sunt aproape 800 — iar forma clasică, cu mânerul luat din vecini,
+           scotea o buclă la fiecare punct înghesuit și arunca traversarea
+           dintre blocuri cu 130 de pixeli în afara paginii. Cu lungimea legată
+           de segment linia nu poate depăși punctul următor. */
+        var through = function (pts) {
+            var r = function (n) { return Math.round(n * 100) / 100; };
+            var aim = function (dx, dy, len) {
+                var m = Math.sqrt(dx * dx + dy * dy) || 1;
+                return { x: dx / m * len, y: dy / m * len };
+            };
+            var d = 'M' + r(pts[0].x) + ' ' + r(pts[0].y);
+            var i;
+
+            for (i = 0; i < pts.length - 1; i += 1) {
+                var p0 = pts[i - 1] || pts[i];
+                var p1 = pts[i];
+                var p2 = pts[i + 1];
+                var p3 = pts[i + 2] || pts[i + 1];
+                /* O treime din segment: forma obișnuită pentru o cubică care
+                   trebuie să treacă drept printre două puncte. */
+                var reach = Math.sqrt(
+                    (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y)
+                ) / 3;
+                var out = aim(p2.x - p0.x, p2.y - p0.y, reach);
+                var into = aim(p3.x - p1.x, p3.y - p1.y, reach);
+
+                d += 'C' + r(p1.x + out.x) + ' ' + r(p1.y + out.y) +
+                    ' ' + r(p2.x - into.x) + ' ' + r(p2.y - into.y) +
+                    ' ' + r(p2.x) + ' ' + r(p2.y);
+            }
+
+            return d;
+        };
+
+        /* Traversarea dintre două blocuri, ca puncte pe o cubică cu mânerele pe
+           verticală: pleacă din coloana de sus pe direcția ei, se răsucește la
+           mijloc și sosește pe coloana de jos tot pe direcția ei.
+
+           **Golul are 218 pixeli pe verticală, iar traversarea cea mare are 767
+           pe orizontală.** Aici e tot cazul: pe un dreptunghi atât de culcat,
+           orice curbă cu mânere scurte iese două colțuri strânse cu o diagonală
+           trasă cu rigla între ele — exact ce a arătat clientul. Prima variantă
+           mai și ținea x-ul un sfert de gol la fiecare capăt, ceea ce lungea
+           dreapta aceea și mai mult.
+
+           Leacul sunt mânere LUNGI: aproape tot golul pe verticală (0.98 și
+           0.88), plus a zecea parte din traversare pe orizontală. Verticala
+           lungă ține plecarea aproape la fel de dreaptă ca linia calendarului,
+           iar lungimea face ca întoarcerea să se întindă pe toată lățimea: nu
+           mai rămâne nicio porțiune dreaptă, ci un singur S care se abate cam
+           50 de pixeli de fiecare parte a coardei.
+
+           Mânerele sunt inegale fiindcă un S simetric se citește desenat de
+           mașină. DRIFT împinge mijlocul într-o parte, alternând de la o
+           traversare la alta, ca cele trei să nu iasă la fel. */
+        var CROSS_LEAD = 0.98;
+        var CROSS_LAND = 0.88;
+        var CROSS_BEND = 0.1;
+        var CROSS_STOP = [0.14, 0.29, 0.43, 0.57, 0.71, 0.86];
+        var CROSS_DRIFT = 0.03;
+
+        var crossing = function (from, to, turn) {
+            var span = to.y - from.y;
+            var reach = (to.x - from.x) * CROSS_BEND;
+            var c1 = { x: from.x + reach, y: from.y + span * CROSS_LEAD };
+            var c2 = { x: to.x - reach, y: to.y - span * CROSS_LAND };
+            var drift = (to.x - from.x) * CROSS_DRIFT * (turn % 2 ? -1 : 1);
+
+            return CROSS_STOP.map(function (t) {
+                var u = 1 - t;
+                var w = [u * u * u, 3 * u * u * t, 3 * u * t * t, t * t * t];
+
+                return {
+                    x: w[0] * from.x + w[1] * c1.x + w[2] * c2.x + w[3] * to.x +
+                        /* Abaterea se stinge la capete, altfel ar rupe direcția
+                           cu care linia intră în calendarul următor. */
+                        drift * Math.sin(Math.PI * t),
+                    y: w[0] * from.y + w[1] * c1.y + w[2] * c2.y + w[3] * to.y
+                };
+            });
+        };
+
+        var drawSpine = function () {
+            var box = groves.getBoundingClientRect();
+            var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+            var pts = [];
+
+            plots.forEach(function (plot, n) {
+                var r = plot.rail.getBoundingClientRect();
+                var railStyle = getComputedStyle(plot.rail);
+                var pad = parseFloat(railStyle.paddingInlineEnd) ||
+                    parseFloat(railStyle.paddingInlineStart);
+                /* Golul dintre coloanele blocului: tot ce are linia la
+                   dispoziție de partea dinspre care s-a dus textul. */
+                var room = Math.max(
+                    parseFloat(getComputedStyle(plot.rail.parentNode).columnGap) - SWAY_MID_GUARD,
+                    0
+                );
+                /* Coloana liniei: latura dinspre care s-a dus textul. */
+                var base = (plot.toward > 0 ? r.left : r.right) - box.left;
+                var top = r.top - box.top;
+                var height = r.height;
+                var sway = plot.mid ? SWAY_MID : SWAY_EDGE;
+                var i;
+
+                /* Golul de deasupra blocului. */
+                if (n > 0) {
+                    pts = pts.concat(crossing(
+                        pts[pts.length - 1],
+                        { x: base, y: top },
+                        n
+                    ));
+                }
+
+                for (i = 0; i < sway.length; i += 1) {
+                    var off = sway[i] >= 0
+                        ? sway[i] * (plot.mid ? pad * SWAY_MID_KEEP : SWAY_EDGE_PX)
+                        : sway[i] * (plot.mid ? room : SWAY_EDGE_PX);
+                    var stage = plot.stages[i - 1];
+                    var y;
+
+                    if (plot.mid || !stage) {
+                        y = top + height * (plot.mid ? STOP_MID[i] : (i === 0 ? 0 : 1));
+                    } else {
+                        /* Centrul bulinei: 0.35em de la marginea etapei (CSS)
+                           plus jumătate din cei 0.5rem ai ei. */
+                        var s = stage.getBoundingClientRect();
+                        y = s.top - box.top +
+                            parseFloat(getComputedStyle(stage).fontSize) * 0.35 + rem * 0.25;
+                    }
+
+                    pts.push({ x: base + plot.toward * off, y: y });
+
+                    /* Bulina se mută cu linia, ca să rămână pe ea. În blocul
+                       din mijloc linia s-a dus prea departe ca s-o mai poarte,
+                       deci semnul rămâne unde-l pune CSS-ul. */
+                    if (stage) {
+                        stage.style.setProperty('--dot-nudge',
+                            (plot.mid ? 0 : Math.abs(off)) + 'px');
+                    }
+                }
+            });
+
+            spine.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+            spinePath.setAttribute('d', through(pts));
+            spineHead.setAttribute('cx', pts[0].x);
+            spineHead.setAttribute('cy', pts[0].y);
+            spineFoot.setAttribute('cx', pts[pts.length - 1].x);
+            spineFoot.setAttribute('cy', pts[pts.length - 1].y);
+        };
+
+        groves.appendChild(spine);
+        groves.classList.add('has-spine');
+        drawSpine();
+
+        /* Fonturile și imaginile sosite după prima pictare schimbă înălțimile,
+           deci calea se rescrie odată cu cutia. Fără ResizeObserver rămâne
+           evenimentul de redimensionare, care prinde cazul obișnuit. */
+        if ('ResizeObserver' in window) {
+            var watcher = new ResizeObserver(drawSpine);
+            watcher.observe(groves);
+            rails.forEach(function (rail) {
+                watcher.observe(rail);
+            });
+        } else {
+            window.addEventListener('resize', drawSpine);
+        }
+
+        window.addEventListener('load', drawSpine);
+    }
 
 
 }());

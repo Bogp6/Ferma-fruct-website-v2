@@ -1,20 +1,20 @@
-/* BASE — Ferma Fruct Brabova. Element defaults only, components live in
-   style.css. content-box (default): padding on outer element, max-width on
-   inner, never both on one element. */
+/* ============================================================================
+   BASE — Ferma Fruct Brabova
+   Element defaults. No component lives here; components are in style.css.
+
+   box-sizing is left at the browser default, content-box. Padding is therefore
+   put on an outer element and max-width on an inner one, never both on the
+   same element, or its width blows out.
+   ============================================================================ */
 
 html {
     /* Anchor links land below the fixed header instead of under it. */
     scroll-padding-block-start: 5.5rem;
     scroll-behavior: smooth;
-    /* clip not hidden: hidden would turn the page into a scroll container
-       and break sticky elements. */
-    overflow-x: clip;
 }
 
 body {
     margin: 0;
-    /* Fills the strip between hero and next section — the hero has no
-       ground of its own, film shows through above it. */
     background: var(--paper);
     color: var(--ink);
     font-family: var(--font-text);
@@ -24,15 +24,14 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Weight and axes come from tokens — display voice changes in one line
-   there. */
+/* Display face for every heading. It has one weight, so hierarchy between
+   headings is made with size alone. */
 h1,
 h2,
 h3 {
     margin: 0;
     font-family: var(--font-display);
-    font-weight: var(--weight-display);
-    font-variation-settings: var(--axes-display);
+    font-weight: var(--weight-normal);
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
     text-wrap: balance;
@@ -48,14 +47,6 @@ h2 {
 
 h3 {
     font-size: var(--step-2);
-}
-
-/* Fraunces auto-sets opsz from font-size unless locked off — keeps
-   headings on the display cut. */
-h1,
-h2,
-h3 {
-    font-optical-sizing: none;
 }
 
 p {
@@ -82,7 +73,8 @@ svg {
     max-width: 100%;
 }
 
-/* One ring, site-wide, offset so it never sits on top of what it marks. */
+/* One focus ring for the whole site, on the action colour, offset so it never
+   sits on top of the thing it is marking. */
 :focus-visible {
     outline: 3px solid var(--action);
     outline-offset: 3px;
@@ -101,8 +93,9 @@ svg {
     white-space: nowrap;
 }
 
-/* Motion is opt-in via .reveal, so this one rule kills it all — content
-   stays visible by default. */
+/* Everything the site animates is opt-in through this class, so switching all
+   motion off is one rule. Content is visible by default: the reveal only ever
+   removes an offset, it never creates the content. */
 @media (prefers-reduced-motion: reduce) {
 
     html {

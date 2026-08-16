@@ -779,15 +779,63 @@ main,
     text-align: end;
 }
 
-/* 72rem, nu 64: coloana calendarului a intrat în bloc și lua din lățimea
-   textului. Gap 1.6 x --space-section: fiecare fruct e o secțiune de sine
-   stătătoare, iar la o secțiune simplă blocurile se citeau ca o listă. */
+/* Lățimea containerului, nu 72rem: calendarul a primit padding mai mare, iar
+   cei 6rem în plus îi plătesc fără să strângă coloana de text. La fel de lat ca
+   declarația de deasupra, deci blocurile se aliniază cu ea.
+   Gap 1.6 x --space-section: fiecare fruct e o secțiune de sine stătătoare, iar
+   la o secțiune simplă blocurile se citeau ca o listă.
+   position: relative ancorează coloana desenată (.orchard__spine); z-index
+   rămâne auto, altfel desenele din fundal ar pierde hârtia de sub ele. */
 .orchard__groves {
-    max-width: 72rem;
+    position: relative;
+    max-width: var(--container);
     margin: var(--space-2xl) auto 0;
     display: flex;
     flex-direction: column;
     gap: calc(var(--space-section) * 1.6);
+}
+
+/* LINIA SECȚIUNII: o singură trăsătură desenată, din capul cireșelor până sub
+   pere. Nu mai este chenarul niciunei liste — un chenar este drept, iar linia
+   asta trebuie să șerpuiască: pe lângă calendarele de pe margine merge aproape
+   de ele și le poartă bulinele, iar în blocurile din mijloc pleacă de lângă
+   text și se leagănă stânga-dreapta pe tot coridorul.
+
+   Se desenează din main.js (job 8) fiindcă nicio regulă nu poate ști pe ce x
+   iese o coloană flexibilă. Fără script rămâne chenarul drept de mai jos, cu
+   cârligele lui: patru calendare de sine stătătoare, nimic rupt. */
+.orchard__spine {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Legănarea iese cu câțiva pixeli din cutia listei, intenționat. */
+    overflow: visible;
+}
+
+.orchard__spine path {
+    fill: none;
+    stroke: var(--sand);
+    stroke-width: 1;
+    stroke-linecap: round;
+}
+
+/* Capetele: un bob plin sus și unul jos, ca trăsătura să înceapă și să se
+   încheie din voința ei, nu prin dispariție. */
+.orchard__spine circle {
+    fill: var(--bark-soft);
+}
+
+/* Cu linia desenată, chenarul drept și cârligele lui nu mai au ce căuta:
+   ar fi o a doua linie lipită de prima. */
+.orchard__groves.has-spine .grove__rail {
+    border-inline: 0;
+}
+
+.orchard__groves.has-spine .grove__rail::before,
+.orchard__groves.has-spine .grove__rail::after {
+    content: none;
 }
 
 /* Două coloane independente, NU grid (grid ținea foto 2 pe rândul 2, lăsând o
@@ -800,17 +848,43 @@ main,
     --blob-a: url("../img/blob-a1.webp");
     --blob-b: url("../img/blob-b1.webp");
     --rail-ink: var(--sand);
-    --rail-pad: var(--space-m);
+    --rail-pad: var(--space-l);
 
     position: relative;
     display: flex;
     flex-direction: row-reverse;
     align-items: start;
-    gap: var(--space-xl);
+    gap: var(--space-2xl);
 }
 
 .grove--flip {
     flex-direction: row;
+}
+
+/* Calendarul pe mijlocul blocului, nu pe marginea lui. Se schimbă numai
+   ordinea: fotografia și textul rămân pe laturile pe care le-au avut, deci
+   zigzagul de la un fruct la altul se păstrează.
+   Ordinea e citită de la stânga la dreapta pe blocul oglindit și de la dreapta
+   la stânga pe cel normal (row-reverse), așa că aceleași trei valori dau la
+   amândouă text | calendar | fotografie și fotografie | calendar | text.
+   Chenarul cade tot pe latura dinspre .grove__tell, fiindcă latura o alege
+   .grove--flip și nu poziția în rând: linia separă calendarul de proză. */
+.grove--mid .grove__tell {
+    order: 1;
+}
+
+/* Padding lat pe latura liniei: acolo se leagănă trăsătura desenată, iar
+   coridorul acesta este tot ce o ține să nu intre în text. Se strâmtează, se
+   strâmtează și legănarea — amândouă se citesc din DOM în main.js, deci se
+   schimbă numai aici. */
+.grove--mid .grove__rail {
+    --rail-pad: calc(var(--space-l) * 3.4);
+
+    order: 2;
+}
+
+.grove--mid .grove__lead {
+    order: 3;
 }
 
 .orchard__groves > .grove:nth-child(2) {
@@ -833,17 +907,17 @@ main,
     flex: 1.08 1 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: var(--space-2xl);
 }
 
 .grove__tell {
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-l);
+    gap: var(--space-xl);
     /* Aliniere optică cu marginea fotografiei: colțul ei rotund începe mai
        jos decât marginea cutiei. */
-    padding-block-start: var(--space-s);
+    padding-block-start: var(--space-m);
 }
 
 /* SILUETA: fotografia nu are margini drepte deloc — se stinge pe toate laturile
@@ -928,7 +1002,7 @@ main,
 }
 
 .grove__season {
-    margin-block-start: var(--space-2xs);
+    margin-block-start: var(--space-xs);
     max-width: none;
     color: var(--ink-soft);
     font-size: var(--step--1);
@@ -958,14 +1032,18 @@ main,
    scrierii. Într-un layout RTL ar trebui rescrise. */
 .grove__rail {
     order: -1;
-    flex: 0 0 clamp(8rem, 14vw, 11.5rem);
+    /* Mai lată decât înainte fiindcă --rail-pad a crescut: coloana de text din
+       calendar trebuie să rămână cam la fel de largă. */
+    flex: 0 0 clamp(9rem, 16vw, 13.5rem);
     /* stretch bate align-items: start de pe .grove — linia trebuie să țină cât
        ține blocul, altfel calendarul se termină la jumătatea fructului. */
     align-self: stretch;
     position: relative;
     margin: 0;
-    padding-block: var(--space-2xs) var(--space-s);
-    padding-inline-end: var(--rail-pad);
+    padding-block: var(--space-xs) var(--space-m);
+    /* Amândouă laturile, nu numai cea cu chenarul: un ol are din browser
+       padding-inline-start, iar acela lăsa o dungă goală de 40px lângă text. */
+    padding-inline: 0 var(--rail-pad);
     border-inline-end: 1px solid var(--rail-ink);
     list-style: none;
     display: flex;
@@ -973,7 +1051,7 @@ main,
     /* space-between întinde etapele pe toată linia; gap rămâne distanța minimă
        dintre ele, pentru blocul care iese scurt. */
     justify-content: space-between;
-    gap: var(--space-xl);
+    gap: var(--space-2xl);
     text-align: end;
 }
 
@@ -1030,14 +1108,18 @@ main,
     position: relative;
 }
 
-/* Bulina stă pe chenar: jumătate din ea (0.3125rem) plus jumătate de pixel de
+/* Bulina stă pe linie: jumătate din ea (0.3125rem) plus jumătate de pixel de
    chenar, dincolo de padding. 0.35em de sus o aliniază pe prima linie de text,
-   nu pe cutie. */
+   nu pe cutie.
+
+   --dot-nudge o duce mai în afară cu exact cât s-a dus linia desenată în
+   dreptul ei; o scrie main.js pentru fiecare etapă, iar fără script rămâne 0 și
+   bulina cade pe chenarul drept. */
 .grove__stage::before {
     content: "";
     position: absolute;
     top: 0.35em;
-    right: calc(var(--rail-pad) * -1 - 0.3125rem);
+    right: calc(var(--rail-pad) * -1 - 0.3125rem - var(--dot-nudge, 0px));
     width: 0.5rem;
     height: 0.5rem;
     border: 1px solid var(--bark-soft);
@@ -1047,7 +1129,19 @@ main,
 
 .grove--flip .grove__stage::before {
     right: auto;
-    left: calc(var(--rail-pad) * -1 - 0.3125rem);
+    left: calc(var(--rail-pad) * -1 - 0.3125rem - var(--dot-nudge, 0px));
+}
+
+/* În blocurile din mijloc linia s-a desprins de calendar și se leagănă departe,
+   deci bulina nu mai are pe ce sta: rămâne semnul etapei, lipit de textul ei.
+   --dot-nudge nu se scrie aici — nu urmărește nimic. */
+.orchard__groves.has-spine .grove--mid .grove__stage::before {
+    right: -1.15rem;
+}
+
+.orchard__groves.has-spine .grove--mid.grove--flip .grove__stage::before {
+    right: auto;
+    left: -1.15rem;
 }
 
 /* Capetele calendarului sunt lunile, deci punct plin, nu inel: se citesc ca
@@ -1078,18 +1172,18 @@ main,
 /* Sub --step--1 nu mai există treaptă în tokens și nu vreau una nouă pentru un
    singur loc: nota calendarului e cel mai mic text din pagină, tot fluidă. */
 .grove__stage-note {
-    margin-block-start: var(--space-2xs);
+    margin-block-start: var(--space-xs);
     max-width: none;
     color: var(--ink-soft);
     font-size: clamp(0.75rem, 0.73rem + 0.11vw, 0.8125rem);
-    line-height: 1.55;
+    line-height: 1.7;
 }
 
 /* Al doilea paragraf al blocului, cu titlul lui mic și încheierea. */
 .grove__aside {
     display: flex;
     flex-direction: column;
-    gap: var(--space-s);
+    gap: var(--space-m);
 }
 
 .grove__cue {
@@ -1116,8 +1210,8 @@ main,
    lățimea ar tăia coloana în două. */
 .grove__seal {
     position: relative;
-    margin: var(--space-xs) 0 0;
-    padding-block-start: var(--space-m);
+    margin: var(--space-s) 0 0;
+    padding-block-start: var(--space-l);
     color: var(--ink-soft);
     font-size: var(--step--1);
     font-style: italic;
