@@ -654,16 +654,15 @@ main,
    (ecran scurt, telefon în peisaj), iar un desen ieșit pe sub el adaugă exact
    atâta derulare — măsurat, 95px de gol sub meniu. Pe orizontală nu contează,
    acolo overflow este clip și clip nu derulează niciodată.
-   Stă în golul dintre linkuri și buton, nu în colț: acolo panoul rămânea o
-   coloană de hârtie goală. Rotit cu 24 de grade, pătratul iese cu vreo 38px din
-   cutia lui de fiecare parte, deci marginea de jos trebuie să fie mai mare de
-   atât, nu doar pozitivă. */
+   Stă în golul dintre linkuri și limbă, nu în colț: acolo panoul ar rămâne o
+   coloană de hârtie goală. Mărimea și distanța de jos scad odată cu înălțimea
+   ecranului, altfel frunza ajunge sub linkuri pe telefoanele scurte. */
 .drawer__leaf {
     position: absolute;
     z-index: -1;
-    inset-block-end: 9rem;
+    inset-block-end: clamp(6.25rem, 14svh, 9rem);
     inset-inline-start: -3.5rem;
-    width: 15rem;
+    width: clamp(10rem, 28svh, 15rem);
     height: auto;
     max-width: none;
     opacity: 0.4;
@@ -751,7 +750,6 @@ main,
     transform: scaleX(1);
 }
 
-.drawer__cta,
 .drawer__lang {
     opacity: 0;
     translate: 1.5rem 0;
@@ -759,12 +757,8 @@ main,
         translate var(--duration-slow) var(--ease-out);
 }
 
-.drawer__cta {
-    margin: auto 0 0;
-}
-
 .drawer__lang {
-    margin: 0;
+    margin: auto 0 0;
     display: flex;
     align-items: center;
     gap: var(--space-2xs);
@@ -788,7 +782,6 @@ main,
    starea deschisă: la închidere pleacă toate odată, altfel panoul ar aluneca
    afară cu textul încă intrând în el. */
 .drawer.is-open .drawer__link,
-.drawer.is-open .drawer__cta,
 .drawer.is-open .drawer__lang {
     opacity: 1;
     translate: 0 0;
@@ -806,12 +799,8 @@ main,
     transition-delay: 210ms;
 }
 
-.drawer.is-open .drawer__cta {
-    transition-delay: 280ms;
-}
-
 .drawer.is-open .drawer__lang {
-    transition-delay: 340ms;
+    transition-delay: 280ms;
 }
 
 /* Blochează derularea paginii cât panoul e deschis. Compensarea lățimii barei
