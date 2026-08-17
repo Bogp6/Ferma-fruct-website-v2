@@ -2602,6 +2602,69 @@ main,
 }
 
 
+@media (min-width: 48em) and (max-width: 63.99em) {
+
+    /* La tabletă fotografia mare lasă liberă jumătate de rând, în timp ce
+       calendarul cădea după tot conținutul. Grila folosește numai acel gol;
+       capul, proza și restul blocului își păstrează ordinea. */
+    .grove,
+    .grove--flip {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: var(--space-xl);
+        row-gap: var(--space-m);
+    }
+
+    .grove__head,
+    .grove__intro,
+    .grove__aside {
+        grid-column: 1 / -1;
+    }
+
+    .grove__head {
+        grid-row: 1;
+    }
+
+    .grove__intro {
+        grid-row: 2;
+    }
+
+    .grove__frame--a {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    .grove__rail,
+    .grove--mid .grove__rail {
+        grid-column: 2;
+        grid-row: 3;
+        align-self: stretch;
+        margin-block-start: var(--space-s);
+    }
+
+    .grove__aside {
+        grid-row: 4;
+    }
+
+    .grove__frame--b {
+        grid-column: 2;
+        grid-row: 5;
+    }
+
+    .grove--flip .grove__frame--a {
+        grid-column: 2;
+    }
+
+    .grove--flip .grove__rail {
+        grid-column: 1;
+    }
+
+    .grove--flip .grove__frame--b {
+        grid-column: 1;
+    }
+}
+
+
 @media (max-width: 47.99em) {
 
     /* DECLARAȚIA. Fraza mare și nota stăteau la capetele aceluiași rând. Sub
