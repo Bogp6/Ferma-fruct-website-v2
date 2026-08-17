@@ -1,4 +1,5 @@
-/* STYLE — Ferma Fruct Brabova. Cream ground, no white surfaces. Fluid layout, no media queries yet. */
+/* STYLE — Ferma Fruct Brabova. Cream ground, no white surfaces. Fluid layout;
+   lățimile la care compoziția chiar cedează sunt strânse în secțiunea 13. */
 
 
 /* ---------------------------------------------------------------------------
@@ -532,6 +533,293 @@ main,
     opacity: 0.6;
 }
 
+/* BUTONUL DE MENIU. Ascuns peste 64em, unde navigarea încape întreagă în bară —
+   regula care îl scoate la iveală stă în secțiunea 13, cu restul lățimilor.
+   Fără script nu are ce deschide, deci nu apare deloc: vezi .no-js în <head>. */
+.burger {
+    display: none;
+    justify-self: end;
+    /* Cutia de atins, 2.75rem, este mai mare decât desenul din ea: 44px este
+       pragul sub care un deget ratează ținta. */
+    padding: var(--space-2xs);
+    border: 0;
+    background: transparent;
+    color: var(--on-dark);
+    cursor: pointer;
+    /* Aceeași umbră ca la linkurile din bară: peste un cadru luminos din film
+       liniile crem s-ar pierde. */
+    filter: drop-shadow(0 1px 3px rgba(33, 48, 26, 0.6));
+    transition: color var(--duration) var(--ease);
+}
+
+.no-js .burger,
+.no-js .drawer {
+    display: none;
+}
+
+.burger__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+}
+
+.burger:hover {
+    color: var(--action);
+}
+
+
+/* ---------------------------------------------------------------------------
+   3b. MENIUL LATERAL — panou pe hârtie, nu pe verde: bara de sus este deja
+   verde când e plină, iar un panou verde peste ea ar fi fost o singură pată
+   fără muchie. Pe hârtie panoul se citește ca o filă trasă peste pagină.
+   Există numai sub 64em (secțiunea 13 îl aprinde).
+   --------------------------------------------------------------------------- */
+
+.drawer {
+    /* Peste 64em navigarea stă întreagă în bară, deci panoul nu există deloc —
+       nici pentru tastatură, nici pentru cititorul de ecran. Secțiunea 13 îl
+       aprinde. Închis, main.js îi pune în plus inert. */
+    display: none;
+    position: fixed;
+    inset: 0;
+    /* Peste antet (z-index 5): panoul acoperă și bara, iar X-ul din el cade
+       exact peste burgerul de dedesubt. */
+    z-index: 20;
+    /* clip, nu hidden: panoul stă tras în afara ecranului cât e închis, iar
+       hidden ar face din el un al doilea container de derulare. */
+    overflow: clip;
+    /* Întârzierea ține panoul pe ecran cât alunecă afară; la deschidere
+       transition-delay revine la 0 mai jos. */
+    visibility: hidden;
+    transition: visibility 0s linear var(--duration);
+}
+
+.drawer.is-open {
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.drawer__scrim {
+    position: absolute;
+    inset: 0;
+    /* --bark-deep cu alfa, nu negru: negrul răcește crema de dedesubt. */
+    background: rgba(58, 38, 17, 0.5);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity var(--duration) var(--ease);
+}
+
+.drawer.is-open .drawer__scrim {
+    opacity: 1;
+}
+
+.drawer__panel {
+    position: absolute;
+    inset-block: 0;
+    /* Ambele margini, nu o lățime: box-sizing este content-box în tot
+       proiectul, deci o inline-size scrisă ar fi lățimea conținutului și
+       paddingul s-ar adăuga peste ea — panoul ieșea 314px pe un ecran de 320.
+       Între două margini, cutia iese exact cât spun ele.
+       Rezultatul este min(82%, 20rem): 82% ca să rămână o fâșie de pagină
+       vizibilă lângă panou, fără ea sertarul se citește ca o pagină nouă. */
+    inset-inline: max(18%, calc(100% - 20rem)) 0;
+    /* Marginea din dreapta este --gutter, aceeași cu a barei de sus, deci X-ul
+       cade peste burger. În stânga --space-l: --gutter ar fi prea lat pentru un
+       panou de 20rem. */
+    padding: var(--space-xs) var(--gutter) var(--space-xl) var(--space-l);
+    /* Colțurile numai pe muchia dinspre pagină: celelalte două ies din ecran. */
+    border-start-start-radius: var(--radius-xl);
+    border-end-start-radius: var(--radius-xl);
+    background: var(--paper);
+    /* Condiția desenului de mai jos: multiply are nevoie de context propriu de
+       stivuire plus fundal propriu. Vezi secțiunea 2. */
+    isolation: isolate;
+    overflow: clip auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-l);
+    box-shadow: var(--shadow-deep);
+    translate: 100% 0;
+    transition: translate var(--duration-slow) var(--ease-out);
+}
+
+.drawer.is-open .drawer__panel {
+    translate: 0 0;
+}
+
+/* Aceeași frunză ca în restul paginii, în colțul de jos al panoului. Sub text,
+   peste hârtie.
+
+   Marginea de jos NU poate fi negativă: panoul se derulează pe verticală
+   (ecran scurt, telefon în peisaj), iar un desen ieșit pe sub el adaugă exact
+   atâta derulare — măsurat, 95px de gol sub meniu. Pe orizontală nu contează,
+   acolo overflow este clip și clip nu derulează niciodată.
+   Stă în golul dintre linkuri și buton, nu în colț: acolo panoul rămânea o
+   coloană de hârtie goală. Rotit cu 24 de grade, pătratul iese cu vreo 38px din
+   cutia lui de fiecare parte, deci marginea de jos trebuie să fie mai mare de
+   atât, nu doar pozitivă. */
+.drawer__leaf {
+    position: absolute;
+    z-index: -1;
+    inset-block-end: 9rem;
+    inset-inline-start: -3.5rem;
+    width: 15rem;
+    height: auto;
+    max-width: none;
+    opacity: 0.4;
+    rotate: 24deg;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+/* 3rem = înălțimea mărcii din bară. Cu ea, rândul acesta are exact înălțimea
+   rândului de antet, deci X-ul se așază peste burgerul pe care l-a înlocuit. */
+.drawer__top {
+    flex: none;
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+}
+
+.drawer__mark {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-pill);
+}
+
+.drawer__close {
+    padding: var(--space-2xs);
+    border: 0;
+    background: transparent;
+    color: var(--bark);
+    cursor: pointer;
+    transition: color var(--duration) var(--ease);
+}
+
+.drawer__close:hover {
+    color: var(--action-ink);
+}
+
+.drawer__list {
+    margin: var(--space-s) 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+/* Scară proprie, nu --step-2: la capătul de jos --step-2 coboară sub 1.5rem,
+   unde WONK 1 din --axes-display se face terci. 1.75rem este primul pas sigur. */
+.drawer__link {
+    position: relative;
+    display: inline-block;
+    /* Cu --space-3xs rândul ieșea 42px; pragul degetului este 44. */
+    padding-block: var(--space-2xs);
+    color: var(--forest);
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-variation-settings: var(--axes-display);
+    font-size: clamp(1.75rem, 1.4rem + 1.75vw, 2.375rem);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    text-decoration: none;
+    opacity: 0;
+    translate: 1.5rem 0;
+    transition: color var(--duration) var(--ease),
+        opacity var(--duration) var(--ease-out),
+        translate var(--duration-slow) var(--ease-out);
+}
+
+/* Aceeași bară ca în bara de sus, crescută din stânga. */
+.drawer__link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    height: var(--rule);
+    background: var(--action);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--duration) var(--ease-out);
+}
+
+.drawer__link:hover::after,
+.drawer__link[aria-current="page"]::after {
+    transform: scaleX(1);
+}
+
+.drawer__cta,
+.drawer__lang {
+    opacity: 0;
+    translate: 1.5rem 0;
+    transition: opacity var(--duration) var(--ease-out),
+        translate var(--duration-slow) var(--ease-out);
+}
+
+.drawer__cta {
+    margin: auto 0 0;
+}
+
+.drawer__lang {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+}
+
+.drawer__lang-now {
+    color: var(--bark);
+}
+
+.drawer__lang-soon {
+    padding-inline-start: var(--space-2xs);
+    border-inline-start: var(--hairline) solid var(--sand);
+    opacity: 0.7;
+}
+
+/* Rândurile intră unul după altul, în ordinea citirii. Decalajele stau numai pe
+   starea deschisă: la închidere pleacă toate odată, altfel panoul ar aluneca
+   afară cu textul încă intrând în el. */
+.drawer.is-open .drawer__link,
+.drawer.is-open .drawer__cta,
+.drawer.is-open .drawer__lang {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.drawer.is-open .drawer__list li:nth-child(1) .drawer__link {
+    transition-delay: 90ms;
+}
+
+.drawer.is-open .drawer__list li:nth-child(2) .drawer__link {
+    transition-delay: 150ms;
+}
+
+.drawer.is-open .drawer__list li:nth-child(3) .drawer__link {
+    transition-delay: 210ms;
+}
+
+.drawer.is-open .drawer__cta {
+    transition-delay: 280ms;
+}
+
+.drawer.is-open .drawer__lang {
+    transition-delay: 340ms;
+}
+
+/* Blochează derularea paginii cât panoul e deschis. Compensarea lățimii barei
+   de derulare o scrie main.js, altfel pagina ar sări lateral la deschidere. */
+.is-locked {
+    overflow: hidden;
+}
+
 
 /* ---------------------------------------------------------------------------
    4. BUTTON — drawn pill, hairline + on-dark label over the hero film.
@@ -596,6 +884,14 @@ main,
 
 .btn:active::before {
     transform: scaleX(1);
+}
+
+/* Light-ground variant, for the side menu's paper panel. Only the resting
+   colours change: hover already goes orange fill with --bark-deep label, which
+   works on either ground. --bark is 10.8:1 on --paper. */
+.btn--ink {
+    border-color: var(--forest);
+    color: var(--bark);
 }
 
 /* Faint cream, sweep off. Local rgba: no token for on-dark at this alpha. */
@@ -924,6 +1220,14 @@ main,
     pointer-events: none;
     /* Legănarea iese cu câțiva pixeli din cutia listei, intenționat. */
     overflow: visible;
+}
+
+/* main.js scoate .has-spine sub 64em, unde blocul se așază pe o coloană și
+   calendarele nu mai stau unul sub altul pe aceeași verticală: linia desenată
+   ar traversa pagina. Fără ea se întoarce chenarul drept al fiecărui calendar,
+   adică exact imaginea fără script. */
+.orchard__groves:not(.has-spine) .orchard__spine {
+    display: none;
 }
 
 .orchard__spine path {
@@ -1630,8 +1934,9 @@ main,
     /* Cât spațiu liber rămâne între marginea ferestrei și marginea
        containerului. Tot textul subsolului începe pe marginea containerului,
        deci fâșia asta este singura zonă liberă de litere pe toată înălțimea —
-       acolo stau crengile. Sub ~1360px se strânge la --gutter și crengile
-       aproape dispar: de reglat la trecerea pe ecrane mici. */
+       acolo stau crengile. Sub 64em fâșia se strânge la --gutter și crengile ar
+       ajunge sub text, unde crema pică la 2.40:1: acolo ies din pagină cu
+       totul, vezi secțiunea 13. */
     --leaf-lane: max((100% - var(--container)) / 2, var(--gutter));
     /* clip, nu hidden: crengile ies peste colțuri intenționat, iar hidden ar
        face al doilea container de scroll și pagina s-ar putea trage lateral. */
@@ -1960,4 +2265,503 @@ main,
 .reveal.is-in {
     opacity: 1;
     transform: none;
+}
+
+
+/* ---------------------------------------------------------------------------
+   13. LĂȚIMI
+
+   Restul fișierului este scris fluid și ține singur pe aproape toată scara.
+   Aici stau numai locurile unde chiar se rupe ceva, fiecare cu motivul lui.
+   Nu sunt praguri de dispozitiv: sunt lățimile la care compoziția cedează.
+
+   em, nu px: în interogările de lățime em se raportează la mărimea de bază a
+   browserului, deci cine își mărește textul primește aranjamentul strâmt mai
+   devreme, adică exact atunci când are nevoie de el.
+
+     64em  blocul fructului nu mai încape pe trei coloane, iar bara de sus nu
+           mai poate ține și marca și navigarea și limba
+     48em  benzile și subsolul nu mai au loc pe rânduri de câte trei
+     30em  ultimele strâmtări, pentru telefonul mic
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 63.99em) {
+
+    /* ANTETUL. Rămâne marca singură plus butonul de meniu: cuvintele "Ferma
+       Fruct" plecă, fiindcă la lățimea asta marca și numele nu mai lasă loc
+       nici navigării, nici butonului. Numele întreg rămâne în subsol. */
+    .site-header__inner {
+        grid-template-columns: 1fr auto;
+    }
+
+    .brand__word,
+    .nav,
+    .lang {
+        display: none;
+    }
+
+    .burger {
+        display: block;
+    }
+
+    /* Fără script panoul nu se deschide, deci butonul nu apare (regula lui e în
+       secțiunea 3) și rămâne navigarea simplă. Rând care se rupe singur: cele
+       trei destinații încap și pe un ecran de telefon. */
+    .no-js .nav {
+        display: block;
+    }
+
+    .no-js .site-header__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2xs) var(--space-m);
+    }
+
+    .drawer {
+        display: block;
+    }
+
+    /* BANDA VIDEO. Rama își ține înălțimea din 34vw, iar sub 64em asta o lasă
+       aproape de trei ori mai lată decât înaltă: filmul se citea ca o dungă. */
+    .film__frame {
+        height: clamp(12rem, 40vw, 22rem);
+    }
+
+    /* BLOCUL FRUCTULUI. Trei coloane (calendar, proză, fotografie) nu mai încap:
+       la lățimea asta coloana de text scade sub o măsură citibilă, iar în
+       blocurile din mijloc coridorul calendarului mănâncă singur o treime din
+       bloc. Se așază pe o coloană.
+
+       display: contents desface cele două coloane, ca toate cele șase bucăți să
+       fie frați în același rând și să poată fi puse în ordinea citirii. Nu sunt
+       ținte de reveal (main.js urmărește .grove__head, .grove__intro,
+       .grove__detail), deci nu rămâne nimic fără cutie de mișcat. */
+    .orchard__groves {
+        gap: calc(var(--space-section) * 1.15);
+    }
+
+    .grove,
+    .grove--flip {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-m);
+    }
+
+    /* CULOARUL LINIEI. Pe ecran lat calendarul este o coloană întinsă pe toată
+       înălțimea blocului, deci trăsătura desenată are pe unde coborî pe lângă
+       tot fructul. Pe o coloană calendarul este ultimul rând al blocului, iar
+       fără culoarul acesta linia ar trebui să treacă prin fotografii și proză
+       ca să ajungă de la un calendar la următorul — măsurat, tăia 18 blocuri de
+       text la 320px. Culoarul îl scoate pe margine, pe latura pe care stă și
+       calendarul, deci linia coboară pe lângă bloc exact ca pe ecran lat.
+       Costă lățime de text: la 320px rămân 248px, cam 32 de semne pe rând. */
+    .grove {
+        padding-inline: 0 var(--space-l);
+    }
+
+    .grove--flip {
+        padding-inline: var(--space-l) 0;
+    }
+
+    .grove__tell,
+    .grove__lead {
+        display: contents;
+    }
+
+    .grove__head {
+        order: 1;
+    }
+
+    .grove__intro {
+        order: 2;
+    }
+
+    .grove__frame--a {
+        order: 3;
+    }
+
+    .grove__aside {
+        order: 4;
+    }
+
+    .grove__frame--b {
+        order: 5;
+    }
+
+    /* Aceeași specificitate ca treptele de lățime din secțiunea 7, deci ordinea
+       din fișier decide: pe o coloană nu mai există trepte de mărit fotografia.
+       Plafonul de 26rem nu este estetic — fișierele se opresc la 840 și 960 de
+       pixeli, iar peste atât, pe un ecran cu doi pixeli fizici pe punct,
+       fotografia s-ar întinde și ar ieși moale. */
+    .orchard__groves > .grove:nth-child(n) .grove__frame {
+        width: min(100%, 26rem);
+        margin-block-start: var(--space-s);
+    }
+
+    /* Zigzagul blocului nu se pierde: pe o coloană îl duc marginile automate,
+       o fotografie la stânga, cealaltă la dreapta, invers de la un fruct la
+       altul. */
+    .grove__frame--a {
+        margin-inline: 0 auto;
+    }
+
+    .grove__frame--b {
+        margin-inline: auto 0;
+    }
+
+    .grove--flip .grove__frame--a {
+        margin-inline: auto 0;
+    }
+
+    .grove--flip .grove__frame--b {
+        margin-inline: 0 auto;
+    }
+
+    /* CALENDARUL. Ultimul din bloc și pe toată lățimea.
+
+       Latura chenarului NU se atinge aici: rămâne cea aleasă de .grove--flip,
+       deci dreapta, stânga, dreapta, stânga de la un fruct la altul. Aceea este
+       singura care ține trăsătura desenată vie pe ecran mic — linia se lipește
+       de chenarul unui calendar, traversează pagina în golul dintre blocuri și
+       se lipește de celălalt capăt la fructul următor. Pusă toată pe stânga,
+       linia nu mai are pe unde șerpui și secțiunea își pierde desenul.
+       Se schimbă numai cât ține calendarul și unde stă în bloc. */
+    .grove__rail,
+    .grove--mid .grove__rail {
+        --rail-pad: var(--space-l);
+
+        order: 6;
+        flex: 0 0 auto;
+        justify-content: flex-start;
+        gap: var(--space-l);
+        /* Marginea negativă scoate chenarul înapoi în culoarul deschis de
+           .grove, ca linia să cadă în mijlocul lui și nu pe muchia textului.
+           Rămân 8px până la marginea containerului, adică 28px până la
+           marginea ferestrei la 320px — legănarea de 16px încape. */
+        margin: var(--space-l) calc(var(--space-m) * -1) 0 0;
+    }
+
+    .grove--flip .grove__rail {
+        margin-inline: calc(var(--space-m) * -1) 0;
+    }
+
+    /* Blocurile din mijloc se poartă ca cele de pe margine: coridorul de 3.4
+       ori --space-l era lățimea pe care linia o avea la dispoziție între cele
+       trei coloane, iar pe o coloană nu mai există între ce să stea. Linia se
+       lipește deci de chenarul fiecărui calendar și îi poartă bulinele, la
+       toate patru. Perechea din main.js este plot.mid, stinsă la aceeași
+       lățime. */
+    .orchard__groves.has-spine .grove--mid .grove__stage::before {
+        right: calc(var(--rail-pad) * -1 - 0.3125rem - var(--dot-nudge, 0px));
+    }
+
+    .orchard__groves.has-spine .grove--mid.grove--flip .grove__stage::before {
+        right: auto;
+        left: calc(var(--rail-pad) * -1 - 0.3125rem - var(--dot-nudge, 0px));
+    }
+
+    /* DESENELE DIN FUNDAL. Vița creștea prin culoarul liber din mijlocul
+       secțiunii; pe o coloană culoarul acela este chiar textul. Frunza de sus și
+       cea de jos leagă un bloc de următorul și rămân împinse pe margine cu
+       --shift; cele două din mijlocul blocului se mută pe fotografii, singurele
+       benzi ale blocului fără nicio literă (vezi mai jos). */
+    .motif--vine-leaf-c {
+        --shift: 26vw;
+    }
+
+    .motif--vine-leaf-b {
+        --shift: -26vw;
+    }
+
+    /* Frunzele din mijlocul blocului stau călare pe muchia dinspre culoar a
+       fotografiilor: jumătate intră în spatele pozei (motifele sunt pe
+       z-index: -1, deci poza le acoperă), jumătate iese în golul de lângă ea.
+       Nicio literă nu ajunge deasupra lor, iar pixelul cel mai închis al frunzei
+       lăsa textul mic maro la 3.62:1 — sub prag — deci suprapunerea cu textul se
+       evită prin așezare, nu prin opacitate.
+
+       --shift ține exact regula de lățime a fotografiei: min(100%, 26rem) este
+       lățimea ei, 50% este mijlocul blocului, deci diferența este muchia ei
+       exterioară, la orice lățime. Dacă plafonul de 26rem din .grove__frame se
+       schimbă, se schimbă și aici, altfel frunza nu mai cade pe muchie.
+       Latura se alege singură: --shift pozitiv merge spre culoarul lui
+       frame--a, negativ spre cel al lui frame--b, iar .grove--flip inversează
+       amândouă. Rezultatul pe bloc: dreapta, dreapta, stânga, stânga, oglindit
+       la fructul următor, deci vița șerpuiește în continuare.
+
+       Procentele verticale sunt centrul fotografiei, nu marginea ei de sus:
+       măsurat, poza A ține 22%-39% din bloc și poza B 63%-76%, la toate patru
+       fructele și la toate lățimile înguste. Scăderea jumătății de --w mută
+       centrul frunzei pe procentul scris. */
+    /* Podeaua clampului nu este estetică: pe telefon fotografia ține toată
+       coloana, deci felia de frunză care rămâne la vedere este lată exact cât
+       gutter-ul, vreo 50px. Singurul fel în care mai crește este pe verticală,
+       deci frunza se face mai mare ca felia să se citească drept frunză și nu
+       drept pată. */
+    .motif--vine-leaf-a {
+        inset-block-start: calc(30% - var(--w) / 2);
+        --w: clamp(9rem, 20vw, 13rem);
+        --shift: calc(min(100%, 26rem) - 50%);
+    }
+
+    .motif--vine-leaf-d {
+        inset-block-start: calc(70% - var(--w) / 2);
+        --w: clamp(9.5rem, 22vw, 14rem);
+        --shift: calc(50% - min(100%, 26rem));
+    }
+
+    .motif--fill-apple {
+        margin-inline-start: 20vw;
+    }
+
+    .grove--flip .motif--fill-apple {
+        margin-inline-start: -26vw;
+    }
+
+    /* Ramura laterală ieșea cu 20rem din bloc: pe un ecran îngust asta o scotea
+       de tot din cadru, iar overflow: clip o tăia complet. */
+    .motif--grove-branch {
+        inset-inline-end: -8rem;
+        width: clamp(13rem, 46vw, 22rem);
+        opacity: 0.32;
+    }
+
+    .grove--flip .motif--grove-branch {
+        inset-inline-start: -8rem;
+    }
+
+    .motif--film-branch {
+        width: clamp(10rem, 40vw, 16rem);
+    }
+
+    /* Șapte frunze peste declarație erau așezate în golul din dreapta ei; pe o
+       coloană golul acela nu mai există și ar cădea toate peste text. Rămân
+       trei, cele mai de sus. */
+    .motif--head-leaf-c,
+    .motif--head-leaf-e,
+    .motif--head-leaf-f,
+    .motif--head-leaf-g {
+        display: none;
+    }
+
+    /* Din cele treisprezece frunze răzlețe ale benzii rămân șase. Restul erau
+       puse pe procente măsurate pe titlul lat de pe ecran mare — la lățimea
+       asta cad fix peste el. */
+    .motif--band-leaf-b,
+    .motif--band-leaf-c,
+    .motif--band-leaf-f,
+    .motif--band-leaf-i,
+    .motif--band-leaf-k,
+    .motif--band-leaf-l,
+    .motif--band-leaf-m {
+        display: none;
+    }
+
+    /* CRENGILE SUBSOLULUI. Pe ecran lat stau în fâșia liberă dintre marginea
+       ferestrei și marginea containerului. Sub 64em fâșia aceea este --gutter și
+       atât, deci formula de acolo nu mai are unde să le pună: aici se ancorează
+       direct în cele două colțuri opuse, singurele locuri pe care textul
+       centrat nu le atinge.
+
+       Cerute de client la dimensiune mică, pe măsura subsolului strâns: cam 40%
+       din lățimea de pe ecran lat, deci rămân desen de colț, nu fundal.
+       Opacitatea coboară de la 0.62 la 0.38 pentru marja de siguranță — crema pe
+       verdele acesta este 3.69:1, iar peste acuarelă la putere plină cade la
+       2.40:1. */
+    /* Aerul de sus și de jos crește: subsolul strâns nu are nicio fâșie liberă
+       pe laturi, deci banda pe care crengile o pot ocupa fără să atingă text
+       trebuie făcută pe verticală. Măsurat fără ea: creanga de sus pornea pe
+       numele fermei, iar cea de jos acoperea linia de copyright 49 pe 22 px. */
+    .site-footer {
+        --leaf: clamp(6.5rem, 22vw, 11rem);
+
+        padding-block: var(--space-2xl);
+    }
+
+    .site-footer__leaf {
+        opacity: 0.38;
+    }
+
+    /* O treime din propria lățime în afara cadrului: creanga intră în colț, nu
+       se lipește de el. */
+    .site-footer__leaf--top {
+        inset-block-start: -1.5rem;
+        inset-inline-start: auto;
+        inset-inline-end: calc(var(--leaf) / -3);
+    }
+
+    /* -2.5rem, nu -1.5rem: la -1.5rem colțul de sus al cutiei atingea eticheta
+       partenerilor pe 4px. Măsurat, nu ghicit. */
+    .site-footer__leaf--bottom {
+        inset-block-end: -2.5rem;
+        inset-inline-start: calc(var(--leaf) / -3);
+        opacity: 0.38;
+    }
+}
+
+
+@media (max-width: 47.99em) {
+
+    /* DECLARAȚIA. Fraza mare și nota stăteau la capetele aceluiași rând. Sub
+       48em rândul se rupe oricum, iar nota rămânea aliniată la dreapta sub o
+       frază aliniată la stânga. */
+    .orchard__head {
+        display: block;
+        padding-block: var(--space-l);
+    }
+
+    .orchard__statement {
+        max-width: 18ch;
+    }
+
+    .orchard__note {
+        margin-block-start: var(--space-m);
+        text-align: start;
+    }
+
+    /* PRAGUL "FRUCTELE NOASTRE". Riglele cereau minimum --space-xl fiecare, iar
+       cu titlul între ele rândul depășea lățimea ferestrei. Se așază pe trei
+       rânduri: riglă scurtă, titlu, riglă scurtă. Frunza urcă deasupra
+       titlului, singurul loc din care nu poate cădea peste litere. */
+    .orchard__catalog {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: var(--space-s);
+        margin-block: var(--space-2xl) var(--space-l);
+    }
+
+    .orchard__catalog-rule {
+        width: min(7rem, 40%);
+    }
+
+    .orchard__catalog-leaf {
+        inset-block: auto calc(100% + var(--space-2xs));
+        inset-inline: 50% auto;
+        width: clamp(3rem, 12vw, 4rem);
+        translate: -50% 0;
+        rotate: -14deg;
+    }
+
+    /* BANDA CU CIFRE. Trei perechi număr-unitate nu mai încap pe un rând; cu
+       flex-wrap se rupeau oricum, dar liniile despărțitoare rămâneau verticale
+       și cădeau la începutul rândului următor. Pe coloană trec deasupra. */
+    .brief__list {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: var(--space-s) var(--space-m);
+    }
+
+    .brief__item {
+        padding: var(--space-s) var(--space-2xs);
+    }
+
+    .brief__item + .brief__item {
+        border-inline-start: 0;
+        border-block-start: var(--hairline) solid rgba(73, 48, 23, 0.3);
+    }
+
+    .film__frame {
+        height: clamp(10rem, 44vw, 18rem);
+    }
+
+    /* ÎNTREBĂRI. --space-l de o parte și de alta lăsa răspunsului mai puțin de
+       jumătate din lățimea plăcii. */
+    .faq__q {
+        padding: var(--space-s) var(--space-m);
+    }
+
+    .faq__a {
+        margin-inline: var(--space-m);
+    }
+
+    /* SUBSOLUL. Ambele rânduri erau grile de câte trei coloane. */
+    .site-footer__inner {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: var(--space-l);
+        text-align: center;
+    }
+
+    .site-footer__nav {
+        grid-column: auto;
+    }
+
+    .site-footer__base {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: var(--space-s);
+    }
+
+    .site-footer__legal {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .site-footer__lang {
+        justify-self: center;
+    }
+
+    .partners {
+        justify-content: center;
+        gap: var(--space-m);
+    }
+
+    .partners__list {
+        justify-content: center;
+    }
+}
+
+
+/* Lățimea nu spune cu ce se atinge ecranul: un laptop poate avea ecran tactil,
+   o tabletă poate avea mouse. Regula asta se uită la deget, nu la pixeli.
+   Măsurate: linkurile din subsol ies 19px înalte, siglele sociale 24px — sub
+   pragul de 44px de la care un deget nu mai ratează ținta. */
+@media (pointer: coarse) {
+
+    .site-footer__nav-link {
+        display: inline-block;
+        padding-block: var(--space-xs);
+    }
+
+    /* Distanța dintre sigle o dă acum marginea lor de atins, nu gap. */
+    .site-footer__social {
+        gap: 0;
+    }
+
+    .site-footer__social-link {
+        padding: var(--space-xs);
+    }
+}
+
+
+@media (max-width: 29.99em) {
+
+    /* Calendarul: --space-l de la chenar la text lăsa notelor etapelor o coloană
+       prea îngustă pe un ecran de 320. */
+    .grove__rail,
+    .grove--mid .grove__rail {
+        --rail-pad: var(--space-m);
+    }
+
+    .orchard__catalog-rule {
+        width: min(5rem, 34%);
+    }
+
+    /* Ultimele două frunze din bandă care mai cădeau peste titlu la lățimea
+       asta, unde "Întrebări frecvente" ocupă trei rânduri. */
+    .motif--band-leaf-d,
+    .motif--band-leaf-g {
+        display: none;
+    }
+
+    .partners {
+        justify-content: center;
+    }
+
+    .partners__list {
+        gap: var(--space-s) var(--space-m);
+    }
 }

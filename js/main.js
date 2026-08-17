@@ -1,8 +1,11 @@
 /* ============================================================================
    Ferma Fruct Brabova — pagina principală
 
-   Eight jobs. Every one of them is optional: the page is complete, readable
-   and navigable with this file removed. Nothing here creates content.
+   Nine jobs. Every one of them is optional: the page is complete, readable
+   and navigable with this file removed. Nothing here creates content. The side
+   menu (job 9) is the one that needs saying twice: without this file the button
+   that opens it is hidden by CSS and the plain row of links takes its place, so
+   nothing on the page becomes unreachable.
 
    The movement is one idea used everywhere: a card laid on a table. It arrives
    from slightly below, tilted a hair, and settles flat. Nothing fades in place,
@@ -522,6 +525,7 @@
         var plots = rails.map(function (rail) {
             return {
                 rail: rail,
+                grove: rail.closest('.grove'),
                 mid: rail.closest('.grove').classList.contains('grove--mid'),
                 /* Chenarul pe stânga înseamnă text la dreapta lui. */
                 toward: parseFloat(getComputedStyle(rail).borderLeftWidth) > 0 ? 1 : -1,
@@ -631,6 +635,12 @@
             var pts = [];
 
             plots.forEach(function (plot, n) {
+                /* Sub 64em blocul se așază pe o coloană și calendarul ia toată
+                   lățimea: coridorul din mijloc nu mai există, deci nici
+                   purtarea de bloc-din-mijloc. Toate patru se poartă atunci ca
+                   blocurile de pe margine — linia stă lipită de chenarul lor și
+                   le poartă bulinele. Perechea în CSS este în secțiunea 13. */
+                var mid = plot.mid && wide.matches;
                 var r = plot.rail.getBoundingClientRect();
                 var railStyle = getComputedStyle(plot.rail);
                 var pad = parseFloat(railStyle.paddingInlineEnd) ||
@@ -643,9 +653,19 @@
                 );
                 /* Coloana liniei: latura dinspre care s-a dus textul. */
                 var base = (plot.toward > 0 ? r.left : r.right) - box.left;
-                var top = r.top - box.top;
-                var height = r.height;
-                var sway = plot.mid ? SWAY_MID : SWAY_EDGE;
+                /* Pe ce înălțime coboară linia în dreptul acestui fruct.
+                   Pe ecran lat este chiar calendarul: el este o coloană
+                   întinsă pe tot blocul (align-self: stretch), deci linia
+                   merge de-a lungul întregului fruct.
+                   Pe o coloană calendarul este numai ultimul rând al blocului,
+                   așa că înălțimea se ia de la bloc — altfel drumul de la un
+                   calendar la următorul ar trece drept prin fotografiile și
+                   proza fructului dintre ele. Latura rămâne cea a chenarului,
+                   deci linia coboară prin culoarul deschis în CSS. */
+                var run = wide.matches ? r : plot.grove.getBoundingClientRect();
+                var top = run.top - box.top;
+                var height = run.height;
+                var sway = mid ? SWAY_MID : SWAY_EDGE;
                 var i;
 
                 /* Golul de deasupra blocului. */
@@ -659,13 +679,13 @@
 
                 for (i = 0; i < sway.length; i += 1) {
                     var off = sway[i] >= 0
-                        ? sway[i] * (plot.mid ? pad * SWAY_MID_KEEP : SWAY_EDGE_PX)
-                        : sway[i] * (plot.mid ? room : SWAY_EDGE_PX);
+                        ? sway[i] * (mid ? pad * SWAY_MID_KEEP : SWAY_EDGE_PX)
+                        : sway[i] * (mid ? room : SWAY_EDGE_PX);
                     var stage = plot.stages[i - 1];
                     var y;
 
-                    if (plot.mid || !stage) {
-                        y = top + height * (plot.mid ? STOP_MID[i] : (i === 0 ? 0 : 1));
+                    if (mid || !stage) {
+                        y = top + height * (mid ? STOP_MID[i] : (i === 0 ? 0 : 1));
                     } else {
                         /* Centrul bulinei: 0.35em de la marginea etapei (CSS)
                            plus jumătate din cei 0.5rem ai ei. */
@@ -681,7 +701,7 @@
                        deci semnul rămâne unde-l pune CSS-ul. */
                     if (stage) {
                         stage.style.setProperty('--dot-nudge',
-                            (plot.mid ? 0 : Math.abs(off)) + 'px');
+                            (mid ? 0 : Math.abs(off)) + 'px');
                     }
                 }
             });
@@ -694,6 +714,15 @@
             spineFoot.setAttribute('cy', pts[pts.length - 1].y);
         };
 
+        /* Linia se desenează la ORICE lățime: este desenul care ține secțiunea
+           laolaltă, nu un ornament de ecran lat. Ce se schimbă sub 64em este
+           numai purtarea blocurilor din mijloc, mai sus în drawSpine. Aceeași
+           lățime scrisă în CSS — dacă se schimbă acolo, se schimbă și aici. */
+        var wide = window.matchMedia('(min-width: 64em)');
+        var applySpine = function () {
+            drawSpine();
+        };
+
         groves.appendChild(spine);
         groves.classList.add('has-spine');
         drawSpine();
@@ -702,16 +731,150 @@
            deci calea se rescrie odată cu cutia. Fără ResizeObserver rămâne
            evenimentul de redimensionare, care prinde cazul obișnuit. */
         if ('ResizeObserver' in window) {
-            var watcher = new ResizeObserver(drawSpine);
+            var watcher = new ResizeObserver(applySpine);
             watcher.observe(groves);
             rails.forEach(function (rail) {
                 watcher.observe(rail);
             });
         } else {
-            window.addEventListener('resize', drawSpine);
+            window.addEventListener('resize', applySpine);
         }
 
-        window.addEventListener('load', drawSpine);
+        /* Ascultat direct pe interogarea de lățime, nu numai prin
+           ResizeObserver: trecerea peste 64em se poate întâmpla fără ca vreuna
+           din cutiile urmărite să-și schimbe dimensiunea, iar atunci linia ar
+           rămâne desenată peste aranjamentul pe o coloană. */
+        if (typeof wide.addEventListener === 'function') {
+            wide.addEventListener('change', applySpine);
+        } else if (typeof wide.addListener === 'function') {
+            wide.addListener(applySpine);
+        }
+
+        window.addEventListener('load', applySpine);
+    }
+
+
+    /* ---------------------------------------------------------------------
+       9. MENIUL LATERAL
+       Numai sub 64em; peste, CSS-ul îl scoate din pagină cu display: none și
+       codul de aici nu are ce deschide.
+
+       inert pe panoul închis, nu numai visibility: hidden — un panou tras în
+       afara ecranului rămâne altfel tabulabil, iar cursorul de tastatură ar
+       pleca în el fără ca nimic să se miște pe ecran.
+
+       Fără fișierul acesta butonul nu apare deloc (clasa no-js din <head>), deci
+       nu rămâne niciun buton care să nu facă nimic.
+       --------------------------------------------------------------------- */
+
+    var drawer = document.querySelector('.drawer');
+    var burger = document.querySelector('.burger');
+
+    if (drawer && burger) {
+        var panel = drawer.querySelector('.drawer__panel');
+        var narrow = window.matchMedia('(max-width: 63.99em)');
+        var root = document.documentElement;
+
+        /* Tot ce nu este panoul. Deschis, blocul acesta primește inert, deci
+           tabularea nu poate ieși din panou pe la capătul lui — asta ține locul
+           unei capcane de focus scrise de mână, care ar fi fost treizeci de
+           rânduri pentru același rezultat. */
+        var behind = Array.prototype.filter.call(document.body.children, function (el) {
+            return el !== drawer && el.tagName !== 'SCRIPT';
+        });
+
+        var setOpen = function (open) {
+            burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+            drawer.classList.toggle('is-open', open);
+
+            if (open) {
+                drawer.removeAttribute('inert');
+            } else {
+                drawer.setAttribute('inert', '');
+            }
+
+            behind.forEach(function (el) {
+                if (open) {
+                    el.setAttribute('inert', '');
+                } else {
+                    el.removeAttribute('inert');
+                }
+            });
+
+            /* Bara de derulare dispare odată cu derularea, iar pagina de sub
+               panou ar sări cu lățimea ei. Se pune înapoi ca padding. Pe un
+               telefon bara este suprapusă, deci diferența iese 0 și nu se
+               schimbă nimic. */
+            if (open) {
+                var bar = window.innerWidth - root.clientWidth;
+                root.style.paddingInlineEnd = bar > 0 ? bar + 'px' : '';
+                root.classList.add('is-locked');
+            } else {
+                root.classList.remove('is-locked');
+                root.style.paddingInlineEnd = '';
+            }
+        };
+
+        var open = function () {
+            setOpen(true);
+            /* Prima oprire din panou, ca tastatura să intre în el imediat. */
+            var first = panel.querySelector('.drawer__close');
+            if (first) {
+                first.focus();
+            }
+        };
+
+        var close = function (returnFocus) {
+            setOpen(false);
+            if (returnFocus) {
+                burger.focus();
+            }
+        };
+
+        burger.addEventListener('click', function () {
+            if (drawer.classList.contains('is-open')) {
+                close(true);
+            } else {
+                open();
+            }
+        });
+
+        Array.prototype.forEach.call(drawer.querySelectorAll('[data-drawer-close]'), function (el) {
+            el.addEventListener('click', function () {
+                close(true);
+            });
+        });
+
+        /* Ancorele duc în aceeași pagină: panoul trebuie să plece de peste
+           destinația spre care tocmai a trimis. Fără returnFocus — cursorul
+           merge la ancoră, nu înapoi la buton. */
+        Array.prototype.forEach.call(drawer.querySelectorAll('.drawer__link'), function (link) {
+            link.addEventListener('click', function () {
+                close(false);
+            });
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && drawer.classList.contains('is-open')) {
+                close(true);
+            }
+        });
+
+        /* Ținut deschis peste 64em, panoul dispare din ecran (display: none) dar
+           pagina ar rămâne blocată la derulare. */
+        var onWidth = function () {
+            if (!narrow.matches && drawer.classList.contains('is-open')) {
+                close(false);
+            }
+        };
+
+        if (typeof narrow.addEventListener === 'function') {
+            narrow.addEventListener('change', onWidth);
+        } else if (typeof narrow.addListener === 'function') {
+            narrow.addListener(onWidth);
+        }
+
+        setOpen(false);
     }
 
 

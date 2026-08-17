@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ro" class="no-js">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- viewport-fit=cover: fără el env(safe-area-inset-*) este mereu 0 și marginea
+       paginii nu ocolește crestătura unui telefon ținut în peisaj. Vezi --gutter. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- Scoasă aici, în <head>, nu în main.js: butonul de meniu nu poate deschide
+       nimic fără script, deci fără clasa asta CSS-ul îl ține ascuns și lasă
+       navigarea simplă în loc. Pusă la finalul paginii, bara ar clipi. -->
+  <script>document.documentElement.classList.remove('no-js');</script>
 
   <!-- Core four (part 1): title and description -->
   <title>Ferma Fruct Brabova</title>
@@ -15,7 +22,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260817-leaves-diagonal-2">
+  <link rel="stylesheet" href="css/style.css?v=20260817-responsive-8">
 
   <!-- The display face draws the first words on the page; without this the
        hero line lands in a fallback and then jumps when the real face arrives.
@@ -133,8 +140,71 @@
         <span class="lang__soon">EN</span>
       </p>
 
+      <!-- Sub 64em navigarea de sus se strânge în panoul lateral. aria-expanded
+           stă scris în HTML, nu adăugat de main.js: dacă atributul lipsește la
+           prima pictare, cititorul de ecran anunță un buton fără stare. -->
+      <button class="burger" type="button" aria-expanded="false" aria-controls="meniu">
+        <span class="visually-hidden">Meniu</span>
+        <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" aria-hidden="true">
+          <path d="M3.5 7h17" />
+          <path d="M3.5 12h17" />
+          <path d="M3.5 17h17" />
+        </svg>
+      </button>
+
     </div>
   </header>
+
+  <!-- ==========================================================================
+       MENIUL LATERAL
+       Frate al antetului, nu copil: panoul este fixed pe toată înălțimea, iar
+       din interiorul antetului ar fi moștenit contextul lui de stivuire și ar fi
+       rămas sub bandă.
+
+       Aceleași trei destinații ca în bara de sus și ca în subsol — nicio ancoră
+       care să existe numai aici. Închis, main.js îi pune inert, deci tabularea
+       trece pe lângă el; peste 64em CSS-ul îl scoate cu totul.
+       ========================================================================== -->
+  <div class="drawer" id="meniu" inert>
+
+    <div class="drawer__scrim" data-drawer-close></div>
+
+    <nav class="drawer__panel" aria-label="Meniu">
+
+      <img class="drawer__leaf" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true"
+           loading="lazy" decoding="async">
+
+      <div class="drawer__top">
+        <img class="drawer__mark" src="img/logo-160.webp" srcset="img/logo-160.webp 160w, img/logo-320.webp 320w"
+             sizes="44px" width="320" height="320" alt="" loading="lazy">
+
+        <button class="drawer__close" type="button" data-drawer-close>
+          <span class="visually-hidden">Închide meniul</span>
+          <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12" />
+            <path d="M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+
+      <ul class="drawer__list">
+        <li><a class="drawer__link" href="#acasa" aria-current="page">Acasă</a></li>
+        <li><a class="drawer__link" href="#fructe">Fructe</a></li>
+        <li><a class="drawer__link" href="#contact">Contact</a></li>
+      </ul>
+
+      <p class="drawer__cta"><a class="btn btn--ink" href="#contact">Contactați-ne</a></p>
+
+      <p class="drawer__lang">
+        <span class="visually-hidden">Limba paginii:</span>
+        <span class="drawer__lang-now">RO</span>
+        <span class="drawer__lang-soon">EN</span>
+      </p>
+
+    </nav>
+  </div>
 
   <main id="main">
 
@@ -272,7 +342,7 @@
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/cirese-b420.webp" srcset="img/cirese-b420.webp 420w, img/cirese-b640.webp 640w"
-                     sizes="(min-width: 68rem) 28rem, 44vw" width="640" height="480" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 28rem, (min-width: 64em) 44vw, (min-width: 30em) 26rem, 92vw" width="640" height="480" loading="lazy" decoding="async"
                      alt="Frunze de cireș și cireșe coapte, văzute de aproape">
               </div>
             </div>
@@ -280,7 +350,7 @@
             <div class="grove__lead">
               <div class="grove__frame grove__frame--a">
                 <img class="grove__photo" src="img/cirese-a480.webp" srcset="img/cirese-a480.webp 480w, img/cirese-a640.webp 640w"
-                     sizes="(min-width: 68rem) 30rem, 46vw" width="640" height="800" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 30rem, (min-width: 64em) 46vw, (min-width: 30em) 26rem, 92vw" width="640" height="800" loading="lazy" decoding="async"
                      alt="Cireșe roșii coapte, atârnând în ciorchine pe ram">
               </div>
 
@@ -328,7 +398,7 @@
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/caise-b420.webp" srcset="img/caise-b420.webp 420w, img/caise-b840.webp 840w"
-                     sizes="(min-width: 68rem) 28rem, 44vw" width="1200" height="900" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 28rem, (min-width: 64em) 44vw, (min-width: 30em) 26rem, 92vw" width="1200" height="900" loading="lazy" decoding="async"
                      alt="Ramură încărcată cu caise coapte">
               </div>
             </div>
@@ -336,7 +406,7 @@
             <div class="grove__lead">
               <div class="grove__frame grove__frame--a">
                 <img class="grove__photo" src="img/caise-a480.webp" srcset="img/caise-a480.webp 480w, img/caise-a960.webp 960w"
-                     sizes="(min-width: 68rem) 30rem, 46vw" width="1200" height="1500" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 30rem, (min-width: 64em) 46vw, (min-width: 30em) 26rem, 92vw" width="1200" height="1500" loading="lazy" decoding="async"
                      alt="Caise galben-portocalii coapte, pe creangă">
               </div>
 
@@ -384,7 +454,7 @@
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/prune-b420.webp" srcset="img/prune-b420.webp 420w, img/prune-b840.webp 840w"
-                     sizes="(min-width: 68rem) 28rem, 44vw" width="1530" height="1147" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 28rem, (min-width: 64em) 44vw, (min-width: 30em) 26rem, 92vw" width="1530" height="1147" loading="lazy" decoding="async"
                      alt="Prune coapte între frunzele pomului">
               </div>
             </div>
@@ -392,7 +462,7 @@
             <div class="grove__lead">
               <div class="grove__frame grove__frame--a">
                 <img class="grove__photo" src="img/prune-a480.webp" srcset="img/prune-a480.webp 480w, img/prune-a960.webp 960w"
-                     sizes="(min-width: 68rem) 30rem, 46vw" width="1280" height="1600" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 30rem, (min-width: 64em) 46vw, (min-width: 30em) 26rem, 92vw" width="1280" height="1600" loading="lazy" decoding="async"
                      alt="Prune vinete cu brumă, strânse pe creangă">
               </div>
 
@@ -440,7 +510,7 @@
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/pere-b420.webp" srcset="img/pere-b420.webp 420w, img/pere-b840.webp 840w"
-                     sizes="(min-width: 68rem) 28rem, 44vw" width="1086" height="814" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 28rem, (min-width: 64em) 44vw, (min-width: 30em) 26rem, 92vw" width="1086" height="814" loading="lazy" decoding="async"
                      alt="Pere coapte printre frunzele pomului">
               </div>
             </div>
@@ -448,7 +518,7 @@
             <div class="grove__lead">
               <div class="grove__frame grove__frame--a">
                 <img class="grove__photo" src="img/pere-a480.webp" srcset="img/pere-a480.webp 480w, img/pere-a960.webp 960w"
-                     sizes="(min-width: 68rem) 30rem, 46vw" width="1086" height="1357" loading="lazy" decoding="async"
+                     sizes="(min-width: 68rem) 30rem, (min-width: 64em) 46vw, (min-width: 30em) 26rem, 92vw" width="1086" height="1357" loading="lazy" decoding="async"
                      alt="Pere galben-roșiatice atârnând în pom">
               </div>
 
@@ -805,7 +875,11 @@
   </footer>
 
   <script src="js/gsap.min.js"></script>
-  <script src="js/main.js"></script>
+  <!-- Versiunea se schimbă odată cu fișierul, la fel ca la style.css. Fără ea
+       browserul ține scriptul vechi lângă CSS-ul nou: linia desenată a
+       calendarului a apărut o dată exact așa, trasă de un main.js din cache
+       peste aranjamentul pe o coloană. -->
+  <script src="js/main.js?v=20260817-responsive-8"></script>
 
 </body>
 

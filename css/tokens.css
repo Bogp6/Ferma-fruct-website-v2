@@ -154,8 +154,13 @@
     --space-section: clamp(4.5rem, 3.2rem + 6.5vw, 8.5rem);
 
     /* Outer element only, never with max-width on the same element —
-       content-box. */
-    --gutter: clamp(1.25rem, 0.6rem + 3.25vw, 3.5rem);
+       content-box.
+       max() cu env(): pe un telefon cu crestătură sau colțuri rotunjite, ținut
+       în peisaj, marginea trebuie să ocolească zona tăiată, altfel prima literă
+       a rândului intră sub colț. Pe orice ecran fără crestătură env() este 0 și
+       rămâne clamp-ul. Cere viewport-fit=cover în <head>, altfel env() e mereu 0. */
+    --gutter: max(clamp(1.25rem, 0.6rem + 3.25vw, 3.5rem),
+        env(safe-area-inset-left), env(safe-area-inset-right));
 
     --container: 78rem;
     --container-narrow: 46rem;
