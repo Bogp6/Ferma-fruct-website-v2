@@ -339,7 +339,7 @@
 
     var groups = [
         { selector: '.brief__item', stagger: 0.08 },
-        { selector: '.orchard__statement, .orchard__note', stagger: 0.1 },
+        { selector: '.orchard__statement, .orchard__note, .orchard__catalog', stagger: 0.1 },
         /* within: numărătoarea pentru decalaj repornește în fiecare bloc de
            fruct. Fără el, indicii ar curge peste toate cele patru blocuri și
            ultimul paragraf ar aștepta aproape o secundă înainte să pornească. */
@@ -355,7 +355,7 @@
            intră niciodată în zona urmărită și rămâne invizibil oricât s-ar
            derula. Orice bloc lipit de capătul paginii are nevoie de asta. */
         {
-            selector: '.site-footer__inner > *, .partners__label, .partners__item',
+            selector: '.site-footer__inner > *, .partners__label, .partners__item, .site-footer__base > *, .site-footer__legal',
             stagger: 0.08,
             atBottom: true
         }

@@ -227,12 +227,25 @@
     <section class="orchard" id="fructe">
 
       <img class="motif motif--cross motif--head" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <!-- Frunze căzute în golul din dreapta-sus al declarației. -->
+      <img class="motif motif--head-leaf motif--head-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--head-leaf motif--head-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      <img class="motif motif--head-leaf motif--head-leaf-c" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
 
       <div class="orchard__inner">
 
         <div class="orchard__head">
-          <h2 class="orchard__statement">Fructele se coc puțin altfel aici. Se simte de la prima mușcătură.</h2>
+          <p class="orchard__statement">Fructele se coc puțin altfel aici. Se simte de la prima mușcătură.</p>
           <p class="orchard__note">Aceleași patru în fiecare an, pe același deal. Nimic altceva nu se plantează aici.</p>
+        </div>
+
+        <div class="orchard__catalog">
+          <span class="orchard__catalog-rule" aria-hidden="true"></span>
+          <div class="orchard__catalog-lockup">
+            <img class="orchard__catalog-leaf" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            <h2 class="orchard__title">Fructele noastre</h2>
+          </div>
+          <span class="orchard__catalog-rule" aria-hidden="true"></span>
         </div>
 
         <ul class="orchard__groves">
@@ -625,15 +638,37 @@
 
   <!-- ========================================================================
        6. SUBSOL
-       Carries what the farm has actually given us and nothing else. The phone
-       and the email are not written here yet: the markup for them is parked in
-       the comment below and goes live the moment the numbers arrive. A link to
-       a number that does not exist is worse than no link.
+       Subsolul poartă numele, navigarea, partenerii și linia legală. Datele de
+       contact nu sunt aici în mod deliberat (decizia clientului, 2026-08-16).
 
-       The partner logos live here, under a rule, as a closing fact rather than
-       a band of their own. On the green they all come out one colour.
+       Siglele partenerilor sunt SVG scris direct în pagină, nu fișiere legate,
+       pentru ca fill și stroke să poată primi currentColor din CSS și toate
+       patru să iasă în aceeași culoare pe verdele subsolului.
        ======================================================================== -->
+
+  <!-- DATELE DE CONTACT NU MAI STAU ÎN SUBSOL (decizia clientului, 2026-08-16). Marcajul rămâne parcat aici pentru pagina/secțiunea de contact, când există:
+  <ul class="site-footer__contact">
+    <li><a class="site-footer__link" href="tel:+40XXXXXXXXX">+40 XXX XXX XXX</a></li>
+    <li><a class="site-footer__link" href="mailto:NUME@DOMENIU.ro">NUME@DOMENIU.ro</a></li>
+  </ul>
+  -->
   <footer class="site-footer" id="contact">
+
+    <!-- Crengi acuarelă, fișiere trimise de client. Decorative: alt gol plus
+         aria-hidden. Copii direct ai subsolului, nu ai __inner — altfel ar
+         intra în grupul de reveal din main.js și ar sări la derulare. -->
+    <img class="site-footer__leaf site-footer__leaf--top"
+         src="img/top-leaf-branch-1024.webp"
+         srcset="img/top-leaf-branch-640.webp 640w, img/top-leaf-branch-1024.webp 1024w"
+         sizes="30vw" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+    <img class="site-footer__leaf site-footer__leaf--bottom"
+         src="img/bottom-leaf-branch-1024.webp"
+         srcset="img/bottom-leaf-branch-640.webp 640w, img/bottom-leaf-branch-1024.webp 1024w"
+         sizes="26vw" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
     <div class="site-footer__inner">
 
       <div class="site-footer__lead">
@@ -641,16 +676,14 @@
         <p class="site-footer__name">Ferma Fruct Brabova</p>
       </div>
 
-      <div class="site-footer__where">
-        <p class="site-footer__place">Brabova<span>județul Dolj, România</span></p>
-
-        <!-- DE PUS ÎN PAGINĂ CÂND FERMA TRIMITE DATELE:
-        <ul class="site-footer__contact">
-          <li><a class="site-footer__link" href="tel:+40XXXXXXXXX">+40 XXX XXX XXX</a></li>
-          <li><a class="site-footer__link" href="mailto:NUME@DOMENIU.ro">NUME@DOMENIU.ro</a></li>
+      <nav class="site-footer__nav" aria-label="Navigare în subsol">
+        <h2 class="site-footer__heading">Navigare</h2>
+        <ul class="site-footer__links">
+          <li><a class="site-footer__nav-link" href="#acasa">Acasă</a></li>
+          <li><a class="site-footer__nav-link" href="#fructe">Fructe</a></li>
+          <li><a class="site-footer__nav-link" href="#contact">Contact</a></li>
         </ul>
-        -->
-      </div>
+      </nav>
 
     </div>
 
@@ -726,6 +759,45 @@
         </li>
       </ul>
     </div>
+
+    <div class="site-footer__base">
+
+      <!-- TODO: pune adresele reale de profil când ferma le trimite. Până
+           atunci duc la pagina de start a rețelei, nu la un link mort. -->
+      <ul class="site-footer__social">
+        <li>
+          <a class="site-footer__social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4.1"/>
+              <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class="site-footer__social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M15.2 8.4h-1.7a1.8 1.8 0 0 0-1.8 1.8v10.6"/>
+              <path d="M9.9 12.9h5.2"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+
+      <!-- EN devine <a href="..."> în ziua în care există versiunea engleză.
+           Până atunci este text, nu link: un link către o pagină inexistentă
+           este mai rău decât niciun link. -->
+      <p class="site-footer__lang">
+        <span class="site-footer__lang-now">RO</span>
+        <span class="site-footer__lang-sep" aria-hidden="true">|</span>
+        <span class="site-footer__lang-next">EN</span>
+      </p>
+
+      <p class="site-footer__legal">&copy; 2026 Ferma Fruct Brabova. Toate drepturile rezervate.</p>
+
+    </div>
+
   </footer>
 
   <script src="js/gsap.min.js"></script>
