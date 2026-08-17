@@ -83,7 +83,7 @@
 
     /* ONE green: footer, header fill, accents. No dark variant on purpose.
        Same hex on all three tokens.
-       4.08 on --paper-lift, under the 4.5 floor — accepted by the client.
+       4.08 on --paper-lift, under the 4.5 floor — accepted as-is.
        Never put small light text on it. */
     --forest: #698240;
     --forest-deep: #698240;
@@ -154,11 +154,9 @@
     --space-section: clamp(4.5rem, 3.2rem + 6.5vw, 8.5rem);
 
     /* Outer element only, never with max-width on the same element —
-       content-box.
-       max() cu env(): pe un telefon cu crestătură sau colțuri rotunjite, ținut
-       în peisaj, marginea trebuie să ocolească zona tăiată, altfel prima literă
-       a rândului intră sub colț. Pe orice ecran fără crestătură env() este 0 și
-       rămâne clamp-ul. Cere viewport-fit=cover în <head>, altfel env() e mereu 0. */
+       content-box. max() cu env(): pe telefon cu crestătură, ținut în peisaj,
+       marginea trebuie să ocolească zona tăiată. Fără crestătură, env() e 0
+       și rămâne clamp-ul. Cere viewport-fit=cover în <head>. */
     --gutter: max(clamp(1.25rem, 0.6rem + 3.25vw, 3.5rem),
         env(safe-area-inset-left), env(safe-area-inset-right));
 

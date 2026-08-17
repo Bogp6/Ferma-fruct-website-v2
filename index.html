@@ -3,13 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <!-- viewport-fit=cover: fără el env(safe-area-inset-*) este mereu 0 și marginea
-       paginii nu ocolește crestătura unui telefon ținut în peisaj. Vezi --gutter. -->
+  <!-- viewport-fit=cover: fără el env(safe-area-inset-*) e mereu 0, marginea nu ocolește crestătura telefonului în peisaj. Vezi --gutter. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <!-- Scoasă aici, în <head>, nu în main.js: butonul de meniu nu poate deschide
-       nimic fără script, deci fără clasa asta CSS-ul îl ține ascuns și lasă
-       navigarea simplă în loc. Pusă la finalul paginii, bara ar clipi. -->
+  <!-- În <head>, nu în main.js: fără clasa asta CSS-ul ascunde butonul de meniu până la parsare, altfel bara clipește. -->
   <script>document.documentElement.classList.remove('no-js');</script>
 
   <!-- Core four (part 1): title and description -->
@@ -22,12 +19,9 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260817-responsive-8">
+  <link rel="stylesheet" href="css/style.css?v=20260817-wide-1">
 
-  <!-- The display face draws the first words on the page; without this the
-       hero line lands in a fallback and then jumps when the real face arrives.
-       Only the latin file is preloaded: latin-ext carries the ș and ț and is
-       fetched a moment later by the unicode-range rule. -->
+  <!-- Preloads only the latin font file; latin-ext (ș, ț) loads later via unicode-range. Without this, hero text flashes in a fallback face. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Open Graph: how the link looks when shared on Facebook/WhatsApp -->
@@ -48,17 +42,14 @@
 
   <!-- Tab icon, modern browsers. SVG scales to any size and can react to dark mode -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <!-- The .ico fallback for old browsers is not linked yet, because the file does not exist and the browser was fetching a 404 on every page load. Add the link back at the same time as the file. -->
+  <!-- .ico fallback not linked: file doesn't exist yet. Add together with the file. -->
   <meta name="theme-color" content="#3E6027">
   <!-- Makes the shared link on Twitter show a wide banner instead of a small square thumbnail -->
   <meta name="twitter:card" content="summary_large_image">
   <!-- Alt text for the share image, read by screen readers on social feeds -->
   <meta property="og:image:alt" content="TODO: ce se vede în imaginea de distribuire">
 
-  <!-- LocalBusiness structured data: clean facts for Google, NO stars.
-       Every TODO below is a fact the client has not supplied. A field that stays
-       TODO is deleted before launch, never guessed: wrong structured data is worse
-       than none. -->
+  <!-- LocalBusiness structured data, no stars. TODO fields are facts the client hasn't supplied — delete before launch, never guess. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -80,37 +71,31 @@
 <body>
 
   <!-- ==========================================================================
-       DIRECTION CONTRACT — do not delete. Every edit to this page is judged
-       against it.
+       DIRECTION CONTRACT — do not delete. Every edit is judged against it.
 
+       OWN-WORLD: the two greens of the farm's logo (leaf, forest), sampled
+       from the artwork. No near-black ground, no pale blue field. Fraunces
+       variable 800 with WONK on for display; Chivo for body text. One action
+       colour, the orange from the logo's fruit: if it's orange, it's
+       clickable. The four fruits get their colour from their photos, not
+       from four separate palettes.
 
-       OWN-WORLD: The two greens of the farm's own logo, leaf and forest,
-       sampled off the artwork. No near-black ground and no pale blue field.
-       Fraunces, variable, at weight 800 with the WONK axis on for the display
-       cut; plain Chivo for everything read. One action colour, the orange of
-       the fruit in the logo: if it is orange, it is clickable. The four fruits
-       are not four palettes; their colour arrives in their photo.
+       THE FRUITS: four blocks, one per fruit, in picking order. That order IS
+       the calendar — never re-sort alphabetically or otherwise. Each block:
+       two leaf-silhouette photos, two paragraphs, diagonal and mirrored from
+       block to block. Described here on the page; no separate fruit page.
 
-       THE FRUITS: four blocks, one per fruit, in the order they are picked.
-       The order on the page IS the calendar; do not re-sort them
-       alphabetically or by anything else. Each block is two photographs cut
-       to a leaf silhouette and two paragraphs, laid diagonally and mirrored
-       from one fruit to the next. The fruits are described here, on this
-       page; there is no fruit page.
+       FUNDAL: a vine climbs the middle of the fruit section through the lane
+       the alternating blocks leave open. Branches cross the page at section
+       joins. Three drawings, one engraving hand, one line.
 
-       FUNDAL: a vine climbing the middle of the fruit section, through the
-       lane the alternating blocks leave open — the branch drawing turned
-       upright is a length of stem, the leaves carry it on, the apple fills
-       the corner left over. Branches lie across the page at the joins between
-       sections. Three drawings, one engraving hand, one line.
+       STORY: a visitor who already ate the fruit looks the farm up, sees the
+       orchard moving, meets the four fruits by name, sees which shops carry
+       them, and contacts the farm.
 
-       STORY: A visitor who already ate the fruit looks the farm up, sees the
-       orchard moving, meets the four fruits by name and reads what each one
-       is like, sees which shops carry it, and contacts the farm.
-
-       FIRST VIEWPORT: The orchard film full bleed and moving, the round farm
-       mark centred over it, the name under it in Fraunces, one line, and the
-       orange contact button. Everything on the centre line, nothing in a box.
+       FIRST VIEWPORT: orchard film full bleed and moving, farm mark centred
+       over it, name under it in Fraunces on one line, orange contact button.
+       Everything on the centre line, nothing boxed.
        ========================================================================== -->
 
   <a class="skip" href="#main">Sari la conținut</a>
@@ -132,17 +117,14 @@
         </ul>
       </nav>
 
-      <!-- Româna este singura limbă publicată. EN rămâne <span>, nu <a>: nimic
-           nu trimite către o pagină care nu există. -->
+      <!-- EN rămâne <span>, nu <a>: nu există încă pagina engleză. -->
       <p class="lang">
         <span class="visually-hidden">Limba paginii:</span>
         <span class="lang__current">RO</span>
         <span class="lang__soon">EN</span>
       </p>
 
-      <!-- Sub 64em navigarea de sus se strânge în panoul lateral. aria-expanded
-           stă scris în HTML, nu adăugat de main.js: dacă atributul lipsește la
-           prima pictare, cititorul de ecran anunță un buton fără stare. -->
+      <!-- Sub 64em navigarea trece în panoul lateral. aria-expanded e scris în HTML, nu adăugat de JS, ca să existe de la prima pictare. -->
       <button class="burger" type="button" aria-expanded="false" aria-controls="meniu">
         <span class="visually-hidden">Meniu</span>
         <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -157,14 +139,10 @@
   </header>
 
   <!-- ==========================================================================
-       MENIUL LATERAL
-       Frate al antetului, nu copil: panoul este fixed pe toată înălțimea, iar
-       din interiorul antetului ar fi moștenit contextul lui de stivuire și ar fi
-       rămas sub bandă.
-
-       Aceleași trei destinații ca în bara de sus și ca în subsol — nicio ancoră
-       care să existe numai aici. Închis, main.js îi pune inert, deci tabularea
-       trece pe lângă el; peste 64em CSS-ul îl scoate cu totul.
+       MENIUL LATERAL — frate al antetului, nu copil (panoul e fixed pe toată
+       înălțimea; ca fiu al antetului ar moșteni stivuirea lui și ar rămâne sub
+       bandă). Aceleași trei linkuri ca sus și în subsol. Închis, main.js îi
+       pune inert; peste 64em CSS-ul îl scoate cu totul.
        ========================================================================== -->
   <div class="drawer" id="meniu" inert>
 
@@ -207,12 +185,9 @@
   <main id="main">
 
     <!-- ======================================================================
-         1. HERO
-         The film is the first thing on the screen. preload="metadata", never
-         "none": "none" tells the browser not to fetch the file and autoplay
-         then has nothing to play, which is silence with no way to start it.
-         muted is what makes autoplay legal at all; playsinline stops iPhone
-         taking the video fullscreen.
+         1. HERO — preload="metadata", nu "none": "none" oprește fetch-ul, iar
+         autoplay n-ar avea ce reda. muted face autoplay legal; playsinline
+         oprește fullscreen-ul automat pe iPhone.
          ====================================================================== -->
     <section class="hero">
 
@@ -232,17 +207,11 @@
     </section>
 
     <!-- ======================================================================
-         2. BANDA CU CIFRE
-         Sits half over the film and half over the section below it, so the two
-         are stitched together instead of butting up against each other. The
-         farm has not given us hectares, years or tonnage yet, so every value
-         here is a round, obviously-made-up placeholder, said plainly in the
-         note under the band: replace all three the day the real figures
-         arrive, and delete the note in the same edit.
-
-         The numbers count up from zero, so the 0 in the markup is the start of
-         that count and not a fact. Anyone without the script, or with motion
-         turned down, gets the finished figure written in by main.js instead.
+         2. BANDA CU CIFRE — se suprapune peste film și peste secțiunea de jos.
+         Valorile sunt placeholder (ferma nu a dat cifre reale): înlocuiește
+         toate trei și șterge nota de sub bandă în aceeași editare.
+         Cifrele numără de la 0 prin main.js; fără script sau cu motion redus
+         se afișează direct valoarea finală.
          ====================================================================== -->
     <section class="brief" aria-label="Ferma în cifre">
       <ul class="brief__list">
@@ -267,30 +236,23 @@
     </section>
 
     <!-- ======================================================================
-         3. DECLARAȚIE ȘI CELE PATRU FRUCTE
-         Fiecare fruct primește un bloc întreg: numele, săptămânile în care se
-         culege, două fotografii și două paragrafe. Blocurile alternează
-         stânga-dreapta, în ordinea culesului. Ordinea de pe pagină ESTE
-         calendarul; nu se rearanjează alfabetic.
+         3. DECLARAȚIE ȘI CELE PATRU FRUCTE — un bloc per fruct: nume,
+         săptămâni de cules, două fotografii, două paragrafe. Blocurile
+         alternează stânga-dreapta, în ordinea culesului — ordinea de pe
+         pagină ESTE calendarul, nu se rearanjează alfabetic.
 
-         Fotografiile sunt tăiate în formă de frunză: două colțuri rotunjite
-         mult, celelalte două aproape drepte. A doua fotografie a fiecărui
-         fruct este deocamdată o altă tăietură din aceeași sursă — se
-         înlocuiește cu poza a doua când o trimite ferma.
+         Fotografiile sunt tăiate în formă de frunză. A doua fotografie e
+         deocamdată o altă tăietură din aceeași sursă, de înlocuit când vine
+         poza reală de la fermă. Lunile sunt orientative (vezi nota de la
+         finalul secțiunii).
 
-         Lunile sunt orientative, vezi nota de la finalul secțiunii.
+         Coloanele curg independent, nu grilă cu rânduri comune. În DOM,
+         coloana cu numele vine prima (cititorul de ecran spune fructul
+         întâi); CSS o mută vizual la dreapta pentru blocurile nerăsturnate.
 
-         Blocul are două coloane care curg fiecare pe cont propriu, nu o
-         grilă cu rânduri comune. În DOM, coloana cu numele vine prima, ca un
-         cititor de ecran să audă întâi ce fruct este; pe ecran, CSS o mută la
-         dreapta pentru blocurile nerăsturnate.
-
-         Vița urcă prin mijlocul secțiunii, prin culoarul lăsat liber de
-         blocurile care se schimbă stânga-dreapta: patru frunze pe bloc, de sus
-         până jos, plus mărul agățat la capăt. Ramura stă pe margini, o latură
-         la fiecare bloc, alternând. Sunt copii ale blocului, nu ale paginii, ca
-         să rămână legate de conținut dacă pagina se lungește. alt gol plus
-         aria-hidden: sunt hârtia, nu conținut.
+         Motivele (viță, ramuri, măr) sunt copii ale blocului, nu ale paginii,
+         ca să rămână legate de conținut. alt gol plus aria-hidden: sunt
+         decor, nu conținut.
          ====================================================================== -->
     <section class="orchard" id="fructe">
 
@@ -557,17 +519,13 @@
     </section>
 
     <!-- ======================================================================
-         4. BANDA VIDEO
-         The second passage of the same drone flight, set into the page with a
-         margin all round rather than run to the edges: full bleed it read as a
-         second hero and said what the first one already said.
+         4. BANDA VIDEO — a doua secvență a aceluiași zbor, cu margine de jur
+         împrejur (nu full bleed, ca să nu repete hero-ul).
          ====================================================================== -->
     <section class="film">
       <img class="motif motif--cross motif--film" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
 
-      <!-- Prima jumătate a frunzelor răzlețe din golul de sub film. Cealaltă
-           jumătate stă în .faq: granița dintre secțiuni taie, deci nicio
-           frunză nu are voie să stea călare pe ea. -->
+      <!-- Prima jumătate a frunzelor din golul de sub film; cealaltă jumătate e în .faq — nicio frunză nu poate călare pe granița dintre secțiuni. -->
       <img class="motif motif--band-leaf motif--band-leaf-a" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <img class="motif motif--band-leaf motif--band-leaf-b" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
       <img class="motif motif--band-leaf motif--band-leaf-e" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true" loading="lazy" decoding="async">
@@ -587,18 +545,12 @@
     </section>
 
     <!-- ======================================================================
-         5. ÎNTREBĂRI FRECVENTE
-         Ultimul lucru înainte de subsol: vizitatorul a văzut fructele, aici i
-         se răspunde la ce a rămas.
-
-         <details name="faq"> face acordeonul exclusiv fără o linie de
-         JavaScript: browserul închide singur rândul deschis anterior. Într-un
-         browser vechi atributul este ignorat și rândurile se deschid
-         independent, ceea ce rămâne perfect utilizabil.
-
-         Răspunsurile nu conțin nicio cifră pe care ferma nu a dat-o. Nota de
-         sub listă spune asta pe față, la fel ca nota de sub banda cu cifre, și
-         se șterge în aceeași editare în care sosesc răspunsurile reale.
+         5. ÎNTREBĂRI FRECVENTE — <details name="faq"> face acordeonul
+         exclusiv fără JS (browserul închide singur rândul anterior); într-un
+         browser vechi atributul e ignorat și rândurile se deschid independent,
+         tot utilizabil.
+         Răspunsurile nu conțin nicio cifră pe care ferma n-a dat-o; nota de
+         sub listă se șterge când vin răspunsurile reale.
          ====================================================================== -->
     <section class="faq" id="intrebari">
       <img class="motif motif--cross motif--faq" src="img/branch-1024.webp" width="1024" height="768" alt="" aria-hidden="true" loading="lazy" decoding="async">
@@ -709,16 +661,11 @@
   </main>
 
   <!-- ========================================================================
-       6. SUBSOL
-       Subsolul poartă numele, navigarea, partenerii și linia legală. Datele de
-       contact nu sunt aici în mod deliberat (decizia clientului, 2026-08-16).
-
-       Siglele partenerilor sunt SVG scris direct în pagină, nu fișiere legate,
-       pentru ca fill și stroke să poată primi currentColor din CSS și toate
-       patru să iasă în aceeași culoare pe verdele subsolului.
+       6. SUBSOL — nume, navigare, parteneri, linie legală. Fără date de
+       contact (intenționat, până apare secțiunea de contact).
        ======================================================================== -->
 
-  <!-- DATELE DE CONTACT NU MAI STAU ÎN SUBSOL (decizia clientului, 2026-08-16). Marcajul rămâne parcat aici pentru pagina/secțiunea de contact, când există:
+  <!-- Markup parcat pentru secțiunea de contact, când există:
   <ul class="site-footer__contact">
     <li><a class="site-footer__link" href="tel:+40XXXXXXXXX">+40 XXX XXX XXX</a></li>
     <li><a class="site-footer__link" href="mailto:NUME@DOMENIU.ro">NUME@DOMENIU.ro</a></li>
@@ -726,19 +673,17 @@
   -->
   <footer class="site-footer" id="contact">
 
-    <!-- Crengi acuarelă, fișiere trimise de client. Decorative: alt gol plus
-         aria-hidden. Copii direct ai subsolului, nu ai __inner — altfel ar
-         intra în grupul de reveal din main.js și ar sări la derulare. -->
+    <!-- Decorative (alt gol, aria-hidden). Copii direct ai subsolului, nu ai __inner, altfel ar intra în reveal-ul din main.js și ar sări la derulare. -->
     <img class="site-footer__leaf site-footer__leaf--top"
          src="img/top-leaf-branch-1024.webp"
          srcset="img/top-leaf-branch-640.webp 640w, img/top-leaf-branch-1024.webp 1024w"
-         sizes="30vw" width="1024" height="768"
+         sizes="(min-width: 85em) 40vw, 30vw" width="1024" height="768"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
 
     <img class="site-footer__leaf site-footer__leaf--bottom"
          src="img/bottom-leaf-branch-1024.webp"
          srcset="img/bottom-leaf-branch-640.webp 640w, img/bottom-leaf-branch-1024.webp 1024w"
-         sizes="26vw" width="1024" height="768"
+         sizes="(min-width: 85em) 40vw, 26vw" width="1024" height="768"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
 
     <div class="site-footer__inner">
@@ -759,24 +704,12 @@
 
     </div>
 
-    <!-- Siglele partenerilor. SVG scris direct în pagină, nu fișiere legate,
-         pentru că numai așa culoarea lor poate veni din CSS: fiecare fill și
-         fiecare stroke este currentColor, deci toate patru ies în aceeași
-         cremă pe verdele subsolului. Ce era alb în siglă este var(--knockout),
-         adică fundalul de sub ea; --knockout este declarat pe .partners, deci
-         dacă blocul se mută pe alt fundal se schimbă într-un singur loc.
-
-         Ca imagini normale, banda avea în ea roșu Carrefour, roșu Auchan,
-         albastru și portocaliu Big Family și un negru — patru palete străine
-         una lângă alta, și niciun aranjament nu le face să stea liniștite
-         împreună.
-
-         O versiune anterioară făcea același lucru cu mask-image în CSS.
-         Siglele nu se vedeau deloc în Firefox. Nu o readuceți.
-
-         role="img" plus aria-label spun exact ce spunea textul alternativ de
-         dinainte; focusable="false" ține SVG-ul în afara ordinii de tabulare
-         în Internet Explorer și în versiuni vechi de Edge. -->
+    <!-- SVG inline (nu fișiere) ca fill/stroke să primească currentColor —
+         toate patru sigle ies în culoarea subsolului. Albul din siglă e
+         var(--knockout), declarat pe .partners.
+         Nu înlocui cu mask-image în CSS: siglele nu se văd în Firefox.
+         role="img" + aria-label țin locul textului alternativ; focusable="false"
+         scoate SVG-ul din tab order în IE/Edge vechi. -->
     <div class="partners">
       <h2 class="partners__label">Fructele noastre ajung la</h2>
 
@@ -834,8 +767,7 @@
 
     <div class="site-footer__base">
 
-      <!-- TODO: pune adresele reale de profil când ferma le trimite. Până
-           atunci duc la pagina de start a rețelei, nu la un link mort. -->
+      <!-- TODO: adrese reale de profil când le trimite ferma; până atunci duc spre pagina de start a rețelei. -->
       <ul class="site-footer__social">
         <li>
           <a class="site-footer__social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -857,9 +789,7 @@
         </li>
       </ul>
 
-      <!-- EN devine <a href="..."> în ziua în care există versiunea engleză.
-           Până atunci este text, nu link: un link către o pagină inexistentă
-           este mai rău decât niciun link. -->
+      <!-- EN devine <a href> când există pagina engleză; până atunci text simplu, nu link mort. -->
       <p class="site-footer__lang">
         <span class="site-footer__lang-now">RO</span>
         <span class="site-footer__lang-sep" aria-hidden="true">|</span>
@@ -873,11 +803,8 @@
   </footer>
 
   <script src="js/gsap.min.js"></script>
-  <!-- Versiunea se schimbă odată cu fișierul, la fel ca la style.css. Fără ea
-       browserul ține scriptul vechi lângă CSS-ul nou: linia desenată a
-       calendarului a apărut o dată exact așa, trasă de un main.js din cache
-       peste aranjamentul pe o coloană. -->
-  <script src="js/main.js?v=20260817-responsive-8"></script>
+  <!-- ?v= crește la fiecare schimbare, ca la style.css, altfel browserul poate servi scriptul vechi cu CSS-ul nou. -->
+  <script src="js/main.js?v=20260817-wide-1"></script>
 
 </body>
 

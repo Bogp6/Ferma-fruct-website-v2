@@ -475,8 +475,8 @@
        - pe margine (cireșe, pere) merge lipită de calendar și îi poartă
          bulinele, cu o legănare mică, numai în afară, ca să nu intre în text;
        - la mijloc (caise, prune) se desprinde de calendar și se leagănă lat
-         stânga-dreapta pe coridorul de padding lăsat anume pentru ea. Acolo
-         bulinele nu o mai urmăresc — rămân semne lipite de textul etapei.
+         stânga-dreapta pe coridorul de padding lăsat anume pentru ea, iar
+         bulinele urmăresc fiecare oprire a liniei.
 
        De ce cod și nu CSS: nicio regulă nu poate ști pe ce x iese o coloană
        flexibilă, nici cât de lat e coridorul după ce s-au așezat toate. Se
@@ -505,9 +505,6 @@
            bulinele: patru etape plus cele două capete. */
         var SWAY_EDGE = [0, -0.42, -1, -0.68, -0.24, 0];
         var SWAY_MID = [0, 0.9, -0.55, 0.9, -0.45, 0];
-        /* Pe ce înălțime a blocului cad punctele din blocul de mijloc. Nu sunt
-           legate de etape: acolo linia nu mai are ce urmări. */
-        var STOP_MID = [0, 0.16, 0.36, 0.58, 0.79, 1];
         /* Legănarea de pe margine, în pixeli. Peste vreo 18 bulina se rupe de
            rândul ei de text și nu se mai citește ca semnul lui. */
         var SWAY_EDGE_PX = 16;
@@ -684,24 +681,24 @@
                     var stage = plot.stages[i - 1];
                     var y;
 
-                    if (mid || !stage) {
-                        y = top + height * (mid ? STOP_MID[i] : (i === 0 ? 0 : 1));
+                    if (!stage) {
+                        y = top + height * (i === 0 ? 0 : 1);
                     } else {
-                        /* Centrul bulinei: 0.35em de la marginea etapei (CSS)
-                           plus jumătate din cei 0.5rem ai ei. */
+                        /* Centrul bulinei: 0.35em de la marginea etapei (CSS),
+                           jumătate din cei 0.5rem ai ei și bordura de 1px. */
                         var s = stage.getBoundingClientRect();
                         y = s.top - box.top +
-                            parseFloat(getComputedStyle(stage).fontSize) * 0.35 + rem * 0.25;
+                            parseFloat(getComputedStyle(stage).fontSize) * 0.35 + rem * 0.25 + 1;
                     }
 
                     pts.push({ x: base + plot.toward * off, y: y });
 
-                    /* Bulina se mută cu linia, ca să rămână pe ea. În blocul
-                       din mijloc linia s-a dus prea departe ca s-o mai poarte,
-                       deci semnul rămâne unde-l pune CSS-ul. */
+                    /* Bulina se mută cu linia, ca să rămână pe ea. Semnul
+                       păstrează direcția abaterii: linia din mijloc se poate
+                       legăna pe ambele laturi ale coloanei. */
                     if (stage) {
-                        stage.style.setProperty('--dot-nudge',
-                            (mid ? 0 : Math.abs(off)) + 'px');
+                        stage.style.setProperty('--dot-shift',
+                            (plot.toward * off) + 'px');
                     }
                 }
             });
