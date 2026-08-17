@@ -165,8 +165,8 @@
     scale: -1 1;
 }
 
-/* Trei frunze coborâte din colțul din dreapta-sus. Dimensiunile, unghiurile
-   și opacitățile nu se repetă, ca traiectoria să pară desprinsă, nu tipar. */
+/* Șapte frunze coborâte prin golul declarației. Dimensiunile, unghiurile și
+   opacitățile nu se repetă, ca traiectoria să pară desprinsă, nu tipar. */
 .motif--head-leaf {
     opacity: 0.44;
     --drift: 2.75rem;
@@ -193,6 +193,38 @@
     width: clamp(3.75rem, 6vw, 6.5rem);
     opacity: 0.3;
     rotate: 166deg;
+}
+
+.motif--head-leaf-d {
+    inset-block-start: clamp(6rem, 9vw, 10rem);
+    inset-inline-end: 43%;
+    width: clamp(4.25rem, 6.5vw, 5.25rem);
+    opacity: 0.32;
+    rotate: 34deg;
+}
+
+.motif--head-leaf-e {
+    inset-block-start: clamp(10rem, 14vw, 12rem);
+    inset-inline-end: 38%;
+    width: clamp(3.75rem, 5.5vw, 4.5rem);
+    opacity: 0.35;
+    rotate: 112deg;
+}
+
+.motif--head-leaf-f {
+    inset-block-start: clamp(14rem, 20vw, 17rem);
+    inset-inline-end: 31%;
+    width: clamp(4rem, 6.5vw, 5.5rem);
+    opacity: 0.27;
+    rotate: 48deg;
+}
+
+.motif--head-leaf-g {
+    inset-block-start: clamp(20rem, 29vw, 25rem);
+    inset-inline-end: 27%;
+    width: clamp(3.5rem, 5vw, 4.25rem);
+    opacity: 0.33;
+    rotate: 154deg;
 }
 
 /* scale: -1 1 întoarce ramura pe orizontală, ca să intre din stânga. Este
