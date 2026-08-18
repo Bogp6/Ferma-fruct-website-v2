@@ -2,7 +2,24 @@
 
 Written from the built page, not a plan. Code wins if they disagree.
 
-Scope: `index.html` only.
+Scope: `index.html` (built) and `contact.html` (scaffold only, 2026-08-18).
+
+## Which file to read
+
+One stylesheet per page, on purpose. Read only the one for the page you are on.
+
+| Page | Its CSS | Shared with |
+|---|---|---|
+| `index.html` | `css/style.css` (~2900 lines) | — |
+| `contact.html` | `css/contact.css` | `style.css` for three components only |
+
+`contact.html` loads `style.css` **before** `contact.css`, but only for the three components both pages share: `.site-header`, `.drawer`/`.burger`, and `.site-footer`. Nothing else in `style.css` applies there — hero, `.grove`, the drawn spine, the background drawings and both width passes are all landing-page-only.
+
+**So: working on the contact page means reading `css/contact.css` and stopping.** Do not read the 2900 lines of `style.css` to understand it. The end of `style.css` carries the same note; the head of `contact.css` says what it does with each shared component.
+
+Contact CSS never goes in `style.css`, and landing CSS never goes in `contact.css`. A component that genuinely ends up on both pages belongs in `style.css`, with a line added to the table above.
+
+There is no include mechanism — the header, drawer, footer and the partner band inside it are hand-copied HTML. **A change to any of them has to be made in both files.** The `<div class="partners">` block and its comment are byte-identical in the two files (client asked for the band on the contact page too, 2026-08-18), so they diff cleanly — keep it that way rather than letting the two drift.
 
 ## Idea
 
@@ -200,14 +217,30 @@ python3 -m http.server 8811
 
 Hard-refresh after CSS edits — stale stylesheets have caused false reads before.
 
+## Pagina de contact
+
+Scaffold written 2026-08-18. Chrome and stylesheet only — the page itself is not designed and its content is not decided with the client.
+
+What is already settled:
+
+- **`<body class="page-inner">`** — the page has no hero, and `main.js` publishes `--p` (the header's fill, 0 to 1) only when it finds a `.hero`. Left unset, `--p` is 0 and the bar is cream text on cream paper. `.page-inner` pins `--p: 1`, so the bar is green from the first frame. Any future page without a hero needs the same class.
+- **`--header-h`** is `calc(3rem + var(--space-xs) * 2)`, built from the round mark's real size and the bar's own padding, because the fixed header takes no space in flow and the first section would slide under it. Measured against the real bar at 1456px: both are 78px. Change either part and this has to follow.
+- **Nav links are file-absolute** (`index.html#fructe`), not bare anchors — those sections do not exist on this page.
+- **`main.js` is loaded unchanged.** Every job in it looks for its element first and exits when it is missing, so in practice only the side menu runs here. Checked, not assumed.
+- The `<main>` holds one placeholder heading and paragraph. They are the right length for the slot and nothing more; replace them, do not build around them.
+
+**All four Contact links now go to the page.** Until 2026-08-18 the top bar, the side menu, the hero button and the footer nav all pointed at `#contact`, which was an `id` on `index.html`'s own footer — clicking Contact scrolled you to the bottom of the landing page. The `id` is gone and all four are `href="contact.html"`. Nothing in CSS or `main.js` ever keyed off that `id`, checked before removing it.
+
+Not written and not to be guessed: phone, email, address, opening hours. They are on the "Still open" list below. A form cannot be submitted from here (Cloudflare Pages, no server code) — it would have to post to a third-party endpoint.
+
 ## Still open
 
 - Client has a list of landing-page changes — ask, don't guess.
 - Motion timing never watched at full speed in a real window (only verified as DOM/CSS end states).
 - Responsive pass done 2026-08-17 (see Lățimi); not yet opened on a real phone, only measured in-browser at 320/768/1280.
-- Other pages: 3-4 planned, not started.
+- Other pages: 3-4 planned. `contact.html` exists as a scaffold since 2026-08-18 (see „Pagina de contact” above); its content and layout are not designed. The rest are not started.
 - Placeholder policy: square-bracket placeholders banned; round numbers are the one exception (cifre, FAQ), both flagged for removal once real. Still owed by the farm:
-  - phone + email (markup parked in an index.html comment — Contact links go nowhere until then)
+  - phone + email — nothing on the site carries either yet. The parked `.site-footer__contact` markup that used to sit in a comment in `index.html` was deleted on 2026-08-18 when the four Contact links were repointed; the real place for these is `contact.html`, not the footer.
   - real hectares/years/tonnage (removes `.brief__note`)
   - two quotes with names (brings back testimoniale)
   - FAQ answers in the farm's own words (removes `.faq__note`)

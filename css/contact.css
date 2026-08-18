@@ -1,0 +1,86 @@
+/* ===========================================================================
+   contact.css — TOT CSS-ul paginii contact.html. Nimic din fișierul ăsta nu
+   se încarcă pe index.html.
+
+   PENTRU URMĂTORUL CLAUDE: dacă lucrezi la pagina de contact, ăsta e fișierul.
+   Nu citi style.css (~2900 de linii) ca să înțelegi pagina asta. Din style.css
+   ai nevoie numai de trei lucruri, iar ele sunt deja rezolvate mai jos:
+     - antetul .site-header e fixed și transparent la --p: 0;
+     - meniul lateral .drawer și butonul .burger merg neschimbate;
+     - subsolul .site-footer e identic cu cel de pe index.
+   Restul (hero, .grove, spina desenată, motivele de fundal, benzile) nu există
+   pe pagina asta.
+
+   Ordinea de încărcare: normalize → tokens → base → style → contact.
+   Deci regulile de aici bat style.css la specificitate egală. Folosește asta
+   în loc să te duci să modifici style.css.
+
+   Culorile, treptele de text și spațiile vin din tokens.css. Valori scrise de
+   mână numai unde tokenul chiar nu ajunge, și cu motivul scris lângă.
+   =========================================================================== */
+
+
+/* ---------------------------------------------------------------------------
+   1. PAGINĂ FĂRĂ HERO
+   --------------------------------------------------------------------------- */
+
+/* main.js publică --p (0..1, umplerea barei) numai când găsește un .hero.
+   Aici nu există, deci --p rămâne nescris și antetul ar fi text crem pe
+   hârtie cremă. Îl fixăm la 1: bara e verde plină din primul cadru.
+   Se moștenește de la <body> la .site-header. */
+.page-inner {
+    --p: 1;
+
+    /* Înălțimea barei fixate, din piesele ei reale: sigla rotundă (3rem, vezi
+       .brand__mark în style.css) plus paddingul de sus și de jos al barei.
+       Se schimbă una dintre cele două, se schimbă și asta. */
+    --header-h: calc(3rem + var(--space-xs) * 2);
+
+    background-color: var(--paper);
+}
+
+
+/* ---------------------------------------------------------------------------
+   2. CONȚINUT
+   --------------------------------------------------------------------------- */
+
+/* Antetul e fixed, deci nu ocupă loc în flux: fără paddingul ăsta prima
+   secțiune intră sub bară. */
+.contact {
+    padding-block-start: calc(var(--header-h) + var(--space-xl));
+    padding-block-end: var(--space-section);
+}
+
+.contact__intro {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.contact__title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-variation-settings: var(--axes-display);
+    font-size: var(--step-4);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--forest);
+}
+
+.contact__lead {
+    max-width: var(--measure);
+    margin-block-start: var(--space-s);
+    margin-block-end: 0;
+    font-size: var(--step-0);
+    line-height: var(--leading-body);
+    color: var(--ink-soft);
+}
+
+
+/* ---------------------------------------------------------------------------
+   3. LĂȚIMI — gol până la pasul de responsive al acestei pagini.
+   Aceleași reguli ca pe index: întâi unități fluide, apoi flex-wrap, media
+   query abia la urmă și numai unde chiar se rupe ceva. Interogările se scriu
+   în em, nu în px, iar în comentariu se trece CE s-a rupt acolo.
+   --------------------------------------------------------------------------- */

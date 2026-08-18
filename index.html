@@ -112,8 +112,8 @@
       <nav class="nav" aria-label="Navigare principală">
         <ul class="nav__list">
           <li><a class="nav__link" href="#acasa" aria-current="page">Acasă</a></li>
-          <li><a class="nav__link" href="#fructe">Fructe</a></li>
-          <li><a class="nav__link" href="#contact">Contact</a></li>
+          <li><a class="nav__link" href="#fructe">Despre</a></li>
+          <li><a class="nav__link" href="contact.html">Contact</a></li>
         </ul>
       </nav>
 
@@ -169,8 +169,8 @@
 
       <ul class="drawer__list">
         <li><a class="drawer__link" href="#acasa" aria-current="page">Acasă</a></li>
-        <li><a class="drawer__link" href="#fructe">Fructe</a></li>
-        <li><a class="drawer__link" href="#contact">Contact</a></li>
+        <li><a class="drawer__link" href="#fructe">Despre</a></li>
+        <li><a class="drawer__link" href="contact.html">Contact</a></li>
       </ul>
 
       <p class="drawer__lang">
@@ -201,7 +201,7 @@
         <img class="hero__mark" src="img/logo-320.webp" width="320" height="320" alt="" loading="eager">
         <h1 class="hero__title">Patru fructe, o singură livadă</h1>
         <p class="hero__lead">Cireșe, pere, prune și caise, crescute la Brabova, în județul Dolj.</p>
-        <p class="hero__cta"><a class="btn" href="#contact">Contactați-ne</a></p>
+        <p class="hero__cta"><a class="btn" href="contact.html">Contactați-ne</a></p>
       </div>
 
     </section>
@@ -537,7 +537,7 @@
           <video class="film__video" poster="img/orchard-band-poster.webp" width="1920" height="1080"
                  autoplay muted loop playsinline preload="metadata"
                  aria-label="Filmare din dronă printre rândurile de pomi">
-            <source src="img/orchard-band-1080.mp4" type="video/mp4">
+            <source src="img/pixelized_drone_video_compressed.mp4" type="video/mp4">
           </video>
         </div>
         <p class="film__caption">Livada, filmată din dronă, în primăvara aceasta.</p>
@@ -662,16 +662,16 @@
 
   <!-- ========================================================================
        6. SUBSOL — nume, navigare, parteneri, linie legală. Fără date de
-       contact (intenționat, până apare secțiunea de contact).
-       ======================================================================== -->
+       contact: telefonul și e-mailul stau pe contact.html, nu aici.
 
-  <!-- Markup parcat pentru secțiunea de contact, când există:
-  <ul class="site-footer__contact">
-    <li><a class="site-footer__link" href="tel:+40XXXXXXXXX">+40 XXX XXX XXX</a></li>
-    <li><a class="site-footer__link" href="mailto:NUME@DOMENIU.ro">NUME@DOMENIU.ro</a></li>
-  </ul>
-  -->
-  <footer class="site-footer" id="contact">
+       Nu mai are id="contact". Toate cele patru linkuri „Contact" ale paginii
+       (bara de sus, meniul lateral, butonul din hero, navigarea din subsol)
+       duc la contact.html; înainte cădeau toate pe subsolul ăsta.
+
+       Subsolul e copiat ca atare în contact.html — orice modificare aici se
+       face și acolo.
+       ======================================================================== -->
+  <footer class="site-footer">
 
     <!-- Decorative (alt gol, aria-hidden). Copii direct ai subsolului, nu ai __inner, altfel ar intra în reveal-ul din main.js și ar sări la derulare. -->
     <img class="site-footer__leaf site-footer__leaf--top"
@@ -698,7 +698,7 @@
         <ul class="site-footer__links">
           <li><a class="site-footer__nav-link" href="#acasa">Acasă</a></li>
           <li><a class="site-footer__nav-link" href="#fructe">Fructe</a></li>
-          <li><a class="site-footer__nav-link" href="#contact">Contact</a></li>
+          <li><a class="site-footer__nav-link" href="contact.html">Contact</a></li>
         </ul>
       </nav>
 
