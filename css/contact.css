@@ -4,12 +4,13 @@
 
    PENTRU URMĂTORUL CLAUDE: dacă lucrezi la pagina de contact, ăsta e fișierul.
    Nu citi style.css (~2900 de linii) ca să înțelegi pagina asta. Din style.css
-   ai nevoie numai de trei lucruri, iar ele sunt deja rezolvate mai jos:
+   ai nevoie numai de patru lucruri, iar ele sunt deja rezolvate mai jos:
      - antetul .site-header e fixed și transparent la --p: 0;
      - meniul lateral .drawer și butonul .burger merg neschimbate;
-     - subsolul .site-footer e identic cu cel de pe index.
-   Restul (hero, .grove, spina desenată, motivele de fundal, benzile) nu există
-   pe pagina asta.
+     - subsolul .site-footer e identic cu cel de pe index;
+     - .btn (pilula) și .reveal (sosirea la derulare) sunt reluate aici cu
+       variante proprii, .btn--solid și regulile din secțiunea 8.
+   Restul (hero, .grove, spina desenată, benzile) nu există pe pagina asta.
 
    Ordinea de încărcare: normalize → tokens → base → style → contact.
    Deci regulile de aici bat style.css la specificitate egală. Folosește asta
@@ -17,6 +18,17 @@
 
    Culorile, treptele de text și spațiile vin din tokens.css. Valori scrise de
    mână numai unde tokenul chiar nu ajunge, și cu motivul scris lângă.
+
+   Cuprins
+     1. Pagină fără hero
+     2. Cadrul paginii, fundalul, marginea de ieșire
+     3. Reach — titlu, datele de contact, fotografia
+     4. Meet — formularul și harta
+     5. Câmpuri și buton
+     6. Harta și traseul
+     7. Desenele de fundal și drumul
+     8. Sosirea la derulare
+     9. Lățimi (gol până la pasul de responsive)
    =========================================================================== */
 
 
@@ -41,23 +53,90 @@
 
 
 /* ---------------------------------------------------------------------------
-   2. CONȚINUT
+   2. CADRUL PAGINII
    --------------------------------------------------------------------------- */
 
 /* Antetul e fixed, deci nu ocupă loc în flux: fără paddingul ăsta prima
-   secțiune intră sub bară. */
+   secțiune intră sub bară.
+
+   isolation + un fundal propriu: fără amândouă, desenele de fundal (care se
+   amestecă prin multiply) n-ar avea în ce să se amestece și ar rămâne albe,
+   iar z-index: -1 al lor ar cădea sub pagină.
+
+   overflow: clip pe ambele axe — fotografia și desenele ies dinadins în
+   afara coloanei; fără el, pagina capătă derulare laterală. */
 .contact {
-    padding-block-start: calc(var(--header-h) + var(--space-xl));
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--paper);
+    padding-block-start: calc(var(--header-h) + var(--space-2xl));
     padding-block-end: var(--space-section);
+
+    /* Cât hârtie liberă e de la marginea coloanei până la marginea geamului.
+       Fotografia iese exact atât, deci atinge marginea la orice lățime, fără
+       să depindă de o cifră scrisă de mână.
+       Formula: jumătate din ce prisosește după ce coloana și-a luat lățimea
+       maximă, plus marginea normală. Sub pragul în care coloana încă nu e
+       plină, max() îl duce la 0 și rămâne doar marginea.
+       100vw include bara de derulare (~15px); eroarea nu se vede fiindcă
+       overflow: clip taie oricum acolo. */
+    --bleed: calc(max(0px, (100vw - var(--gutter) * 2 - var(--container)) / 2) + var(--gutter));
+
+    /* Suprafețele pe care nu le desenăm noi: selecția și cursorul de text
+       vin altfel în culorile browserului, care nu sunt ale site-ului.
+       Ținute pe pagina asta, nu în base.css, ca să nu schimbe index.html. */
+    caret-color: var(--action);
 }
 
-.contact__intro {
-    max-width: var(--container);
-    margin-inline: auto;
+.contact ::selection {
+    background: var(--leaf-bright);
+    color: var(--bark-deep);
+}
+
+/* Paddingul stă pe elementul de afară, lățimea maximă pe cel dinăuntru —
+   box-sizing e content-box pe tot site-ul, deci amândouă pe același element
+   i-ar umfla lățimea. Vezi base.css. */
+.reach,
+.meet {
     padding-inline: var(--gutter);
 }
 
-.contact__title {
+.reach__inner,
+.meet__inner {
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+
+/* ---------------------------------------------------------------------------
+   3. REACH — titlul, datele de contact, fotografia
+   --------------------------------------------------------------------------- */
+
+/* flex-basis: 0 pe amândouă, deci raportul 1 : 1.35 vine din flex-grow, nu
+   din cât text s-a nimerit în fiecare coloană. */
+.reach__inner {
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--space-l), 4vw, var(--space-2xl));
+}
+
+.reach__tell {
+    flex: 1 1 0;
+}
+
+.reach__eyebrow {
+    margin: 0 0 var(--space-s);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    /* Brun, nu verde ca în schiță: verdele are 3.8 pe hârtie și asta e text
+       mic. Verdele rămâne pe titlu (unde e mare) și pe siglele rotunde. */
+    color: var(--ink-soft);
+}
+
+.reach__title {
     margin: 0;
     font-family: var(--font-display);
     font-weight: var(--weight-display);
@@ -68,18 +147,547 @@
     color: var(--forest);
 }
 
-.contact__lead {
-    max-width: var(--measure);
-    margin-block-start: var(--space-s);
-    margin-block-end: 0;
+/* Mai scurt decât --measure: sub titlu, un paragraf lat cât toată coloana ar
+   rupe în trei rânduri scurte și blocul s-ar citi dezechilibrat. 42ch îl ține
+   la două rânduri pline. */
+.reach__lead {
+    max-width: 42ch;
+    margin-block-start: var(--space-m);
     font-size: var(--step-0);
     line-height: var(--leading-body);
     color: var(--ink-soft);
 }
 
+.reach__lines {
+    display: grid;
+    gap: var(--space-s);
+    margin-block-start: var(--space-l);
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+}
+
+/* flex: none — altfel cercul se turtește când textul de lângă e lung. */
+.line__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border: var(--hairline) solid var(--earth);
+    border-radius: var(--radius-pill);
+    color: var(--forest);
+}
+
+.line__mark svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.line__body {
+    display: grid;
+    gap: 0.15rem;
+}
+
+.line__label {
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+/* Scris ca link chiar dacă acum e <span>: când vin numărul și adresa reale se
+   învelesc în <a href="tel:..."> / <a href="mailto:..."> și nu mai e nimic de
+   stilizat. */
+.line__value,
+a.line__value {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color var(--duration) var(--ease);
+}
+
+a.line__value {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    transition: color var(--duration) var(--ease),
+        text-decoration-color var(--duration) var(--ease);
+}
+
+a.line__value:hover {
+    color: var(--action-ink);
+    text-decoration-color: currentColor;
+}
+
+/* Marginea negativă duce fotografia fix până în geam. Silueta e o spălare de
+   acuarelă: mască webp cu conturul în canalul alfa, aceeași rețetă ca la
+   fructele de pe index, dar regenerată la 16:9 (blob-c1). mask-size: 100% 100%
+   întinde fișierul pe cutie, deci raportul măștii TREBUIE să fie raportul
+   cadrului — schimbi unul, regenerezi masca; rețeta e în DESIGN.md.
+   -webkit-mask-* rămâne pentru Safari. Fără radial-gradient (ar da un oval
+   curat) și fără feTurbulence (se pictează la fiecare cadru). */
+.reach__frame {
+    flex: 1.35 1 0;
+    margin: 0;
+    margin-inline-end: calc(var(--bleed) * -1);
+
+    -webkit-mask-image: url("../img/blob-c1.webp");
+    mask-image: url("../img/blob-c1.webp");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+/* aspect-ratio pe imagine, nu pe ramă: pe ramă e ignorat cât timp imaginea o
+   împinge la înălțimea ei naturală. Niciodată height lângă el. */
+.reach__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out),
+        filter var(--duration-slow) var(--ease-out);
+}
+
+/* Răspuns la pointer, nu invitație la clic: fotografia nu duce nicăieri, deci
+   mișcarea rămâne sub pragul la care ar părea buton. Ca pe index. */
+.reach__frame:hover .reach__photo {
+    transform: scale(1.02);
+    filter: saturate(1.06);
+}
+
 
 /* ---------------------------------------------------------------------------
-   3. LĂȚIMI — gol până la pasul de responsive al acestei pagini.
+   4. MEET — formularul și harta
+   --------------------------------------------------------------------------- */
+
+.meet {
+    padding-block-start: var(--space-section);
+}
+
+/* flex-wrap cu bază proprie: cele două coloane se pun singure una sub alta
+   când nu mai încap, fără media query. */
+.meet__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: clamp(var(--space-l), 4vw, var(--space-2xl));
+}
+
+.write {
+    flex: 1.15 1 20rem;
+}
+
+.place {
+    flex: 1 1 18rem;
+}
+
+/* Titlurile de bloc: aceeași față, o treaptă mai jos decât h2 implicit
+   (--step-4 ar fi cât titlul paginii). */
+.write__title,
+.place__title {
+    font-size: var(--step-2);
+    font-weight: var(--weight-mid);
+    font-variation-settings: var(--axes-display);
+    color: var(--forest);
+}
+
+
+/* ---------------------------------------------------------------------------
+   5. CÂMPURI ȘI BUTON
+   --------------------------------------------------------------------------- */
+
+/* Formularul e mai îngust decât coloana lui, cu un motiv precis: între el și
+   hartă trebuie să rămână un culoar liber prin care coboară drumul desenat.
+   Fără plafonul ăsta câmpurile ajung la 631px, drumul le trece pe dedesubt
+   (are z-index: -1) și linia se rupe în trei bucăți. Muți drumul, muți și
+   plafonul. 30rem e și lățimea la care se citește comod un câmp de text. */
+.form {
+    max-width: 30rem;
+    margin-block-start: var(--space-m);
+}
+
+/* Două câmpuri scurte pe un rând, care se rup singure. 12rem e lățimea sub
+   care „Telefon sau e-mail" nu mai încape pe un rând în etichetă. */
+.form__pair {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+}
+
+.form__pair .field {
+    flex: 1 1 12rem;
+    margin-block-start: 0;
+}
+
+.form > .field {
+    margin-block-start: var(--space-s);
+}
+
+.field__label {
+    display: block;
+    margin-block-end: var(--space-3xs);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    color: var(--ink);
+}
+
+/* Singurul loc din proiect cu border-box, și cu motiv: un câmp de text
+   trebuie să fie exact cât coloana lui, iar paddingul lui e pe dinăuntru.
+   Cu content-box, width: 100% plus padding plus chenar ar depăși coloana. */
+.field__input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--hairline) solid var(--earth);
+    border-radius: var(--radius-s);
+    background: var(--paper-lift);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: var(--step-0);
+    line-height: var(--leading-body);
+    transition: border-color var(--duration) var(--ease),
+        background-color var(--duration) var(--ease);
+}
+
+.field__input::placeholder {
+    color: var(--ink-soft);
+    opacity: 1;
+}
+
+.field__input:hover {
+    border-color: var(--bark-soft);
+}
+
+/* Conturul portocaliu de focalizare vine din base.css (:focus-visible);
+   aici doar chenarul propriu se închide la culoare, ca să se vadă care câmp
+   e activ și după ce conturul dispare la clic de mouse. */
+.field__input:focus {
+    border-color: var(--forest);
+    background: var(--paper-lift);
+    outline-offset: 2px;
+}
+
+/* :user-invalid, nu :invalid — :invalid e adevărat din primul cadru pe un câmp
+   gol și obligatoriu, deci ar înroși formularul înainte să scrie omul ceva. */
+.field__input:user-invalid {
+    border-color: var(--action-deep);
+}
+
+/* Se trage numai pe verticală: pe orizontală ar ieși din coloană. */
+.field__input--area {
+    min-height: 9rem;
+    resize: vertical;
+}
+
+/* Varianta plină a butonului, pentru hârtie. .btn de bază e pilula desenată
+   de peste film, cu chenar și fond transparent; aici e un dreptunghi verde
+   plin, ca în schița clientului.
+   ::before (mătura de culoare) e deja în .btn; îi schimbăm numai culoarea:
+   --action-deep, fiindcă --on-dark pe --action are 2.8, iar pe --action-deep
+   are 5.8. Raportul în repaus, crem pe verde, e 4.08 — aceeași abatere
+   acceptată ca la subsol și la bara de sus. */
+.btn--solid {
+    margin-block-start: var(--space-m);
+    padding-inline: var(--space-l);
+    border-color: var(--forest);
+    border-radius: var(--radius-s);
+    background: var(--forest);
+    color: var(--on-dark);
+}
+
+.btn--solid::before {
+    background: var(--action-deep);
+}
+
+.btn--solid:hover,
+.btn--solid:active {
+    border-color: var(--action-deep);
+    color: var(--on-dark);
+}
+
+/* Starea dezactivată din style.css e făcută pentru fundalul de film; pe
+   hârtie ar fi crem pe verde șters. Aici: nisip plat, fără mătură. */
+.btn--solid:disabled,
+.btn--solid[aria-disabled="true"] {
+    border-color: var(--sand);
+    background: var(--sand);
+    color: var(--ink-soft);
+}
+
+.btn--solid:disabled:hover,
+.btn--solid[aria-disabled="true"]:hover {
+    color: var(--ink-soft);
+}
+
+
+/* ---------------------------------------------------------------------------
+   6. HARTA ȘI TRASEUL
+   --------------------------------------------------------------------------- */
+
+/* Grilă cu o singură celulă: harta (iframe sau imagine) și textul provizoriu
+   stau pe același loc, deci se pot schimba între ele fără să se miște nimic.
+   overflow: hidden ține colțurile hărții rotunjite.
+   border-box: chenarul de 1px trebuie să intre în lățimea coloanei, nu să
+   se adune peste ea (box-sizing e content-box pe tot site-ul). */
+.place__map {
+    box-sizing: border-box;
+    display: grid;
+    margin-block-start: var(--space-m);
+    aspect-ratio: 16 / 10;
+    border: var(--hairline) solid var(--earth);
+    border-radius: var(--radius-m);
+    background: var(--sand-soft);
+    overflow: hidden;
+}
+
+.place__map > * {
+    grid-area: 1 / 1;
+}
+
+.place__map > iframe,
+.place__map > img {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+}
+
+/* Locul gol al hărții: un semn desenat și o linie de text, ca să se citească
+   drept „aici vine harta", nu drept imagine care n-a încărcat. Se scot
+   amândouă odată cu <p>-ul, când intră harta. */
+.place__map-note {
+    place-self: center;
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2xs);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+}
+
+.place__map-note svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--forest);
+    opacity: 0.65;
+}
+
+.place__where {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-s);
+    color: var(--ink);
+}
+
+.place__pin {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--forest);
+}
+
+/* --action-ink, nu --action: portocaliul plin are 2.8 pe hârtie, varianta
+   închisă trece pragul. Fără subliniere în repaus — săgeata și culoarea spun
+   deja că se dă clic; sublinierea apare la hover și la focalizare. */
+.place__route {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-xs);
+    color: var(--action-ink);
+    font-weight: var(--weight-mid);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.28em;
+    transition: color var(--duration) var(--ease),
+        text-decoration-color var(--duration) var(--ease);
+}
+
+.place__route:hover,
+.place__route:focus-visible {
+    color: var(--action-hot);
+    text-decoration-color: currentColor;
+}
+
+.place__arrow {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    transition: transform var(--duration) var(--ease-out);
+}
+
+.place__route:hover .place__arrow,
+.place__route:focus-visible .place__arrow {
+    transform: translateX(0.25rem);
+}
+
+
+/* ---------------------------------------------------------------------------
+   7. DESENELE DE FUNDAL ȘI DRUMUL
+   --------------------------------------------------------------------------- */
+
+/* Aceleași reguli ca pe index: sub text (z-index: -1), peste hârtia paginii,
+   multiply ca să se stingă în crem. max-width: none fiindcă base.css taie
+   orice imagine la 100%. Elementul gazdă (.contact) are isolation și fundal —
+   fără ele desenul rămâne alb. */
+.motif {
+    position: absolute;
+    z-index: -1;
+    max-width: none;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+/* Frunzele intră din marginile ferestrei, tăiate de overflow: clip. Cu cât e
+   desenul mai mare, cu atât mai palid — altfel greutatea lui bate textul. */
+.motif--leaf-left {
+    inset-block-start: 8%;
+    inset-inline-start: calc(var(--leaf-w) * -0.42);
+    width: var(--leaf-w);
+    opacity: 0.4;
+    rotate: -6deg;
+
+    --leaf-w: clamp(14rem, 26vw, 27rem);
+}
+
+.motif--leaf-right {
+    inset-block-start: 40%;
+    inset-inline-end: calc(var(--leaf-w) * -0.34);
+    width: var(--leaf-w);
+    opacity: 0.36;
+    rotate: 172deg;
+
+    --leaf-w: clamp(13rem, 24vw, 25rem);
+}
+
+/* Cea mai mare, deci cea mai palidă. Stă jos la stânga, sub formular. */
+.motif--branch {
+    inset-block-end: -6%;
+    inset-inline-start: -14%;
+    width: clamp(20rem, 42vw, 44rem);
+    opacity: 0.24;
+    scale: -1 1;
+}
+
+/* DRUMUL. SVG-ul e întins peste toată pagina (preserveAspectRatio="none" în
+   HTML), deci coordonatele viewBox-ului sunt procente din pagină și linia
+   crește odată cu conținutul, fără JavaScript. Vezi comentariul din HTML. */
+.road {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* vector-effect: fără el, întinderea neuniformă ar face linia groasă pe
+   verticală și subțire pe orizontală. */
+.road__line {
+    fill: none;
+    stroke: var(--earth);
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+}
+
+/* Capătul drumului. Cerc separat, nu în SVG: în SVG-ul întins ar ieși oval.
+   93.6% și 50% sunt exact ultimul punct al curbei (936 și 500 din 1000) —
+   se schimbă „d", se schimbă și astea două. */
+.road__stop {
+    position: absolute;
+    z-index: -1;
+    inset-block-start: 93.6%;
+    inset-inline-start: 50%;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin: -0.35rem 0 0 -0.35rem;
+    border-radius: var(--radius-pill);
+    background: var(--action);
+}
+
+/* Inelul din jur e chenar desenat, nu umbră fără decalaj: o umbră cu blur și
+   decalaj zero e un halou, nu adâncime. */
+.road__stop::after {
+    content: "";
+    position: absolute;
+    inset: -0.4rem;
+    border: var(--hairline) solid var(--action);
+    border-radius: inherit;
+    opacity: 0.45;
+}
+
+
+/* ---------------------------------------------------------------------------
+   8. SOSIREA LA DERULARE
+
+   .reveal (blocul urcă și se așază) vine din style.css; contact.js îi pune
+   clasa. Aici sunt numai cele două mișcări proprii paginii.
+   --------------------------------------------------------------------------- */
+
+/* Fotografia nu sosește, se dezvelește de jos în sus prin propria siluetă —
+   aceeași mișcare ca fotografiile fructelor de pe index. .wipe e pusă numai
+   de contact.js, deci fără script fotografia e întreagă din primul cadru. */
+.reach__frame {
+    clip-path: inset(0);
+    transition: clip-path 900ms var(--ease-out);
+}
+
+.reach__frame.wipe {
+    clip-path: inset(100% 0 0 0);
+}
+
+.reach__frame.wipe.is-in {
+    clip-path: inset(0);
+}
+
+/* Drumul se desenează o dată, la încărcare, de sus în jos.
+
+   Se dezvelește cu clip-path, NU cu stroke-dasharray. Motivul, verificat pe
+   pagina asta: cu pathLength="1" plus vector-effect: non-scaling-stroke și
+   întinderea neuniformă a SVG-ului, Chrome calculează greșit tiparul de linii
+   și mănâncă o bucată din mijlocul curbei (lipsea de la 54% la 72% din
+   înălțimea paginii). Nu pune dasharray la loc.
+
+   Cele două procente sunt exact capetele curbei: 316 și 936 din 1000, adică
+   primul și ultimul punct din „d". Se schimbă „d", se schimbă și ele.
+   Starea de plecare e o bandă de înălțime zero fix la începutul curbei.
+
+   html:not(.no-js), nu o clasă pusă din JS: scriptul din <head> scoate .no-js
+   înainte de prima pictare, deci drumul pleacă ascuns numai când există
+   JavaScript. Fără script rămâne desenat întreg, ca orice altceva de aici. */
+html:not(.no-js) .road {
+    clip-path: inset(31.6% 0 68.4% 0);
+    transition: clip-path 2600ms var(--ease);
+}
+
+html:not(.no-js) .road__stop {
+    opacity: 0;
+    /* Întârzierea e cât ține desenarea liniei: punctul apare când drumul
+       ajunge la el, nu odată cu el. */
+    transition: opacity var(--duration-slow) var(--ease) 2300ms;
+}
+
+.contact.is-drawn .road {
+    clip-path: inset(31.6% 0 6.4% 0);
+}
+
+.contact.is-drawn .road__stop {
+    opacity: 1;
+}
+
+
+/* ---------------------------------------------------------------------------
+   9. LĂȚIMI — gol până la pasul de responsive al acestei pagini.
    Aceleași reguli ca pe index: întâi unități fluide, apoi flex-wrap, media
    query abia la urmă și numai unde chiar se rupe ceva. Interogările se scriu
    în em, nu în px, iar în comentariu se trece CE s-a rupt acolo.

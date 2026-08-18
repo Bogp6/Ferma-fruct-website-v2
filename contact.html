@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css?v=20260817-wide-1">
-  <link rel="stylesheet" href="css/contact.css?v=20260818-contact-1">
+  <link rel="stylesheet" href="css/contact.css?v=20260818-contact-3">
 
   <!-- Preloads only the latin font file; latin-ext (ș, ț) loads later via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -78,11 +78,24 @@
 
        PAGINA: singura acțiune a site-ului. Vizitatorul a mâncat deja fructul,
        caută ferma și vrea să vorbească cu cineva. Un singur drum clar spre
-       telefon și e-mail; formularul, dacă apare, postează spre un serviciu
-       extern (nu există cod pe server).
+       telefon și e-mail; formularul postează spre un serviciu extern (nu
+       există cod pe server).
 
-       CONȚINUT DE SCRIS: telefonul, e-mailul și adresa reale lipsesc încă —
-       vezi lista din DESIGN.md, „Still open". Nimic inventat pe pagină.
+       IDEEA: titlul spune „drumul spre livadă începe aici", deci pagina ARE un
+       drum — o linie desenată care coboară de sub fotografie, printre cele
+       două coloane, și se oprește cu un punct portocaliu lângă butonul de
+       trimitere. Asta e singura mișcare pe care o inventează pagina; restul e
+       gramatica de pe index (sosirea blocurilor, dezvelirea fotografiei).
+
+       PRIMUL ECRAN: stânga, titlul mare verde și cele trei date de contact cu
+       sigle rotunde; dreapta, fotografia livezii ieșind până în marginea
+       geamului, tăiată de aceeași spălare de acuarelă ca fructele de pe index.
+       Dedesubt, formularul la stânga și harta la dreapta.
+
+       CONȚINUT DE SCRIS: telefonul, e-mailul și adresa reale lipsesc încă, la
+       fel harta și adresa serviciului de formulare — vezi lista din DESIGN.md,
+       „Still open". Nimic inventat pe pagină: numărul e 07xx xxx xxx și adresa
+       de e-mail e @exemplu.ro tocmai ca să nu poată ajunge așa la public.
        ========================================================================== -->
 
   <a class="skip" href="#main">Sari la conținut</a>
@@ -174,25 +187,228 @@
   <main id="main" class="contact">
 
     <!-- ======================================================================
-         AICI SE CONSTRUIEȘTE PAGINA DE CONTACT.
+         1. REACH — titlul paginii, cele trei date de contact, fotografia.
 
-         Gol intenționat: schela e gata (antet, meniu lateral, subsol, CSS
-         propriu), conținutul nu e încă decis cu clientul. Titlul de mai jos e
-         provizoriu și se înlocuiește, nu se completează în jurul lui.
-
-         Regulile care se aplică oricărei secțiuni scrise aici:
-         - Datele reale (telefon, e-mail, adresă, program) lipsesc. Nu inventa
-           niciuna. Vezi lista „Still open" din DESIGN.md.
-         - Un formular nu poate fi trimis de aici (Cloudflare Pages, fără cod
-           pe server). Trebuie să posteze spre un serviciu extern.
-         - Clasele noi se stilizează în css/contact.css, nu în style.css.
+         DATELE SUNT PROVIZORII ȘI SE VEDE CĂ SUNT: 07xx xxx xxx și
+         nume@exemplu.ro. Nu scrie aici un număr sau o adresă care arată a
+         reale până nu le trimite ferma — vezi „Still open" în DESIGN.md.
+         Când vin, valoarea se învelește în <a href="tel:...">, respectiv
+         <a href="mailto:...">; .line__value e deja stilizat pentru amândouă.
          ====================================================================== -->
-    <section class="contact__intro">
-      <h1 class="contact__title">Luați legătura cu ferma</h1>
-      <p class="contact__lead">Text provizoriu, de înlocuit. Aici intră un
-        paragraf scurt care spune cine răspunde și cât de repede, ca vizitatorul
-        să știe la ce se așteaptă înainte să scrie.</p>
+    <section class="reach">
+      <div class="reach__inner">
+
+        <div class="reach__tell">
+
+          <p class="reach__eyebrow">Contact</p>
+
+          <h1 class="reach__title">Drumul spre livadă începe aici.</h1>
+
+          <!-- Cratimele din „scrie-ne" și „sună-ne" sunt U+2011 (cratimă care
+               nu rupe rândul): cu cratima obișnuită, rândul se taie după ea și
+               se citește ca despărțire în silabe greșită. -->
+          <p class="reach__lead">Pentru comenzi, disponibilitate sau colaborări,
+            scrie‑ne sau sună‑ne.</p>
+
+          <!-- Sigle desenate de mână, aceeași grosime de linie (1.5) ca la
+               butonul de meniu. Fără bibliotecă de pictograme. -->
+          <ul class="reach__lines">
+
+            <li class="line">
+              <span class="line__mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M6.4 3.6h3l1.5 4-2.1 1.5a12.4 12.4 0 0 0 6.1 6.1l1.5-2.1 4 1.5v3a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.8a2 2 0 0 1 1.8-2.2z"/>
+                </svg>
+              </span>
+              <span class="line__body">
+                <span class="line__label">Telefon</span>
+                <span class="line__value">07xx xxx xxx</span>
+              </span>
+            </li>
+
+            <li class="line">
+              <span class="line__mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <rect x="3.2" y="5.4" width="17.6" height="13.2" rx="2.2"/>
+                  <path d="M3.9 7.4 12 13.1l8.1-5.7"/>
+                </svg>
+              </span>
+              <span class="line__body">
+                <span class="line__label">E-mail</span>
+                <span class="line__value">nume@exemplu.ro</span>
+              </span>
+            </li>
+
+            <li class="line">
+              <span class="line__mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M12 21.2s6.9-6.3 6.9-11.1a6.9 6.9 0 1 0-13.8 0c0 4.8 6.9 11.1 6.9 11.1z"/>
+                  <circle cx="12" cy="9.8" r="2.6"/>
+                </svg>
+              </span>
+              <span class="line__body">
+                <span class="line__label">Locație</span>
+                <span class="line__value">Brabova, Dolj, România</span>
+              </span>
+            </li>
+
+          </ul>
+        </div>
+
+        <!-- Fotografia iese până în marginea ferestrei: marginea negativă e
+             --bleed, distanța de la marginea coloanei până la marginea
+             geamului. Silueta e o spălare de acuarelă (mască webp în canalul
+             alfa), aceeași rețetă ca fotografiile fructelor de pe index, dar
+             regenerată la 16:9 — masca se întinde pe cutie, deci raportul ei
+             trebuie să fie raportul cadrului. Schimbi raportul, regenerezi
+             masca (rețeta e în DESIGN.md).
+             FOTO PROVIZORIE: cadru din filmul livezii, până trimite ferma una
+             făcută pentru locul ăsta. -->
+        <figure class="reach__frame">
+          <img class="reach__photo" src="img/livada-drum-1440.webp"
+               srcset="img/livada-drum-720.webp 720w, img/livada-drum-1440.webp 1440w"
+               sizes="(min-width: 64em) 52vw, 100vw" width="1440" height="810"
+               alt="Livada de la Brabova văzută de sus, cu rândurile de pomi înfloriți și drumul de pământ dintre ele."
+               fetchpriority="high" decoding="async">
+        </figure>
+
+      </div>
     </section>
+
+
+    <!-- ======================================================================
+         2. MEET — formularul și harta, unul lângă altul.
+
+         FORMULARUL NU E LEGAT DE NIMIC. Cloudflare Pages nu rulează cod pe
+         server, deci trebuie să posteze spre un serviciu extern (Formspree,
+         Basin, Web3Forms). Până atunci action= e un TODO, nu o adresă care
+         pare bună. Când vine adresa: schimbă action, verifică o trimitere
+         reală și scrie unde ajung mesajele.
+         ====================================================================== -->
+    <section class="meet">
+      <div class="meet__inner">
+
+        <div class="write">
+          <h2 class="write__title">Lasă-ne un mesaj</h2>
+
+          <form class="form" method="post" action="TODO-adresa-serviciului-de-formulare">
+
+            <!-- Două câmpuri scurte pe un rând; se rup singure când nu mai
+                 încap (flex-wrap), fără media query. -->
+            <div class="form__pair">
+              <div class="field">
+                <label class="field__label" for="nume">Nume</label>
+                <input class="field__input" id="nume" name="nume" type="text"
+                       autocomplete="name" required>
+              </div>
+
+              <div class="field">
+                <label class="field__label" for="legatura">Telefon sau e-mail</label>
+                <input class="field__input" id="legatura" name="legatura" type="text"
+                       autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="subiect">Subiect</label>
+              <input class="field__input" id="subiect" name="subiect" type="text">
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="mesaj">Mesaj</label>
+              <textarea class="field__input field__input--area" id="mesaj" name="mesaj"
+                        rows="6" required></textarea>
+            </div>
+
+            <button class="btn btn--solid" type="submit">Trimite mesajul</button>
+
+          </form>
+        </div>
+
+        <div class="place">
+          <h2 class="place__title">Ne găsești aici</h2>
+
+          <!-- HARTA: pune <iframe> de la Google Maps direct aici, fără alt
+               înveliș. .place__map îi dă deja raportul și colțurile, iar
+               regula de mai jos îl întinde pe toată cutia. Scoate
+               .place__map-note când intră harta. -->
+          <div class="place__map">
+            <p class="place__map-note">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M12 21.2s6.9-6.3 6.9-11.1a6.9 6.9 0 1 0-13.8 0c0 4.8 6.9 11.1 6.9 11.1z"/>
+                <circle cx="12" cy="9.8" r="2.6"/>
+              </svg>
+              Aici intră harta.
+            </p>
+          </div>
+
+          <p class="place__where">
+            <svg class="place__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 21.2s6.9-6.3 6.9-11.1a6.9 6.9 0 1 0-13.8 0c0 4.8 6.9 11.1 6.9 11.1z"/>
+              <circle cx="12" cy="9.8" r="2.6"/>
+            </svg>
+            Brabova, Dolj
+          </p>
+
+          <!-- Caută comuna, nu un punct anume: adresa exactă a fermei nu e
+               știută încă. Se înlocuiește cu linkul „Trasare" din harta
+               trimisă de fermă. -->
+          <a class="place__route"
+             href="https://www.google.com/maps/dir/?api=1&amp;destination=Brabova%2C%20Dolj%2C%20Rom%C3%A2nia"
+             target="_blank" rel="noopener noreferrer">
+            Deschide traseul
+            <span class="visually-hidden">(se deschide într-o filă nouă)</span>
+            <svg class="place__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M4 12h15"/>
+              <path d="m13.2 6 6 6-6 6"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== DESENELE DE FUNDAL ==============================
+         Aceleași trei desene gravate ca pe index, aceeași regulă: multiply pe
+         un fundal crem, sub text (z-index: -1). Nu pune z-index, opacity sau
+         transform pe secțiunile care le găzduiesc — oricare dintre ele face
+         context de stivuire și desenul rămâne alb.
+         ====================================================================== -->
+    <img class="motif motif--leaf-left" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--leaf-right" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--branch" src="img/branch-1024.webp" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+    <!-- ==================== DRUMUL =========================================
+         Linia desenată care coboară de sub fotografie până lângă buton — titlul
+         spune „drumul spre livadă", asta e drumul.
+
+         SVG întins peste toată pagina cu preserveAspectRatio="none", deci
+         coordonatele din viewBox sunt procente: 500 pe orizontală înseamnă
+         jumătatea paginii, 936 pe verticală înseamnă 93,6% din înălțimea ei.
+         Așa se întinde singur oricât ar crește conținutul, fără JavaScript și
+         fără măsurători.
+         vector-effect="non-scaling-stroke": fără el, întinderea neuniformă ar
+         face linia groasă pe verticală și subțire pe orizontală.
+         Desenarea de la intrare se face cu clip-path pe <svg>, nu cu
+         stroke-dasharray — motivul e scris în contact.css, secțiunea 8.
+         Punctul portocaliu e element separat, nu cerc în SVG: întins, cercul
+         ar ieși oval.
+         ====================================================================== -->
+    <svg class="road" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="road__line" fill="none"
+            d="M428 316 C400 392 454 436 470 494 C488 556 416 592 424 652 C432 716 496 738 500 802 C504 860 476 892 500 936" />
+    </svg>
+    <span class="road__stop" aria-hidden="true"></span>
 
   </main>
 
@@ -337,6 +553,9 @@
        elementul și iese dacă lipsește, deci pe pagina asta rulează practic
        numai meniul lateral. ?v= crește odată cu style.css. -->
   <script src="js/main.js?v=20260817-wide-1"></script>
+  <!-- Numai pentru pagina asta: sosirea la derulare și desenarea drumului.
+       Ținut separat de main.js ca să nu fie nevoie de un ?v= nou pe index. -->
+  <script src="js/contact.js?v=20260818-contact-3"></script>
 
 </body>
 
