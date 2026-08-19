@@ -8,8 +8,8 @@
      - antetul .site-header e fixed și transparent la --p: 0;
      - meniul lateral .drawer și butonul .burger merg neschimbate;
      - subsolul .site-footer e identic cu cel de pe index;
-     - .btn (pilula) și .reveal (sosirea la derulare) sunt reluate aici cu
-       variante proprii, .btn--solid și regulile din secțiunea 8.
+     - .btn (pilula) și .reveal (sosirea la derulare) sunt reluate aici;
+       formularul folosește varianta comună .btn--ink pentru hârtie.
    Restul (hero, .grove, spina desenată, benzile) nu există pe pagina asta.
 
    Ordinea de încărcare: normalize → tokens → base → style → contact.
@@ -139,7 +139,7 @@
 .reach__title {
     margin: 0;
     font-family: var(--font-display);
-    font-weight: var(--weight-display);
+    font-weight: var(--weight-normal);
     font-variation-settings: var(--axes-display);
     font-size: var(--step-4);
     line-height: var(--leading-tight);
@@ -160,7 +160,7 @@
 
 .reach__lines {
     display: grid;
-    gap: var(--space-s);
+    gap: var(--space-m);
     margin-block-start: var(--space-l);
 }
 
@@ -168,6 +168,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-s);
+    padding-block: var(--space-2xs);
 }
 
 /* flex: none — altfel cercul se turtește când textul de lângă e lung. */
@@ -179,7 +180,7 @@
     height: 2.9rem;
     border: var(--hairline) solid var(--earth);
     border-radius: var(--radius-pill);
-    color: var(--forest);
+    color: var(--ink-soft);
 }
 
 .line__mark svg {
@@ -193,11 +194,11 @@
 }
 
 .line__label {
-    font-size: var(--step--1);
+    font-size: var(--step-0);
     font-weight: var(--weight-mid);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color: var(--ink-soft);
+    color: var(--forest);
 }
 
 /* Scris ca link chiar dacă acum e <span>: când vin numărul și adresa reale se
@@ -206,6 +207,8 @@
 .line__value,
 a.line__value {
     color: var(--ink);
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
     text-decoration: none;
     transition: color var(--duration) var(--ease);
 }
@@ -224,20 +227,21 @@ a.line__value:hover {
     text-decoration-color: currentColor;
 }
 
-/* Marginea negativă duce fotografia fix până în geam. Silueta e o spălare de
-   acuarelă: mască webp cu conturul în canalul alfa, aceeași rețetă ca la
-   fructele de pe index, dar regenerată la 16:9 (blob-c1). mask-size: 100% 100%
-   întinde fișierul pe cutie, deci raportul măștii TREBUIE să fie raportul
-   cadrului — schimbi unul, regenerezi masca; rețeta e în DESIGN.md.
-   -webkit-mask-* rămâne pentru Safari. Fără radial-gradient (ar da un oval
-   curat) și fără feTurbulence (se pictează la fiecare cadru). */
+/* Marginea negativă duce fotografia fix până în geam. blob-b1 are conturul
+   dens, pictat, din machetă; textura lui se întinde pe cadrul panoramic ca să
+   rămână vizibilă pe toate cele patru laturi. -webkit-mask-* rămâne pentru
+   Safari. Fără radial-gradient: ar da un oval curat, nu o margine de acuarelă. */
 .reach__frame {
-    flex: 1.35 1 0;
+    flex: 1.6 1 0;
     margin: 0;
     margin-inline-end: calc(var(--bleed) * -1);
+    translate: 0 var(--space-s);
+    /* Mărim cadrul întreg, nu imaginea dinăuntru: masca de acuarelă rămâne
+       neschimbată, iar cele patru margini pictate ies vizibil mai mult în afară. */
+    transform: scale(1.12);
 
-    -webkit-mask-image: url("../img/blob-c1.webp");
-    mask-image: url("../img/blob-c1.webp");
+    -webkit-mask-image: url("../img/blob-b1.webp");
+    mask-image: url("../img/blob-b1.webp");
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
@@ -245,21 +249,28 @@ a.line__value:hover {
 }
 
 /* aspect-ratio pe imagine, nu pe ramă: pe ramă e ignorat cât timp imaginea o
-   împinge la înălțimea ei naturală. Niciodată height lângă el. */
+   împinge la înălțimea ei naturală. Niciodată height lângă el.
+
+   8/5, nu 16/9: fotografia creşte pe VERTICALĂ, nu pe orizontală, şi asta e
+   o constrângere, nu un gust. Drumul desenat coboară prin culoarul dintre
+   coloana de text şi ramă (57px la 1440px, linia trece pe la mijlocul lui);
+   dacă rama se lăţeşte, culoarul se mută sub fotografie şi drumul dispare
+   în spatele ei — .road are z-index: -1. Deci flex-ul rămâne 1.6.
+   La 8/5 fotografia ajunge cam la înălţimea coloanei de text de lângă ea,
+   care e şi motivul pentru care înainte părea mică.
+   object-fit taie ~90px pe laterale din sursa 16/9; nu se măreşte nimic. */
 .reach__photo {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 8 / 5;
     object-fit: cover;
-    transition: transform var(--duration-slow) var(--ease-out),
-        filter var(--duration-slow) var(--ease-out);
 }
 
-/* Răspuns la pointer, nu invitație la clic: fotografia nu duce nicăieri, deci
-   mișcarea rămâne sub pragul la care ar părea buton. Ca pe index. */
+/* Fotografia nu este interactivă. Regula explicită împiedică orice zoom sau
+   filtru moștenit să creeze o muchie dreptunghiulară în interiorul măștii. */
 .reach__frame:hover .reach__photo {
-    transform: scale(1.02);
-    filter: saturate(1.06);
+    transform: none;
+    filter: none;
 }
 
 
@@ -296,6 +307,14 @@ a.line__value:hover {
     font-weight: var(--weight-mid);
     font-variation-settings: var(--axes-display);
     color: var(--forest);
+}
+
+.write__lead {
+    max-width: 34rem;
+    margin-block-start: var(--space-2xs);
+    font-size: var(--step--1);
+    line-height: var(--leading-body);
+    color: var(--ink-soft);
 }
 
 
@@ -372,7 +391,7 @@ a.line__value:hover {
 .field__input:focus {
     border-color: var(--forest);
     background: var(--paper-lift);
-    outline-offset: 2px;
+    outline-offset: 1px;
 }
 
 /* :user-invalid, nu :invalid — :invalid e adevărat din primul cadru pe un câmp
@@ -387,44 +406,31 @@ a.line__value:hover {
     resize: vertical;
 }
 
-/* Varianta plină a butonului, pentru hârtie. .btn de bază e pilula desenată
-   de peste film, cu chenar și fond transparent; aici e un dreptunghi verde
-   plin, ca în schița clientului.
-   ::before (mătura de culoare) e deja în .btn; îi schimbăm numai culoarea:
-   --action-deep, fiindcă --on-dark pe --action are 2.8, iar pe --action-deep
-   are 5.8. Raportul în repaus, crem pe verde, e 4.08 — aceeași abatere
-   acceptată ca la subsol și la bara de sus. */
-.btn--solid {
+/* Butonul folosește .btn + .btn--ink din style.css: aceeași pilulă și aceeași
+   mătură portocalie ca „Contactați-ne”, adaptate fundalului de hârtie.
+   Aici rămâne numai distanța lui față de ultimul câmp. */
+.form .btn {
     margin-block-start: var(--space-m);
-    padding-inline: var(--space-l);
-    border-color: var(--forest);
-    border-radius: var(--radius-s);
-    background: var(--forest);
-    color: var(--on-dark);
 }
 
-.btn--solid::before {
-    background: var(--action-deep);
-}
-
-.btn--solid:hover,
-.btn--solid:active {
-    border-color: var(--action-deep);
-    color: var(--on-dark);
-}
-
-/* Starea dezactivată din style.css e făcută pentru fundalul de film; pe
-   hârtie ar fi crem pe verde șters. Aici: nisip plat, fără mătură. */
-.btn--solid:disabled,
-.btn--solid[aria-disabled="true"] {
+/* Starea comună dezactivată este făcută pentru film. Pe hârtie folosim
+   nisip și brun, păstrând forma comună fără mătura de hover. */
+.form .btn:disabled,
+.form .btn[aria-disabled="true"] {
     border-color: var(--sand);
-    background: var(--sand);
+    background: transparent;
     color: var(--ink-soft);
 }
 
-.btn--solid:disabled:hover,
-.btn--solid[aria-disabled="true"]:hover {
+.form .btn:disabled:hover,
+.form .btn[aria-disabled="true"]:hover {
+    border-color: var(--sand);
     color: var(--ink-soft);
+}
+
+.form .btn:disabled:hover::before,
+.form .btn[aria-disabled="true"]:hover::before {
+    transform: scaleX(0);
 }
 
 
@@ -432,9 +438,8 @@ a.line__value:hover {
    6. HARTA ȘI TRASEUL
    --------------------------------------------------------------------------- */
 
-/* Grilă cu o singură celulă: harta (iframe sau imagine) și textul provizoriu
-   stau pe același loc, deci se pot schimba între ele fără să se miște nimic.
-   overflow: hidden ține colțurile hărții rotunjite.
+/* Rama rămâne plată, ca în macheta paginii: un singur chenar, fără umbră.
+   overflow: hidden ține harta și comenzile Google în același contur.
    border-box: chenarul de 1px trebuie să intre în lățimea coloanei, nu să
    se adune peste ea (box-sizing e content-box pe tot site-ul). */
 .place__map {
@@ -444,12 +449,14 @@ a.line__value:hover {
     aspect-ratio: 16 / 10;
     border: var(--hairline) solid var(--earth);
     border-radius: var(--radius-m);
-    background: var(--sand-soft);
+    background: var(--paper-lift);
     overflow: hidden;
+    transition: border-color var(--duration) var(--ease);
 }
 
-.place__map > * {
-    grid-area: 1 / 1;
+.place__map:hover,
+.place__map:focus-within {
+    border-color: var(--forest);
 }
 
 .place__map > iframe,
@@ -460,23 +467,26 @@ a.line__value:hover {
     object-fit: cover;
 }
 
-/* Locul gol al hărții: un semn desenat și o linie de text, ca să se citească
-   drept „aici vine harta", nu drept imagine care n-a încărcat. Se scot
-   amândouă odată cu <p>-ul, când intră harta. */
-.place__map-note {
-    place-self: center;
-    display: grid;
-    justify-items: center;
-    gap: var(--space-2xs);
-    font-size: var(--step--1);
-    color: var(--ink-soft);
+/* Google Maps este cross-origin, deci drumurile și etichetele din iframe nu
+   pot fi stilizate separat. Filtrul încălzește harta întreagă spre hârtie și
+   pământ; la interacțiune revine aproape de culoarea ei reală, ca detaliile și
+   comenzile să fie cât mai clare. */
+.place__map > iframe {
+    filter: grayscale(0.16) sepia(0.2) saturate(0.72) brightness(1.04) contrast(0.93);
+    transition: filter var(--duration-slow) var(--ease-out);
 }
 
-.place__map-note svg {
-    width: 1.6rem;
-    height: 1.6rem;
-    color: var(--forest);
-    opacity: 0.65;
+.place__map:hover > iframe,
+.place__map:focus-within > iframe {
+    filter: grayscale(0.03) sepia(0.06) saturate(0.94) brightness(1.01) contrast(0.98);
+}
+
+/* Conturul global ar fi tăiat de overflow pe ramă. Îl mutăm în interiorul
+   iframe-ului, unde rămâne vizibil când harta primește tastatura. */
+.place__map > iframe:focus-visible {
+    outline: 2px solid var(--action);
+    outline-offset: -3px;
+    border-radius: 0;
 }
 
 .place__where {
@@ -547,35 +557,156 @@ a.line__value:hover {
     pointer-events: none;
 }
 
-/* Frunzele intră din marginile ferestrei, tăiate de overflow: clip. Cu cât e
-   desenul mai mare, cu atât mai palid — altfel greutatea lui bate textul. */
-.motif--leaf-left {
+/* Ramurile intră din marginile ferestrei, tăiate de overflow: clip, la fel ca
+   în machetă. Ele încadrează pagina; sunt cele mai mari desene de aici.
+
+   Plafonul de 46rem e lăţimea reală a fişierului branch-1024.webp (1024px).
+   Peste el s-ar mări o imagine, ceea ce nu se face nicăieri pe site.
+
+   Frunzişul desenului stă în colţul din dreapta-sus al fişierului, coada în
+   stânga-jos. Deci ramura din stânga intră neîntoarsă (frunzişul cade spre
+   pagină), iar cea din dreapta e oglindită cu scale: -1 1 şi frunzişul îi
+   cade spre stânga. Decalajele negative ascund coada, nu frunzişul.
+
+   Contrast: sub frunziş hârtia se închide până pe la #EADFC9 şi verdele
+   titlurilor scade de la 3.8 la ~3.35. Rămâne peste pragul de 3 pentru text
+   mare, în aceeaşi familie cu abaterile deja semnate din DESIGN.md, dar e
+   motivul pentru care opacitatea nu urcă mai sus de 0.68. */
+.motif--branch-left {
+    /* 8%, nu 4%: bara verde e fixed, înaltă de --header-h, şi mânca vârful
+       frunzişului. Se schimbă --header-h, se verifică şi asta. */
     inset-block-start: 8%;
-    inset-inline-start: calc(var(--leaf-w) * -0.42);
-    width: var(--leaf-w);
-    opacity: 0.4;
-    rotate: -6deg;
+    /* Ancorat la marginea COLOANEI, nu la marginea geamului. --bleed e exact
+       hârtia liberă dintre ele, deci pe un ecran lat ramura se mută odată cu
+       coloana şi intră tot atât peste ea; agăţată de geam ar rămâne singură
+       în margine (măsurat la 2160px: intra abia de la 1692px). */
+    inset-inline-start: calc(var(--bleed) - var(--branch-w) * 0.78);
+    width: var(--branch-w);
+    opacity: 0.68;
+    rotate: -9deg;
 
-    --leaf-w: clamp(14rem, 26vw, 27rem);
+    --branch-w: clamp(25rem, 40vw, 46rem);
 }
 
-.motif--leaf-right {
-    inset-block-start: 40%;
-    inset-inline-end: calc(var(--leaf-w) * -0.34);
-    width: var(--leaf-w);
-    opacity: 0.36;
-    rotate: 172deg;
-
-    --leaf-w: clamp(13rem, 24vw, 25rem);
-}
-
-/* Cea mai mare, deci cea mai palidă. Stă jos la stânga, sub formular. */
-.motif--branch {
-    inset-block-end: -6%;
-    inset-inline-start: -14%;
-    width: clamp(20rem, 42vw, 44rem);
-    opacity: 0.24;
+/* 42%: banda liberă dintre fotografie şi formular. Mai sus intră sub
+   fotografie, mai jos intră sub caseta hărţii — amândouă au fundal propriu
+   şi ar acoperi desenul, care stă la z-index: -1. */
+.motif--branch-right {
+    inset-block-start: 42%;
+    inset-inline-end: calc(var(--bleed) - var(--branch-w) * 0.62);
+    width: var(--branch-w);
+    opacity: 0.62;
+    rotate: 6deg;
     scale: -1 1;
+
+    --branch-w: clamp(24rem, 44vw, 46rem);
+}
+
+/* Aceleași gravuri ca în livada de pe index, dar aici nu sunt împrăștiate:
+   fiecare frunză e prinsă de drum.
+
+   CUM SE CITEȘTE O REGULĂ DE MAI JOS. --road-x și --road-y sunt punctul de
+   pe curbă de care se prinde frunza. Poziționarea scade jumătate din lățimea
+   desenului din amândouă, deci ele dau CENTRUL frunzei, nu colțul cutiei.
+
+   --road-x e o fracție din COLOANĂ (0 = marginea ei din stânga, 1 = cea din
+   dreapta), aceeași unitate în care e desenat drumul de când .road se întinde
+   pe coloană, nu pe geam. --road-y rămâne procent din înălțimea paginii, ca
+   în „d". Se schimbă „d", se schimbă și perechile astea.
+
+   --road-turn e unghiul curbei în punctul ăla (0 = spre dreapta, 90 = în jos).
+   rotate se scrie ca o sumă vizibilă: frunza desenată are vârful în sus-dreapta,
+   la circa 40deg deasupra orizontalei, deci
+     rotate: calc(var(--road-turn) + 102deg)  o pune pe STÂNGA liniei
+     rotate: calc(var(--road-turn) - 22deg)   o pune pe DREAPTA liniei
+   și în amândouă cazurile codița rămâne întoarsă spre linie, limbul în afară.
+   Asta e diferența față de versiunea dinainte, unde unghiurile erau alese la
+   întâmplare și frunzele stăteau de-a curmezișul liniei, ca scăpate pe pagină.
+
+   PARTEA NU E LIBER ALEASĂ. Între 56% și 70% din înălțime drumul trece la
+   30-40px de marginea formularului, deci acolo o frunză încape numai pe
+   dreapta; de aia ies două la rând pe aceeași parte. Sub formular pagina e
+   liberă pe toată lățimea și acolo se adună frunza mare și mărul.
+   Se mută plafonul formularului (.form, max-width) sau coloana hărții, se
+   verifică din nou fiecare cutie de aici. */
+.motif--road {
+    width: var(--road-w);
+    inset-block-start: calc(var(--road-y) - var(--road-w) / 2);
+    /* (100% - --bleed * 2) e chiar lățimea coloanei: scoate hârtia liberă de
+       pe amândouă laturile. Deci --road-x se citește pe coloană, la fel ca
+       drumul, și frunza rămâne lipită de linie la orice lățime de geam. */
+    inset-inline-start: calc(var(--bleed)
+        + (100% - var(--bleed) * 2) * var(--road-x)
+        - var(--road-w) / 2);
+}
+
+/* Prima frunză, în banda liberă de sub fotografie. Mică: drumul abia a ieșit
+   de lângă fotografie și trebuie să se citească întâi linia. */
+.motif--road-leaf-a {
+    --road-x: 0.420;
+    --road-y: 47%;
+    --road-w: clamp(4rem, 5.5vw, 6rem);
+    --road-turn: 66deg;
+
+    rotate: calc(var(--road-turn) + 102deg);
+    opacity: 0.56;
+}
+
+.motif--road-leaf-b {
+    --road-x: 0.491;
+    --road-y: 56%;
+    --road-w: clamp(4.5rem, 6vw, 6.5rem);
+    --road-turn: 119deg;
+
+    rotate: calc(var(--road-turn) - 22deg);
+    opacity: 0.52;
+}
+
+.motif--road-leaf-c {
+    --road-x: 0.481;
+    --road-y: 71%;
+    --road-w: clamp(4.25rem, 5.75vw, 6.25rem);
+    --road-turn: 53deg;
+
+    rotate: calc(var(--road-turn) - 22deg);
+    opacity: 0.58;
+}
+
+.motif--road-leaf-d {
+    --road-x: 0.462;
+    --road-y: 83%;
+    --road-w: clamp(4.5rem, 6vw, 6.75rem);
+    --road-turn: 95deg;
+
+    rotate: calc(var(--road-turn) + 102deg);
+    opacity: 0.5;
+}
+
+/* Cea mai mare, sub formular, unde pagina e liberă: drumul se termină într-un
+   loc mai plin decât cel din care a plecat. */
+.motif--road-leaf-e {
+    --road-x: 0.530;
+    /* 92%, nu 90%: la 90% vârful din dreapta intra peste „Deschide traseul". */
+    --road-y: 92%;
+    --road-w: clamp(5rem, 7vw, 7.5rem);
+    --road-turn: 88deg;
+
+    rotate: calc(var(--road-turn) - 22deg);
+    opacity: 0.54;
+}
+
+/* Capătul drumului. Stă sub punctul portocaliu și puțin la stânga lui, nu
+   sub el: punctul se pictează peste desene (același z-index, dar vine după
+   ele în HTML) și acoperit de măr ar arăta a greșeală. 97% și 0.435 sunt
+   alese față de ultimul punct al curbei (50%, 93.6%) — se mută „d",
+   se mută și ele. */
+.motif--road-apple {
+    --road-x: 0.435;
+    --road-y: 97%;
+    --road-w: clamp(4.25rem, 5.75vw, 6.25rem);
+
+    rotate: -6deg;
+    opacity: 0.5;
 }
 
 /* DRUMUL. SVG-ul e întins peste toată pagina (preserveAspectRatio="none" în
@@ -583,9 +714,20 @@ a.line__value:hover {
    crește odată cu conținutul, fără JavaScript. Vezi comentariul din HTML. */
 .road {
     position: absolute;
-    inset: 0;
+    /* Întins pe COLOANĂ, nu pe geam. Cu inset: 0 procentele din „d" se citeau
+       pe toată lățimea ferestrei, iar pe un ecran lat coloanele se apropiau de
+       centru mai repede decât linia: măsurat la 2160px, drumul intra sub
+       formular (914px, cu formularul până la 936px) și dispărea, fiindcă are
+       z-index: -1. Legat de coloană, culoarul lui e același la orice lățime.
+       Fără width: 100% — l-ar readuce la lățimea geamului.
+       Procentele de decupare din secțiunea 8 sunt pe verticală, nu se ating. */
+    inset-block: 0;
+    inset-inline-start: var(--bleed);
     z-index: -1;
-    width: 100%;
+    /* Lățimea se SCRIE, nu se lasă pe seama celor două insets: <svg> e element
+       înlocuit, deci cu width: auto ia raportul din viewBox (1:1) și se face
+       lat cât e de înalt — măsurat 1661px în loc de 1248px. */
+    width: calc(100% - var(--bleed) * 2);
     height: 100%;
     pointer-events: none;
 }
@@ -602,7 +744,10 @@ a.line__value:hover {
 
 /* Capătul drumului. Cerc separat, nu în SVG: în SVG-ul întins ar ieși oval.
    93.6% și 50% sunt exact ultimul punct al curbei (936 și 500 din 1000) —
-   se schimbă „d", se schimbă și astea două. */
+   se schimbă „d", se schimbă și astea două.
+   50% se măsoară pe PAGINĂ, nu pe coloană ca restul drumului, și e corect
+   numai fiindcă coloana e centrată (margin-inline: auto). Se scoate
+   centrarea, punctul ăsta trebuie rescris ca celelalte. */
 .road__stop {
     position: absolute;
     z-index: -1;

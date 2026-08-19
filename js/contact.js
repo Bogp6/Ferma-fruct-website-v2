@@ -36,7 +36,7 @@
 
     var groups = [
         { selector: '.reach__eyebrow, .reach__title, .reach__lead, .line', stagger: 0.08 },
-        { selector: '.write__title, .form__pair, .form > .field, .btn--solid', stagger: 0.06 },
+        { selector: '.write__title, .write__lead, .form__pair, .form > .field, .btn--solid', stagger: 0.06 },
         { selector: '.place__title, .place__map, .place__where, .place__route', stagger: 0.06 }
     ];
 

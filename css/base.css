@@ -76,7 +76,7 @@ svg {
 /* One focus ring for the whole site, on the action colour, offset so it never
    sits on top of the thing it is marking. */
 :focus-visible {
-    outline: 3px solid var(--action);
+    outline: 2px solid var(--action);
     outline-offset: 3px;
     border-radius: var(--radius-s);
 }

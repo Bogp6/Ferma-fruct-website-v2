@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css?v=20260817-wide-1">
-  <link rel="stylesheet" href="css/contact.css?v=20260818-contact-3">
+  <link rel="stylesheet" href="css/contact.css?v=20260819-contact-14">
 
   <!-- Preloads only the latin font file; latin-ext (ș, ț) loads later via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -222,7 +222,7 @@
                 </svg>
               </span>
               <span class="line__body">
-                <span class="line__label">Telefon</span>
+                <span class="line__label">Sună-ne</span>
                 <span class="line__value">07xx xxx xxx</span>
               </span>
             </li>
@@ -241,30 +241,14 @@
               </span>
             </li>
 
-            <li class="line">
-              <span class="line__mark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                  <path d="M12 21.2s6.9-6.3 6.9-11.1a6.9 6.9 0 1 0-13.8 0c0 4.8 6.9 11.1 6.9 11.1z"/>
-                  <circle cx="12" cy="9.8" r="2.6"/>
-                </svg>
-              </span>
-              <span class="line__body">
-                <span class="line__label">Locație</span>
-                <span class="line__value">Brabova, Dolj, România</span>
-              </span>
-            </li>
-
           </ul>
         </div>
 
         <!-- Fotografia iese până în marginea ferestrei: marginea negativă e
              --bleed, distanța de la marginea coloanei până la marginea
-             geamului. Silueta e o spălare de acuarelă (mască webp în canalul
-             alfa), aceeași rețetă ca fotografiile fructelor de pe index, dar
-             regenerată la 16:9 — masca se întinde pe cutie, deci raportul ei
-             trebuie să fie raportul cadrului. Schimbi raportul, regenerezi
-             masca (rețeta e în DESIGN.md).
+             geamului. Silueta folosește marginea densă, pictată, a fotografiilor
+             de pe index; masca este întinsă pe cadrul panoramic ca textura să
+             rămână vizibilă pe toate cele patru laturi.
              FOTO PROVIZORIE: cadru din filmul livezii, până trimite ferma una
              făcută pentru locul ăsta. -->
         <figure class="reach__frame">
@@ -293,6 +277,7 @@
 
         <div class="write">
           <h2 class="write__title">Lasă-ne un mesaj</h2>
+          <p class="write__lead">Completează datele, iar noi revenim către tine.</p>
 
           <form class="form" method="post" action="TODO-adresa-serviciului-de-formulare">
 
@@ -323,7 +308,9 @@
                         rows="6" required></textarea>
             </div>
 
-            <button class="btn btn--solid" type="submit">Trimite mesajul</button>
+            <!-- Varianta pe hârtie a butonului din hero: aceeași pilulă și
+                 aceeași mătură portocalie, cu brun în repaus pentru contrast. -->
+            <button class="btn btn--ink" type="submit">Trimite mesajul</button>
 
           </form>
         </div>
@@ -331,19 +318,15 @@
         <div class="place">
           <h2 class="place__title">Ne găsești aici</h2>
 
-          <!-- HARTA: pune <iframe> de la Google Maps direct aici, fără alt
-               înveliș. .place__map îi dă deja raportul și colțurile, iar
-               regula de mai jos îl întinde pe toată cutia. Scoate
-               .place__map-note când intră harta. -->
+          <!-- Interogarea conține numai coordonatele fermei. Linkul lung dat
+               de Google conținea și identificatorul localității Brabova, iar
+               Maps alegea localitatea în locul pinului pus manual. -->
           <div class="place__map">
-            <p class="place__map-note">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <path d="M12 21.2s6.9-6.3 6.9-11.1a6.9 6.9 0 1 0-13.8 0c0 4.8 6.9 11.1 6.9 11.1z"/>
-                <circle cx="12" cy="9.8" r="2.6"/>
-              </svg>
-              Aici intră harta.
-            </p>
+            <iframe
+              src="https://www.google.com/maps?q=44.375004%2C23.457348&amp;z=18&amp;output=embed"
+              width="600" height="450" style="border:0;" allowfullscreen
+              loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+              title="Harta fermei la coordonatele 44.375004, 23.457348"></iframe>
           </div>
 
           <p class="place__where">
@@ -355,11 +338,10 @@
             Brabova, Dolj
           </p>
 
-          <!-- Caută comuna, nu un punct anume: adresa exactă a fermei nu e
-               știută încă. Se înlocuiește cu linkul „Trasare" din harta
-               trimisă de fermă. -->
+          <!-- Destinația folosește aceleași coordonate ca harta de mai sus,
+               furnizate de fermă pe 2026-08-19. -->
           <a class="place__route"
-             href="https://www.google.com/maps/dir/?api=1&amp;destination=Brabova%2C%20Dolj%2C%20Rom%C3%A2nia"
+             href="https://www.google.com/maps/dir/?api=1&amp;destination=44.375004%2C23.457348"
              target="_blank" rel="noopener noreferrer">
             Deschide traseul
             <span class="visually-hidden">(se deschide într-o filă nouă)</span>
@@ -376,16 +358,34 @@
 
 
     <!-- ==================== DESENELE DE FUNDAL ==============================
-         Aceleași trei desene gravate ca pe index, aceeași regulă: multiply pe
+         Aceleași ramuri gravate ca în machetă, aceeași regulă: multiply pe
          un fundal crem, sub text (z-index: -1). Nu pune z-index, opacity sau
          transform pe secțiunile care le găzduiesc — oricare dintre ele face
          context de stivuire și desenul rămâne alb.
          ====================================================================== -->
-    <img class="motif motif--leaf-left" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--branch-left" src="img/branch-1024.webp" width="1024" height="768"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
-    <img class="motif motif--leaf-right" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--branch-right" src="img/branch-1024.webp" width="1024" height="768"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
-    <img class="motif motif--branch" src="img/branch-1024.webp" width="1024" height="768"
+
+    <!-- Frunzele cresc DIN drum: fiecare e prinsă cu codița de linie, cu
+         limbul întors în afară, alternativ pe o parte și pe alta. Nu sunt
+         copii ai SVG-ului și nu participă la animația liniei — poziția lor
+         vine din aceleași coordonate ca „d", vezi contact.css secțiunea 7.
+         Mărul e la capătul drumului, lângă punctul portocaliu: acolo ajunge
+         drumul. Un singur măr, nu două — al doilea plutea la mijloc, fără
+         să fie capătul a nimic. -->
+    <img class="motif motif--road motif--road-leaf-a" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-b" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-c" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-d" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-e" src="img/leaf-640.webp" width="640" height="640"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-apple" src="img/apple-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
 
     <!-- ==================== DRUMUL =========================================
@@ -406,7 +406,7 @@
          ====================================================================== -->
     <svg class="road" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="road__line" fill="none"
-            d="M428 316 C400 392 454 436 470 494 C488 556 416 592 424 652 C432 716 496 738 500 802 C504 860 476 892 500 936" />
+            d="M392 316 C400 392 454 436 470 494 C488 556 416 592 424 652 C432 716 496 738 500 802 C504 860 476 892 500 936" />
     </svg>
     <span class="road__stop" aria-hidden="true"></span>
 

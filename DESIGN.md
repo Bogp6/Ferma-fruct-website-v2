@@ -2,7 +2,7 @@
 
 Written from the built page, not a plan. Code wins if they disagree.
 
-Scope: `index.html` (built) and `contact.html` (scaffold only, 2026-08-18).
+Scope: `index.html` (built) and `contact.html` (in progress).
 
 ## Which file to read
 
@@ -238,7 +238,7 @@ Not written and not to be guessed: phone, email, address, opening hours. They ar
 - Client has a list of landing-page changes — ask, don't guess.
 - Motion timing never watched at full speed in a real window (only verified as DOM/CSS end states).
 - Responsive pass done 2026-08-17 (see Lățimi); not yet opened on a real phone, only measured in-browser at 320/768/1280.
-- Other pages: 3-4 planned. `contact.html` exists as a scaffold since 2026-08-18 (see „Pagina de contact” above); its content and layout are not designed. The rest are not started.
+- Other pages: 3-4 planned. `contact.html` is in progress. The layout has been decided, needs to be polished, corrected in some sections and adapted to mobile/ tablet and big screens.
 - Placeholder policy: square-bracket placeholders banned; round numbers are the one exception (cifre, FAQ), both flagged for removal once real. Still owed by the farm:
   - phone + email — nothing on the site carries either yet. The parked `.site-footer__contact` markup that used to sit in a comment in `index.html` was deleted on 2026-08-18 when the four Contact links were repointed; the real place for these is `contact.html`, not the footer.
   - real hectares/years/tonnage (removes `.brief__note`)
