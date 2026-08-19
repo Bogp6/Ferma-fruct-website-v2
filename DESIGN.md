@@ -138,13 +138,13 @@ One idea: a card laid on a table — arrives low, tilted, settles flat. Two exce
 
 The two photographs of a fruit start half a second apart, in page order, walking the eye down the block's diagonal.
 
-GSAP core runs the hero as one timeline. Scroll arrivals are IntersectionObserver + GSAP tween, one stagger group per section. `within:` restarts the stagger index inside each matching element — used for `.grove`, so the last paragraph across four blocks isn't waiting a full second. Header fill reads `scrollY` in `requestAnimationFrame` and publishes `--p` (0 to 1) for both header and hero CSS.
+GSAP core runs the hero as one timeline. Its four parts move upward into place from an already-visible first paint; the timeline never changes their opacity. This is deliberate: browsers may throttle the first animation frames after a reload, and an opacity-based start left the hero looking empty until those frames resumed. The completed timeline clears its transforms. Scroll arrivals are IntersectionObserver + GSAP tween, one stagger group per section. `within:` restarts the stagger index inside each matching element — used for `.grove`, so the last paragraph across four blocks isn't waiting a full second. Header fill reads `scrollY` in `requestAnimationFrame` and publishes `--p` (0 to 1) for both header and hero CSS.
 
 Background drawings drift on `animation-timeline: view()` — see Fundal decorativ.
 
 `.film__video` plays only on-screen while the tab is visible. If iOS rejects autoplay, a centred play control appears and retries from the visitor's tap. `.brief` numbers count on arrival and reset on leaving, with a no-IntersectionObserver fallback.
 
-**Can't judge motion in a headless/hidden Chrome tab** — `requestAnimationFrame` throttles there, so GSAP tweens never advance and a screenshot shows an empty column. CSS-only transitions (the photo wipe) still finish. Judge in a real window.
+**Can't judge timing in a headless/hidden Chrome tab** — `requestAnimationFrame` throttles there, so GSAP tweens may not advance at normal speed. The hero remains visible in that state; CSS-only transitions such as the photo wipe still finish. Judge timing in a real window.
 
 `.reveal` is added only by JS, never in HTML, so a script-less page shows everything. GSAP must add `.is-in` before clearing its inline transform, or it snaps back. `.reveal--js` turns off the CSS transition while GSAP owns the frame, or the two fight.
 

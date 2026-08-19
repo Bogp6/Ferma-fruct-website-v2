@@ -373,11 +373,21 @@
     }
 
     function playHero() {
-        gsap.timeline({ defaults: { ease: 'expo.out', duration: 1.1 } })
-            .from('.hero__mark', { y: 24, opacity: 0, scale: 0.92, duration: 1.3 })
-            .from('.hero__title', { y: 28, opacity: 0 }, '-=0.95')
-            .from('.hero__lead', { y: 20, opacity: 0 }, '-=0.9')
-            .from('.hero__cta', { y: 18, opacity: 0 }, '-=0.85');
+        var heroParts = ['.hero__mark', '.hero__title', '.hero__lead', '.hero__cta'];
+
+        gsap.timeline({
+            defaults: { ease: 'expo.out', duration: 1.1 },
+            onComplete: function () {
+                gsap.set(heroParts, { clearProps: 'transform' });
+            }
+        })
+            /* Keep every part visible from first paint. A throttled first
+               animation frame may delay the settling motion, but it must
+               never leave the hero as an empty photograph. */
+            .from('.hero__mark', { y: 24, scale: 0.92, duration: 1.3 })
+            .from('.hero__title', { y: 28 }, '-=0.95')
+            .from('.hero__lead', { y: 20 }, '-=0.9')
+            .from('.hero__cta', { y: 18 }, '-=0.85');
     }
 
 
