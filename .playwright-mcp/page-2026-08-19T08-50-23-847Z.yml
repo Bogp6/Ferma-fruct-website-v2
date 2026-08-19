@@ -1,0 +1,95 @@
+- generic [active] [ref=f7e1]:
+  - link "Sari la conținut" [ref=f7e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f7e3]:
+    - generic [ref=f7e4]:
+      - link "Ferma Fruct Brabova, pagina principală" [ref=f7e5] [cursor=pointer]:
+        - /url: index.html
+      - button "Meniu" [ref=f7e6] [cursor=pointer]
+  - main [ref=f7e9]:
+    - generic [ref=f7e11]:
+      - generic [ref=f7e12]:
+        - paragraph [ref=f7e13]: Contact
+        - heading "Drumul spre livadă începe aici." [level=1] [ref=f7e14]
+        - paragraph [ref=f7e15]: Pentru comenzi, disponibilitate sau colaborări, scrie‑ne sau sună‑ne.
+        - list [ref=f7e16]:
+          - listitem [ref=f7e17]:
+            - generic [ref=f7e21]:
+              - generic [ref=f7e22]: Sună-ne
+              - generic [ref=f7e23]: 07xx xxx xxx
+          - listitem [ref=f7e24]:
+            - generic [ref=f7e29]:
+              - generic [ref=f7e30]: E-mail
+              - generic [ref=f7e31]: nume@exemplu.ro
+      - figure [ref=f7e32]:
+        - img "Livada de la Brabova văzută de sus, cu rândurile de pomi înfloriți și drumul de pământ dintre ele." [ref=f7e33]
+    - generic [ref=f7e35]:
+      - generic [ref=f7e36]:
+        - heading "Lasă-ne un mesaj" [level=2] [ref=f7e37]
+        - paragraph [ref=f7e38]: Completează datele, iar noi revenim către tine.
+        - generic [ref=f7e39]:
+          - generic [ref=f7e40]:
+            - generic [ref=f7e41]:
+              - generic [ref=f7e42]: Nume
+              - textbox "Nume" [ref=f7e43]
+            - generic [ref=f7e44]:
+              - generic [ref=f7e45]: Telefon sau e-mail
+              - textbox "Telefon sau e-mail" [ref=f7e46]
+          - generic [ref=f7e47]:
+            - generic [ref=f7e48]: Subiect
+            - textbox "Subiect" [ref=f7e49]
+          - generic [ref=f7e50]:
+            - generic [ref=f7e51]: Mesaj
+            - textbox "Mesaj" [ref=f7e52]
+          - button "Trimite mesajul" [ref=f7e53] [cursor=pointer]
+      - generic [ref=f7e54]:
+        - heading "Ne găsești aici" [level=2] [ref=f7e55]
+        - iframe [ref=f7e57]:
+          
+        - paragraph [ref=f7e58]: Brabova, Dolj
+        - link "Deschide traseul (se deschide într-o filă nouă)" [ref=f7e62] [cursor=pointer]:
+          - /url: https://www.google.com/maps/dir/?api=1&destination=44.375004%2C23.457348
+          - text: Deschide traseul
+          - generic [ref=f7e63]: (se deschide într-o filă nouă)
+  - contentinfo [ref=f7e68]:
+    - generic [ref=f7e69]:
+      - paragraph [ref=f7e71]: Ferma Fruct Brabova
+      - navigation "Navigare în subsol" [ref=f7e72]:
+        - heading "Navigare" [level=2] [ref=f7e73]
+        - list [ref=f7e74]:
+          - listitem [ref=f7e75]:
+            - link "Acasă" [ref=f7e76] [cursor=pointer]:
+              - /url: index.html#acasa
+          - listitem [ref=f7e77]:
+            - link "Fructe" [ref=f7e78] [cursor=pointer]:
+              - /url: index.html#fructe
+          - listitem [ref=f7e79]:
+            - link "Contact" [ref=f7e80] [cursor=pointer]:
+              - /url: contact.html
+    - generic [ref=f7e81]:
+      - heading "Fructele noastre ajung la" [level=2] [ref=f7e82]
+      - list [ref=f7e83]:
+        - listitem [ref=f7e84]:
+          - img "Carrefour" [ref=f7e85]
+        - listitem [ref=f7e92]:
+          - img "Auchan" [ref=f7e93]
+        - listitem [ref=f7e99]:
+          - img "Big Family Market" [ref=f7e100]:
+            - generic [ref=f7e112]: BIG
+            - generic [ref=f7e113]: FAMILY
+            - generic [ref=f7e114]: MARKET
+        - listitem [ref=f7e116]:
+          - img "Partener comercial" [ref=f7e117]
+    - generic [ref=f7e120]:
+      - list [ref=f7e121]:
+        - listitem [ref=f7e122]:
+          - link "Instagram" [ref=f7e123] [cursor=pointer]:
+            - /url: https://www.instagram.com/
+        - listitem [ref=f7e128]:
+          - link "Facebook" [ref=f7e129] [cursor=pointer]:
+            - /url: https://www.facebook.com/
+      - paragraph [ref=f7e134]:
+        - generic [ref=f7e135]: RO
+        - generic [ref=f7e136]: "|"
+        - generic [ref=f7e137]: EN
+      - paragraph [ref=f7e138]: © 2026 Ferma Fruct Brabova. Toate drepturile rezervate.

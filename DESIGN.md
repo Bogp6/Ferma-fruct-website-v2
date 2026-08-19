@@ -13,7 +13,9 @@ One stylesheet per page, on purpose. Read only the one for the page you are on.
 | `index.html` | `css/style.css` (~2900 lines) | — |
 | `contact.html` | `css/contact.css` | `style.css` for three components only |
 
-`contact.html` loads `style.css` **before** `contact.css`, but only for the three components both pages share: `.site-header`, `.drawer`/`.burger`, and `.site-footer`. Nothing else in `style.css` applies there — hero, `.grove`, the drawn spine, the background drawings and both width passes are all landing-page-only.
+`contact.html` loads `style.css` **before** `contact.css`, but only for the three components both pages share: `.site-header`, `.drawer`/`.burger`, and `.site-footer`. Nothing else in `style.css` applies there — hero, `.grove`, the drawn spine and the landing page's own drawings are all landing-page-only.
+
+Two exceptions, both about width, both deliberate: section 13 of `style.css` is what makes the shared header and footer narrow on a phone, and section 14 gives the contact page `--lane` plus the second type and rhythm ramp above 85em. Section 9 of `contact.css` uses both, and raises `:root { --container }` inside that same 85em query — see „Lățimi — pagina de contact".
 
 **So: working on the contact page means reading `css/contact.css` and stopping.** Do not read the 2900 lines of `style.css` to understand it. The end of `style.css` carries the same note; the head of `contact.css` says what it does with each shared component.
 
@@ -233,12 +235,167 @@ What is already settled:
 
 Not written and not to be guessed: phone, email, address, opening hours. They are on the "Still open" list below. A form cannot be submitted from here (Cloudflare Pages, no server code) — it would have to post to a third-party endpoint.
 
+## Lățimi — pagina de contact
+
+Done 2026-08-19, section 9 of `contact.css`. Nothing above section 9 changed
+except the road's own coordinates, which were refactored into four variables so
+one media query can move the whole drawing at once (see below). `index.html` is
+untouched; `style.css` is untouched.
+
+Three queries, each at a measured break, plus one for touch:
+
+- **80em** — the corridor between the form and the map, the one the drawn road
+  descends through, closes. Distance from the line to the nearest field: 48px at
+  1440, 18px at 1280, 6px at 1248, 0 at 1200, and at 1200 leaf `d` is already
+  over an input. Below the query the road moves to the left margin and the first
+  screen stacks onto one column.
+- **pointer: coarse** — fields are 45px tall and "Deschide traseul" 29px, both
+  under the 44px finger threshold at any width.
+- **85em** — the column grows to 86rem and the branches grow with `--lane`.
+- **93em** (1488px) — where the column actually reaches 86rem. The wider fields
+  wait for it; see below.
+
+### The road is now written as four variables
+
+`--road-left` / `--road-span` (horizontal) and `--road-y0` / `--road-yh`
+(vertical), all on `.contact`. The line, the six leaves and the orange dot are
+all positioned from that one band, so moving the band moves the whole drawing
+and nothing needs re-deriving. `--road-x` and `--road-y` on each leaf are now
+fractions of the band (0.47, not 47%). Default is the column and the full page
+height, so the wide layout is byte-for-byte what it was.
+
+### Narrow: the road becomes a margin rule
+
+- **A corridor, `clamp(2.25rem, 7vw, 9rem)`, is added to the text's left
+  padding** and the road lives in it with its leaves. Costs about five
+  characters a line at 320px — paid deliberately, same call as index's spine:
+  the road is the page's idea, not a wide-screen extra. Without a corridor the
+  line would not merely cross text, it would **vanish under the map box and the
+  photo**, both of which have their own opaque background while the road sits at
+  `z-index: -1`. That reads as a line broken into three pieces.
+- **The road's box is stretched upward** (`--road-y0: -43.7%`, `--road-yh: 143%`).
+  Two conditions fix those numbers, they are not eyeballed: the curve's first
+  point (0.316 of the box) must land at 1.5% of the page, inside the top
+  padding, and the apple, which is last (0.97), must land at 95%, still inside
+  the page — at 100% `overflow: clip` would cut it in half on the footer
+  boundary. Without this the line started at 31.6% of the page, which on a wide
+  screen is the photo's bottom edge but stacked is the middle of the form.
+- **All leaf angles become 90deg.** The band is 3-9rem wide against a page
+  several thousand pixels tall, so the curve's measured tangent is 88-90deg the
+  whole way down. Each leaf's own `+102deg` / `-22deg` is untouched, so they
+  still alternate sides.
+- **The photo's `scale(1.12)` grows from `transform-origin: left center`.**
+  Centred, it pushed the photo 6% of its width over the corridor, and the photo
+  is opaque, so it covered the line.
+- **`.motif--branch-right` is hidden below 80em.** Stacked, the text column
+  takes the whole free width — at 375px it reaches 22px from the glass — so
+  there is no paper left on the right for a drawing, and any drawing there falls
+  across the form's fields, which have their own background and cut it in two.
+  The left branch keeps its size but its setback goes 0.78 → 0.94, so only the
+  far foliage shows, inside the corridor: measured, it stops at 53px at 375 and
+  101px at 1248, where text starts at 58 and 136. If the right branch is wanted
+  back on a tablet, its place is the map band, where the 30rem cap leaves free
+  paper above about 640px.
+- **`.place` gets a 30rem cap** so that when the form and the map stack (they do
+  it themselves at about 700px of free width, no query) the map is not 645px
+  wide next to a 480px form.
+- **The reach stacks with `display: block`**, title capped at 22ch to keep the
+  two-line shape from the mockup. Side by side at 768 the text column was 256px
+  under a 47px title and the photo 410x256 — and because the watercolour mask is
+  stretched `100% 100%` over the frame, it thinned with it. That is what looked
+  like the photo shredding.
+
+### Wide: the width is held, exactly like the landing page
+
+Client's call 2026-08-19, after seeing a version that grew: **`--container` stays
+78rem**. The column, the header and the footer all stop in the same place as on
+index, so the two pages match on a big monitor — measured at 2560, the column is
+656 to 1904 on both. An earlier version of this pass raised it to 86rem on
+`:root` above 85em; it is gone, and with it the 93em query that widened the form
+fields. Do not bring either back without asking: the fields were paid for out of
+the road's corridor.
+
+What still grows above 85em comes free from section 14 of `style.css`, and it is
+the same set index gets: the title, the section rhythm and `--lane`. So one thing
+was left to fix here, the branches.
+
+- **The branches' setback is no longer a fraction of their width.** Their width
+  grows with `--lane`, so a fixed 0.78 walked the drawing 0.22 of `--lane` deeper
+  over the title on every wider monitor: 157px at 1440, 209px at 1920. Written as
+  "width minus 7.5rem" (14rem for the right one), the overlap is the same at any
+  width, and both numbers are what the old fractions gave exactly at the 85em
+  threshold, so the crossing is invisible.
+- **`img/livada-drum-1600.webp` was added.** Even with the width held, the frame
+  paints 1252 CSS px wide at 2560, because it also carries `--bleed` out to the
+  glass and is then scaled 1.12. The largest file was 1440, which the browser was
+  upscaling. Source is `img/pixelized_drone_video_compressed.mp4`, frame 177,
+  centre-cropped to 1650x928 and scaled to 1600x900: found by comparing every
+  frame of all five clips in `img/` against the existing 1440 file (MAE 1.12 at
+  64x36 grey, next-best clip 38). Encoded `cwebp -q 84 -m 6`, 114KB, the same
+  bytes per pixel as the 720 and 1440 steps. `sizes` is now
+  `(min-width: 80em) 62vw, 95vw` — rewrite it if the corridor moves.
+
+### The photo is the only thing that was not contained
+
+Found 2026-08-19 after the client said the photo looked enormous next to
+everything else on a big screen. The frame's width is 61.5% of the column **plus
+`--bleed`**, and `--bleed` is the distance from the column out to the glass, so it
+grows with the window without limit. Holding `--container` did nothing about it:
+at 2560 the photo painted 1252 by 782 next to a 480 form and a 560 map, and
+stacked it took the whole column (761 at 768, 1275 at 1279) while the form and the
+map were both capped at 30rem.
+
+Two caps, and the numbers are picked so nothing changes at the widths the client
+already approved:
+
+- **`margin-inline-end: calc(min(var(--bleed), 7rem) * -1)`** in section 3. Below
+  about 1470px `--bleed` is smaller than 7rem, so up to there the photo still runs
+  out past the glass exactly as the mockup has it — measured at 1440, its right
+  edge is 1487 against a 1440 window, unchanged. Above that it stops 7rem past the
+  column with its painted edge showing, and it now holds: 884 wide at 1920 and 877
+  at 2560, down from 1083 and 1252.
+- **`max-width: calc(34rem + var(--bleed))`** in the narrow block. Stacked, the
+  photo is now one step wider than the blocks under it instead of three times
+  wider: 648 at 768 against a form and map row of 644, 657 at 1024. On a phone the
+  cap never binds, because the column is narrower than 34rem anyway, so there the
+  photo still runs into the glass and nothing changed.
+
+`sizes` was rewritten to match, `(min-width: 80em) 58rem, (min-width: 48em) 42rem,
+95vw`. The wide entry is a fixed length, not a `vw`, because with the bleed capped
+the painted width is nearly constant across the whole wide band, 869 at 1280 and
+925 at 2560. Rewrite it if either cap moves.
+
+The one cost: between about 900 and 1280 there is now open paper to the right of
+the photo, where the right-hand branch used to be before it was hidden. If that
+reads as empty, the branch can come back at that width band over exactly that
+paper.
+
+### The photo's gap above it, stacked
+
+`margin-block-start: calc(var(--space-2xl) + 3.75%)`. The percentage is not
+decoration: `scale(1.12)` from the centre lifts the frame's painted top edge by
+6% of the photo's **height**, the height is 0.625 of the width, and margin
+percentages resolve against the parent's width — so 3.75% of the width is exactly
+what the scale eats. Without it the gap shrank as the photo grew: 19px left at
+375 and 4px at 768, which is why the photo looked stuck to the "E-MAIL" line.
+Measured after: 65px above and 64px below at 375, 74px and 76px at 768. If the
+scale, the 8/5 ratio or the margin base changes, this number has to be redone.
+
+Measured at 320, 375, 768, 1248, 1279, 1280, 1359, 1360, 1440, 1920 and 2560: no
+horizontal overflow anywhere; the road's clearance to the nearest text or field is
+27px or more at every narrow width and 48px or more above 1360; no decorative
+drawing sits over text below 80em (the two branches still cross the title and the
+photo above it, as they always have); every `.reveal` block and the photo wipe
+still arrive after a full scroll at 375 and at 1920. Above 1280 the only changes
+from what the client already approved are the two branch setbacks and the new
+photo file.
+
 ## Still open
 
 - Client has a list of landing-page changes — ask, don't guess.
 - Motion timing never watched at full speed in a real window (only verified as DOM/CSS end states).
 - Responsive pass done 2026-08-17 (see Lățimi); not yet opened on a real phone, only measured in-browser at 320/768/1280.
-- Other pages: 3-4 planned. `contact.html` is in progress. The layout has been decided, needs to be polished, corrected in some sections and adapted to mobile/ tablet and big screens.
+- Other pages: 3-4 planned. `contact.html` has its layout and its widths done (see „Lățimi — pagina de contact"); still needs polish in places, and none of it has been opened on a real phone — only measured in-browser.
 - Placeholder policy: square-bracket placeholders banned; round numbers are the one exception (cifre, FAQ), both flagged for removal once real. Still owed by the farm:
   - phone + email — nothing on the site carries either yet. The parked `.site-footer__contact` markup that used to sit in a comment in `index.html` was deleted on 2026-08-18 when the four Contact links were repointed; the real place for these is `contact.html`, not the footer.
   - real hectares/years/tonnage (removes `.brief__note`)

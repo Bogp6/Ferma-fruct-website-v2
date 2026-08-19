@@ -28,7 +28,7 @@
      6. Harta și traseul
      7. Desenele de fundal și drumul
      8. Sosirea la derulare
-     9. Lățimi (gol până la pasul de responsive)
+     9. Lățimi — 80em, atingere, 85em
    =========================================================================== */
 
 
@@ -82,6 +82,25 @@
        100vw include bara de derulare (~15px); eroarea nu se vede fiindcă
        overflow: clip taie oricum acolo. */
     --bleed: calc(max(0px, (100vw - var(--gutter) * 2 - var(--container)) / 2) + var(--gutter));
+
+    /* Banda pe care se citește drumul: de unde începe (--road-left) și cât e
+       lată (--road-span). Pe ecran larg e chiar coloana, deci --road-x rămâne
+       o fracție din ea, exact ca înainte. Secțiunea 9 mută banda în culoarul
+       din marginea stângă, iar linia, frunzele și punctul portocaliu o urmează
+       toate trei, fiindcă toate se scriu din perechea asta — nu mai există
+       nicio poziție de drum scrisă separat.
+       100% e lățimea .contact (adică a geamului) la toate trei locurile de
+       folosire, deci procentul se citește la fel în fiecare. */
+    --road-left: var(--bleed);
+    --road-span: calc(100% - var(--bleed) * 2);
+
+    /* Aceeași poveste pe verticală: de unde începe cutia drumului (--road-y0)
+       și cât e înaltă (--road-yh), amândouă procente din .contact. Implicit
+       e toată pagina, deci fracțiile --road-y ale frunzelor se citesc exact ca
+       procentele dinainte. Secțiunea 9 întinde cutia în sus, ca linia să
+       pornească din capul paginii și nu de la 31.6% din ea. */
+    --road-y0: 0%;
+    --road-yh: 100%;
 
     /* Suprafețele pe care nu le desenăm noi: selecția și cursorul de text
        vin altfel în culorile browserului, care nu sunt ale site-ului.
@@ -234,7 +253,16 @@ a.line__value:hover {
 .reach__frame {
     flex: 1.6 1 0;
     margin: 0;
-    margin-inline-end: calc(var(--bleed) * -1);
+    /* PLAFON PE IEȘIRE, nu --bleed curat. --bleed e distanța de la coloană
+       până la geam, deci crește nelimitat cu monitorul: fotografia era singurul
+       lucru din pagină care se mărea cu fereastra în timp ce restul stă pe loc
+       (1252x782 pictați la 2560, lângă un formular de 480 și o hartă de 560 —
+       de aici „fotografia e enormă față de celelalte secțiuni").
+       7rem: sub ~1470px --bleed e mai mic decât atât, deci până acolo nu se
+       schimbă nimic și fotografia atinge geamul ca în machetă. Peste, se
+       oprește la 7rem de coloană, cu marginea pictată vizibilă în hârtie, și
+       compoziția se ține întreagă — aceeași regulă ca pe index. */
+    margin-inline-end: calc(min(var(--bleed), 7rem) * -1);
     translate: 0 var(--space-s);
     /* Mărim cadrul întreg, nu imaginea dinăuntru: masca de acuarelă rămâne
        neschimbată, iar cele patru margini pictate ies vizibil mai mult în afară. */
@@ -609,10 +637,11 @@ a.line__value:hover {
    pe curbă de care se prinde frunza. Poziționarea scade jumătate din lățimea
    desenului din amândouă, deci ele dau CENTRUL frunzei, nu colțul cutiei.
 
-   --road-x e o fracție din COLOANĂ (0 = marginea ei din stânga, 1 = cea din
-   dreapta), aceeași unitate în care e desenat drumul de când .road se întinde
-   pe coloană, nu pe geam. --road-y rămâne procent din înălțimea paginii, ca
-   în „d". Se schimbă „d", se schimbă și perechile astea.
+   Amândouă sunt FRACȚII din banda drumului, nu procente din geam: --road-x
+   pe lățimea ei (0 = marginea din stânga a benzii, 1 = cea din dreapta),
+   --road-y pe înălțimea ei, exact cum sunt scrise în „d" împărțite la 1000.
+   Se schimbă „d", se schimbă și perechile astea. Banda însăși e mutată de
+   secțiunea 9, iar frunzele o urmează fără să fie rescrise.
 
    --road-turn e unghiul curbei în punctul ăla (0 = spre dreapta, 90 = în jos).
    rotate se scrie ca o sumă vizibilă: frunza desenată are vârful în sus-dreapta,
@@ -631,12 +660,15 @@ a.line__value:hover {
    verifică din nou fiecare cutie de aici. */
 .motif--road {
     width: var(--road-w);
-    inset-block-start: calc(var(--road-y) - var(--road-w) / 2);
-    /* (100% - --bleed * 2) e chiar lățimea coloanei: scoate hârtia liberă de
-       pe amândouă laturile. Deci --road-x se citește pe coloană, la fel ca
-       drumul, și frunza rămâne lipită de linie la orice lățime de geam. */
-    inset-inline-start: calc(var(--bleed)
-        + (100% - var(--bleed) * 2) * var(--road-x)
+    inset-block-start: calc(var(--road-y0)
+        + var(--road-yh) * var(--road-y)
+        - var(--road-w) / 2);
+    /* Aceeași bandă ca linia, vezi --road-left / --road-span în secțiunea 2.
+       Deci --road-x se citește pe bandă, nu pe geam, și frunza rămâne lipită
+       de linie la orice lățime — inclusiv după ce banda se mută în culoarul
+       din margine la secțiunea 9. */
+    inset-inline-start: calc(var(--road-left)
+        + var(--road-span) * var(--road-x)
         - var(--road-w) / 2);
 }
 
@@ -644,7 +676,7 @@ a.line__value:hover {
    de lângă fotografie și trebuie să se citească întâi linia. */
 .motif--road-leaf-a {
     --road-x: 0.420;
-    --road-y: 47%;
+    --road-y: 0.47;
     --road-w: clamp(4rem, 5.5vw, 6rem);
     --road-turn: 66deg;
 
@@ -654,7 +686,7 @@ a.line__value:hover {
 
 .motif--road-leaf-b {
     --road-x: 0.491;
-    --road-y: 56%;
+    --road-y: 0.56;
     --road-w: clamp(4.5rem, 6vw, 6.5rem);
     --road-turn: 119deg;
 
@@ -664,7 +696,7 @@ a.line__value:hover {
 
 .motif--road-leaf-c {
     --road-x: 0.481;
-    --road-y: 71%;
+    --road-y: 0.71;
     --road-w: clamp(4.25rem, 5.75vw, 6.25rem);
     --road-turn: 53deg;
 
@@ -674,7 +706,7 @@ a.line__value:hover {
 
 .motif--road-leaf-d {
     --road-x: 0.462;
-    --road-y: 83%;
+    --road-y: 0.83;
     --road-w: clamp(4.5rem, 6vw, 6.75rem);
     --road-turn: 95deg;
 
@@ -686,8 +718,8 @@ a.line__value:hover {
    loc mai plin decât cel din care a plecat. */
 .motif--road-leaf-e {
     --road-x: 0.530;
-    /* 92%, nu 90%: la 90% vârful din dreapta intra peste „Deschide traseul". */
-    --road-y: 92%;
+    /* 0.92, nu 0.90: la 0.90 vârful din dreapta intra peste „Deschide traseul". */
+    --road-y: 0.92;
     --road-w: clamp(5rem, 7vw, 7.5rem);
     --road-turn: 88deg;
 
@@ -697,12 +729,12 @@ a.line__value:hover {
 
 /* Capătul drumului. Stă sub punctul portocaliu și puțin la stânga lui, nu
    sub el: punctul se pictează peste desene (același z-index, dar vine după
-   ele în HTML) și acoperit de măr ar arăta a greșeală. 97% și 0.435 sunt
-   alese față de ultimul punct al curbei (50%, 93.6%) — se mută „d",
+   ele în HTML) și acoperit de măr ar arăta a greșeală. 0.97 și 0.435 sunt
+   alese față de ultimul punct al curbei (0.5, 0.936) — se mută „d",
    se mută și ele. */
 .motif--road-apple {
     --road-x: 0.435;
-    --road-y: 97%;
+    --road-y: 0.97;
     --road-w: clamp(4.25rem, 5.75vw, 6.25rem);
 
     rotate: -6deg;
@@ -721,14 +753,14 @@ a.line__value:hover {
        z-index: -1. Legat de coloană, culoarul lui e același la orice lățime.
        Fără width: 100% — l-ar readuce la lățimea geamului.
        Procentele de decupare din secțiunea 8 sunt pe verticală, nu se ating. */
-    inset-block: 0;
-    inset-inline-start: var(--bleed);
+    inset-block-start: var(--road-y0);
+    inset-inline-start: var(--road-left);
     z-index: -1;
     /* Lățimea se SCRIE, nu se lasă pe seama celor două insets: <svg> e element
        înlocuit, deci cu width: auto ia raportul din viewBox (1:1) și se face
        lat cât e de înalt — măsurat 1661px în loc de 1248px. */
-    width: calc(100% - var(--bleed) * 2);
-    height: 100%;
+    width: var(--road-span);
+    height: var(--road-yh);
     pointer-events: none;
 }
 
@@ -743,16 +775,17 @@ a.line__value:hover {
 }
 
 /* Capătul drumului. Cerc separat, nu în SVG: în SVG-ul întins ar ieși oval.
-   93.6% și 50% sunt exact ultimul punct al curbei (936 și 500 din 1000) —
+   93.6% și 0.5 sunt exact ultimul punct al curbei (936 și 500 din 1000) —
    se schimbă „d", se schimbă și astea două.
-   50% se măsoară pe PAGINĂ, nu pe coloană ca restul drumului, și e corect
-   numai fiindcă coloana e centrată (margin-inline: auto). Se scoate
-   centrarea, punctul ăsta trebuie rescris ca celelalte. */
+   Orizontala se citește pe banda drumului, ca frunzele, nu pe pagină: scrisă
+   ca 50% din pagină era corectă numai cât banda era coloana centrată, iar în
+   culoarul din marginea stângă (secțiunea 9) punctul ar fi rămas în mijlocul
+   ecranului, singur, la capătul unei linii aflate la 30px de geam. */
 .road__stop {
     position: absolute;
     z-index: -1;
-    inset-block-start: 93.6%;
-    inset-inline-start: 50%;
+    inset-block-start: calc(var(--road-y0) + var(--road-yh) * 0.936);
+    inset-inline-start: calc(var(--road-left) + var(--road-span) * 0.5);
     width: 0.7rem;
     height: 0.7rem;
     margin: -0.35rem 0 0 -0.35rem;
@@ -832,8 +865,212 @@ html:not(.no-js) .road__stop {
 
 
 /* ---------------------------------------------------------------------------
-   9. LĂȚIMI — gol până la pasul de responsive al acestei pagini.
-   Aceleași reguli ca pe index: întâi unități fluide, apoi flex-wrap, media
-   query abia la urmă și numai unde chiar se rupe ceva. Interogările se scriu
-   în em, nu în px, iar în comentariu se trece CE s-a rupt acolo.
+   9. LĂȚIMI
+
+   Interogările sunt în em, nu în px, ca omul care mărește textul din browser
+   să primească aranjamentul strâmt mai devreme. Trei bucăți, fiecare pusă
+   unde s-a rupt ceva măsurat:
+
+     80em   culoarul dintre formular și hartă, prin care coboară drumul, se
+            închide. Distanța măsurată de la linie la cel mai apropiat câmp:
+            48px la 1440, 18px la 1280, 6px la 1248, 0 la 1200 — și la 1200
+            frunza d intră deja peste un câmp. Deci de aici în jos drumul se
+            mută în marginea din stânga, iar primul ecran se așază pe o
+            coloană.
+     coarse degetul, nu lățimea: câmpurile și „Deschide traseul" sunt sub
+            pragul de 44px la orice lățime.
+     85em   ecrane mari: lățimea se ține ca pe index, cresc numai crengile,
+            cu hârtia goală de lângă coloană.
+
+   Nu există interogare la 48em fiindcă nu trebuie: formularul și harta se pun
+   una sub alta singure (flex-wrap, pe la 700px de lățime liberă), cele două
+   câmpuri scurte la fel, iar restul e clamp.
    --------------------------------------------------------------------------- */
+
+@media (max-width: 79.99em) {
+
+    .contact {
+        /* CULOARUL DRUMULUI. Gutter-ul plus atât, și în el intră numai linia
+           cu frunzele ei; textul începe după el. Costă 2.25rem din lățimea de
+           citit pe telefon, adică vreo 5 caractere pe rând la 320px. E preț
+           plătit dinadins, la fel ca la spina de pe index: drumul e ideea
+           paginii („drumul spre livadă începe aici"), nu un adaos de ecran
+           lat, deci merge la orice lățime.
+           Fără culoar, linia n-ar trece doar peste text — ar DISPĂREA pe
+           bucăți sub caseta hărții și sub fotografie, fiindcă amândouă au
+           fundal opac, iar drumul stă la z-index: -1. Aia se citește ca o
+           linie ruptă în trei, nu ca un drum. */
+        --road-corridor: clamp(2.25rem, 7vw, 9rem);
+        --road-left: 0px;
+        --road-span: calc(var(--gutter) + var(--road-corridor));
+
+        /* Cutia se întinde în sus ca linia să pornească din capul paginii.
+           Cu cutia cât pagina, curba începe la 31.6% din ea: pe ecran larg
+           acolo e chiar marginea de jos a fotografiei, deci linia iese de sub
+           ea, dar stivuit acolo e mijlocul paginii și linia ar apărea din
+           nimic, în marginea de lângă fotografie.
+           Cele două valori vin din două condiții, nu sunt alese din ochi:
+           începutul curbei (0.316) să cadă la 1.5% din pagină, adică în
+           paddingul de sus, peste eyebrow; iar mărul, care e ultimul (0.97),
+           să cadă la 95%, deci încă în pagină — la 100% ar fi tăiat în două de
+           overflow: clip pe granița cu subsolul. Rezolvate: înălțime 143%,
+           pornire -43.7%. Se mută „d" sau paddingul, se recalculează. */
+        --road-y0: -43.7%;
+        --road-yh: 143%;
+    }
+
+    .reach,
+    .meet {
+        padding-inline-start: calc(var(--gutter) + var(--road-corridor));
+    }
+
+    /* PRIMUL ECRAN PE O COLOANĂ. Cu cele două alături, la 768px coloana de
+       text ajungea la 256px cu titlul la 47px (trei cuvinte pe rând), iar
+       fotografia la 410x256. Mai jos se subția în continuare, și fiindcă masca
+       de acuarelă e întinsă 100% 100% peste cadru, ea se subția cu el: de
+       acolo venea impresia că fotografia se rupe și nu ține pasul cu restul
+       paginii. Stivuită, fotografia are toată lățimea liberă la dispoziție. */
+    .reach__inner {
+        display: block;
+    }
+
+    /* Ține forma de titlu din machetă: se rupe după „livadă" în loc să se
+       întindă pe un rând lat de 1000px la 1279. */
+    .reach__title {
+        max-width: 22ch;
+    }
+
+    .reach__frame {
+        /* Golul de deasupra e --space-2xl CURAT. Procentul adaugă exact cât
+           mănâncă mărirea cadrului: scale(1.12) din centru urcă 6% din
+           ÎNĂLȚIMEA fotografiei, iar înălțimea e 0.625 din lățimea ei, deci
+           3.75% din lățime. Procentele de margine se socotesc pe lățimea
+           blocului părinte, nu pe înălțime, de-aia se poate scrie așa.
+           Fără corecția asta golul se subția pe măsură ce fotografia creștea
+           — 19px rămași la 375 și 4px la 768, unde fotografia are 476px
+           înălțime — și de acolo venea senzația că se lipește de „E-MAIL". */
+        margin-block-start: calc(var(--space-2xl) + 3.75%);
+        /* Stivuită, fotografia lua toată coloana: 761px la 768 și 1275px la
+           1279, lângă un formular și o hartă plafonate amândouă la 30rem. Cu
+           34rem plus ieșirea, rămâne cu o treaptă mai lată decât ele — erou,
+           nu bloc singur pe pagină. Pe telefon plafonul nu prinde (coloana e
+           mai îngustă de 34rem oricum), deci acolo iese în geam ca înainte. */
+        max-width: calc(34rem + var(--bleed));
+        /* Distanța o dă acum marginea de sus, nu împinsul de 1rem care o
+           alinia pe verticală cu coloana de text de lângă ea. */
+        translate: none;
+        /* Mărirea cadrului (scale 1.12, secțiunea 3) se face DIN MARGINEA
+           STÂNGĂ, nu din centru: centrată, împinge fotografia cu 6% din
+           lățimea ei peste culoarul drumului, iar fotografia e opacă și
+           acoperă linia. Spre dreapta poate crește liniștită, acolo iese
+           oricum din geam. */
+        transform-origin: left center;
+    }
+
+    /* Banda drumului e acum de 3-9rem, iar pagina e de câteva ori mai înaltă,
+       deci curba se întinde până devine aproape verticală: tangenta măsurată
+       stă între 88 și 90deg pe tot parcursul, la orice lățime din interval.
+       Deci unghiul nu se mai calculează pe bucăți, e 90deg pentru toate, iar
+       formulele de rotire ale fiecărei frunze (+102deg / -22deg) rămân
+       neatinse și păstrează alternanța dintre ele.
+       Frunzele se micșorează ca să încapă între linie și geam: cutia lor e
+       centrată pe linie, deci la 320px una de 2.5rem lasă 8px până la prima
+       literă. */
+    .motif--road {
+        --road-turn: 90deg;
+        --road-w: clamp(2.25rem, 4.75vw, 5.25rem);
+    }
+
+    /* Mărul e cel mai lat din șir, deci și cel care ajunge primul la text. */
+    .motif--road-apple {
+        --road-w: clamp(2.5rem, 5vw, 5.25rem);
+    }
+
+    /* CRENGILE. Regula de pe tot site-ul e că nu stă text în spatele unui
+       desen la nicio lățime, iar aici, stivuit, coloana de text ține toată
+       lățimea liberă: nu mai există fâșia de hârtie goală în care intrau
+       crengile pe ecran lat.
+       Cea din stânga are unde să stea — culoarul drumului. Retragerea crește
+       de la 0.78 la 0.94 din lățimea desenului, deci din ea se vede numai
+       frunzișul din capăt, în culoar: măsurat, se oprește la 53px la 375 și
+       la 101px la 1248, iar textul începe la 58, respectiv 136. Mărimea nu
+       scade la fel de mult, altfel ar rămâne o rămurică. */
+    .motif--branch-left {
+        --branch-w: clamp(14rem, 30vw, 25rem);
+        inset-inline-start: calc(var(--bleed) - var(--branch-w) * 0.94);
+    }
+
+    /* Cea din dreapta nu are: la 375px coloana ajunge la 22px de geam, deci
+       orice desen de acolo cade peste câmpurile formularului, iar ele au fundal
+       propriu și l-ar tăia în două — se citește ca o greșeală, nu ca un desen
+       sub text. Ascunsă, nu micșorată; fișierul e oricum același cu al crengii
+       din stânga, deci nu se descarcă nimic în plus.
+       Dacă o vrei înapoi pe tabletă, locul ei e banda hărții, unde plafonul de
+       30rem lasă hârtie liberă la dreapta peste ~640px. */
+    .motif--branch-right {
+        display: none;
+    }
+
+    /* Formularul și harta se pun singure una sub alta pe la 700px de lățime
+       liberă. Când o fac, harta rămânea lată cât toată coloana (645px la
+       768) lângă un formular de 480 — două blocuri de măsuri diferite
+       aliniate la stânga. Plafonul le face egale. Cât sunt alături, plafonul
+       nu prinde: harta e oricum mai îngustă decât atât. */
+    .place {
+        max-width: 30rem;
+    }
+}
+
+
+/* Degetul, nu lățimea: pe un ecran cu atingere pragul e 44px, iar piesele de
+   aici sunt sub el cu paddingul normal. Nu se schimbă nimic la mouse, unde
+   45px e o țintă bună. */
+@media (pointer: coarse) {
+
+    .field__input {
+        padding-block: var(--space-xs);
+    }
+
+    /* Marginea de sus scade cu exact cât crește paddingul, ca golul dintre
+       „Brabova, Dolj" și link să rămână cel desenat. */
+    .place__route {
+        margin-block-start: var(--space-3xs);
+        padding-block: var(--space-2xs);
+    }
+}
+
+
+/* Peste 1360px pagina asta se purta la fel ca index-ul: ȚINE lățimea, nu
+   crește. --container rămâne 78rem, deci coloana, antetul și subsolul se
+   opresc toate în același loc și cele două pagini arată la fel pe un monitor
+   mare. Ce mai crește vine gata din secțiunea 14 a style.css și e exact ce
+   crește și pe index: titlul, ritmul secțiunilor și --lane.
+   Deci aici rămâne un singur lucru de făcut, crengile. */
+@media (min-width: 85em) {
+
+    /* Crengile cresc cu --lane, adică cu hârtia goală de peste gutter, ca să
+       ajungă tot atât peste compoziție pe orice monitor. Fără asta, la 2560px
+       se vedea muchia tăiată a fișierului la 82px de marginea ecranului, cu
+       ramura plutind singură în margine.
+       Plafonul de 64rem e lățimea reală a branch-1024.webp; peste el s-ar
+       mări o imagine, ceea ce nu se face nicăieri pe site. */
+    .motif--branch-left {
+        --branch-w: min(clamp(25rem, 40vw, 46rem) + var(--lane), 64rem);
+        /* Retragerea nu mai poate fi o fracție din lățime (0.78 în secțiunea
+           7), fiindcă lățimea crește acum cu --lane: fracția ar duce ramura cu
+           0.22 din --lane mai adânc peste coloană la fiecare monitor mai lat —
+           măsurat 157px la 1440 și 209px la 1920, adică desenul urcă peste
+           titlu tot mai mult, exact ce nu trebuie.
+           Scrisă ca „lățimea minus 7.5rem", intrarea peste coloană rămâne
+           7.5rem la orice lățime. 7.5rem nu e din ochi: e cât dă fracția 0.22
+           chiar în prag (120px la 1360), deci trecerea prin 85em nu se vede. */
+        inset-inline-start: calc(var(--bleed) - var(--branch-w) + 7.5rem);
+    }
+
+    .motif--branch-right {
+        --branch-w: min(clamp(24rem, 44vw, 46rem) + var(--lane), 64rem);
+        /* Aceeași socoteală, cu fracția ei (0.38): 14rem e cât dă ea în prag. */
+        inset-inline-end: calc(var(--bleed) - var(--branch-w) + 14rem);
+    }
+}
+
