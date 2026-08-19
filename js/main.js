@@ -16,7 +16,6 @@
 (function () {
     'use strict';
 
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var canWatch = 'IntersectionObserver' in window;
     var gsap = window.gsap;
 
@@ -48,42 +47,61 @@
 
     /* ---------------------------------------------------------------------
        2. FILM BAND: play only on screen
-       The second video autoplays and loops, which is motion that never runs
-       out on its own — the one thing base.css cannot switch off for someone
-       who has asked for less motion, since that setting reaches transitions
-       and animations, not a decoder. It starts a screen's height before the
-       band arrives, so it is already moving by the time it is looked at, and
-       stops once the band has scrolled away, the tab is hidden, or the
-       reduced-motion setting changes while the page is open. Pausing leaves
-       the poster up, and the poster is the video's own first frame, so the
-       band still reads as the band.
+       The second video autoplays and loops. It starts a screen's height before
+       the band arrives, so it is already moving by the time it is looked at,
+       and stops once the band has scrolled away or the tab is hidden. Pausing
+       leaves the poster up, and the poster is the video's own first frame, so
+       the band still reads as the band.
        --------------------------------------------------------------------- */
 
     var filmVideo = document.querySelector('.film__video');
 
     if (filmVideo) {
-        var filmMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var filmPlay = document.querySelector('.film__play');
         var filmVisible = !canWatch;
 
+        var showFilmPlay = function () {
+            if (filmPlay && filmVisible && !document.hidden) {
+                filmPlay.hidden = false;
+            }
+        };
+
+        var hideFilmPlay = function () {
+            if (filmPlay) {
+                filmPlay.hidden = true;
+            }
+        };
+
         var syncFilmVideo = function () {
-            if (filmMotionQuery.matches || !filmVisible || document.hidden) {
+            if (!filmVisible || document.hidden) {
                 filmVideo.pause();
+                hideFilmPlay();
                 return;
             }
 
             if (!filmVideo.paused) {
+                hideFilmPlay();
                 return;
             }
 
             var playing = filmVideo.play();
 
-            /* A refusal arrives as a rejected promise; the poster staying up
-               is the right outcome anyway, so there is nothing to do with
-               it beyond stopping it reaching the console unhandled. */
             if (playing && typeof playing.catch === 'function') {
-                playing.catch(function () {});
+                playing.then(hideFilmPlay).catch(showFilmPlay);
             }
         };
+
+        if (filmPlay) {
+            filmPlay.addEventListener('click', function () {
+                var playing = filmVideo.play();
+
+                if (playing && typeof playing.catch === 'function') {
+                    playing.then(hideFilmPlay).catch(showFilmPlay);
+                }
+            });
+        }
+
+        filmVideo.addEventListener('playing', hideFilmPlay);
 
         if (canWatch) {
             new IntersectionObserver(function (entries) {
@@ -98,15 +116,6 @@
 
         syncFilmVideo();
 
-        /* addEventListener on a media query is the current form; addListener
-           is kept as a fallback rather than assuming every engine has grown
-           the new one. */
-        if (typeof filmMotionQuery.addEventListener === 'function') {
-            filmMotionQuery.addEventListener('change', syncFilmVideo);
-        } else if (typeof filmMotionQuery.addListener === 'function') {
-            filmMotionQuery.addListener(syncFilmVideo);
-        }
-
         /* A browser stops a video in a tab you have switched away from, and
            coming back does not always start it again on its own. */
         document.addEventListener('visibilitychange', syncFilmVideo);
@@ -119,10 +128,8 @@
        to zero once it has left the screen, so the count plays again every time
        the visitor comes back to it. Its own watcher rather than the shared one
        further down, because it needs to touch the digits and not just fade the
-       card in, and it has to run even for a visitor who has asked for less
-       motion or whose browser cannot watch the scroll: the number is a fact,
-       not a flourish, and it must never sit at zero for someone who is never
-       going to see it move.
+       card in. The number is a fact, not a flourish, and must never sit at zero
+       in a browser that cannot watch the scroll.
        --------------------------------------------------------------------- */
 
     var figuresBand = document.querySelector('.brief');
@@ -202,14 +209,7 @@
             });
         };
 
-        if (reduced) {
-            /* The finished numbers, immediately, and no reset: nothing here is
-               allowed to move for someone who has asked it not to. */
-            Array.prototype.forEach.call(figureNumbers, function (el) {
-                var target = parseInt(el.getAttribute('data-count-to'), 10);
-                el.textContent = isNaN(target) ? el.textContent : formatFigure(target);
-            });
-        } else if (canWatch) {
+        if (canWatch) {
             /* Stays observing rather than disconnecting after the first run:
                leaving is what arms the next count. */
             new IntersectionObserver(function (entries) {
@@ -293,7 +293,56 @@
     }
 
 
-    if (reduced || !canWatch) {
+    /* Firefox și browserele mai vechi nu au view timelines. În ele, aceeași
+       derivă a desenelor este publicată la fiecare cadru de derulare; fără
+       această rezervă frunzele rămân în poziția de pornire. */
+    var hasViewTimeline = window.CSS && typeof window.CSS.supports === 'function' &&
+        window.CSS.supports('animation-timeline: view()');
+
+    if (!hasViewTimeline) {
+        var motifStates = Array.prototype.map.call(document.querySelectorAll('.motif'), function (el) {
+            return {
+                el: el,
+                shift: 0,
+                travel: parseFloat(getComputedStyle(el).getPropertyValue('--drift')) || 48
+            };
+        });
+        var motifFrame = 0;
+
+        var updateMotifs = function () {
+            var viewport = window.innerHeight || document.documentElement.clientHeight;
+            var next = motifStates.map(function (state) {
+                var rect = state.el.getBoundingClientRect();
+                var top = rect.top - state.shift;
+                var progress = Math.min(Math.max((viewport - top) / (viewport + rect.height), 0), 1);
+
+                return {
+                    state: state,
+                    shift: state.travel * (1 - progress * 2)
+                };
+            });
+
+            next.forEach(function (item) {
+                item.state.shift = item.shift;
+                item.state.el.style.translate = '0 ' + item.shift.toFixed(2) + 'px';
+            });
+
+            motifFrame = 0;
+        };
+
+        var queueMotifs = function () {
+            if (!motifFrame) {
+                motifFrame = window.requestAnimationFrame(updateMotifs);
+            }
+        };
+
+        updateMotifs();
+        window.addEventListener('scroll', queueMotifs, { passive: true });
+        window.addEventListener('resize', queueMotifs);
+    }
+
+
+    if (!canWatch) {
         return;
     }
 
@@ -328,8 +377,7 @@
             .from('.hero__mark', { y: 24, opacity: 0, scale: 0.92, duration: 1.3 })
             .from('.hero__title', { y: 28, opacity: 0 }, '-=0.95')
             .from('.hero__lead', { y: 20, opacity: 0 }, '-=0.9')
-            .from('.hero__cta', { y: 18, opacity: 0 }, '-=0.85')
-            .from('.hero__cue', { opacity: 0, duration: 0.8 }, '-=0.5');
+            .from('.hero__cta', { y: 18, opacity: 0 }, '-=0.85');
     }
 
 

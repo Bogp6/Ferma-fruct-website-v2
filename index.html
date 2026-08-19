@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260817-wide-1">
+  <link rel="stylesheet" href="css/style.css?v=20260819-motion-1">
 
   <!-- Preloads only the latin font file; latin-ext (ș, ț) loads later via unicode-range. Without this, hero text flashes in a fallback face. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -210,8 +210,8 @@
          2. BANDA CU CIFRE — se suprapune peste film și peste secțiunea de jos.
          Valorile sunt placeholder (ferma nu a dat cifre reale): înlocuiește
          toate trei și șterge nota de sub bandă în aceeași editare.
-         Cifrele numără de la 0 prin main.js; fără script sau cu motion redus
-         se afișează direct valoarea finală.
+         Cifrele numără de la 0 prin main.js; fără script se afișează valoarea
+         scrisă în HTML.
          ====================================================================== -->
     <section class="brief" aria-label="Ferma în cifre">
       <ul class="brief__list">
@@ -539,6 +539,11 @@
                  aria-label="Filmare din dronă printre rândurile de pomi">
             <source src="img/pixelized_drone_video_compressed.mp4" type="video/mp4">
           </video>
+          <button class="film__play" type="button" hidden aria-label="Pornește filmarea din livadă">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8.5 6.5v11l9-5.5z" />
+            </svg>
+          </button>
         </div>
         <p class="film__caption">Livada, filmată din dronă, în primăvara aceasta.</p>
       </div>
@@ -804,7 +809,7 @@
 
   <script src="js/gsap.min.js"></script>
   <!-- ?v= crește la fiecare schimbare, ca la style.css, altfel browserul poate servi scriptul vechi cu CSS-ul nou. -->
-  <script src="js/main.js?v=20260817-wide-1"></script>
+  <script src="js/main.js?v=20260819-motion-1"></script>
 
 </body>
 

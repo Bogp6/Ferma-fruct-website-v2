@@ -130,7 +130,7 @@ First attempt scattered the three drawings as separate ornaments; client rejecte
 - **`overflow: clip` on those three sections, both axes** — the drawings bleed past the section edges, and `overflow-x: clip` on `html` alone does not stop sideways page scroll (measured `scrollLeft` reaching 271px).
 - `z-index: -1` on `.motif` — under the section's text, over its background. A block hosting a drawing (`.grove`) may be `position: relative` but must never take `z-index`/`opacity`/`filter`/`transform` — any of those makes it a stacking context and the drawing loses its cream to multiply into.
 - `max-width: none` on `.motif` (`base.css` caps every `img` at 100%).
-- **Drift**: drawings move slower than the page (behind the paper, not on it), via `animation-timeline: view()` — no JS, no loop, nothing to throttle. Wrapped in `@supports` + `prefers-reduced-motion: no-preference`; unsupported browsers just get the still version.
+- **Drift**: drawings move slower than the page (behind the paper, not on it), via `animation-timeline: view()` where supported and a request-animation-frame scroll fallback elsewhere. The landing page keeps its authored motion when the operating system requests reduced motion.
 
 ## Motion
 
@@ -142,7 +142,7 @@ GSAP core runs the hero as one timeline. Scroll arrivals are IntersectionObserve
 
 Background drawings drift on `animation-timeline: view()` — see Fundal decorativ.
 
-`.film__video` plays only on-screen, tab visible, reduced-motion off. `.brief` numbers count on arrival, reset on leaving, with reduced-motion and no-IntersectionObserver fallbacks.
+`.film__video` plays only on-screen while the tab is visible. If iOS rejects autoplay, a centred play control appears and retries from the visitor's tap. `.brief` numbers count on arrival and reset on leaving, with a no-IntersectionObserver fallback.
 
 **Can't judge motion in a headless/hidden Chrome tab** — `requestAnimationFrame` throttles there, so GSAP tweens never advance and a screenshot shows an empty column. CSS-only transitions (the photo wipe) still finish. Judge in a real window.
 

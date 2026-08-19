@@ -390,13 +390,10 @@
    (starea dinainte de mișcare), nu se rupe nimic. */
 @supports (animation-timeline: view()) {
 
-    @media (prefers-reduced-motion: no-preference) {
-
-        .motif {
-            animation: motif-drift linear both;
-            animation-timeline: view();
-            animation-range: cover;
-        }
+    .motif {
+        animation: motif-drift linear both;
+        animation-timeline: view();
+        animation-range: cover;
     }
 }
 
@@ -1635,20 +1632,6 @@ main,
     text-align: center;
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-    /* base.css taie duratele; asta taie și starea de plecare, ca fotografia
-       să nu apară ascunsă în niciun cadru. */
-    .grove__frame.wipe {
-        clip-path: inset(0);
-    }
-
-    .grove__frame:hover .grove__photo {
-        transform: none;
-    }
-}
-
-
 /* ---------------------------------------------------------------------------
    8. BANDA VIDEO — framed with a margin, not full bleed (full bleed read
    as a second hero).
@@ -1673,6 +1656,7 @@ main,
 /* Height not aspect-ratio: Chrome shrinks the frame's width instead when
    both are set. */
 .film__frame {
+    position: relative;
     height: clamp(15rem, 34vw, 27rem);
     overflow: hidden;
     border-radius: var(--radius-xl);
@@ -1685,6 +1669,47 @@ main,
     height: 100%;
     object-fit: cover;
     display: block;
+}
+
+/* iOS oprește autoplay în modul de consum redus. Controlul apare numai după
+   un refuz real al browserului, iar gestul vizitatorului poate porni filmul. */
+.film__play {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 0;
+    border: var(--hairline) solid var(--paper);
+    border-radius: 50%;
+    background: var(--action);
+    color: var(--bark-deep);
+    box-shadow: var(--shadow-raise);
+    cursor: pointer;
+    transition: background-color var(--duration) var(--ease),
+        transform var(--duration-fast) var(--ease);
+}
+
+.film__play[hidden] {
+    display: none;
+}
+
+.film__play:hover,
+.film__play:focus-visible {
+    background: var(--paper);
+}
+
+.film__play:active {
+    transform: scale(0.96);
+}
+
+.film__play svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: currentColor;
 }
 
 .film__caption {
@@ -2173,9 +2198,8 @@ main,
 
 /* ---------------------------------------------------------------------------
    12. REVEAL — card laid on a table: arrives low, tilted, settles flat.
-   CSS below is the fallback/reduced-motion end state; GSAP drives it where
-   loaded. .reveal is added only by main.js, so content stays visible
-   without script.
+   CSS below is the fallback end state; GSAP drives it where loaded. .reveal
+   is added only by main.js, so content stays visible without script.
    --------------------------------------------------------------------------- */
 
 .reveal {
@@ -2926,6 +2950,73 @@ main,
 }
 
 
+/* Mișcarea este parte din compoziția aprobată. normalize.css păstrează
+   preferința sistemului ca bază sigură, iar pagina principală o suprascrie
+   numai pentru elementele ei animate. Fără lista asta iOS taie tranzițiile,
+   deși main.js continuă să construiască meniul și linia livezii. */
+@media (prefers-reduced-motion: reduce) {
+
+    .motif {
+        animation-duration: auto !important;
+        animation-iteration-count: 1 !important;
+    }
+
+    .skip,
+    .nav__link,
+    .nav__link::after,
+    .burger,
+    .drawer__close,
+    .drawer__link::after,
+    .film__play,
+    .faq__q,
+    .faq__sign::before,
+    .faq__sign::after,
+    .site-footer__nav-link,
+    .site-footer__social-link,
+    .site-footer__link {
+        transition-duration: var(--duration) !important;
+    }
+
+    .drawer {
+        transition-duration: 0s !important;
+    }
+
+    .drawer__scrim,
+    .btn::before {
+        transition-duration: var(--duration) !important;
+    }
+
+    .drawer__panel,
+    .grove__photo {
+        transition-duration: var(--duration-slow) !important;
+    }
+
+    .drawer__link {
+        transition-duration: var(--duration), var(--duration), var(--duration-slow) !important;
+    }
+
+    .drawer__lang {
+        transition-duration: var(--duration), var(--duration-slow) !important;
+    }
+
+    .btn {
+        transition-duration: var(--duration), var(--duration), var(--duration-fast) !important;
+    }
+
+    .grove__frame {
+        transition-duration: 900ms !important;
+    }
+
+    .faq__row::details-content {
+        transition-duration: var(--duration), var(--duration) !important;
+    }
+
+    .reveal:not(.reveal--js) {
+        transition-duration: var(--duration-slow), var(--duration-slow) !important;
+    }
+}
+
+
 /* ===========================================================================
    SFÂRȘITUL LUI style.css — și al paginii principale.
 
@@ -2946,4 +3037,3 @@ main,
    DESIGN.md.
    =========================================================================== */
 
-   
