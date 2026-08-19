@@ -21,28 +21,84 @@
 
 
     /* ---------------------------------------------------------------------
-       1. THE FILM
-       autoplay is a request, not a promise: a browser in a power-saving mode
-       or with autoplay switched off will refuse it, and the refusal arrives as
-       a rejected promise rather than an error. The poster staying up is the
-       whole fallback — no video on this page ever grows controls, because both
-       are wallpaper rather than something to watch.
+       1. THE HERO FILM
+       iOS Low Power Mode can refuse muted autoplay on a cold page load. The
+       refusal cannot be bypassed without a real visitor gesture, so the hero
+       retries on the first touch, pointer press or key press. The listeners
+       are removed as soon as playback begins and never exist on devices where
+       the first autoplay request succeeds.
 
        .film__video is skipped here: section 2 owns when it plays. Calling
-       play() on it from this loop and pause() from there moments later rejects
+       play() on it from this job and pause() from there moments later rejects
        the in-flight promise. */
 
-    Array.prototype.forEach.call(document.querySelectorAll('video[autoplay]'), function (video) {
-        if (video.classList.contains('film__video')) {
-            return;
+    var heroVideo = document.querySelector('.hero__film');
+
+    if (heroVideo) {
+        var heroUnlockArmed = false;
+        var heroUnlockEvents = ['pointerdown', 'touchstart', 'keydown'];
+
+        var disarmHeroVideo = function () {
+            if (!heroUnlockArmed) {
+                return;
+            }
+
+            heroUnlockArmed = false;
+            heroUnlockEvents.forEach(function (type) {
+                document.removeEventListener(type, unlockHeroVideo, true);
+            });
+        };
+
+        var armHeroVideo = function () {
+            if (heroUnlockArmed || !heroVideo.paused) {
+                return;
+            }
+
+            heroUnlockArmed = true;
+            heroUnlockEvents.forEach(function (type) {
+                document.addEventListener(type, unlockHeroVideo, {
+                    capture: true,
+                    passive: type !== 'keydown'
+                });
+            });
+        };
+
+        var playHeroVideo = function (fromGesture) {
+            if (document.hidden || !heroVideo.paused) {
+                return;
+            }
+
+            /* Safari is strict about these being properties as well as HTML
+               attributes when play() is retried after a rejected autoplay. */
+            heroVideo.muted = true;
+            heroVideo.defaultMuted = true;
+            heroVideo.playsInline = true;
+            if (fromGesture !== true) {
+                armHeroVideo();
+            }
+
+            var attempt = heroVideo.play();
+
+            if (attempt && typeof attempt.then === 'function') {
+                attempt.then(disarmHeroVideo).catch(armHeroVideo);
+            }
+        };
+
+        function unlockHeroVideo() {
+            disarmHeroVideo();
+            playHeroVideo(true);
         }
 
-        var attempt = video.play();
+        heroVideo.addEventListener('playing', disarmHeroVideo);
+        window.addEventListener('pageshow', playHeroVideo);
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden) {
+                playHeroVideo();
+            }
+        });
 
-        if (attempt && typeof attempt.catch === 'function') {
-            attempt.catch(function () {});
-        }
-    });
+        playHeroVideo();
+    }
 
 
     /* ---------------------------------------------------------------------

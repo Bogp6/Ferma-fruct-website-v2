@@ -922,6 +922,33 @@ main,
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* The film is visual atmosphere, not a media player. This also prevents
+       Safari's rejected-autoplay overlay from taking the first touch away
+       from the page-level playback recovery in main.js. */
+    pointer-events: none;
+}
+
+/* iOS may draw a native play badge when Low Power Mode rejects autoplay even
+   though the video has no controls. The poster stays visible; the first real
+   visitor gesture retries playback through main.js. */
+.hero__film::-webkit-media-controls {
+    display: none !important;
+    -webkit-appearance: none;
+}
+
+.hero__film::-webkit-media-controls-enclosure {
+    display: none !important;
+    -webkit-appearance: none;
+}
+
+.hero__film::-webkit-media-controls-start-playback-button {
+    display: none !important;
+    -webkit-appearance: none;
+}
+
+.hero__film::-webkit-media-controls-overlay-play-button {
+    display: none !important;
+    -webkit-appearance: none;
 }
 
 /* Wash for legibility over the film: --forest's own rgb (105,130,64), not a
@@ -3036,4 +3063,3 @@ main,
    ajunge să fie folosită pe ambele pagini, locul ei e aici, cu o notă în
    DESIGN.md.
    =========================================================================== */
-

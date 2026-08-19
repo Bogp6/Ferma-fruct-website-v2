@@ -142,7 +142,9 @@ GSAP core runs the hero as one timeline. Its four parts move upward into place f
 
 Background drawings drift on `animation-timeline: view()` — see Fundal decorativ.
 
-`.film__video` plays only on-screen while the tab is visible. If iOS rejects autoplay, a centred play control appears and retries from the visitor's tap. `.brief` numbers count on arrival and reset on leaving, with a no-IntersectionObserver fallback.
+`.hero__film` autoplays normally on desktop and on phones that permit it. iOS Low Power Mode can reject the cold-load request and cannot be bypassed without a real visitor gesture: Safari's native overlay is hidden, the poster remains visible, and the first touch, pointer press or key press retries playback. The recovery listeners remove themselves as soon as the film starts. `pageshow` and returning to a visible tab retry too.
+
+`.film__video` plays only on-screen while the tab is visible. If iOS rejects autoplay, its own centred play control appears and retries from the visitor's tap. `.brief` numbers count on arrival and reset on leaving, with a no-IntersectionObserver fallback.
 
 **Can't judge timing in a headless/hidden Chrome tab** — `requestAnimationFrame` throttles there, so GSAP tweens may not advance at normal speed. The hero remains visible in that state; CSS-only transitions such as the photo wipe still finish. Judge timing in a real window.
 
