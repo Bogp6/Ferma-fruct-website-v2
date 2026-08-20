@@ -1550,3 +1550,668 @@
         scroll-behavior: auto;
     }
 }
+
+
+/* ---------------------------------------------------------------------------
+   9. LĂȚIMI
+
+   Ultima trecere peste pagină, ca la index și la contact: nimic de deasupra
+   acestei secțiuni nu s-a schimbat, tot ce ține de lățime stă aici.
+
+   Interogările sunt în em, nu în px, ca cineva care și-a mărit textul din
+   browser să primească aranjamentul îngust mai devreme. Sunt patru praguri,
+   fiecare pus unde s-a rupt ceva măsurat, plus unul pentru deget:
+
+     64em  Momentul nu mai ține trei coloane: la 1024px fotografia scade la
+           408px, la 768px la 298px și textul ajunge la 36 de caractere pe
+           rând, adică exact max-width-ul lui. Tot acolo se rup și banda
+           portretului și grila interviurilor.
+     48em  Cele două cartonașe mici de interviu nu mai încap una lângă alta.
+     30em  Ultimele strângeri pe un telefon mic.
+     coarse Bulinele caruselului au 10px — sub pragul de 44px al degetului la
+           orice lățime, deci nu e o chestiune de lățime, ci de arătător.
+     85em  Ecrane mari. --lane și rampa de scară vin din secțiunea 14 a lui
+           style.css, care se încarcă și aici; de scris rămân numai desenele.
+
+   Ce NU se schimbă: --container rămâne 78rem peste 85em. Pagina de contact îl
+   crește la 86rem fiindcă acolo coloana formularului era îngustă; aici
+   fotografiile momentelor au fișiere de 1200px și la 78rem sunt afișate la
+   564px, deci deja aproape de tavanul lor la ecran de 2x. Lățită coloana, ar
+   începe să se moaie. Hârtia câștigată se dă desenelor, ca la index.
+   --------------------------------------------------------------------------- */
+
+
+/* --- Sub 64em: pagina se așază pe o coloană ------------------------------- */
+
+@media (max-width: 63.99em) {
+
+    /* MOMENTUL. Grilă, nu flex: coloana desenului trebuie să țină amândouă
+       rândurile (text sus, fotografie jos), iar flex n-are cum.
+
+       Culoarul cu pomul rămâne la orice lățime, ca linia desenată să aibă pe
+       unde coborî — aceeași hotărâre ca pe index, unde clientul a refuzat
+       stingerea liniei pe telefon. Costă vreo 34 de caractere pe rând la
+       320px, plătite dinadins.
+
+       Culoarul schimbă partea de la un bloc la altul (.stage--flip), deci
+       linia continuă să șerpuiască exact ca pe ecran lat. despre.js citește
+       pozițiile reale din getBoundingClientRect și are ResizeObserver pe
+       fiecare bloc, deci se redesenează singură. */
+    .stage {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: var(--space-s);
+        row-gap: var(--space-m);
+        align-items: start;
+    }
+
+    .stage__sign {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        /* Pe mijlocul blocului, nu al textului: acolo trece linia. */
+        align-self: center;
+        width: clamp(3rem, 9vw, 5rem);
+    }
+
+    .stage__tell {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    /* Fotografia iese până la geam pe partea dinspre margine. Fără asta ar
+       pierde și culoarul, și marginea paginii, și ar rămâne pe jumătate de
+       ecran — exact micșorarea pe care clientul a semnalat-o. Secțiunea are
+       overflow: clip, deci ieșirea nu adaugă derulare laterală. */
+    .stage__frame {
+        grid-column: 2;
+        grid-row: 2;
+        margin-inline-end: calc(var(--gutter) * -1);
+    }
+
+    /* Culoarul NU mai schimbă partea de la un bloc la altul, deși pe ecran lat
+       o face. Măsurat: cu el întors, linia trebuie să treacă de la marginea
+       stângă a unui bloc la marginea dreaptă a următorului, iar între cele
+       două noduri nu mai e gol, ci fotografia primului bloc și textul celui
+       de-al doilea — 137 de treceri peste fotografii și 61 peste text la
+       320px. Pe o coloană, culoarul stă pe stânga tot drumul și linia coboară
+       prin el; legănarea de la un bloc la altul rămâne (despre.js alternează
+       singur direcția), deci nu e o linie trasă cu rigla.
+
+       .stage--flip își păstrează row-reverse din secțiunea 3, dar pe grilă
+       flex-direction nu face nimic, deci nu trebuie anulat. */
+    .stage--flip {
+        grid-template-columns: auto 1fr;
+    }
+
+    /* 36ch era îngustimea aleasă lângă fotografie; în coloană proprie coloana
+       e deja mai îngustă de-atât. */
+    .stage__body {
+        max-width: none;
+    }
+
+
+    /* PORTRETUL. Cele două cutii nu mai stau alături: la 768px fotografia ar
+       avea 143px lățime. Pe o coloană iese la geam pe amândouă părțile —
+       pătrat, cât fereastra, e cel mai puternic lucru de pe ecranul acela. */
+    .keeper__inner {
+        display: block;
+    }
+
+    .keeper__portrait {
+        margin-inline: calc(var(--gutter) * -1);
+    }
+
+    /* Legenda se aliniază la marginea coloanei, nu la a fotografiei, care
+       acum e sub geam: --portrait-out nu mai e distanța potrivită. */
+    .keeper__cred {
+        padding-inline: var(--gutter);
+    }
+
+    .keeper__tell {
+        margin-block-start: var(--space-xl);
+    }
+
+
+    /* INTERVIURILE. Cartonașul mare trece peste toată lățimea și cele două
+       mici rămân alături sub el: pe două coloane inegale, cele mici ajungeau
+       la 250px, adică 140px înălțime de film. */
+    .talks__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .talk--lead {
+        grid-column: 1 / -1;
+        grid-row: auto;
+        align-self: stretch;
+    }
+
+
+    /* DESENELE. Subțiate, nu micșorate — la fel ca pe index. Cele așezate în
+       procente au fost măsurate pe un aranjament lat: în coloană, secțiunea e
+       de trei ori mai înaltă și aceleași procente cad peste text sau în
+       mijlocul unei fotografii. Rămân numai cele care ies pe sub marginea
+       ferestrei, unde nu au ce încurca, plus câte două-trei reașezate din
+       colțurile secțiunii, în rem, nu în procente. */
+    .motif--roots-leaf-d,
+    .motif--roots-leaf-e,
+    .motif--roots-leaf-f,
+    .motif--roots-apple,
+    .motif--roots-leaf-g,
+    .motif--roots-leaf-h,
+    .motif--roots-leaf-i,
+    .motif--roots-leaf-j,
+    .motif--roots-leaf-k,
+    .motif--roots-leaf-l,
+    .motif--roots-leaf-m,
+    .motif--roots-leaf-n,
+    .motif--roots-leaf-o,
+    .motif--roots-leaf-q,
+    .motif--roots-leaf-r,
+    .motif--roots-apple-c,
+    .motif--keeper-leaf-b,
+    .motif--keeper-leaf-e,
+    .motif--keeper-leaf-f,
+    .motif--keeper-leaf-g,
+    .motif--keeper-leaf-h,
+    .motif--keeper-apple-b,
+    .motif--keeper-apple-c,
+    .motif--reel-leaf-b,
+    .motif--reel-leaf-d,
+    .motif--talks-leaf-b,
+    .motif--talks-leaf-c,
+    .motif--talks-leaf-d,
+    .motif--talks-leaf-e,
+    .motif--talks-leaf-f,
+    .motif--talks-leaf-g,
+    .motif--talks-leaf-i,
+    .motif--talks-leaf-j {
+        display: none;
+    }
+
+    /* Ramurile mari intră tot din colțuri, dar mai mici: la lățimea asta o
+       ramură de 34rem ar acoperi jumătate de ecran și n-ar mai fi fundal. */
+    .motif--roots-branch {
+        inset-inline-end: -9rem;
+        width: clamp(14rem, 46vw, 22rem);
+    }
+
+    .motif--roots-branch-b {
+        inset-inline-start: -11rem;
+        width: clamp(13rem, 42vw, 20rem);
+    }
+
+    .motif--keeper-branch {
+        inset-inline-end: -10rem;
+        width: clamp(13rem, 44vw, 21rem);
+    }
+
+    .motif--keeper-leaf-a {
+        inset-block-end: -6rem;
+        inset-inline-start: -8rem;
+        width: clamp(11rem, 38vw, 18rem);
+    }
+
+    .motif--reel-branch {
+        inset-inline-start: -10rem;
+        width: clamp(12rem, 40vw, 19rem);
+    }
+
+    .motif--talks-branch {
+        inset-inline-end: -10rem;
+        width: clamp(13rem, 44vw, 21rem);
+    }
+
+    .motif--talks-branch-b {
+        inset-inline-end: -9rem;
+        width: clamp(12rem, 38vw, 18rem);
+    }
+
+    .motif--talks-branch-c {
+        inset-inline-start: -6rem;
+        inset-block-end: -8rem;
+        width: clamp(15rem, 52vw, 24rem);
+    }
+
+    /* Frunzele care rămân, mutate pe marginile secțiunii. Ies pe jumătate în
+       afara ferestrei dinadins: o frunză întreagă în coloana îngustă s-ar
+       vedea ca o pată peste text. */
+    .motif--roots-leaf-a {
+        inset-block-start: 26%;
+        inset-inline-start: -4.5rem;
+        width: clamp(7rem, 26vw, 11rem);
+    }
+
+    .motif--roots-leaf-b {
+        inset-block-start: 62%;
+        inset-inline-end: -4.5rem;
+        width: clamp(7rem, 26vw, 11rem);
+    }
+
+    .motif--roots-leaf-c {
+        inset-block-start: 7%;
+        inset-inline-start: auto;
+        inset-inline-end: -2rem;
+        width: clamp(4rem, 15vw, 6.5rem);
+    }
+
+    .motif--roots-leaf-p {
+        inset-block-start: 84%;
+        inset-inline-start: -2.5rem;
+        width: clamp(4.5rem, 17vw, 7rem);
+    }
+
+    .motif--roots-apple-b {
+        inset-block-start: 44%;
+        inset-inline-start: auto;
+        inset-inline-end: -1rem;
+        width: clamp(2.5rem, 9vw, 4rem);
+    }
+
+    .motif--keeper-leaf-c {
+        inset-block-end: 34%;
+        inset-inline-start: auto;
+        inset-inline-end: -2.5rem;
+        width: clamp(4.5rem, 17vw, 7rem);
+    }
+
+    .motif--keeper-leaf-d {
+        inset-block-end: 9%;
+        inset-inline-start: auto;
+        inset-inline-end: -3rem;
+        width: clamp(5.5rem, 21vw, 9rem);
+    }
+
+    .motif--keeper-apple {
+        inset-block-start: 5%;
+        inset-inline-end: -0.75rem;
+        width: clamp(2.5rem, 9vw, 4rem);
+    }
+
+    .motif--reel-leaf-a {
+        inset-block-start: 1.5rem;
+        inset-inline-start: -2.5rem;
+        width: clamp(5rem, 19vw, 8rem);
+    }
+
+    /* Aceeași socoteală: pe o coloană cade peste legenda caruselului. */
+    .motif--reel-leaf-c {
+        inset-block-end: 12%;
+        inset-inline-end: -3rem;
+        width: clamp(5.5rem, 21vw, 9rem);
+        opacity: 0.26;
+    }
+
+    .motif--reel-apple {
+        inset-block-start: 18%;
+        inset-inline-start: -0.5rem;
+        width: clamp(2.75rem, 10vw, 4.5rem);
+    }
+
+    /* Titlul secțiunii e centrat și pe o coloană ocupă toată lățimea, deci
+       cele două frunze de sus nu au unde să stea decât pe sub el. Intră mai
+       mult de sub geam și coboară sub 0.34 — pragul de la care un desen poate
+       trece pe sub un rând de text (vezi capul secțiunii 7). */
+    .motif--talks-leaf-a {
+        inset-block-start: 0.75rem;
+        inset-inline-start: -3.5rem;
+        width: clamp(5.5rem, 21vw, 9rem);
+        opacity: 0.28;
+    }
+
+    .motif--talks-leaf-h {
+        inset-block-start: 3.5rem;
+        inset-inline-end: -3.5rem;
+        width: clamp(5rem, 19vw, 8rem);
+        opacity: 0.28;
+    }
+
+    .motif--talks-apple {
+        inset-block-start: 30%;
+        inset-inline-start: -0.5rem;
+        width: clamp(2.75rem, 10vw, 4.5rem);
+        opacity: 0.3;
+    }
+}
+
+
+/* --- Sub 48em: telefonul -------------------------------------------------- */
+
+@media (max-width: 47.99em) {
+
+    /* Cele două cartonașe mici nu mai încap una lângă alta: la 640px ajung la
+       280px lățime, adică 158px de film cu o legendă de două rânduri sub el. */
+    .talks__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .talk--lead {
+        grid-column: auto;
+    }
+}
+
+
+/* --- Sub 30em: telefon mic ------------------------------------------------ */
+
+@media (max-width: 29.99em) {
+
+    /* Culoarul se strânge cât se poate fără să dispară: sub 3rem pomul nu se
+       mai citește ca pom, iar linia desenată n-ar mai avea pe unde legăna. */
+    .stage {
+        column-gap: var(--space-2xs);
+    }
+
+    .stage__sign {
+        width: 3rem;
+    }
+}
+
+
+/* --- Deget ---------------------------------------------------------------- */
+
+@media (pointer: coarse) {
+
+    /* Bulinele au 10px desenați. Ținta se mărește, bulina nu: cercul trece pe
+       ::after, iar butonul rămâne o cutie transparentă de 44px. Fără asta ar
+       trebui atinsă o țintă de un sfert din pragul de deget. */
+    .reel__dots {
+        gap: 0;
+        margin-block-start: var(--space-m);
+    }
+
+    .reel__dot {
+        position: relative;
+        width: 2.75rem;
+        height: 2.75rem;
+        background: transparent;
+        transform: none;
+    }
+
+    .reel__dot::after {
+        content: "";
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 50%;
+        translate: -50% -50%;
+        width: 0.625rem;
+        height: 0.625rem;
+        border-radius: 50%;
+        background: var(--sand);
+        transition: background-color var(--duration) var(--ease),
+            scale var(--duration) var(--ease);
+    }
+
+    .reel__dot:hover {
+        background: transparent;
+    }
+
+    .reel__dot:hover::after {
+        background: var(--earth);
+    }
+
+    .reel__dot[aria-current="true"] {
+        background: transparent;
+        transform: none;
+    }
+
+    .reel__dot[aria-current="true"]::after {
+        background: var(--action);
+        scale: 1.15;
+    }
+}
+
+
+/* --- Peste 85em: ecrane mari ---------------------------------------------- */
+
+/* --lane, rampa a doua de scară și ritmul de secțiune vin din secțiunea 14 a
+   lui style.css, care se încarcă și pe pagina asta: titlurile și golurile
+   dintre secțiuni cresc deja singure peste prag. Aici rămân desenele, care nu
+   sunt scrise nicăieri altundeva.
+
+   Două unelte, aceleași ca pe index:
+
+     --lane            hârtia goală de peste --gutter, de fiecare parte. Zero
+                       la prag, deci regulile trec continuu prin el.
+     calc(50% - Nrem)  poziție măsurată din mijlocul paginii, nu din marginea
+                       ferestrei. N = 42.5 - 0.85 x procentul vechi, fiindcă
+                       la prag jumătate de pagină are 42.5rem. Frunza rămâne
+                       lipită de compoziție oricât de lată e fereastra.
+
+   Frunzele care ies deja pe sub geam (procent negativ) NU se convertesc:
+   ele sunt lipite de marginea ferestrei dinadins și acolo trebuie să rămână.
+   --------------------------------------------------------------------------- */
+
+@media (min-width: 85em) {
+
+    /* RAMURILE cresc cu --lane în loc să se mute: o ramură intră din marginea
+       ferestrei și se oprește peste colțul coloanei, iar pe un ecran lat
+       marginea se depărtează de coloană cu exact --lane. Plafonul de 64rem e
+       lățimea reală a lui branch-1024.webp — nu se mărește un desen peste
+       fișierul lui. */
+    .motif--roots-branch {
+        width: min(clamp(20rem, 34vw, 34rem) + var(--lane), 64rem);
+    }
+
+    .motif--roots-branch-b {
+        width: min(clamp(18rem, 30vw, 30rem) + var(--lane), 64rem);
+    }
+
+    .motif--keeper-branch {
+        width: min(clamp(18rem, 32vw, 32rem) + var(--lane), 64rem);
+    }
+
+    /* Frunza mare din colțul de jos-stânga al benzii: același desen, aceeași
+       treabă ca o ramură. */
+    .motif--keeper-leaf-a {
+        width: min(clamp(14rem, 26vw, 26rem) + var(--lane), 64rem);
+    }
+
+    .motif--reel-branch {
+        width: min(clamp(17rem, 30vw, 30rem) + var(--lane), 64rem);
+    }
+
+    .motif--talks-branch {
+        width: min(clamp(18rem, 32vw, 32rem) + var(--lane), 64rem);
+    }
+
+    .motif--talks-branch-b {
+        width: min(clamp(16rem, 28vw, 28rem) + var(--lane), 64rem);
+    }
+
+    /* Singura care intră dinspre stânga cu o retragere pozitivă: gazda e
+       secțiunea, deci retragerea trebuie să crească odată cu hârtia goală,
+       altfel desenul se termină în margine, departe de coloană. */
+    .motif--talks-branch-c {
+        inset-inline-start: calc(5rem + var(--lane));
+        width: min(clamp(22rem, 38vw, 38rem) + var(--lane), 64rem);
+    }
+
+
+    /* FRUNZELE ȘI MERELE, măsurate din mijlocul paginii. */
+
+    /* --- Rădăcini --- */
+
+    .motif--roots-leaf-c {
+        inset-inline-start: calc(50% - 37.4rem);
+    }
+
+    .motif--roots-leaf-d {
+        inset-inline-end: calc(50% - 35.7rem);
+    }
+
+    .motif--roots-leaf-e {
+        inset-inline-end: calc(50% - 28.9rem);
+    }
+
+    .motif--roots-leaf-f {
+        inset-inline-start: calc(50% - 31.45rem);
+    }
+
+    .motif--roots-apple {
+        inset-inline-start: calc(50% - 34.85rem);
+    }
+
+    .motif--roots-leaf-g {
+        inset-inline-start: calc(50% - 28.05rem);
+    }
+
+    .motif--roots-leaf-h {
+        inset-inline-start: calc(50% - 19.12rem);
+    }
+
+    .motif--roots-leaf-i {
+        inset-inline-start: calc(50% - 25.5rem);
+    }
+
+    .motif--roots-leaf-l {
+        inset-inline-start: calc(50% - 20.4rem);
+    }
+
+    .motif--roots-apple-b {
+        inset-inline-start: calc(50% - 11.48rem);
+    }
+
+    .motif--roots-leaf-k {
+        inset-inline-start: calc(50% - 2.12rem);
+    }
+
+    .motif--roots-leaf-j {
+        inset-inline-start: calc(50% + 9.35rem);
+    }
+
+    .motif--roots-leaf-m {
+        inset-inline-start: calc(50% + 27.2rem);
+    }
+
+    .motif--roots-leaf-n {
+        inset-inline-start: calc(50% + 34.42rem);
+    }
+
+    .motif--roots-leaf-p {
+        inset-inline-start: calc(50% - 26.35rem);
+    }
+
+    .motif--roots-leaf-q {
+        inset-inline-start: calc(50% - 16.15rem);
+    }
+
+    .motif--roots-apple-c {
+        inset-inline-start: calc(50% - 10.2rem);
+    }
+
+    .motif--roots-leaf-r {
+        inset-inline-start: calc(50% - 8.08rem);
+    }
+
+
+    /* --- Portret --- */
+
+    .motif--keeper-leaf-b {
+        inset-inline-start: calc(50% - 39.1rem);
+    }
+
+    .motif--keeper-leaf-c {
+        inset-inline-start: calc(50% + 36.55rem);
+    }
+
+    .motif--keeper-leaf-d {
+        inset-inline-start: calc(50% + 32.3rem);
+    }
+
+    .motif--keeper-leaf-e {
+        inset-inline-start: calc(50% + 19.04rem);
+    }
+
+    .motif--keeper-leaf-f {
+        inset-inline-start: calc(50% + 13.6rem);
+    }
+
+    .motif--keeper-leaf-g {
+        inset-inline-start: calc(50% + 6.2rem);
+    }
+
+    .motif--keeper-leaf-h {
+        inset-inline-start: calc(50% + 1.87rem);
+    }
+
+    .motif--keeper-apple {
+        inset-inline-end: calc(50% - 39.95rem);
+    }
+
+    .motif--keeper-apple-b {
+        inset-inline-start: calc(50% + 27.88rem);
+    }
+
+    .motif--keeper-apple-c {
+        inset-inline-start: calc(50% + 11.48rem);
+    }
+
+
+    /* --- Carusel --- */
+
+    .motif--reel-leaf-a {
+        inset-inline-start: calc(50% - 36.55rem);
+    }
+
+    .motif--reel-leaf-b {
+        inset-inline-end: calc(50% - 34.85rem);
+    }
+
+    .motif--reel-leaf-c {
+        inset-inline-end: calc(50% - 39.1rem);
+    }
+
+    .motif--reel-leaf-d {
+        inset-inline-start: calc(50% - 22.1rem);
+    }
+
+    .motif--reel-apple {
+        inset-inline-start: calc(50% - 39.95rem);
+    }
+
+
+    /* --- Interviuri --- */
+
+    .motif--talks-leaf-a {
+        inset-inline-start: calc(50% - 36.3rem);
+    }
+
+    .motif--talks-leaf-b {
+        inset-inline-start: calc(50% - 28.3rem);
+    }
+
+    .motif--talks-leaf-c {
+        inset-inline-start: calc(50% - 31.45rem);
+    }
+
+    .motif--talks-leaf-d {
+        inset-inline-start: calc(50% - 21.68rem);
+    }
+
+    .motif--talks-leaf-e {
+        inset-inline-start: calc(50% - 10.54rem);
+    }
+
+    .motif--talks-leaf-f {
+        inset-inline-start: calc(50% - 0.68rem);
+    }
+
+    .motif--talks-leaf-g {
+        inset-inline-start: calc(50% + 8.25rem);
+    }
+
+    .motif--talks-leaf-h {
+        inset-inline-end: calc(50% - 36.47rem);
+    }
+
+    .motif--talks-leaf-i {
+        inset-inline-end: calc(50% - 27.11rem);
+    }
+
+    .motif--talks-leaf-j {
+        inset-inline-end: calc(50% - 30.69rem);
+    }
+
+    .motif--talks-apple {
+        inset-inline-start: calc(50% - 34.77rem);
+    }
+}

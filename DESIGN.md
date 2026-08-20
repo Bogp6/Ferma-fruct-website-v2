@@ -12,6 +12,7 @@ One stylesheet per page, on purpose. Read only the one for the page you are on.
 |---|---|---|
 | `index.html` | `css/style.css` (~2900 lines) | — |
 | `contact.html` | `css/contact.css` | `style.css` for three components only |
+| `despre.html` | `css/despre.css` | `style.css` for the same three, plus `.motif` |
 
 `contact.html` loads `style.css` **before** `contact.css`, but only for the three components both pages share: `.site-header`, `.drawer`/`.burger`, and `.site-footer`. Nothing else in `style.css` applies there — hero, `.grove`, the drawn spine and the landing page's own drawings are all landing-page-only.
 
@@ -412,3 +413,69 @@ photo file.
 - Kept on purpose though unused: camera-original images in `img/` (source for exported webps), `salvage/` (old design, client wants it kept), `mockups/landing-layouts.html` (record of the layout decision).
 - `fructe.html` is no longer referenced — nav's `#fructe` is now an in-page anchor. Whether a fruit page still gets built is open in PRODUCT.md.
 - Image generation unavailable (account out of credits) — mockups are HTML wireframes, not renders.
+
+## Lățimi — pagina despre
+
+Done 2026-08-20, section 9 of `despre.css`. Nothing above section 9 changed.
+`index.html` and `contact.html` are untouched.
+
+Four queries plus one for touch, each at a measured break:
+
+- **64em** — the moment block can't hold three columns. Measured: the photo is
+  398px at 1024, 298px at 768, and the text column hits its own 36ch max-width
+  at the same point. The portrait band and the interview grid break there too,
+  so all three stack at one query.
+- **48em** — the two small interview cards stop fitting side by side (280px
+  wide, 158px of film, with a two-line caption under it).
+- **30em** — last tightenings on a small phone.
+- **`pointer: coarse`** — carousel dots are 10px drawn. Not a width problem.
+- **85em** — big screens. `--lane` and the second type ramp already arrive from
+  section 14 of `style.css`, which this page loads; only the drawings are
+  written here.
+
+Decisions worth not re-litigating:
+
+- **`--container` stays 78rem above 85em**, unlike the contact page which grows
+  to 86rem. The moment photos are 1200px files shown at 564px, so they are
+  already close to their ceiling on a 2x screen; a wider column would soften
+  them. The extra paper goes to the drawings instead, same call as index.
+- **The photo bleeds to the glass when stacked.** Without it the photo loses
+  the corridor *and* the page margin and ends up at about half the screen —
+  the shrinking the client flagged. `overflow: clip` on `.roots` means the
+  bleed adds no sideways scroll.
+- **The corridor stops alternating sides below 64em**, even though it
+  alternates on a wide screen. Measured with it still alternating: the drawn
+  line has to travel from one block's left edge to the next block's right
+  edge, and stacked there is no longer empty paper between those two points —
+  137 crossings over photographs and 61 over text at 320px. On one column the
+  corridor stays left the whole way and the line descends it: 0 crossings,
+  8px of clearance at 320 and 18px at 768. The sway per block still alternates
+  (`despre.js` does that on its own), so it is not a ruled line.
+- **The drawings are thinned, not scaled, below 64em** — same call as index.
+  Anything placed in a percentage was measured on a wide arrangement; stacked,
+  the section is three times taller and those percentages land on text or in
+  the middle of a photo. What stays is what bleeds past the window edge, plus
+  two or three per section re-anchored from the section's own corners in rem.
+  Motif-over-text hits went from 38/23/9/31 (roots/keeper/reel/talks) to
+  2/3/1/8 at 320px, and everything still crossing text sits at 0.2–0.3 opacity,
+  under the 0.34 threshold section 7 sets for that.
+- **Leaves are re-anchored from the middle of the page above 85em**, by the
+  same recipe as index: `calc(50% - Nrem)` where **N = 42.5 − 0.85 × the old
+  percentage**. Leaves already sitting at a negative percentage are left alone
+  — they hug the window edge on purpose. 44 conversions, generated rather than
+  typed.
+- **The branches grow by `--lane` instead of moving**, ceiling 64rem, the real
+  width of `branch-1024.webp`. `.motif--talks-branch-c` is the one with a
+  positive inset, so its offset grows with `--lane` too.
+
+Measured after the pass at 320, 768, 1024, 1359, 1360, 1440, 1920 and 2560: no
+horizontal overflow anywhere, the drawn line hits zero text and zero
+photographs at every width, and nothing moves more than 4px across the 85em
+threshold. At 2560 every branch still crosses the column by 133–263px while
+bleeding 270–315px past the window, so no cut edge shows.
+
+**Still open on this page:** `about-owner-960.webp` is 960px square and the
+portrait now goes edge to edge below 64em, so a 3x phone at 430 CSS px wants
+about 1290px. `owner.webp` (2940×1658) is in the repo and has the pixels for a
+bigger square, but the existing crop is not centred and re-cutting it blind
+could take the top of his head off. Ask before regenerating.
