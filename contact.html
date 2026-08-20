@@ -3,28 +3,25 @@
 
 <head>
   <meta charset="UTF-8">
-  <!-- viewport-fit=cover: fără el env(safe-area-inset-*) e mereu 0, marginea nu ocolește crestătura telefonului în peisaj. Vezi --gutter. -->
+  <!-- viewport-fit=cover: fără el env(safe-area-inset-*) e 0, marginea nu ocolește crestătura în peisaj. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <!-- În <head>, nu în main.js: fără clasa asta CSS-ul ascunde butonul de meniu până la parsare, altfel bara clipește. -->
+  <!-- Scoate .no-js înainte de prima pictare, altfel bara de meniu clipește. -->
   <script>document.documentElement.classList.remove('no-js');</script>
 
-  <!-- Core four (part 1): title and description -->
   <title>Contact — Ferma Fruct Brabova</title>
   <meta name="description" content="Cum luați legătura cu Ferma Fruct Brabova, județul Dolj.">
 
-  <!-- Canonical: ignores the ?fbclid junk from Facebook clicks -->
   <link rel="canonical" href="">
 
-  <!-- Aceeași ordine ca la index. contact.css vine ULTIMUL și e singurul
-       fișier al acestei pagini; nu scrie CSS de contact în style.css. -->
+  <!-- contact.css vine ULTIMUL; CSS de contact nu se scrie în style.css. -->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css?v=20260819-video-3">
-  <link rel="stylesheet" href="css/contact.css?v=20260819-contact-17">
+  <link rel="stylesheet" href="css/contact.css?v=20260820-contact-18">
 
-  <!-- Preloads only the latin font file; latin-ext (ș, ț) loads later via unicode-range. -->
+  <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 
   <!-- Open Graph: how the link looks when shared on Facebook/WhatsApp -->
@@ -44,7 +41,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta property="og:image:alt" content="TODO: ce se vede în imaginea de distribuire">
 
-  <!-- LocalBusiness structured data, no stars. TODO fields are facts the client hasn't supplied — delete before launch, never guess. -->
+  <!-- TODO: fapte încă nefurnizate de client — nu ghici, doar șterge la lansare dacă lipsesc. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -63,40 +60,14 @@
   </script>
 </head>
 
-<!-- .page-inner: pagină fără hero. Ține bara plină de la primul cadru și
-     coboară <main> sub ea. Fără clasa asta, --p rămâne 0 (main.js îl publică
+<!-- .page-inner: pagină fără hero. Fără ea, --p rămâne 0 (main.js îl publică
      numai când există .hero) și antetul e text crem pe hârtie cremă. -->
 <body class="page-inner">
 
-  <!-- ==========================================================================
-       DIRECTION CONTRACT — nu șterge. Vezi index.html pentru contractul întreg;
-       ce se aplică aici:
-
-       Aceeași lume: hârtie cremă, un singur verde, portocaliul e singura
-       culoare pe care se dă clic. Fraunces 800 WONK pentru titluri, Chivo
-       pentru text. Fără fundal aproape-negru, fără câmp albastru pal.
-
-       PAGINA: singura acțiune a site-ului. Vizitatorul a mâncat deja fructul,
-       caută ferma și vrea să vorbească cu cineva. Un singur drum clar spre
-       telefon și e-mail; formularul postează spre un serviciu extern (nu
-       există cod pe server).
-
-       IDEEA: titlul spune „drumul spre livadă începe aici", deci pagina ARE un
-       drum — o linie desenată care coboară de sub fotografie, printre cele
-       două coloane, și se oprește cu un punct portocaliu lângă butonul de
-       trimitere. Asta e singura mișcare pe care o inventează pagina; restul e
-       gramatica de pe index (sosirea blocurilor, dezvelirea fotografiei).
-
-       PRIMUL ECRAN: stânga, titlul mare verde și cele trei date de contact cu
-       sigle rotunde; dreapta, fotografia livezii ieșind până în marginea
-       geamului, tăiată de aceeași spălare de acuarelă ca fructele de pe index.
-       Dedesubt, formularul la stânga și harta la dreapta.
-
-       CONȚINUT DE SCRIS: telefonul, e-mailul și adresa reale lipsesc încă, la
-       fel harta și adresa serviciului de formulare — vezi lista din DESIGN.md,
-       „Still open". Nimic inventat pe pagină: numărul e 07xx xxx xxx și adresa
-       de e-mail e @exemplu.ro tocmai ca să nu poată ajunge așa la public.
-       ========================================================================== -->
+  <!-- DIRECTION CONTRACT — nu șterge. Vezi index.html pentru contractul întreg.
+       CONȚINUT DE SCRIS: telefon, e-mail, adresă, harta și adresa serviciului
+       de formulare lipsesc încă — vezi „Still open" în DESIGN.md. Nimic
+       inventat: 07xx xxx xxx și @exemplu.ro tocmai ca să nu ajungă la public. -->
 
   <a class="skip" href="#main">Sari la conținut</a>
 
@@ -109,24 +80,23 @@
         <span class="brand__word" aria-hidden="true">Ferma Fruct</span>
       </a>
 
-      <!-- Linkurile spre secțiunile paginii principale sunt absolute la fișier
-           (index.html#...), nu simple ancore: aici nu există secțiunile alea. -->
+      <!-- Linkuri absolute la fișier (index.html#...): secțiunile alea nu există aici. -->
       <nav class="nav" aria-label="Navigare principală">
         <ul class="nav__list">
           <li><a class="nav__link" href="index.html#acasa">Acasă</a></li>
-          <li><a class="nav__link" href="index.html#fructe">Despre</a></li>
+          <li><a class="nav__link" href="despre.html">Despre</a></li>
           <li><a class="nav__link" href="contact.html" aria-current="page">Contact</a></li>
         </ul>
       </nav>
 
-      <!-- EN rămâne <span>, nu <a>: nu există încă pagina engleză. -->
+      <!-- EN rămâne <span>: pagina engleză nu există încă. -->
       <p class="lang">
         <span class="visually-hidden">Limba paginii:</span>
         <span class="lang__current">RO</span>
         <span class="lang__soon">EN</span>
       </p>
 
-      <!-- Sub 64em navigarea trece în panoul lateral. aria-expanded e scris în HTML, nu adăugat de JS, ca să existe de la prima pictare. -->
+      <!-- aria-expanded scris în HTML, nu adăugat de JS, ca să existe de la prima pictare. -->
       <button class="burger" type="button" aria-expanded="false" aria-controls="meniu">
         <span class="visually-hidden">Meniu</span>
         <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -140,12 +110,8 @@
     </div>
   </header>
 
-  <!-- ==========================================================================
-       MENIUL LATERAL — frate al antetului, nu copil (panoul e fixed pe toată
-       înălțimea; ca fiu al antetului ar moșteni stivuirea lui și ar rămâne sub
-       bandă). Aceleași trei linkuri ca sus și în subsol. Închis, main.js îi
-       pune inert; peste 64em CSS-ul îl scoate cu totul.
-       ========================================================================== -->
+  <!-- MENIUL LATERAL — frate al antetului, nu copil: ca fiu ar moșteni
+       stivuirea lui și ar rămâne sub bandă. main.js îi pune inert când e închis. -->
   <div class="drawer" id="meniu" inert>
 
     <div class="drawer__scrim" data-drawer-close></div>
@@ -171,7 +137,7 @@
 
       <ul class="drawer__list">
         <li><a class="drawer__link" href="index.html#acasa">Acasă</a></li>
-        <li><a class="drawer__link" href="index.html#fructe">Despre</a></li>
+        <li><a class="drawer__link" href="despre.html">Despre</a></li>
         <li><a class="drawer__link" href="contact.html" aria-current="page">Contact</a></li>
       </ul>
 
@@ -186,15 +152,10 @@
 
   <main id="main" class="contact">
 
-    <!-- ======================================================================
-         1. REACH — titlul paginii, cele trei date de contact, fotografia.
-
-         DATELE SUNT PROVIZORII ȘI SE VEDE CĂ SUNT: 07xx xxx xxx și
-         nume@exemplu.ro. Nu scrie aici un număr sau o adresă care arată a
-         reale până nu le trimite ferma — vezi „Still open" în DESIGN.md.
-         Când vin, valoarea se învelește în <a href="tel:...">, respectiv
-         <a href="mailto:...">; .line__value e deja stilizat pentru amândouă.
-         ====================================================================== -->
+    <!-- 1. REACH — titlul paginii, cele trei date de contact, fotografia.
+         Datele sunt provizorii: 07xx xxx xxx și nume@exemplu.ro. Când vin cele
+         reale, valoarea se învelește în <a href="tel:...">/<a href="mailto:...">;
+         .line__value e deja stilizat pentru amândouă. -->
     <section class="reach">
       <div class="reach__inner">
 
@@ -204,14 +165,12 @@
 
           <h1 class="reach__title">Drumul spre livadă începe aici.</h1>
 
-          <!-- Cratimele din „scrie-ne" și „sună-ne" sunt U+2011 (cratimă care
-               nu rupe rândul): cu cratima obișnuită, rândul se taie după ea și
-               se citește ca despărțire în silabe greșită. -->
+          <!-- Cratimele sunt U+2011 (nu rup rândul); cu cratima obișnuită
+               rândul s-ar tăia și s-ar citi ca despărțire în silabe greșită. -->
           <p class="reach__lead">Pentru comenzi, disponibilitate sau colaborări,
             scrie‑ne sau sună‑ne.</p>
 
-          <!-- Sigle desenate de mână, aceeași grosime de linie (1.5) ca la
-               butonul de meniu. Fără bibliotecă de pictograme. -->
+          <!-- Sigle desenate de mână, grosime de linie 1.5 ca la butonul de meniu. -->
           <ul class="reach__lines">
 
             <li class="line">
@@ -244,13 +203,8 @@
           </ul>
         </div>
 
-        <!-- Fotografia iese până în marginea ferestrei: marginea negativă e
-             --bleed, distanța de la marginea coloanei până la marginea
-             geamului. Silueta folosește marginea densă, pictată, a fotografiilor
-             de pe index; masca este întinsă pe cadrul panoramic ca textura să
-             rămână vizibilă pe toate cele patru laturi.
-             FOTO PROVIZORIE: cadru din filmul livezii, până trimite ferma una
-             făcută pentru locul ăsta. -->
+        <!-- Marginea negativă e --bleed: distanța până la marginea geamului.
+             FOTO PROVIZORIE: cadru din filmul livezii, până trimite ferma una reală. -->
         <figure class="reach__frame">
           <img class="reach__photo" src="img/livada-drum-1440.webp"
                srcset="img/livada-drum-720.webp 720w, img/livada-drum-1440.webp 1440w, img/livada-drum-1600.webp 1600w"
@@ -263,15 +217,17 @@
     </section>
 
 
-    <!-- ======================================================================
-         2. MEET — formularul și harta, unul lângă altul.
+    <!-- 2. MEET — formularul și harta, unul lângă altul.
 
-         FORMULARUL NU E LEGAT DE NIMIC. Cloudflare Pages nu rulează cod pe
-         server, deci trebuie să posteze spre un serviciu extern (Formspree,
-         Basin, Web3Forms). Până atunci action= e un TODO, nu o adresă care
-         pare bună. Când vine adresa: schimbă action, verifică o trimitere
-         reală și scrie unde ajung mesajele.
-         ====================================================================== -->
+         Formularul postează la Web3Forms: Cloudflare Pages nu rulează cod pe
+         server, deci nu are unde să ajungă altundeva. Cheia (access_key) e
+         publică prin construcție — ea spune serviciului către ce cutie poștală
+         să trimită, nu deschide nimic.
+
+         Trimiterea o face contact.js prin fetch, ca omul să rămână pe pagină.
+         Fără script, formularul postează normal și browserul ajunge pe pagina
+         de confirmare a serviciului: mai urât, dar mesajul tot pleacă — de
+         aceea action= și method= sunt scrise aici, nu puse din JS. -->
     <section class="meet">
       <div class="meet__inner">
 
@@ -279,38 +235,57 @@
           <h2 class="write__title">Lasă-ne un mesaj</h2>
           <p class="write__lead">Completează datele, iar noi revenim către tine.</p>
 
-          <form class="form" method="post" action="TODO-adresa-serviciului-de-formulare">
+          <form class="form" method="post" action="https://api.web3forms.com/submit">
 
-            <!-- Două câmpuri scurte pe un rând; se rup singure când nu mai
-                 încap (flex-wrap), fără media query. -->
+            <!-- Cele trei câmpuri ale serviciului. access_key spune unde ajunge
+                 mesajul; from_name e numele expeditorului din inbox-ul fermei;
+                 botcheck e capcana pentru roboți — un robot bifează tot ce
+                 găsește în formular, iar serviciul aruncă trimiterea dacă vine
+                 bifată. Rămâne ascunsă din CSS, nu din atributul hidden: un
+                 input hidden n-ar fi bifabil, deci n-ar prinde nimic. -->
+            <input type="hidden" name="access_key" value="2c642312-de90-4ac6-84e6-ede4f378c489">
+            <input type="hidden" name="from_name" value="Formular — fermafructbrabova.ro">
+            <input class="form__trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <!-- Se rup singure când nu mai încap (flex-wrap), fără media query. -->
             <div class="form__pair">
               <div class="field">
                 <label class="field__label" for="nume">Nume</label>
-                <input class="field__input" id="nume" name="nume" type="text"
+                <input class="field__input" id="nume" name="name" type="text"
                        autocomplete="name" required>
               </div>
 
+              <!-- Un singur câmp pentru amândouă, deci NU se cheamă „email":
+                   serviciul folosește câmpul „email" ca adresă de răspuns și
+                   refuză trimiterea când găsește un număr de telefon în el. -->
               <div class="field">
                 <label class="field__label" for="legatura">Telefon sau e-mail</label>
-                <input class="field__input" id="legatura" name="legatura" type="text"
+                <input class="field__input" id="legatura" name="Telefon sau e-mail" type="text"
                        autocomplete="email" required>
               </div>
             </div>
 
+            <!-- „subject" e și linia de subiect a e-mailului care ajunge la
+                 fermă. Lăsat gol, contact.js îi pune „Mesaj de pe site". -->
             <div class="field">
               <label class="field__label" for="subiect">Subiect</label>
-              <input class="field__input" id="subiect" name="subiect" type="text">
+              <input class="field__input" id="subiect" name="subject" type="text"
+                     placeholder="Mesaj de pe site">
             </div>
 
             <div class="field">
               <label class="field__label" for="mesaj">Mesaj</label>
-              <textarea class="field__input field__input--area" id="mesaj" name="mesaj"
+              <textarea class="field__input field__input--area" id="mesaj" name="message"
                         rows="6" required></textarea>
             </div>
 
-            <!-- Varianta pe hârtie a butonului din hero: aceeași pilulă și
-                 aceeași mătură portocalie, cu brun în repaus pentru contrast. -->
+            <!-- Varianta pe hârtie a butonului din hero: brun în repaus pentru contrast. -->
             <button class="btn btn--ink" type="submit">Trimite mesajul</button>
+
+            <!-- Gol în repaus și fără înălțime proprie, ca butonul să nu se
+                 miște când apare răspunsul. role="status" îl citește cititorul
+                 de ecran fără să întrerupă ce spunea. -->
+            <p class="form__status" role="status" aria-live="polite"></p>
 
           </form>
         </div>
@@ -318,9 +293,9 @@
         <div class="place">
           <h2 class="place__title">Ne găsești aici</h2>
 
-          <!-- Interogarea conține numai coordonatele fermei. Linkul lung dat
-               de Google conținea și identificatorul localității Brabova, iar
-               Maps alegea localitatea în locul pinului pus manual. -->
+          <!-- Interogarea conține numai coordonatele: linkul lung Google avea
+               și identificatorul localității, iar Maps alegea localitatea în
+               locul pinului pus manual. -->
           <div class="place__map">
             <iframe
               src="https://www.google.com/maps?q=44.375004%2C23.457348&amp;z=18&amp;output=embed"
@@ -338,8 +313,7 @@
             Brabova, Dolj
           </p>
 
-          <!-- Destinația folosește aceleași coordonate ca harta de mai sus,
-               furnizate de fermă pe 2026-08-19. -->
+          <!-- Aceleași coordonate ca harta de mai sus. -->
           <a class="place__route"
              href="https://www.google.com/maps/dir/?api=1&amp;destination=44.375004%2C23.457348"
              target="_blank" rel="noopener noreferrer">
@@ -357,24 +331,17 @@
     </section>
 
 
-    <!-- ==================== DESENELE DE FUNDAL ==============================
-         Aceleași ramuri gravate ca în machetă, aceeași regulă: multiply pe
-         un fundal crem, sub text (z-index: -1). Nu pune z-index, opacity sau
-         transform pe secțiunile care le găzduiesc — oricare dintre ele face
-         context de stivuire și desenul rămâne alb.
-         ====================================================================== -->
+    <!-- DESENELE DE FUNDAL — multiply pe fundal crem, sub text (z-index: -1).
+         Nu pune z-index, opacity sau transform pe secțiunile care le găzduiesc:
+         oricare dintre ele face context de stivuire și desenul rămâne alb. -->
     <img class="motif motif--branch-left" src="img/branch-1024.webp" width="1024" height="768"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
     <img class="motif motif--branch-right" src="img/branch-1024.webp" width="1024" height="768"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
 
-    <!-- Frunzele cresc DIN drum: fiecare e prinsă cu codița de linie, cu
-         limbul întors în afară, alternativ pe o parte și pe alta. Nu sunt
-         copii ai SVG-ului și nu participă la animația liniei — poziția lor
-         vine din aceleași coordonate ca „d", vezi contact.css secțiunea 7.
-         Mărul e la capătul drumului, lângă punctul portocaliu: acolo ajunge
-         drumul. Un singur măr, nu două — al doilea plutea la mijloc, fără
-         să fie capătul a nimic. -->
+    <!-- Frunzele cresc DIN drum: prinse cu codița de linie, poziția vine din
+         aceleași coordonate ca „d" — vezi contact.css secțiunea 7. Un singur
+         măr, la capătul drumului lângă punctul portocaliu. -->
     <img class="motif motif--road motif--road-leaf-a" src="img/leaf-640.webp" width="640" height="640"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
     <img class="motif motif--road motif--road-leaf-b" src="img/leaf-640.webp" width="640" height="640"
@@ -388,22 +355,15 @@
     <img class="motif motif--road motif--road-apple" src="img/apple-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
 
-    <!-- ==================== DRUMUL =========================================
-         Linia desenată care coboară de sub fotografie până lângă buton — titlul
-         spune „drumul spre livadă", asta e drumul.
-
-         SVG întins peste toată pagina cu preserveAspectRatio="none", deci
-         coordonatele din viewBox sunt procente: 500 pe orizontală înseamnă
-         jumătatea paginii, 936 pe verticală înseamnă 93,6% din înălțimea ei.
-         Așa se întinde singur oricât ar crește conținutul, fără JavaScript și
-         fără măsurători.
+    <!-- DRUMUL — linia care coboară de sub fotografie până lângă buton.
+         SVG întins cu preserveAspectRatio="none", deci coordonatele viewBox
+         sunt procente din pagină (500 = jumătate orizontal, 936 = 93,6%
+         vertical); se întinde singur fără JavaScript.
          vector-effect="non-scaling-stroke": fără el, întinderea neuniformă ar
          face linia groasă pe verticală și subțire pe orizontală.
-         Desenarea de la intrare se face cu clip-path pe <svg>, nu cu
-         stroke-dasharray — motivul e scris în contact.css, secțiunea 8.
-         Punctul portocaliu e element separat, nu cerc în SVG: întins, cercul
-         ar ieși oval.
-         ====================================================================== -->
+         Desenarea la intrare e clip-path pe <svg>, nu stroke-dasharray —
+         motivul e în contact.css secțiunea 8.
+         Punctul portocaliu e element separat: în SVG-ul întins ar ieși oval. -->
     <svg class="road" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path class="road__line" fill="none"
             d="M392 316 C400 392 454 436 470 494 C488 556 416 592 424 652 C432 716 496 738 500 802 C504 860 476 892 500 936" />
@@ -412,11 +372,8 @@
 
   </main>
 
-  <!-- ========================================================================
-       SUBSOL — copie a celui din index.html, cu linkurile refăcute pentru o
-       pagină separată. Orice modificare la subsol se face în AMBELE fișiere;
-       nu există include, e HTML scris de mână.
-       ======================================================================== -->
+  <!-- SUBSOL — copie a celui din index.html. Orice modificare se face în
+       AMBELE fișiere; nu există include, e HTML scris de mână. -->
   <footer class="site-footer">
 
     <!-- Decorative (alt gol, aria-hidden). Copii direct ai subsolului, nu ai __inner, altfel ar intra în reveal-ul din main.js și ar sări la derulare. -->
@@ -450,12 +407,8 @@
 
     </div>
 
-    <!-- SVG inline (nu fișiere) ca fill/stroke să primească currentColor —
-         toate patru sigle ies în culoarea subsolului. Albul din siglă e
-         var(--knockout), declarat pe .partners.
-         Nu înlocui cu mask-image în CSS: siglele nu se văd în Firefox.
-         role="img" + aria-label țin locul textului alternativ; focusable="false"
-         scoate SVG-ul din tab order în IE/Edge vechi. -->
+    <!-- SVG inline ca fill/stroke să primească currentColor. Albul din siglă
+         e var(--knockout). Nu înlocui cu mask-image: siglele nu se văd în Firefox. -->
     <div class="partners">
       <h2 class="partners__label">Fructele noastre ajung la</h2>
 
@@ -513,7 +466,7 @@
 
     <div class="site-footer__base">
 
-      <!-- TODO: adrese reale de profil când le trimite ferma; până atunci duc spre pagina de start a rețelei. -->
+      <!-- TODO: adrese reale de profil; până atunci duc spre pagina de start a rețelei. -->
       <ul class="site-footer__social">
         <li>
           <a class="site-footer__social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -535,7 +488,7 @@
         </li>
       </ul>
 
-      <!-- EN devine <a href> când există pagina engleză; până atunci text simplu, nu link mort. -->
+      <!-- EN devine <a href> când există pagina engleză. -->
       <p class="site-footer__lang">
         <span class="site-footer__lang-now">RO</span>
         <span class="site-footer__lang-sep" aria-hidden="true">|</span>
@@ -549,13 +502,10 @@
   </footer>
 
   <script src="js/gsap.min.js"></script>
-  <!-- Același main.js ca pe index. Fiecare treabă din el își caută întâi
-       elementul și iese dacă lipsește, deci pe pagina asta rulează practic
-       numai meniul lateral. ?v= crește odată cu style.css. -->
+  <!-- Același main.js ca pe index; pe pagina asta rulează practic numai meniul lateral. -->
   <script src="js/main.js?v=20260819-video-3"></script>
-  <!-- Numai pentru pagina asta: sosirea la derulare și desenarea drumului.
-       Ținut separat de main.js ca să nu fie nevoie de un ?v= nou pe index. -->
-  <script src="js/contact.js?v=20260818-contact-3"></script>
+  <!-- Sosirea la derulare și desenarea drumului, separat ca să nu ceară ?v= nou pe index. -->
+  <script src="js/contact.js?v=20260820-contact-5"></script>
 
 </body>
 

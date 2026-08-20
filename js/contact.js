@@ -10,10 +10,11 @@
    întâi elementul și iese dacă lipsește, deci de acolo rulează practic numai
    meniul lateral.
 
-   Două lucruri se fac aici:
+   Trei lucruri se fac aici:
      1. sosirea la derulare — .reveal din style.css, pusă din JS ca pagina
         fără script să arate tot;
-     2. desenarea drumului, o dată, la încărcare.
+     2. desenarea drumului, o dată, la încărcare;
+     3. trimiterea formularului fără să se schimbe pagina.
    =========================================================================== */
 
 (function () {
@@ -112,6 +113,85 @@
         drawRoad();
     } else {
         window.addEventListener('load', drawRoad, { once: true });
+    }
+
+
+    /* -----------------------------------------------------------------------
+       3. TRIMITEREA FORMULARULUI
+
+       Fără asta formularul tot merge: postează normal către Web3Forms și
+       browserul ajunge pe pagina de confirmare a serviciului. Treaba de aici
+       ține omul pe pagină și îi spune ce s-a întâmplat, atât.
+
+       Antetul Accept: application/json e ce face diferența — fără el serviciul
+       răspunde cu o redirectare, nu cu un răspuns pe care să-l putem citi.
+
+       Câmpurile NU se golesc după trimitere decât dacă a reușit: dacă a picat
+       rețeaua, omul își găsește mesajul întreg și mai încearcă o dată.
+       ----------------------------------------------------------------------- */
+
+    var form = page.querySelector('.form');
+    var status = form && form.querySelector('.form__status');
+
+    /* fetch lipsește pe browsere vechi; acolo se lasă trimiterea normală. */
+    if (form && status && window.fetch) {
+
+        var button = form.querySelector('button[type="submit"]');
+        var buttonLabel = button ? button.textContent : '';
+
+        function say(text, kind) {
+            status.textContent = text;
+            status.classList.toggle('form__status--ok', kind === 'ok');
+            status.classList.toggle('form__status--bad', kind === 'bad');
+        }
+
+        function unlock() {
+            if (button) {
+                button.disabled = false;
+                button.textContent = buttonLabel;
+            }
+        }
+
+        /* Subiectul e câmpul opțional al formularului și tot el e linia de
+           subiect a e-mailului care ajunge la fermă. Lăsat gol, mesajul ar
+           ateriza fără subiect în inbox, așa că i se pune unul înainte de
+           trimitere. Se scrie în câmp, nu în corpul cererii, ca omul să vadă
+           ce a plecat dacă trimiterea pică și mai încearcă o dată. */
+        var subject = form.querySelector('[name="subject"]');
+
+        form.addEventListener('submit', function (event) {
+            /* Verificarea nativă a câmpurilor obligatorii se face înainte de
+               submit, deci aici formularul e deja valid. */
+            event.preventDefault();
+
+            if (subject && !subject.value.trim()) {
+                subject.value = 'Mesaj de pe site';
+            }
+
+            if (button) {
+                button.disabled = true;
+                button.textContent = 'Se trimite…';
+            }
+
+            say('', null);
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: new FormData(form)
+            }).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                if (result && result.success) {
+                    form.reset();
+                    say('Mesajul a plecat. Îți răspundem cât putem de repede.', 'ok');
+                } else {
+                    say('Mesajul nu a plecat. Încearcă din nou sau sună-ne.', 'bad');
+                }
+            }).catch(function () {
+                say('Mesajul nu a plecat. Verifică legătura la internet și încearcă din nou.', 'bad');
+            }).then(unlock);
+        });
     }
 
 }());
