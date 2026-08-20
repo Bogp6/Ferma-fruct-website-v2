@@ -1,0 +1,1552 @@
+/* ===========================================================================
+   despre.css — TOT CSS-ul paginii despre.html. Nu se încarcă nicăieri altundeva.
+
+   Din style.css se folosesc doar trei componente, neschimbate: .site-header,
+   .drawer/.burger și .site-footer (plus .motif, care e desenul de fundal, și
+   deriva lui). Restul regulilor de acolo nu au ce potrivi aici: heroul paginii
+   principale e .hero, al acesteia e .story — nume diferit tocmai ca regulile
+   lui să nu cadă peste banda de aici.
+
+   Ordinea de încărcare: normalize → tokens → base → style → despre, deci
+   regulile de aici bat style.css la specificitate egală.
+
+   Cuprins
+     1. Pagină cu bara plină de sus
+     2. Banda de deschidere (.story)
+     3. Rădăcini — cele trei momente și linia din mijloc
+     4. Omul din spatele livezii
+     5. Caruselul
+     6. Interviuri
+     7. Desenele de fundal
+     8. Sosirea la derulare
+   =========================================================================== */
+
+
+/* ---------------------------------------------------------------------------
+   1. PAGINĂ CU BARA PLINĂ DE SUS
+
+   Aceleași două declarații ca în contact.css, secțiunea 1. Sunt scrise de două
+   ori fiindcă nu există include și nicio pagină nu încarcă CSS-ul celeilalte;
+   dacă apare a treia pagină fără .hero, locul lor e style.css.
+   --------------------------------------------------------------------------- */
+
+/* main.js publică --p (0..1, umplerea barei) numai când găsește un .hero.
+   Aici nu există, deci fixăm la 1: bara e verde plină din primul cadru. */
+.page-inner {
+    --p: 1;
+
+    /* Sigla rotundă (3rem, .brand__mark în style.css) plus paddingul barei. */
+    --header-h: calc(3rem + var(--space-xs) * 2);
+
+    background-color: var(--paper);
+}
+
+/* Antetul e fixed, nu ocupă loc în flux: fără asta filmul ar începe sub bară. */
+#main {
+    padding-block-start: var(--header-h);
+}
+
+
+/* ---------------------------------------------------------------------------
+   2. BANDA DE DESCHIDERE
+
+   Nu e un hero de un ecran întreg ca pe pagina principală: e o bandă din care
+   se vede toată ferma o dată, iar pagina începe imediat sub ea.
+   --------------------------------------------------------------------------- */
+
+.story {
+    position: relative;
+    /* Fundal propriu + izolare: talpa estompează ce e sub ea, deci are nevoie
+       de un context de stivuire al ei, altfel ar prinde și pagina. */
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--forest);
+
+    /* Înălțimea totală a benzii, scrisă o dată. min-height o primește minus
+       cele două padding-uri, fiindcă box-sizing e content-box și altfel
+       banda ar ieși cu ele mai înaltă (vezi bug-ul 2 din DESIGN.md). */
+    --story-band: clamp(27rem, 74svh, 46rem);
+    --story-head: var(--space-2xl);
+
+    /* Cât din talpă se topește în hârtie. Ca pe pagina principală, unde
+       heroul se stinge pe ultimele 16% din înălțimea lui. */
+    --story-fade: clamp(3.25rem, 6vw, 5.5rem);
+
+    /* Talpa e MEREU mai înaltă decât estomparea: altfel ultimul rând de text
+       ar cădea în banda de cremă și s-ar citi crem pe crem. */
+    --story-foot: calc(var(--story-fade) + var(--space-s));
+
+    min-height: calc(var(--story-band) - var(--story-head) - var(--story-foot));
+    display: grid;
+    align-content: end;
+    padding: var(--story-head) var(--gutter) var(--story-foot);
+}
+
+.story__film {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Filmul e atmosferă, nu player. Oprește și suprapunerea nativă de pe iOS,
+       care ar fura primul tap de la pornirea din despre.js. */
+    pointer-events: none;
+}
+
+/* iOS desenează o insignă de redare când modul de consum redus refuză
+   autoplay-ul, chiar dacă filmul n-are controls. Filmul merge în buclă și nu se
+   oprește din pagină, deci nu există nimic de arătat în locul ei. */
+.story__film::-webkit-media-controls,
+.story__film::-webkit-media-controls-enclosure,
+.story__film::-webkit-media-controls-start-playback-button,
+.story__film::-webkit-media-controls-overlay-play-button {
+    display: none !important;
+    -webkit-appearance: none;
+}
+
+/* Spălătura verde, ca să se citească textul peste orice cadru al filmului.
+   Aceleași rgb ca --forest (105,130,64), nu un verde nou. */
+.story__wash {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(to bottom, rgba(105, 130, 64, 0.42) 0%, rgba(105, 130, 64, 0.3) 34%, rgba(105, 130, 64, 0.66) 100%),
+        radial-gradient(ellipse 78% 62% at 28% 78%, rgba(33, 48, 26, 0.5), rgba(33, 48, 26, 0) 100%);
+}
+
+/* Topirea în hârtia paginii. Numai degradeu, ca pe pagina principală
+   (.hero::after) — nicio sticlă mată: backdrop-filter peste un film care se
+   mișcă îngroașă talpa într-o bandă lăptoasă care se vede ca element separat,
+   iar heroul de pe index nu are așa ceva.
+
+   Cutie proprie cu înălțime proprie, ca procentele să se rezolve din ea și nu
+   din toată banda. Jos, opac (hârtie curată); sus, transparent (filmul
+   neatins). 8 trepte de crem, nu 4: mai puține se văd ca dungi peste un film
+   care se mișcă. --paper e rgb(246,241,225) — dacă se schimbă tokenul, se
+   schimbă și aici. */
+.story__fade {
+    position: absolute;
+    inset: auto 0 0 0;
+    z-index: 2;
+    height: var(--story-fade);
+    background: linear-gradient(to top,
+            rgb(246, 241, 225) 0%,
+            rgba(246, 241, 225, 1) 6%,
+            rgba(246, 241, 225, 0.78) 16%,
+            rgba(246, 241, 225, 0.56) 26%,
+            rgba(246, 241, 225, 0.37) 38%,
+            rgba(246, 241, 225, 0.22) 52%,
+            rgba(246, 241, 225, 0.11) 66%,
+            rgba(246, 241, 225, 0.04) 82%,
+            rgba(246, 241, 225, 0) 100%);
+}
+
+.story__inner {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.story__kicker {
+    margin: 0 0 var(--space-s);
+    color: var(--on-dark-soft);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    text-shadow: 0 1px 6px rgba(28, 45, 18, 0.55);
+}
+
+/* Ruperea rândului e scrisă în HTML (<br>), deci echilibrarea automată i-ar
+   lucra împotrivă. */
+.story__title {
+    font-size: var(--step-4);
+    font-weight: var(--weight-normal);
+    color: var(--paper);
+    text-wrap: initial;
+    text-shadow: 0 2px 16px rgba(28, 45, 18, 0.55);
+}
+
+.story__lead {
+    margin-block-start: var(--space-s);
+    max-width: 44ch;
+    color: var(--on-dark-soft);
+    font-size: var(--step-0);
+    text-shadow: 0 1px 6px rgba(28, 45, 18, 0.5);
+}
+
+/* ---------------------------------------------------------------------------
+   3. RĂDĂCINI — cele trei momente
+
+   overflow: clip pe amândouă axele: desenele ies dinadins din secțiune, iar
+   overflow-x: clip pe html singur nu oprește derularea laterală a paginii.
+   isolation + fundal propriu: fără ele, multiply-ul desenelor n-are în ce se
+   amesteca și rămâne alb.
+   --------------------------------------------------------------------------- */
+
+/* Sus --space-xl, nu --space-section: banda de deschidere își aduce deja
+   propria talpă (--story-foot), deci ritmul obișnuit dintre secțiuni s-ar
+   aduna peste ea și titlul ar cădea la un ecran de film. */
+.roots {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--paper);
+    padding: var(--space-xl) var(--gutter) var(--space-2xl);
+
+    /* Hârtia liberă dintre container și geam, ca la portret (--bleed din
+       .keeper). Fotografiile momentelor o folosesc ca să crească.
+       Plafonat la 5rem: fără plafon fotografia crește la nesfârșit cu
+       fereastra — greșeala prinsă pe pagina de contact (vezi DESIGN.md). */
+    --bleed: max(0px, (100vw - var(--gutter) * 2 - var(--container)) / 2);
+    --stage-out: min(var(--bleed), 5rem);
+}
+
+.roots__inner {
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+/* Titlu între două linii, ca titlul catalogului de pe pagina principală. */
+.roots__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+    max-width: var(--container);
+    margin: 0 auto var(--space-2xl);
+}
+
+.roots__rule {
+    flex: 1 1 0;
+    height: var(--hairline);
+    background: var(--sand);
+}
+
+/* Verde pe hârtie e 3.8:1 — sub prag pentru text mic, acceptat numai la
+   mărimea asta (vezi DESIGN.md, tabelul de contraste semnat de client). */
+.roots__title {
+    flex: 0 1 auto;
+    font-size: var(--step-3);
+    font-weight: var(--weight-normal);
+    color: var(--forest);
+    text-align: center;
+}
+
+/* position: relative ancorează linia desenată. Fără z-index: ar face din listă
+   un context de stivuire și desenele de fundal (z-index: -1) ar cădea sub ea.
+
+   Lărgită SIMETRIC peste container, nu doar pe partea fotografiei: coloanele
+   rămân egale, deci pomul din mijloc rămâne exact pe centrul paginii și linia
+   desenată rămâne o linie de mijloc. Sub ~1360px --stage-out e 0 și nu se
+   schimbă nimic. Linia desenată se recalculează din getBoundingClientRect, așa
+   că se mută singură. margin-inline stă DUPĂ margin-block: un `margin: 0` l-ar
+   șterge. */
+.roots__list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    list-style: none;
+    margin-block: 0;
+    margin-inline: calc(var(--stage-out) * -1);
+    padding: 0;
+}
+
+/* Linia din mijloc, desenată de despre.js. Fără script nu există deloc și
+   rămân cele trei blocuri, întregi. Legănarea iese câțiva pixeli din cutia
+   listei, intenționat. */
+.roots__spine {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.roots__spine path {
+    fill: none;
+    stroke: var(--sand);
+    stroke-width: 1;
+    stroke-linecap: round;
+}
+
+/* Bulina fiecărui moment: inel pe hârtie, ca linia să pară că trece pe sub el. */
+.roots__spine .roots__node {
+    fill: var(--paper);
+    stroke: var(--sand);
+    stroke-width: 1.5;
+}
+
+.roots__spine .roots__dot,
+.roots__spine .roots__cap {
+    fill: var(--bark-soft);
+}
+
+/* Text și fotografie curg fiecare pe cont propriu: flex-basis 0 pe amândouă,
+   deci raportul vine din flex-grow, nu din cât text a nimerit în coloană.
+   În DOM textul e mereu primul (cititorul de ecran aude anul întâi); CSS mută
+   fotografia la stânga pentru blocul din mijloc. */
+.stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--space-m), 3.2vw, var(--space-xl));
+}
+
+.stage--flip {
+    flex-direction: row-reverse;
+}
+
+/* Coloanele sunt EGALE, deși textul e mai îngust decât fotografia. Asta ține
+   culoarul din mijloc exact pe centrul paginii la orice lățime: cu raporturi
+   inegale culoarul se mută de la un bloc la altul (blocul întors schimbă între
+   ele coloana lată și cea îngustă) și linia desenată n-ar mai fi o linie de
+   mijloc, ci una care șerpuiește dintr-o parte în alta. Îngustimea textului o
+   dă max-width-ul lui, nu lățimea coloanei. */
+.stage__tell {
+    flex: 1 1 0;
+}
+
+/* Pomul din culoarul de mijloc — coloană a blocului, nu ornament pe margine:
+   linia desenată trece pe lângă el și de aceea culoarul are lățime proprie.
+   Cei trei cresc de la puiet la pom matur, în ordinea blocurilor: desenul e
+   ce spune anul, deci se vede întreg, fără multiply și fără transparență.
+   Fișierele sunt 2:3, cu fundal transparent. */
+.stage__sign {
+    flex: 0 0 auto;
+    width: clamp(4rem, 7.5vw, 7rem);
+    height: auto;
+}
+
+.stage__frame {
+    flex: 1 1 0;
+    /* Silueta e o acuarelă: mască webp cu conturul în canalul alfa. Nu
+       border-radius și nu radial-gradient — amândouă dau o muchie prea curată.
+       Muchia e stropită, ca la portret (blob-a1): banda moale a vechilor
+       blob-c* a fost lărgită, presărată cu zgomot și tăiată la prag, deci
+       alfa e alb-negru, fără degradeu. Regenerare: vezi DESIGN.md.
+       mask-size: 100% 100% întinde masca pe cutie, deci fișierele sunt 16:10,
+       ca fotografiile: SCHIMBI RAPORTUL FOTOGRAFIEI, REGENEREZI MASCA. */
+    -webkit-mask-image: var(--blob);
+    mask-image: var(--blob);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+/* Câte un contur pentru fiecare bloc, ca să nu se repete aceeași siluetă. */
+.stage__frame--a {
+    --blob: url("../img/blob-d1.webp");
+}
+
+.stage__frame--b {
+    --blob: url("../img/blob-d2.webp");
+}
+
+.stage__frame--c {
+    --blob: url("../img/blob-d3.webp");
+}
+
+/* aspect-ratio stă pe fotografie, nu pe cadru: pe cadru e ignorat (dimensiunea
+   din conținut câștigă). Niciodată height lângă el. */
+.stage__photo {
+    width: 100%;
+    height: auto;
+    /* 16:10, nu 16:9 cât are fișierul: object-fit taie ~10% din lățime și
+       fotografia crește în înălțime lângă text. Masca trebuie să aibă același
+       raport. */
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+
+.stage__year {
+    max-width: none;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-variation-settings: var(--axes-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    text-transform: uppercase;
+    color: var(--forest);
+}
+
+/* --ink-soft, nu verde: la mărimea asta verdele ar coborî sub pragul de
+   contrast, iar anul de deasupra e deja accentul blocului. */
+.stage__name {
+    margin-block-start: var(--space-xs);
+    font-size: var(--step-1);
+    font-variation-settings: var(--axes-label);
+    color: var(--ink-soft);
+}
+
+.stage__body {
+    margin-block-start: var(--space-s);
+    max-width: 36ch;
+    color: var(--ink-soft);
+}
+
+
+/* ---------------------------------------------------------------------------
+   4. OMUL DIN SPATELE LIVEZII
+
+   Singura bandă de pe pagină care nu stă pe aceeași hârtie ca restul: e crem,
+   nu hârtie. Cele două nuanțe sunt la 1.03 una de alta (vezi DESIGN.md), deci
+   NU se pot atinge muchie în muchie fără să pară o greșeală de tipar — de aia
+   banda are câte o linie de păr sus și jos. Ele sunt ce se vede, nu culoarea.
+   --------------------------------------------------------------------------- */
+
+.keeper {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--cream);
+    border-block: var(--hairline) solid var(--sand-soft);
+    padding: var(--space-2xl) var(--gutter);
+
+    /* Hârtia liberă dintre coloană și geam, plus marginea paginii: cât are
+       portretul de mers ca să atingă geamul. Plafonat la 7rem, altfel crește
+       la nesfârșit cu fereastra și pe un monitor mare portretul ajunge de trei
+       ori cât textul de lângă el — exact greșeala prinsă pe pagina de contact
+       (vezi DESIGN.md, „Fotografia e singurul lucru necuprins"). */
+    --bleed: max(0px, (100vw - var(--gutter) * 2 - var(--container)) / 2);
+    --portrait-out: min(calc(var(--bleed) + var(--gutter)), 7rem);
+}
+
+.keeper__inner {
+    max-width: var(--container);
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    gap: clamp(var(--space-l), 5vw, var(--space-2xl));
+}
+
+/* Portretul iese din coloană până la geam, textul rămâne în ea: două cutii
+   egale, centrate, se citeau ca un formular cu poză, nu ca o bandă. Ieșirea e
+   negativă pe margine, nu lățime scrisă — content-box, deci o lățime i-ar
+   umfla și paddingul. */
+.keeper__portrait {
+    flex: 1.25 1 0;
+    margin-inline-start: calc(var(--portrait-out) * -1);
+}
+
+/* Mască pătrată: fotografia e tăiată 1:1, deci și fișierul măștii e pătrat. */
+.keeper__frame {
+    -webkit-mask-image: url("../img/blob-a1.webp");
+    mask-image: url("../img/blob-a1.webp");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.keeper__photo {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+/* Fotografia se așază pe măsură ce trece prin ecran, nu la un declanșator:
+   aceeași unealtă ca deriva desenelor (animation-timeline: view() în
+   style.css). Fără suport în browser rămâne la scara finală, nu se rupe nimic.
+   Stă pe .keeper__photo, nu pe cadru: transformul de pe cadru ar muta și
+   masca odată cu el și silueta s-ar plimba pe fotografie. */
+@supports (animation-timeline: view()) {
+
+    .keeper__photo {
+        animation: keeper-settle linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 55%;
+    }
+}
+
+@keyframes keeper-settle {
+    from {
+        scale: 1.06;
+    }
+
+    to {
+        scale: 1;
+    }
+}
+
+/* Legenda de sub portret. Fără ea fotografia plutește: e cineva anume, nu o
+   ilustrație. Aliniată la marginea cadrului, nu centrată sub el. */
+/* Împinsă înapoi cu exact cât a ieșit portretul: legenda se aliniază la
+   marginea COLOANEI, nu la marginea fotografiei, care acum e sub geam. */
+.keeper__cred {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    margin-block-start: var(--space-m);
+    padding-inline-start: var(--portrait-out);
+}
+
+/* Linia scurtă dinaintea numelui — aceeași grosime și aceeași nisip ca liniile
+   de lângă titlurile de secțiune, ca să se citească drept aceeași mână. */
+.keeper__cred::before {
+    content: "";
+    flex: 0 0 auto;
+    width: clamp(1.5rem, 4vw, 2.75rem);
+    height: var(--hairline);
+    /* Coborâtă pe linia mediană a majusculelor din etichetă. */
+    translate: 0 -0.3em;
+    background: var(--sand);
+}
+
+/* DE COMPLETAT: numele adevărat. Rămâne așa, vizibil neterminat, până îl dă
+   ferma — un nume inventat ar putea ajunge din greșeală pe site. */
+.keeper__name {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+.keeper__role {
+    display: block;
+    margin-block-start: var(--space-3xs);
+    color: var(--bark-soft);
+    font-weight: 400;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.keeper__tell {
+    flex: 1.15 1 0;
+}
+
+.keeper__title {
+    font-size: var(--step-3);
+    font-weight: var(--weight-normal);
+    color: var(--forest);
+}
+
+.keeper__body {
+    margin-block-start: var(--space-m);
+    max-width: 48ch;
+    color: var(--ink-soft);
+}
+
+/* Rândul de închidere, acum capătul benzii și nu o notă sub text. Nu e o a
+   doua familie de litere: e tot Fraunces, cu axa SOFT deschisă la maximum și
+   WONK pornit, care îi rotunjește terminațiile și îi înclină câteva litere —
+   cel mai aproape de un rând scris de mână fără să aducem un font nou.
+
+   text-indent negativ: ghilimeaua deschisă atârnă în afara coloanei, ca
+   primul rând să înceapă optic pe aceeași verticală cu paragrafele de
+   deasupra. Fără el, „ împinge tot rândul spre dreapta și citatul pare
+   nealiniat. Valoarea e cât ține glifa la mărimea asta — se reia dacă se
+   schimbă corpul citatului. */
+.keeper__seal {
+    position: relative;
+    margin-block-start: var(--space-l);
+    padding-block-start: var(--space-l);
+    max-width: 24ch;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+    font-size: var(--step-3);
+    line-height: var(--leading-snug);
+    text-indent: -0.34em;
+    color: var(--forest);
+}
+
+/* Linia care desparte citatul de proză. Scurtă, nu pe toată coloana: taie
+   textul, nu îl încadrează. */
+.keeper__seal::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: clamp(2.5rem, 6vw, 4rem);
+    height: var(--hairline);
+    background: var(--sand);
+}
+
+
+/* ---------------------------------------------------------------------------
+   5. CARUSELUL
+
+   Derulare nativă cu scroll-snap: atingerea, rotița și tastatura merg fără
+   nicio linie de JS. Butoanele și bulinele sunt adăugate de despre.js și doar
+   mută derularea — fără script rămâne o bandă pe care se poate derula, nu
+   comenzi moarte.
+   --------------------------------------------------------------------------- */
+
+/* isolation + fundal propriu: fără ele multiply-ul desenelor de fundal n-are
+   în ce se amesteca și frunzele rămân albe. */
+.reel {
+    position: relative;
+    isolation: isolate;
+    background: var(--paper);
+    padding-block: var(--space-2xl) var(--space-section);
+    /* Diapozitivele ies dinadins în afara coloanei, până la geam. */
+    overflow: clip;
+}
+
+/* Paddingul pe elementul de afară, max-width pe cel dinăuntru (.roots__head) —
+   content-box, deci amândouă pe același element i-ar umfla lățimea. */
+.reel__lead {
+    padding-inline: var(--gutter);
+}
+
+.reel__stage {
+    position: relative;
+}
+
+.reel__track {
+    /* Lățimea diapozitivului din față. Paddingul de mai jos e scris din ea,
+       ca diapozitivul lipit de snap să cadă exact pe mijlocul benzii. */
+    --slide: clamp(16rem, 68vw, 46rem);
+
+    display: flex;
+    gap: var(--space-m);
+    margin: 0;
+    padding-block: var(--space-2xs) var(--space-2xs);
+    padding-inline: max(var(--gutter), calc((100% - var(--slide)) / 2));
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    /* Bara de derulare ar tăia o linie gri sub fotografii; banda se conduce
+       din butoane, buline, deget și tastatură. */
+    scrollbar-width: none;
+}
+
+.reel__track::-webkit-scrollbar {
+    display: none;
+}
+
+.reel__track:focus-visible {
+    outline-offset: -3px;
+}
+
+.reel__slide {
+    flex: 0 0 var(--slide);
+    scroll-snap-align: center;
+}
+
+.reel__figure {
+    margin: 0;
+    transition: opacity var(--duration-slow) var(--ease-out),
+        scale var(--duration-slow) var(--ease-out);
+}
+
+/* Retragerea vecinilor se aprinde numai după ce despre.js a pornit: altfel o
+   pagină în care scriptul n-a rulat ar rămâne cu toate fotografiile stinse. */
+.reel__track.is-live .reel__slide:not(.is-current) .reel__figure {
+    opacity: 0.42;
+    scale: 0.93;
+}
+
+.reel__media {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-lift);
+    background: var(--sand);
+}
+
+.reel__caption {
+    margin-block-start: var(--space-s);
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+/* Ridicat cu jumătate din înălțimea legendei, ca să cadă pe mijlocul
+   fotografiei și nu pe mijlocul figurii cu tot cu text. */
+.reel__nav {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    margin-block-start: calc((var(--space-s) + 1.4rem) / -2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    border: var(--hairline) solid var(--sand);
+    border-radius: 50%;
+    background: var(--paper-lift);
+    color: var(--bark);
+    box-shadow: var(--shadow-lift);
+    cursor: pointer;
+    transition: background-color var(--duration) var(--ease),
+        border-color var(--duration) var(--ease),
+        color var(--duration) var(--ease),
+        transform var(--duration-fast) var(--ease);
+}
+
+.reel__nav--prev {
+    inset-inline-start: var(--gutter);
+}
+
+.reel__nav--next {
+    inset-inline-end: var(--gutter);
+}
+
+.reel__nav:hover,
+.reel__nav:focus-visible {
+    border-color: var(--action);
+    background: var(--action);
+    color: var(--bark-deep);
+}
+
+.reel__nav:active {
+    transform: scale(0.95);
+}
+
+.reel__nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.reel__nav:disabled:hover {
+    border-color: var(--sand);
+    background: var(--paper-lift);
+    color: var(--bark);
+}
+
+.reel__nav svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.reel__dots {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-l);
+}
+
+.reel__dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--sand);
+    cursor: pointer;
+    transition: background-color var(--duration) var(--ease),
+        transform var(--duration) var(--ease);
+}
+
+.reel__dot:hover {
+    background: var(--earth);
+}
+
+.reel__dot[aria-current="true"] {
+    background: var(--action);
+    transform: scale(1.15);
+}
+
+
+/* ---------------------------------------------------------------------------
+   6. INTERVIURI
+
+   Cartonașul e o fotografie locală. Iframe-ul YouTube se pune abia la apăsare,
+   deci până atunci pagina nu cere nimic de pe alt server.
+   --------------------------------------------------------------------------- */
+
+.talks {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--paper);
+    padding: var(--space-2xl) var(--gutter) var(--space-section);
+}
+
+.talks__inner {
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.talks__head {
+    text-align: center;
+    margin-block-end: var(--space-2xl);
+}
+
+.talks__title {
+    font-size: var(--step-3);
+    font-weight: var(--weight-normal);
+    color: var(--forest);
+}
+
+.talks__lead {
+    margin: var(--space-s) auto 0;
+    color: var(--ink-soft);
+}
+
+/* Trei cartonașe: cel mare ține coloana din stânga pe amândouă rândurile. */
+.talks__grid {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: var(--space-l);
+    align-items: start;
+}
+
+/* align-self, nu align-items pe grilă: cele două cartonașe mici rămân lipite
+   de marginea lor de sus, numai cel mare se așază pe mijlocul coloanei lor. */
+.talk--lead {
+    grid-row: span 2;
+    align-self: center;
+}
+
+.talk__figure {
+    margin: 0;
+}
+
+.talk__frame {
+    position: relative;
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    box-shadow: var(--shadow-lift);
+    /* Se vede o clipă până se așază iframe-ul; brunul închis e mai aproape de
+       primul cadru al unui film decât hârtia. */
+    background: var(--bark-deep);
+}
+
+.talk__poster {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+/* Insigna de redare. Portocaliul site-ului, nu roșul YouTube: pe pagina asta
+   portocaliu înseamnă „se poate apăsa" și nu există a doua culoare de acțiune. */
+.talk__badge {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    translate: -50% -50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-m);
+    background: var(--action);
+    color: var(--paper-lift);
+    box-shadow: var(--shadow-raise);
+    pointer-events: none;
+    transition: background-color var(--duration) var(--ease),
+        transform var(--duration) var(--ease);
+}
+
+.talk__badge svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    fill: currentColor;
+}
+
+.talk__open {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.talk__open:hover ~ .talk__badge,
+.talk__open:focus-visible ~ .talk__badge {
+    background: var(--action-deep);
+    transform: scale(1.08);
+}
+
+.talk__open:focus-visible {
+    outline-offset: -4px;
+}
+
+/* Cartonaș fără link încă: insigna se stinge și apare eticheta. Nimic de
+   apăsat degeaba. */
+.talk[data-yt="TODO"] .talk__badge {
+    opacity: 0.4;
+}
+
+.talk__soon {
+    display: none;
+}
+
+.talk[data-yt="TODO"] .talk__soon {
+    position: absolute;
+    inset-block-end: var(--space-s);
+    inset-inline-start: var(--space-s);
+    display: inline-flex;
+    padding: var(--space-3xs) var(--space-xs);
+    border-radius: var(--radius-pill);
+    background: rgba(58, 38, 17, 0.72);
+    color: var(--on-dark-soft);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+/* Iframe-ul pus la apăsare umple exact cadrul fotografiei pe care o înlocuiește. */
+.talk__frame iframe {
+    display: block;
+    width: 100%;
+    /* height: auto, nu 100%: după apăsare iframe-ul e singurul copil al
+       cadrului, deci 100% n-ar avea din ce se rezolva. Raportul dă înălțimea. */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border: 0;
+}
+
+.talk__caption {
+    margin-block-start: var(--space-s);
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+
+/* ---------------------------------------------------------------------------
+   7. DESENELE DE FUNDAL
+
+   Aceeași mână de gravură ca pe pagina principală și aceeași densitate: hârtia
+   nu rămâne goală nicăieri pe lungimea paginii. Trei fișiere, atât —
+   branch-1024, leaf-640, apple-480 — refolosite la mărimi, unghiuri și
+   opacități care nu se repetă de la un desen la vecinul lui; două frunze cu
+   aceeași mărime și aceeași înclinare se citesc ca tipar, nu ca natural.
+
+   .motif (poziționare, mix-blend-mode: multiply, z-index: -1, deriva la
+   derulare) vine din style.css. Fiecare gazdă are nevoie de isolation:
+   isolate + fundal propriu, altfel multiply n-are în ce se amesteca, și de
+   overflow: clip, fiindcă desenele ies dinadins din secțiune.
+
+   Regula de plasare: sub 0.34 opacitate oriunde desenul trece pe sub un rând
+   de text, până la 0.46 în hârtia liberă din afara coloanei. Coloana e
+   --container (78rem) centrată, deci la orice ecran mai lat de-atât marginile
+   sunt libere și acolo stau bucățile mari.
+   --------------------------------------------------------------------------- */
+
+/* --- Rădăcini ------------------------------------------------------------ */
+
+.motif--roots-branch {
+    inset-block-start: calc(var(--space-section) * -0.35);
+    inset-inline-end: -14rem;
+    width: clamp(20rem, 34vw, 34rem);
+    opacity: 0.3;
+    rotate: 8deg;
+    --drift: 4rem;
+}
+
+/* A doua ramură, jos și din partea cealaltă, ca secțiunea să nu fie desenată
+   numai într-un colț. scale: -1 1 o întoarce; același fișier, nu al doilea
+   desen. */
+.motif--roots-branch-b {
+    inset-block-end: -6rem;
+    inset-inline-start: -17rem;
+    width: clamp(18rem, 30vw, 30rem);
+    opacity: 0.26;
+    rotate: -6deg;
+    scale: -1 1;
+    --drift: 5rem;
+}
+
+.motif--roots-leaf {
+    opacity: 0.32;
+    --drift: 3rem;
+}
+
+.motif--roots-leaf-a {
+    inset-block-start: 34%;
+    inset-inline-start: -3.5rem;
+    width: clamp(6rem, 11vw, 11rem);
+    rotate: -18deg;
+}
+
+.motif--roots-leaf-b {
+    inset-block-start: 68%;
+    inset-inline-end: -2.5rem;
+    width: clamp(6rem, 11vw, 11rem);
+    rotate: 148deg;
+}
+
+/* c stă în golul de lângă titlu, la stânga liniei. */
+.motif--roots-leaf-c {
+    inset-block-start: 4%;
+    inset-inline-start: 6%;
+    width: clamp(4rem, 6.5vw, 6.5rem);
+    opacity: 0.3;
+    rotate: 118deg;
+}
+
+.motif--roots-leaf-d {
+    inset-block-start: 17%;
+    inset-inline-end: 8%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.26;
+    rotate: 62deg;
+}
+
+.motif--roots-leaf-e {
+    inset-block-start: 50%;
+    inset-inline-end: 16%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.24;
+    rotate: -34deg;
+}
+
+.motif--roots-leaf-f {
+    inset-block-end: 8%;
+    inset-inline-start: 13%;
+    width: clamp(4rem, 6vw, 6rem);
+    opacity: 0.28;
+    rotate: 172deg;
+}
+
+/* Mărul atârnă în culoarul dintre al doilea și al treilea moment, unde linia
+   desenată face pauză. */
+.motif--roots-apple {
+    inset-block-start: 41%;
+    inset-inline-start: 9%;
+    width: clamp(3.5rem, 5.5vw, 6rem);
+    opacity: 0.4;
+    rotate: -10deg;
+    --drift: 2.5rem;
+}
+
+/* Cele patru goluri mari de hârtie ale secțiunii, umplute cu frunze care cad
+   (client, 2026-08-20). Fiecare grup e o cădere, nu o împrăștiere: literele
+   merg în ordinea căderii și fiecare frunză e mai jos decât cea dinaintea ei.
+
+   Procentele sunt măsurate pe cutia secțiunii (1440 x 1517 la 1440px) și
+   fiecare frunză stă în hârtie liberă, nu peste o fotografie: desenele sunt la
+   z-index: -1, deci o frunză nimerită peste o fotografie dispare cu totul sub
+   ea. Cutiile ocupate, în procente din secțiune: fotografiile 12.9-36.1,
+   41.9-65.2 și 71-94.2 pe jumătatea lor de pagină, textele 18.2-30.8,
+   47.2-59.8 și 76.3-88.9 pe cealaltă. Se mută vreuna, se remăsoară aici.
+
+   --drift diferă de la o frunză la alta ca să nu plutească toate în același
+   plan la derulare. */
+
+/* g → h → i: cad din linia titlului spre anul 2012, pe o curbă, nu pe o
+   diagonală — grupul stă deasupra textului, unde o linie dreaptă s-ar citi ca
+   un chenar. */
+.motif--roots-leaf-g {
+    inset-block-start: 7.5%;
+    inset-inline-start: 17%;
+    width: clamp(3.4rem, 5.4vw, 5.4rem);
+    opacity: 0.29;
+    rotate: 28deg;
+    --drift: 3.4rem;
+}
+
+.motif--roots-leaf-h {
+    inset-block-start: 11.5%;
+    inset-inline-start: 27.5%;
+    width: clamp(4.5rem, 7.2vw, 7.2rem);
+    opacity: 0.24;
+    rotate: -62deg;
+    --drift: 2.6rem;
+}
+
+.motif--roots-leaf-i {
+    inset-block-start: 14.5%;
+    inset-inline-start: 20%;
+    width: clamp(2.9rem, 4.5vw, 4.5rem);
+    opacity: 0.33;
+    rotate: 132deg;
+    --drift: 3.8rem;
+}
+
+/* l → mărul mic → k → j: traversează culoarul gol dintre primul și al doilea
+   moment, coborând spre dreapta peste linia desenată. */
+.motif--roots-leaf-l {
+    inset-block-start: 30.5%;
+    inset-inline-start: 26%;
+    width: clamp(4.9rem, 7.8vw, 7.8rem);
+    opacity: 0.28;
+    rotate: 156deg;
+    --drift: 2.4rem;
+}
+
+.motif--roots-apple-b {
+    inset-block-start: 33%;
+    inset-inline-start: 36.5%;
+    width: clamp(3rem, 4.6vw, 4.6rem);
+    opacity: 0.36;
+    rotate: 16deg;
+    --drift: 3.2rem;
+}
+
+.motif--roots-leaf-k {
+    inset-block-start: 36.5%;
+    inset-inline-start: 47.5%;
+    width: clamp(3.2rem, 5vw, 5rem);
+    opacity: 0.25;
+    rotate: 74deg;
+    --drift: 2.8rem;
+}
+
+.motif--roots-leaf-j {
+    inset-block-start: 37.2%;
+    inset-inline-start: 61%;
+    width: clamp(3.9rem, 6.1vw, 6.1rem);
+    opacity: 0.27;
+    rotate: -28deg;
+    --drift: 3.6rem;
+}
+
+/* m → n → o: marginea liberă de sub prima fotografie. o iese dinadins din
+   pagină pe dreapta; overflow: clip îi taie restul. */
+.motif--roots-leaf-m {
+    inset-block-start: 37.5%;
+    inset-inline-start: 82%;
+    width: clamp(4.2rem, 6.6vw, 6.6rem);
+    opacity: 0.3;
+    rotate: 42deg;
+    --drift: 3rem;
+}
+
+.motif--roots-leaf-n {
+    inset-block-start: 43.5%;
+    inset-inline-start: 90.5%;
+    width: clamp(3.3rem, 5.2vw, 5.2rem);
+    opacity: 0.27;
+    rotate: -8deg;
+    --drift: 2.2rem;
+}
+
+.motif--roots-leaf-o {
+    inset-block-start: 48.5%;
+    inset-inline-end: -2%;
+    width: clamp(4rem, 6.2vw, 6.2rem);
+    opacity: 0.24;
+    rotate: 112deg;
+    --drift: 3.4rem;
+}
+
+/* p → q → mărul mic → r: cad din golul dintre ultimele două momente peste
+   hârtia liberă din dreapta titlului „Astăzi". */
+.motif--roots-leaf-p {
+    inset-block-start: 68.5%;
+    inset-inline-start: 19%;
+    width: clamp(4.3rem, 6.8vw, 6.8rem);
+    opacity: 0.28;
+    rotate: -52deg;
+    --drift: 2.6rem;
+}
+
+.motif--roots-leaf-q {
+    inset-block-start: 71.8%;
+    inset-inline-start: 31%;
+    width: clamp(3.7rem, 5.8vw, 5.8rem);
+    opacity: 0.25;
+    rotate: 88deg;
+    --drift: 3.6rem;
+}
+
+.motif--roots-apple-c {
+    inset-block-start: 72.5%;
+    inset-inline-start: 38%;
+    width: clamp(2.7rem, 4vw, 4rem);
+    opacity: 0.34;
+    rotate: -22deg;
+    --drift: 2.4rem;
+}
+
+.motif--roots-leaf-r {
+    inset-block-start: 79%;
+    inset-inline-start: 40.5%;
+    width: clamp(2.7rem, 4.2vw, 4.2rem);
+    opacity: 0.26;
+    rotate: 24deg;
+    --drift: 3rem;
+}
+
+
+/* --- Omul din spatele livezii -------------------------------------------- */
+
+/* Banda e crem, nu hârtie, deci desenele se văd cu o idee mai mult pe ea la
+   aceeași opacitate: toate valorile de aici sunt cu 0.04-0.06 sub cele de pe
+   hârtie.
+
+   Ramura din colțul de sus-dreapta e IZVORUL: mărul îi atârnă dedesubt, iar
+   frunzele cad din ea pe diagonală, spre stânga-jos, prin colțul liber de sub
+   citat. Ordinea c → d → măr → e → f → g → h → măr mic urmează căderea; dacă
+   muți una, mut-o pe aceeași linie, altfel se rupe direcția și rămâne o
+   împrăștiere. */
+.motif--keeper-branch {
+    inset-block-start: -5rem;
+    inset-inline-end: -15rem;
+    width: clamp(18rem, 32vw, 32rem);
+    opacity: 0.24;
+    rotate: 12deg;
+    --drift: 4.5rem;
+}
+
+.motif--keeper-leaf {
+    opacity: 0.26;
+    --drift: 3.25rem;
+}
+
+/* Cel mai mare desen al benzii, deci și cel mai palid. Ridicat din colț și
+   scos în afară pe orizontală: lăsat jos, muchia dreaptă a tăieturii cădea
+   de-a curmezișul benzii și se citea ca o bandă de altă culoare. */
+.motif--keeper-leaf-a {
+    inset-block-end: -9rem;
+    inset-inline-start: -12rem;
+    width: clamp(14rem, 26vw, 26rem);
+    opacity: 0.2;
+    rotate: -12deg;
+    --drift: 5rem;
+}
+
+.motif--keeper-leaf-b {
+    inset-block-start: 8%;
+    inset-inline-start: 4%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.24;
+    rotate: 44deg;
+}
+
+/* c face legătura între ramură și colț: singura frunză din fâșia îngustă de
+   lângă geam, unde textul nu ajunge. Fără ea, căderea începe din senin. */
+.motif--keeper-leaf-c {
+    inset-block-end: 45%;
+    inset-inline-start: 93%;
+    width: clamp(4rem, 6vw, 6rem);
+    opacity: 0.24;
+    rotate: 140deg;
+}
+
+/* d — h și cele două mere: căderea propriu-zisă, prin colțul de sub citat.
+   Toate stau sub rândul citatului și la dreapta legendei portretului. */
+.motif--keeper-leaf-d {
+    inset-block-end: 17.3%;
+    inset-inline-start: 88%;
+    width: clamp(5.5rem, 9vw, 9rem);
+    opacity: 0.28;
+    rotate: 152deg;
+}
+
+.motif--keeper-leaf-e {
+    inset-block-end: 7.1%;
+    inset-inline-start: 72.4%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.24;
+    rotate: 196deg;
+}
+
+.motif--keeper-leaf-f {
+    inset-block-end: 9.8%;
+    inset-inline-start: 66%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.2;
+    rotate: 128deg;
+}
+
+.motif--keeper-leaf-g {
+    inset-block-end: 5.7%;
+    inset-inline-start: 57.3%;
+    width: clamp(4rem, 6.5vw, 6.5rem);
+    opacity: 0.26;
+    rotate: 168deg;
+}
+
+.motif--keeper-leaf-h {
+    inset-block-end: 11.7%;
+    inset-inline-start: 52.2%;
+    width: clamp(3rem, 4.5vw, 4.5rem);
+    opacity: 0.22;
+    rotate: 214deg;
+}
+
+/* Mărul mare atârnă sub ramură, la izvorul căderii. */
+.motif--keeper-apple {
+    inset-block-start: 26%;
+    inset-inline-end: 3%;
+    width: clamp(3rem, 4.5vw, 5rem);
+    opacity: 0.34;
+    rotate: 14deg;
+    --drift: 2.5rem;
+}
+
+.motif--keeper-apple-b {
+    inset-block-end: 13.8%;
+    inset-inline-start: 82.8%;
+    width: clamp(2.75rem, 4.5vw, 4.5rem);
+    opacity: 0.3;
+    rotate: -14deg;
+    --drift: 2.5rem;
+}
+
+.motif--keeper-apple-c {
+    inset-block-end: 2.6%;
+    inset-inline-start: 63.5%;
+    width: clamp(2.25rem, 3.75vw, 3.75rem);
+    opacity: 0.26;
+    rotate: 8deg;
+    --drift: 2.5rem;
+}
+
+
+/* --- Caruselul ------------------------------------------------------------ */
+
+/* Banda e plină de fotografii pe mijloc; desenele stau în hârtia liberă de la
+   capete, adică în afara diapozitivului din față (--slide, cel mult 46rem). */
+.motif--reel-branch {
+    inset-block-end: -3rem;
+    inset-inline-start: -16rem;
+    width: clamp(17rem, 30vw, 30rem);
+    opacity: 0.28;
+    rotate: -8deg;
+    scale: -1 1;
+    --drift: 4.5rem;
+}
+
+.motif--reel-leaf {
+    opacity: 0.34;
+    --drift: 3rem;
+}
+
+.motif--reel-leaf-a {
+    inset-block-start: 2rem;
+    inset-inline-start: 7%;
+    width: clamp(5rem, 8vw, 8rem);
+    rotate: 24deg;
+}
+
+.motif--reel-leaf-b {
+    inset-block-start: 4rem;
+    inset-inline-end: 9%;
+    width: clamp(4rem, 6vw, 6rem);
+    opacity: 0.3;
+    rotate: 152deg;
+}
+
+.motif--reel-leaf-c {
+    inset-block-end: 18%;
+    inset-inline-end: 4%;
+    width: clamp(5.5rem, 9vw, 9rem);
+    opacity: 0.32;
+    rotate: -58deg;
+}
+
+.motif--reel-leaf-d {
+    inset-block-end: 6%;
+    inset-inline-start: 24%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.26;
+    rotate: 96deg;
+}
+
+.motif--reel-apple {
+    inset-block-start: 26%;
+    inset-inline-start: 3%;
+    width: clamp(3.25rem, 5vw, 5.5rem);
+    opacity: 0.42;
+    rotate: -6deg;
+    --drift: 2.5rem;
+}
+
+
+/* --- Interviuri ----------------------------------------------------------- */
+
+/* Trei ramuri, trei colțuri, și frunzele cad DIN ele — nu împrăștiate pe toată
+   banda. Vârful ramurii caruselului intră în colțul de sus-stânga: de acolo
+   pornește șirul cel mare (a-d), care se rărește spre mijloc (e-g) și se
+   îndesește iar sub ramura din dreapta (h-j). Mutată o frunză, mută-o pe
+   același șir: aranjarea, nu numărul, e ce face banda să pară vânt și nu
+   confetti. */
+
+/* Ramura de sus intră din DREAPTA, oglindită față de cum era. Pe stânga, chiar
+   deasupra ei, se termină ramura caruselului (.motif--reel-branch): două
+   ramuri intrând din aceeași parte una peste alta se citeau ca un singur desen
+   rupt în două. */
+.motif--talks-branch {
+    inset-block-start: -4rem;
+    inset-inline-end: -16rem;
+    width: clamp(18rem, 32vw, 32rem);
+    opacity: 0.28;
+    rotate: 10deg;
+    --drift: 4.5rem;
+}
+
+.motif--talks-branch-b {
+    inset-block-end: -7rem;
+    inset-inline-end: -15rem;
+    width: clamp(16rem, 28vw, 28rem);
+    opacity: 0.24;
+    rotate: 6deg;
+    --drift: 5rem;
+}
+
+/* Ramura de sub cartonașul mare, în hârtia liberă din colțul de jos-stânga.
+   Fără rotate și fără scale: desenul are deja tulpina în colțul de jos-stânga
+   și frunzișul în sus-dreapta, adică exact cum trebuie să stea aici.
+   inset-block-end negativ scoate tulpina afară pe sub muchia secțiunii, deci
+   se vede numai partea cu frunze. */
+.motif--talks-branch-c {
+    inset-block-end: -12rem;
+    inset-inline-start: 5rem;
+    width: clamp(22rem, 38vw, 38rem);
+    opacity: 0.26;
+    --drift: 4rem;
+}
+
+/* Opacitățile sunt cele de la Întrebări frecvente (0.26-0.44), nu cele de pe
+   restul paginii: sub 0.3 desenele se citesc ca pete, nu ca frunze. Cele care
+   trec pe sub titlu stau la capătul de jos al intervalului. */
+.motif--talks-leaf {
+    opacity: 0.38;
+    --drift: 3rem;
+}
+
+/* a-d: șirul de sub vârful ramurii din stânga. Cel mai mare sus, apoi în jos
+   și spre dreapta. */
+.motif--talks-leaf-a {
+    inset-block-start: 3.6rem;
+    inset-inline-start: 7.3%;
+    width: clamp(6rem, 10vw, 10rem);
+    opacity: 0.44;
+    rotate: 196deg;
+}
+
+.motif--talks-leaf-b {
+    inset-block-start: 1rem;
+    inset-inline-start: 16.7%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.4;
+    rotate: 148deg;
+}
+
+.motif--talks-leaf-c {
+    inset-block-start: 11.4rem;
+    inset-inline-start: 13%;
+    width: clamp(5rem, 8vw, 8rem);
+    opacity: 0.36;
+    rotate: 224deg;
+}
+
+.motif--talks-leaf-d {
+    inset-block-start: 8.8rem;
+    inset-inline-start: 24.5%;
+    width: clamp(3.5rem, 5.5vw, 5.5rem);
+    opacity: 0.32;
+    rotate: 168deg;
+}
+
+/* e-g: mijlocul rărit. e și f trec pe sub titlu și pe sub subtitlu, deci sunt
+   cele mai palide din bandă. */
+.motif--talks-leaf-e {
+    inset-block-start: 2.1rem;
+    inset-inline-start: 37.6%;
+    width: clamp(4rem, 6.5vw, 6.5rem);
+    opacity: 0.3;
+    rotate: 132deg;
+}
+
+.motif--talks-leaf-f {
+    inset-block-start: 13.4rem;
+    inset-inline-start: 49.2%;
+    width: clamp(3.25rem, 5vw, 5rem);
+    opacity: 0.28;
+    rotate: 202deg;
+}
+
+.motif--talks-leaf-g {
+    inset-block-start: 0.6rem;
+    inset-inline-start: 59.7%;
+    width: clamp(4.5rem, 7vw, 7rem);
+    opacity: 0.34;
+    rotate: -38deg;
+}
+
+/* h-j: îndesirea de sub ramura din dreapta. */
+.motif--talks-leaf-h {
+    inset-block-start: 7.8rem;
+    inset-inline-end: 7.1%;
+    width: clamp(5.5rem, 9vw, 9rem);
+    opacity: 0.36;
+    rotate: 62deg;
+}
+
+.motif--talks-leaf-i {
+    inset-block-start: 4.8rem;
+    inset-inline-end: 18.1%;
+    width: clamp(4rem, 6vw, 6rem);
+    opacity: 0.3;
+    rotate: 118deg;
+}
+
+.motif--talks-leaf-j {
+    inset-block-start: 12.9rem;
+    inset-inline-end: 13.9%;
+    width: clamp(4.5rem, 7.5vw, 7.5rem);
+    opacity: 0.28;
+    rotate: -52deg;
+}
+
+/* Mărul atârnă în vârful ramurii din stânga, nu pe hârtie goală: e fruct, deci
+   trebuie să pară că stă pe ceva. */
+.motif--talks-apple {
+    inset-block-start: 0.25rem;
+    inset-inline-start: 9.1%;
+    width: clamp(3.5rem, 5vw, 5.5rem);
+    opacity: 0.42;
+    rotate: 10deg;
+    --drift: 2.5rem;
+}
+
+
+/* ---------------------------------------------------------------------------
+   8. SOSIREA LA DERULARE
+
+   .reveal / .is-in vin din style.css; despre.js pune clasele, deci o pagină
+   fără script arată tot. Fotografiile din conținutul principal nu urcă, se
+   dezvelesc de jos în sus — altă mișcare, deci alt observator.
+   --------------------------------------------------------------------------- */
+
+.stage__frame.wipe,
+.keeper__frame.wipe {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path var(--duration-slow) var(--ease-out);
+}
+
+.stage__frame.wipe.is-in,
+.keeper__frame.wipe.is-in {
+    clip-path: inset(0);
+}
+
+
+/* base.css oprește tranzițiile și animațiile când sistemul cere mai puțină
+   mișcare, dar scroll-behavior nu e niciuna dintre ele: banda ar continua să
+   alunece la fiecare apăsare pe buton. */
+@media (prefers-reduced-motion: reduce) {
+
+    .reel__track {
+        scroll-behavior: auto;
+    }
+}
