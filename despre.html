@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css?v=20260819-video-3">
-  <link rel="stylesheet" href="css/despre.css?v=20260820-despre-6">
+  <link rel="stylesheet" href="css/despre.css?v=20260820-despre-17">
 
   <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -487,10 +487,18 @@
          5. INTERVIURI — cartonaș local peste care se pune iframe-ul YouTube
          numai la apăsare. Până atunci pagina nu cere nimic de pe alt server.
 
-         DE COMPLETAT: data-yt de pe fiecare cartonaș. Se trece codul din
-         adresa clipului (partea de după „v=" sau ultima bucată din youtu.be/).
-         Cât timp valoarea e „TODO", cartonașul rămâne o fotografie inertă cu
-         eticheta „Link în curând" — nimic de apăsat degeaba.
+         data-yt e codul din adresa clipului (partea de după „v=" sau ultima
+         bucată din youtu.be/). Cele trei de aici sunt clipurile trimise de
+         fermă pe 2026-08-20, în ordinea în care le-a trimis.
+
+         Fotografiile de pe cartonașe sunt tot cadre din filmele fermei, nu
+         miniaturile de la YouTube: o miniatură s-ar cere de pe alt server la
+         fiecare încărcare a paginii, iar aici nu se cere nimic din afară până
+         nu apasă cineva pe un clip.
+
+         DE COMPLETAT: legendele. Cele trei de mai jos sunt provizorii, scrise
+         înainte să existe clipurile; se pun titlurile adevărate după ce ferma
+         spune care interviu e care.
          ====================================================================== -->
     <section class="talks" aria-labelledby="talks-title">
 
@@ -518,7 +526,7 @@
 
         <ul class="talks__grid">
 
-          <li class="talk talk--lead" data-yt="TODO">
+          <li class="talk talk--lead" data-yt="KotMPznm9v4">
             <figure class="talk__figure">
               <div class="talk__frame">
                 <img class="talk__poster" src="img/about-hero-poster.webp" width="1600" height="900"
@@ -532,7 +540,7 @@
             </figure>
           </li>
 
-          <li class="talk" data-yt="TODO">
+          <li class="talk" data-yt="-iyMQ4X7OXM">
             <figure class="talk__figure">
               <div class="talk__frame">
                 <img class="talk__poster" src="img/orchard-band-poster.webp" width="1600" height="900"
@@ -546,7 +554,7 @@
             </figure>
           </li>
 
-          <li class="talk" data-yt="TODO">
+          <li class="talk" data-yt="L62i08a_3Rw">
             <figure class="talk__figure">
               <div class="talk__frame">
                 <img class="talk__poster" src="img/about-extra-poster.webp" width="960" height="540"
@@ -594,7 +602,7 @@
         <h2 class="site-footer__heading">Navigare</h2>
         <ul class="site-footer__links">
           <li><a class="site-footer__nav-link" href="index.html#acasa">Acasă</a></li>
-          <li><a class="site-footer__nav-link" href="index.html#fructe">Fructe</a></li>
+          <li><a class="site-footer__nav-link" href="despre.html" aria-current="page">Despre</a></li>
           <li><a class="site-footer__nav-link" href="contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -701,7 +709,7 @@
        elementul și iese dacă lipsește. -->
   <script src="js/main.js?v=20260819-video-3"></script>
   <!-- Numai pentru pagina asta: linia din mijloc, caruselul, interviurile. -->
-  <script src="js/despre.js?v=20260820-despre-6"></script>
+  <script src="js/despre.js?v=20260820-despre-17"></script>
 
 </body>
 

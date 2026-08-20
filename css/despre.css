@@ -1686,56 +1686,110 @@
     }
 
 
-    /* DESENELE. Subțiate, nu micșorate — la fel ca pe index. Cele așezate în
-       procente au fost măsurate pe un aranjament lat: în coloană, secțiunea e
-       de trei ori mai înaltă și aceleași procente cad peste text sau în
-       mijlocul unei fotografii. Rămân numai cele care ies pe sub marginea
-       ferestrei, unde nu au ce încurca, plus câte două-trei reașezate din
-       colțurile secțiunii, în rem, nu în procente. */
-    .motif--roots-leaf-d,
-    .motif--roots-leaf-e,
-    .motif--roots-leaf-f,
-    .motif--roots-apple,
-    .motif--roots-leaf-g,
-    .motif--roots-leaf-h,
-    .motif--roots-leaf-i,
-    .motif--roots-leaf-j,
-    .motif--roots-leaf-k,
-    .motif--roots-leaf-l,
+    /* DESENELE, rearanjate pentru pagina pe o coloană.
+
+       Cele așezate în procente au fost măsurate pe un aranjament lat: în
+       coloană secțiunea e de trei ori mai înaltă și aceleași procente cad
+       peste text sau, mai rău, peste o fotografie — desenele stau la
+       z-index: -1, deci una nimerită pe o fotografie dispare cu totul sub ea.
+
+       Așezarea de aici pleacă de la unde chiar rămâne hârtie liberă când
+       pagina e pe o coloană, măsurat la 768px pe cutia fiecărei secțiuni:
+
+         .roots    golul dintre blocuri (35.3-39.5%, 65.5-69.7%), fâșia de sub
+                   titlu (5-9%), marginile de sus și de jos. Culoarul din
+                   stânga e al pomului și al liniei desenate, deci acolo nu
+                   intră nimic; pe margine trece numai ce iese pe sub geam.
+         .keeper   deasupra portretului (0-6.3%) și sub citat (93.7-100%).
+         .reel     între paragraf și bandă (16.4-27.4%) și sub buline.
+         .talks    între paragraful de sub titlu și primul cartonaș
+                   (15.3-25.1%) și golul dintre cartonașe (63.8-70.8%).
+
+       Frunzele de pe margini intră mai puțin decât pe lat (-1 până la -3rem,
+       nu -5rem): pe un ecran îngust o frunză din care se vede o pojghiță nu
+       se citește ca desen, se citește ca pată.
+
+       Blocul de tabletă care urmează adaugă la astea coloana liberă de lângă
+       fotografii, care există numai acolo — pe telefon fotografia iese până la
+       geam și acoperă acea hârtie. */
+
+    /* DERIVA se strânge. motif-drift din style.css duce fiecare desen de la
+       +--drift la ---drift pe măsură ce trece prin ecran, adică un drum de
+       două ori --drift: 96px la valoarea obișnuită de 3rem. Golurile în care
+       stau desenele aici au între 72 și 111px, deci cu deriva de pe ecran lat
+       fiecare desen ar intra sub fotografia vecină la jumătatea derulării.
+       Prinsă măsurând: o frunză scrisă la 64.6% se afla la 68.7% în pagină.
+
+       0.75rem înseamnă un drum de 24px, care încape în cel mai strâmt gol.
+       Crengile de pe margini își păstrează deriva mare: ele ies oricum pe sub
+       geam și nu au sub ce intra. */
+    .motif {
+        --drift: 0.75rem;
+    }
+
+    .motif--roots-branch,
+    .motif--roots-branch-b,
+    .motif--keeper-branch,
+    .motif--keeper-leaf-a,
+    .motif--reel-branch,
+    .motif--talks-branch,
+    .motif--talks-branch-b,
+    .motif--talks-branch-c,
+    .motif--roots-leaf-a,
+    .motif--roots-leaf-b,
+    .motif--reel-leaf-a,
+    .motif--reel-leaf-c,
+    .motif--talks-leaf-a,
+    .motif--talks-leaf-h,
+    .motif--keeper-leaf-d {
+        --drift: 2.25rem;
+    }
+
+
+    /* Ce nu are unde să stea la nicio lățime îngustă. */
     .motif--roots-leaf-m,
     .motif--roots-leaf-n,
     .motif--roots-leaf-o,
     .motif--roots-leaf-q,
     .motif--roots-leaf-r,
-    .motif--roots-apple-c,
-    .motif--keeper-leaf-b,
+    .motif--keeper-leaf-g,
+    .motif--reel-leaf-b,
+    .motif--talks-leaf-c,
+    .motif--talks-leaf-e,
+    .motif--talks-leaf-g,
+    .motif--talks-leaf-j {
+        display: none;
+    }
+
+    /* Cele de la blocul de tabletă: ascunse aici, aprinse acolo. */
+    .motif--roots-leaf-d,
+    .motif--roots-leaf-e,
+    .motif--roots-leaf-f,
+    .motif--roots-leaf-g,
+    .motif--roots-leaf-h,
+    .motif--roots-leaf-i,
+    .motif--roots-leaf-j,
+    .motif--roots-apple,
     .motif--keeper-leaf-e,
     .motif--keeper-leaf-f,
-    .motif--keeper-leaf-g,
     .motif--keeper-leaf-h,
     .motif--keeper-apple-b,
     .motif--keeper-apple-c,
-    .motif--reel-leaf-b,
-    .motif--reel-leaf-d,
-    .motif--talks-leaf-b,
-    .motif--talks-leaf-c,
     .motif--talks-leaf-d,
-    .motif--talks-leaf-e,
-    .motif--talks-leaf-f,
-    .motif--talks-leaf-g,
-    .motif--talks-leaf-i,
-    .motif--talks-leaf-j {
+    .motif--talks-leaf-i {
         display: none;
     }
 
     /* Ramurile mari intră tot din colțuri, dar mai mici: la lățimea asta o
        ramură de 34rem ar acoperi jumătate de ecran și n-ar mai fi fundal. */
     .motif--roots-branch {
+        inset-block-start: -2rem;
         inset-inline-end: -9rem;
         width: clamp(14rem, 46vw, 22rem);
     }
 
     .motif--roots-branch-b {
+        inset-block-end: -5rem;
         inset-inline-start: -11rem;
         width: clamp(13rem, 42vw, 20rem);
     }
@@ -1772,104 +1826,400 @@
         width: clamp(15rem, 52vw, 24rem);
     }
 
-    /* Frunzele care rămân, mutate pe marginile secțiunii. Ies pe jumătate în
-       afara ferestrei dinadins: o frunză întreagă în coloana îngustă s-ar
-       vedea ca o pată peste text. */
-    .motif--roots-leaf-a {
-        inset-block-start: 26%;
-        inset-inline-start: -4.5rem;
-        width: clamp(7rem, 26vw, 11rem);
-    }
 
-    .motif--roots-leaf-b {
-        inset-block-start: 62%;
-        inset-inline-end: -4.5rem;
-        width: clamp(7rem, 26vw, 11rem);
+    /* RĂDĂCINI. Trei căderi mici: una sub titlu, câte una în fiecare gol
+       dintre blocuri. Golurile au --space-2xl, adică 64px la 320px — o frunză
+       de 4rem încape întreagă acolo, una de 7rem iese puțin peste text și de
+       aceea stă la 0.26. */
+    .motif--roots-apple-b {
+        inset-block-start: 1.6%;
+        inset-inline-start: 6%;
+        inset-inline-end: auto;
+        width: clamp(2.5rem, 8vw, 3.75rem);
+        opacity: 0.34;
     }
 
     .motif--roots-leaf-c {
-        inset-block-start: 7%;
+        inset-block-start: 5.4%;
         inset-inline-start: auto;
-        inset-inline-end: -2rem;
-        width: clamp(4rem, 15vw, 6.5rem);
+        inset-inline-end: 4%;
+        width: clamp(3.75rem, 13vw, 6rem);
+        opacity: 0.3;
     }
 
-    .motif--roots-leaf-p {
-        inset-block-start: 84%;
+    .motif--roots-leaf-a {
+        inset-block-start: 36%;
         inset-inline-start: -2.5rem;
-        width: clamp(4.5rem, 17vw, 7rem);
+        width: clamp(6rem, 22vw, 9.5rem);
+        opacity: 0.3;
     }
 
-    .motif--roots-apple-b {
-        inset-block-start: 44%;
-        inset-inline-start: auto;
-        inset-inline-end: -1rem;
-        width: clamp(2.5rem, 9vw, 4rem);
+    .motif--roots-leaf-k {
+        inset-block-start: 36.4%;
+        inset-inline-start: 34%;
+        width: clamp(3.25rem, 11vw, 5rem);
+        opacity: 0.26;
     }
 
-    .motif--keeper-leaf-c {
-        inset-block-end: 34%;
+    /* Nu mai spre margine de-atât: pe tabletă acolo coboară căderea de lângă
+       fotografii (blocul de 48-64em) și cele două s-ar suprapune la 1023px. */
+    .motif--roots-leaf-p {
+        inset-block-start: 37.2%;
         inset-inline-start: auto;
+        inset-inline-end: 30%;
+        width: clamp(2.75rem, 9vw, 4.25rem);
+        opacity: 0.28;
+    }
+
+    .motif--roots-leaf-b {
+        inset-block-start: 66.2%;
         inset-inline-end: -2.5rem;
-        width: clamp(4.5rem, 17vw, 7rem);
+        width: clamp(6rem, 22vw, 9.5rem);
+        opacity: 0.3;
+    }
+
+    .motif--roots-leaf-l {
+        inset-block-start: 66.6%;
+        inset-inline-start: 28%;
+        width: clamp(3.5rem, 12vw, 5.5rem);
+        opacity: 0.26;
+    }
+
+    .motif--roots-apple-c {
+        inset-block-start: 67.4%;
+        inset-inline-start: 58%;
+        width: clamp(2.25rem, 7.5vw, 3.5rem);
+        opacity: 0.32;
+    }
+
+
+    /* PORTRETUL. Fâșia de deasupra fotografiei și cea de sub citat. */
+    /* Fâșia de deasupra portretului are 76px la 768px și atât: nu încape decât
+       un singur desen mic în ea. Cutia unei frunze întoarse e cu jumătate mai
+       mare decât lățimea ei scrisă (44deg din 5rem dau 113px), deci două
+       frunze puse aici ar intra pe sub fotografie și ar dispărea sub ea —
+       desenele stau la z-index: -1. Restul căderii se mută în coloana de lângă
+       portret, care există numai pe tabletă (vezi blocul de 48-64em). */
+    .motif--keeper-apple {
+        inset-block-start: 1.2%;
+        inset-inline-start: 31%;
+        inset-inline-end: auto;
+        width: clamp(1.75rem, 5vw, 2.5rem);
+        opacity: 0.32;
     }
 
     .motif--keeper-leaf-d {
-        inset-block-end: 9%;
+        inset-block-start: auto;
+        inset-block-end: 0.5%;
         inset-inline-start: auto;
-        inset-inline-end: -3rem;
-        width: clamp(5.5rem, 21vw, 9rem);
+        inset-inline-end: -2rem;
+        width: clamp(5rem, 18vw, 8rem);
+        opacity: 0.26;
     }
 
-    .motif--keeper-apple {
-        inset-block-start: 5%;
-        inset-inline-end: -0.75rem;
-        width: clamp(2.5rem, 9vw, 4rem);
+    /* Fâșia dintre legenda portretului și titlu, și talpa de sub citat. Sunt
+       singurele două goluri pe care banda le mai are pe telefon, unde
+       fotografia iese până la geam și textul umple coloana. Blocul de tabletă
+       le mută pe amândouă în coloana de lângă portret. */
+    .motif--keeper-leaf-b {
+        inset-block-start: 53.4%;
+        inset-inline-start: auto;
+        inset-inline-end: 8%;
+        width: clamp(1.75rem, 5.5vw, 2.5rem);
+        opacity: 0.26;
     }
 
+    .motif--keeper-leaf-c {
+        inset-block-start: auto;
+        inset-block-end: 1.5%;
+        inset-inline-start: 17%;
+        inset-inline-end: auto;
+        width: clamp(2rem, 6vw, 2.75rem);
+        opacity: 0.24;
+    }
+
+
+    /* CARUSELUL. Fâșia dintre paragraf și bandă, plus marginile. */
     .motif--reel-leaf-a {
         inset-block-start: 1.5rem;
-        inset-inline-start: -2.5rem;
+        inset-inline-start: -2rem;
         width: clamp(5rem, 19vw, 8rem);
+        opacity: 0.3;
     }
 
-    /* Aceeași socoteală: pe o coloană cade peste legenda caruselului. */
     .motif--reel-leaf-c {
-        inset-block-end: 12%;
-        inset-inline-end: -3rem;
-        width: clamp(5.5rem, 21vw, 9rem);
+        inset-block-end: 4%;
+        inset-inline-end: -2rem;
+        width: clamp(5rem, 19vw, 8rem);
+        opacity: 0.26;
+    }
+
+    /* Sub bandă, nu lângă ea: hârtia din stânga primului diapozitiv pare
+       liberă, dar banda se derulează și diapozitivele intră peste ea, iar
+       desenul ar trece pe sub ele. */
+    .motif--reel-leaf-d {
+        inset-block-start: auto;
+        inset-block-end: 4%;
+        inset-inline-start: 22%;
+        width: clamp(2.5rem, 8vw, 3.5rem);
         opacity: 0.26;
     }
 
     .motif--reel-apple {
-        inset-block-start: 18%;
-        inset-inline-start: -0.5rem;
-        width: clamp(2.75rem, 10vw, 4.5rem);
+        inset-block-start: 17.5%;
+        inset-inline-start: 78%;
+        width: clamp(1.75rem, 5.5vw, 2.75rem);
+        opacity: 0.34;
     }
 
-    /* Titlul secțiunii e centrat și pe o coloană ocupă toată lățimea, deci
-       cele două frunze de sus nu au unde să stea decât pe sub el. Intră mai
-       mult de sub geam și coboară sub 0.34 — pragul de la care un desen poate
-       trece pe sub un rând de text (vezi capul secțiunii 7). */
+
+    /* INTERVIURILE. Titlul e centrat și ocupă toată lățimea, deci cele două
+       frunze de sus intră mai mult de sub geam și coboară sub 0.34 — pragul
+       de la care un desen poate trece pe sub un rând de text (secțiunea 7). */
     .motif--talks-leaf-a {
         inset-block-start: 0.75rem;
-        inset-inline-start: -3.5rem;
+        inset-inline-start: -3rem;
         width: clamp(5.5rem, 21vw, 9rem);
         opacity: 0.28;
     }
 
     .motif--talks-leaf-h {
         inset-block-start: 3.5rem;
-        inset-inline-end: -3.5rem;
+        inset-inline-end: -3rem;
         width: clamp(5rem, 19vw, 8rem);
         opacity: 0.28;
     }
 
-    .motif--talks-apple {
-        inset-block-start: 30%;
-        inset-inline-start: -0.5rem;
-        width: clamp(2.75rem, 10vw, 4.5rem);
+    /* Fâșia dintre paragraful de sub titlu și primul cartonaș. */
+    .motif--talks-leaf-b {
+        inset-block-start: 16.2%;
+        inset-inline-start: 17%;
+        width: clamp(2rem, 6.5vw, 3rem);
         opacity: 0.3;
+    }
+
+    .motif--talks-apple {
+        inset-block-start: 17%;
+        inset-inline-start: 70%;
+        width: clamp(1.75rem, 5.5vw, 2.75rem);
+        opacity: 0.34;
+    }
+
+    /* Golul dintre cartonașul mare și cele două mici: 72px. */
+    .motif--talks-leaf-f {
+        inset-block-start: 65.4%;
+        inset-inline-start: 24%;
+        width: clamp(1.5rem, 4.5vw, 2rem);
+        opacity: 0.28;
+    }
+}
+
+
+/* --- Tabletă: 48em pana la 64em ------------------------------------------- */
+
+/* Fotografiile ies până la geam numai pe telefon. Pe tabletă coloana e destul
+   de lată cât să le țină înăuntru, iar ieșirea le făcea de trei ori cât textul
+   de sub ele: la 768px fotografia momentului avea 646x404 lângă un text de
+   612x142 (client, 2026-08-20 — „prea mari față de text"). Plafonul de 30rem
+   e ales din aceeași socoteală ca cele 26rem de pe index: fotografia rămâne
+   lucrul mare al blocului, dar textul nu mai e o notă sub ea.
+
+   Ce mai face plafonul: lasă hârtie liberă în dreptul fotografiei, pe partea
+   dinspre margine, iar acolo stau frunzele de la secțiunea următoare. */
+
+@media (min-width: 48em) and (max-width: 63.99em) {
+
+    .stage__frame,
+    .stage--flip .stage__frame {
+        margin-inline: 0;
+        max-width: 30rem;
+    }
+
+    .keeper__portrait {
+        margin-inline: 0;
+        max-width: 30rem;
+    }
+
+    /* Legenda se aliniază iar la marginea fotografiei, nu la a paginii:
+       fotografia s-a întors în coloană. */
+    .keeper__cred {
+        padding-inline: 0;
+    }
+
+
+    /* DESENELE DIN COLOANA LIBERĂ DE LÂNGĂ FOTOGRAFII.
+
+       Plafonul de mai sus lasă hârtie goală în dreptul fiecărei fotografii, pe
+       partea dinspre margine: măsurat la 768px, fotografia se termină la 78.3%
+       din lățimea secțiunii, deci rămâne o coloană de 167px pe toată înălțimea
+       ei. Coloana aia nu există pe telefon, unde fotografia iese până la geam,
+       și de aceea desenele de aici stau numai în banda de tabletă.
+
+       Sunt trei căderi, una lângă fiecare fotografie, plus una lângă portret:
+       frunzele coboară pe dreapta în timp ce pomul și linia desenată urcă pe
+       stânga, deci pagina are ceva de fiecare parte la orice înălțime.
+
+       La 1023px coloana liberă se lărgește (fotografia rămâne la 30rem, pagina
+       nu), deci procentele de aici cad tot în ea — verificat la amândouă
+       capetele benzii. */
+
+    .motif--roots-leaf-d,
+    .motif--roots-leaf-e,
+    .motif--roots-leaf-f,
+    .motif--roots-leaf-g,
+    .motif--roots-leaf-h,
+    .motif--roots-leaf-i,
+    .motif--roots-leaf-j,
+    .motif--roots-apple,
+    .motif--keeper-leaf-b,
+    .motif--keeper-leaf-c,
+    .motif--keeper-leaf-e,
+    .motif--keeper-leaf-f,
+    .motif--keeper-leaf-h,
+    .motif--keeper-apple-b,
+    .motif--keeper-apple-c,
+    .motif--talks-leaf-d,
+    .motif--talks-leaf-i {
+        display: block;
+    }
+
+    /* Lângă prima fotografie. */
+    .motif--roots-leaf-d {
+        inset-block-start: 18.5%;
+        inset-inline-start: 81%;
+        inset-inline-end: auto;
+        width: clamp(4rem, 8vw, 6rem);
+        opacity: 0.3;
+    }
+
+    .motif--roots-leaf-e {
+        inset-block-start: 27%;
+        inset-inline-start: 89%;
+        inset-inline-end: auto;
+        width: clamp(3.25rem, 6.5vw, 5rem);
+        opacity: 0.26;
+    }
+
+    .motif--roots-apple {
+        inset-block-start: 35.5%;
+        inset-inline-start: 82%;
+        width: clamp(2.25rem, 4.5vw, 3.5rem);
+        opacity: 0.34;
+    }
+
+    /* Lângă a doua. */
+    .motif--roots-leaf-f {
+        inset-block-start: 50%;
+        inset-inline-start: 86%;
+        inset-inline-end: auto;
+        width: clamp(4.25rem, 8.5vw, 6.5rem);
+        opacity: 0.28;
+    }
+
+    .motif--roots-leaf-g {
+        inset-block-start: 58.5%;
+        inset-inline-start: 80.5%;
+        width: clamp(3.5rem, 7vw, 5.25rem);
+        opacity: 0.26;
+    }
+
+    /* Lângă a treia. */
+    .motif--roots-leaf-h {
+        inset-block-start: 79%;
+        inset-inline-start: 82%;
+        width: clamp(3.75rem, 7.5vw, 5.75rem);
+        opacity: 0.3;
+    }
+
+    .motif--roots-leaf-i {
+        inset-block-start: 87%;
+        inset-inline-start: 89%;
+        width: clamp(3rem, 6vw, 4.5rem);
+        opacity: 0.24;
+    }
+
+    .motif--roots-leaf-j {
+        inset-block-start: 94.5%;
+        inset-inline-start: 81%;
+        width: clamp(3.5rem, 7vw, 5.25rem);
+        opacity: 0.27;
+    }
+
+    /* Coloana de lângă portret: 253px la 768px, cea mai largă de pe pagină.
+       Căderea începe sus, lângă umărul fotografiei, și se termină în dreptul
+       legendei. */
+    .motif--keeper-leaf-b {
+        inset-block-start: 0.8%;
+        inset-block-end: auto;
+        inset-inline-start: 78%;
+        width: clamp(3.75rem, 7.5vw, 5.75rem);
+        opacity: 0.28;
+    }
+
+    .motif--keeper-leaf-c {
+        inset-block-start: 21%;
+        inset-block-end: auto;
+        inset-inline-start: 80%;
+        inset-inline-end: auto;
+        width: clamp(3rem, 6vw, 4.5rem);
+        opacity: 0.24;
+    }
+
+    .motif--keeper-leaf-e {
+        inset-block-start: 11.5%;
+        inset-block-end: auto;
+        inset-inline-start: 68%;
+        width: clamp(4.5rem, 9vw, 7rem);
+        opacity: 0.28;
+    }
+
+    .motif--keeper-leaf-f {
+        inset-block-start: 29%;
+        inset-block-end: auto;
+        inset-inline-start: 69%;
+        width: clamp(3.5rem, 7vw, 5.25rem);
+        opacity: 0.24;
+    }
+
+    .motif--keeper-apple-b {
+        inset-block-start: 36%;
+        inset-block-end: auto;
+        inset-inline-start: 79%;
+        width: clamp(2.5rem, 5vw, 3.75rem);
+        opacity: 0.32;
+    }
+
+    .motif--keeper-leaf-h {
+        inset-block-start: 43%;
+        inset-block-end: auto;
+        inset-inline-start: 70%;
+        width: clamp(3.25rem, 6.5vw, 5rem);
+        opacity: 0.26;
+    }
+
+    .motif--keeper-apple-c {
+        inset-block-start: 50%;
+        inset-block-end: auto;
+        inset-inline-start: 80%;
+        width: clamp(2rem, 4vw, 3rem);
+        opacity: 0.28;
+    }
+
+    /* Interviuri: golul dintre paragraf și primul cartonaș e mai lat aici. */
+    .motif--talks-leaf-d {
+        inset-block-start: 16.4%;
+        inset-inline-start: 32%;
+        width: clamp(2rem, 4.5vw, 3rem);
+        opacity: 0.26;
+    }
+
+    /* Sub cartonașe, în talpa secțiunii: 111px, cel mai lat gol de aici. */
+    .motif--talks-leaf-i {
+        inset-block-start: 91%;
+        inset-inline-start: auto;
+        inset-inline-end: 26%;
+        width: clamp(3.25rem, 6.5vw, 5rem);
+        opacity: 0.28;
     }
 }
 
@@ -1886,6 +2236,22 @@
 
     .talk--lead {
         grid-column: auto;
+    }
+
+    /* Frunza care intră din stânga are o retragere fixă (-3rem), deci cu cât
+       ecranul e mai îngust cu atât intră mai mult în pagină: la 320px ajunge
+       peste frunza din fâșia de sub titlu. Aceasta se dă la dreapta. */
+    .motif--talks-leaf-b {
+        inset-inline-start: 38%;
+    }
+
+    /* Pe o singură coloană golul dintre cartonașe se strânge la --space-l,
+       adică 32px: nu mai încape nimic acolo. Frunza coboară în talpa
+       secțiunii. */
+    .motif--talks-leaf-f {
+        inset-block-start: auto;
+        inset-block-end: 3%;
+        inset-inline-start: 22%;
     }
 }
 
