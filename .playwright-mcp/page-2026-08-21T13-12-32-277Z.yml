@@ -1,0 +1,184 @@
+- generic [ref=f1e1]:
+  - link "Sari la conținut" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - link "Ferma Fruct Brabova, pagina principală" [ref=f1e5] [cursor=pointer]:
+        - /url: index.html
+        - generic [ref=f1e6]: Ferma Fruct
+      - navigation "Navigare principală" [ref=f1e7]:
+        - list [ref=f1e8]:
+          - listitem [ref=f1e9]:
+            - link "Acasă" [ref=f1e10] [cursor=pointer]:
+              - /url: index.html#acasa
+          - listitem [ref=f1e11]:
+            - link "Despre" [ref=f1e12] [cursor=pointer]:
+              - /url: despre.html
+          - listitem [ref=f1e13]:
+            - link "Contact" [ref=f1e14] [cursor=pointer]:
+              - /url: contact.html
+      - paragraph [ref=f1e15]:
+        - generic [ref=f1e16]: "Limba paginii:"
+        - generic [ref=f1e17]: RO
+        - generic [ref=f1e18]: EN
+  - main [ref=f1e19]:
+    - generic [ref=f1e20]:
+      - 'generic "Filmare din dronă deasupra fermei: parcelele, drumul de acces și clădirile fermei"'
+      - generic [ref=f1e23]:
+        - paragraph [ref=f1e24]: Povestea noastră
+        - heading "O livadă crescută cu răbdare." [level=1] [ref=f1e25]: O livadăcrescută cu răbdare.
+        - paragraph [ref=f1e26]: De la primii pomi până la recoltele de astăzi.
+    - generic [ref=f1e28]:
+      - heading "Cum a prins rădăcini livada" [level=2] [ref=f1e31]
+      - list [ref=f1e33]:
+        - listitem [ref=f1e34]:
+          - generic [ref=f1e35]:
+            - paragraph [ref=f1e36]: "2012"
+            - heading "— Începutul fermei" [level=3] [ref=f1e37]
+            - paragraph [ref=f1e38]: "Totul a început cu un vis simplu: să plantăm o livadă pe pământul nostru, cu grijă și respect pentru natură."
+          - img "Ramură de cireș în floare într-o livadă tânără, cu pomii încă legați de araci" [ref=f1e41]
+        - listitem [ref=f1e42]:
+          - generic [ref=f1e43]:
+            - paragraph [ref=f1e44]: "2014"
+            - heading "— Primii pomi plantați" [level=3] [ref=f1e45]
+            - paragraph [ref=f1e46]: Am pus în pământ primii puieți și am început să învățăm livada, zi de zi. Răbdarea și munca au devenit rădăcinile noastre.
+          - img "Rânduri de pomi tineri acoperiți cu plasă antigrindină, cu iarba cosită între ele" [ref=f1e49]
+        - listitem [ref=f1e50]:
+          - generic [ref=f1e51]:
+            - paragraph [ref=f1e52]: Astăzi
+            - heading "— Livada continuă să crească" [level=3] [ref=f1e53]
+            - paragraph [ref=f1e54]: Astăzi, livada noastră este matură, dar grija pentru fiecare pom rămâne aceeași ca în prima zi.
+          - img "Livadă matură, cu coroane late și iarbă înaltă pe intervalul dintre rânduri" [ref=f1e57]
+    - generic [ref=f1e59]:
+      - generic [ref=f1e60]:
+        - img "Proprietarul fermei, lângă un prun încărcat cu fructe" [ref=f1e62]
+        - paragraph [ref=f1e63]:
+          - generic [ref=f1e64]:
+            - text: Nume de completat
+            - generic [ref=f1e65]: Proprietar, Ferma Fruct Brabova
+      - generic [ref=f1e66]:
+        - heading "Omul din spatele livezii" [level=2] [ref=f1e67]
+        - paragraph [ref=f1e68]: Sunt aici în fiecare zi, de la răsărit până la lăsarea serii. Îmi cunosc fiecare pom, știu când are nevoie de apă, când de tăiere și când are nevoie doar de timp.
+        - paragraph [ref=f1e69]: Nu grăbim natura și nu căutăm drumuri ușoare. Credem în munca făcută cu grijă, în respectul pentru pământ și în bucuria de a vedea roadele muncii noastre.
+        - paragraph [ref=f1e70]: Livada ne învață răbdarea, iar noi îi oferim atenția noastră, în fiecare zi.
+        - paragraph [ref=f1e71]: „O livadă nu se grăbește.”
+    - region [ref=f1e72]:
+      - heading "Viața din livadă" [level=2] [ref=f1e76]
+      - generic [ref=f1e78]:
+        - list "Fotografii din livadă, derulare laterală" [ref=f1e79]:
+          - listitem [ref=f1e80]:
+            - figure "Rândurile, primăvara târziu" [ref=f1e81]:
+              - img "Livada văzută de pe intervalul dintre două rânduri de pomi" [ref=f1e82]
+          - listitem [ref=f1e84]:
+            - figure "Lucrul de zi cu zi" [ref=f1e85]:
+              - img "Tractorul fermei cu cisterna de stropit, pe drumul de pământ dintre parcele" [ref=f1e86]
+          - listitem [ref=f1e88]:
+            - figure "Printre rânduri" [ref=f1e89]:
+              - generic "Filmare scurtă din livadă, printre rândurile de pomi" [ref=f1e90]
+          - listitem [ref=f1e92]:
+            - figure "Drumul spre livadă" [ref=f1e93]:
+              - img "Drumul care intră în livadă, cu pomii de o parte și de alta" [ref=f1e94]
+          - listitem [ref=f1e96]:
+            - figure "Cireșele, la cules" [ref=f1e97]:
+              - img "Cireșe coapte pe ramură, gata de cules" [ref=f1e98]
+          - listitem [ref=f1e100]:
+            - figure "Prunele, la sfârșit de vară" [ref=f1e101]:
+              - img "Prune brumate pe ramură, la sfârșitul verii" [ref=f1e102]
+        - button "Fotografia următoare" [ref=f1e104] [cursor=pointer]
+      - tablist "Alege fotografia" [ref=f1e108]:
+        - tab "Fotografia 1 din 6" [selected] [ref=f1e109] [cursor=pointer]
+        - tab "Fotografia 2 din 6" [ref=f1e110] [cursor=pointer]
+        - tab "Fotografia 3 din 6" [ref=f1e111] [cursor=pointer]
+        - tab "Fotografia 4 din 6" [ref=f1e112] [cursor=pointer]
+        - tab "Fotografia 5 din 6" [ref=f1e113] [cursor=pointer]
+        - tab "Fotografia 6 din 6" [ref=f1e114] [cursor=pointer]
+    - region [ref=f1e115]:
+      - generic [ref=f1e116]:
+        - generic [ref=f1e117]:
+          - heading "Interviuri din livadă" [level=2] [ref=f1e118]
+          - paragraph [ref=f1e119]: Povești spuse de oamenii care cunosc livada cel mai bine.
+        - list [ref=f1e120]:
+          - listitem [ref=f1e121]:
+            - figure "Povestea fermei" [ref=f1e122]:
+              - generic [ref=f1e123]:
+                - img "Miniatura interviului despre povestea fermei" [ref=f1e124]
+                - 'button "Redă: Povestea fermei" [ref=f1e125] [cursor=pointer]'
+          - listitem [ref=f1e127]:
+            - figure "Cum îngrijim livada" [ref=f1e128]:
+              - generic [ref=f1e129]:
+                - img "Miniatura interviului despre îngrijirea livezii" [ref=f1e130]
+                - 'button "Redă: Cum îngrijim livada" [ref=f1e131] [cursor=pointer]'
+          - listitem [ref=f1e133]:
+            - figure "De ce culegem la timp" [ref=f1e134]:
+              - generic [ref=f1e135]:
+                - img "Miniatura interviului despre momentul culesului" [ref=f1e136]
+                - 'button "Redă: De ce culegem la timp" [ref=f1e137] [cursor=pointer]'
+  - contentinfo [ref=f1e139]:
+    - generic [ref=f1e140]:
+      - paragraph [ref=f1e142]: Ferma Fruct Brabova
+      - navigation "Navigare în subsol" [ref=f1e143]:
+        - heading "Navigare" [level=2] [ref=f1e144]
+        - list [ref=f1e145]:
+          - listitem [ref=f1e146]:
+            - link "Acasă" [ref=f1e147] [cursor=pointer]:
+              - /url: index.html#acasa
+          - listitem [ref=f1e148]:
+            - link "Despre" [ref=f1e149] [cursor=pointer]:
+              - /url: despre.html
+          - listitem [ref=f1e150]:
+            - link "Contact" [ref=f1e151] [cursor=pointer]:
+              - /url: contact.html
+    - generic [ref=f1e152]:
+      - heading "Fructele noastre ajung la" [level=2] [ref=f1e153]
+      - list [ref=f1e154]:
+        - listitem [ref=f1e155]:
+          - img "Carrefour" [ref=f1e156]
+        - listitem [ref=f1e163]:
+          - img "Auchan" [ref=f1e164]
+        - listitem [ref=f1e170]:
+          - img "Big Family Market" [ref=f1e171]:
+            - generic [ref=f1e183]: BIG
+            - generic [ref=f1e184]: FAMILY
+            - generic [ref=f1e185]: MARKET
+        - listitem [ref=f1e187]:
+          - img "Partener comercial" [ref=f1e188]
+    - generic [ref=f1e191]:
+      - list [ref=f1e192]:
+        - listitem [ref=f1e193]:
+          - link "Instagram" [ref=f1e194] [cursor=pointer]:
+            - /url: https://www.instagram.com/
+        - listitem [ref=f1e199]:
+          - link "Facebook" [ref=f1e200] [cursor=pointer]:
+            - /url: https://www.facebook.com/
+      - paragraph [ref=f1e205]:
+        - generic [ref=f1e206]: RO
+        - generic [ref=f1e207]: "|"
+        - generic [ref=f1e208]: EN
+      - paragraph [ref=f1e209]: © 2026 Ferma Fruct Brabova. Toate drepturile rezervate.
+  - generic [ref=f1e210]:
+    - img "Impeccable live mode - agent not polling" [ref=f1e211]
+    - generic [ref=f1e216]:
+      - button "Pick element" [ref=f1e217] [cursor=pointer]:
+        - generic: Pick
+      - button "Insert new element" [ref=f1e220] [cursor=pointer]:
+        - generic: Insert
+      - button "Detect anti-patterns" [ref=f1e222] [cursor=pointer]:
+        - generic: Detect
+      - button "Toggle DESIGN.md panel" [ref=f1e226] [cursor=pointer]:
+        - generic: DESIGN.md
+      - generic "Steer the page" [ref=f1e232] [cursor=pointer]:
+        - textbox "Steer the page" [active] [ref=f1e233]:
+          - /placeholder: Steer…
+        - button "Voice input" [ref=f1e234]
+        - button "Send steer message" [disabled] [ref=f1e238]
+      - button "Exit live mode" [ref=f1e242] [cursor=pointer]
+  - generic:
+    - generic:
+      - complementary:
+        - generic:
+          - generic: DESIGN.md
+          - generic:
+            - button "Visual"
+            - button "Raw"
+          - button "Close panel": ✕
+        - generic: No design system data available.

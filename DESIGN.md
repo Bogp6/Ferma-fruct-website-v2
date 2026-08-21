@@ -4,6 +4,10 @@ Written from the built page, not a plan. Code wins if they disagree.
 
 Scope: `index.html` (built) and `contact.html` (in progress).
 
+## Cache busting — read this before you touch CSS or JS
+
+`style.css`, `contact.css`, `despre.css` and `main.js` are all linked with a `?v=` query. **Bump it on every change to those files, in all three pages.** The comment above the `main.js` tag in `index.html` says so; it is easy to miss and the failure is silent and expensive — the browser serves the old stylesheet, the new asset filenames are never requested, and the change looks like it simply did not happen. Current value: `20260821-masks-1`. `contact.js` and `despre.js` carry their own versions and only move when they change.
+
 ## Which file to read
 
 One stylesheet per page, on purpose. Read only the one for the page you are on.
@@ -91,7 +95,14 @@ Do not reintroduce `salvage/salvage.css` fonts (Bricolage Grotesque, DM Mono, Ca
 
       **They are 16:9 (960×540), not 16:10.** `blob-d*` were 16:10 stretched over a 16:9 photo box, which flattened the top and bottom bulges on top of the clipping.
 
-      Check after regenerating: fill about 60% of the box and every edge 0% solid, matching `blob-a1` (60.6%) and `blob-b1` (60.7%). `blob-c*` are still on the old clipped recipe — unused on despre, check before reusing them anywhere.
+      Check after regenerating: fill about 60% of the box and every edge 0% solid, matching `blob-a1` (60.6%) and `blob-b1` (60.7%). `blob-c*` are still on the old clipped recipe — unused, check before reusing them anywhere.
+
+    - **`blob-{a3,a4,b3,b4,f1}.webp` (2026-08-21), the index and contact masks.** Client's call: the despre photos read cleaner, so the whole site moved onto the `blob-e` recipe. `blob-{a1,a2,b1,b2}` had about **12% semi-transparent pixels** — a soft milky band around every photo that read as an unfinished edge. The new files have **0.00%**: alpha is thresholded to black or white, so the edge is spray, not a fade. Fill 57–61%, every edge 0% solid.
+      - `blob-a3` / `blob-a4` — 900×900, `.grove__frame--a` (1:1).
+      - `blob-b3` / `blob-b4` — 900×675, `.grove__frame--b` (4:3).
+      - `blob-f1` — 960×600, `.reach__frame` on contact. **New ratio:** `.reach__photo` is 8:5 and was wearing the 4:3 `blob-b1` stretched over it, which pulled the granulation into streaks.
+      - Letter is the aspect ratio, number is the recipe generation. `a1`/`a2` are still live on `despre.html` (`.keeper__frame`) — do not delete them, and do not put them back on index or contact.
+      - Contour rescaling differs from the `blob-e` write-up above: the harmonic sum is normalised so the contour's own maximum lands at `REACH = 0.935`, which guarantees the granulation spray stays inside `r = 1` no matter which seed comes up. Base radius `0.96` plus raw harmonics could reach 1.14 and clip.
   - No `border-radius`, no `overflow` — `clip-path: inset(...)` is only the arrival wipe now; the mask does the shape. No `box-shadow` (would be clipped off); photos sit flat on cream.
   - `.grove__rail` — the harvest calendar, a real column of the block, not a margin label. `order: -1` puts it opposite `.motif--grove-branch` without moving it in the DOM.
     - **The column moves down the page per fruit** (client's call): cireșe and pere keep it on the outer edge, caise and prune carry `.grove--mid` and move it to the middle. `.grove--mid` only changes the three `order` values.
@@ -123,7 +134,16 @@ Do not reintroduce `salvage/salvage.css` fonts (Bricolage Grotesque, DM Mono, Ca
 
 ## Fundal decorativ
 
-Three engraved line drawings, client-supplied: `branch-farm.png`, `apple-farm.png`, `leaf-farm.png` → exported to `branch-1024.webp`, `apple-480.webp`, `leaf-640.webp`.
+Three engraved line drawings, client-supplied: `branch-farm.png`, `apple-farm.png`, `leaf-farm.png` → exported to `branch-1024.webp`, `apple-480.webp`, `leaf-480.webp`.
+
+**Leaf sizes (2026-08-21).** `leaf-640.webp` (72 KB) was serving every leaf on all three pages, and the biggest leaf on the site renders at 240 CSS px (`.drawer__leaf`, `clamp(10rem, 28svh, 15rem)`) — so 640 was more than 2.5× the pixels any of them could use. Now:
+
+  - `leaf-480.webp` (28 KB, `cwebp -q 80 -alpha_q 88`) — **every leaf on all three pages.** 480 covers the biggest leaf on the site (the 240 px drawer) at 2× DPR, so nothing is under-resolved anywhere.
+  - `leaf-320.webp` and `leaf-640.webp` are now **unreferenced**; kept in `img/` in case a leaf ever needs redrawing at another size.
+
+  One URL repeated many times is one download, so the cheapest page is the one that uses a single leaf file. That is why despre's roots leaves moved off `leaf-320` too: two files cost 42 KB, one costs 28 KB, and the roots leaves got sharper in the bargain.
+
+  `.drawer__leaf` is hand-copied byte-identical into all three pages, so its size changed in all three at once. Keep them identical.
 
 The centre apple-tree drawing that used to run down the page is **deleted** (file and CSS, client's call) — recoverable from `121458f`. `leaf-top.png`/`leaf-bottom.png` are still in `img/`, still unused.
 
@@ -158,6 +178,16 @@ Background drawings drift on `animation-timeline: view()` — see Fundal decorat
 **Can't judge timing in a headless/hidden Chrome tab** — `requestAnimationFrame` throttles there, so GSAP tweens may not advance at normal speed. The hero remains visible in that state; CSS-only transitions such as the photo wipe still finish. Judge timing in a real window.
 
 `.reveal` is added only by JS, never in HTML, so a script-less page shows everything. GSAP must add `.is-in` before clearing its inline transform, or it snaps back. `.reveal--js` turns off the CSS transition while GSAP owns the frame, or the two fight.
+
+## The drift fallback read rem as pixels (fixed 2026-08-21)
+
+`main.js`, the `if (!hasViewTimeline)` branch — the levitation the background drawings do on scroll, in **Firefox and any browser without view timelines**.
+
+`--drift` is written in rem and is **not** registered with `@property`, so `getComputedStyle(el).getPropertyValue('--drift')` hands back the raw token `"2.75rem"`, not a pixel length. The old code ran `parseFloat` on it and got **2.75**. Every drawing on the page was levitating two to five pixels instead of 44 to 80 — visually nothing, which is exactly how the client described it.
+
+Fixed with an offscreen probe element: the value is assigned to a real `width` and read back computed, so layout does the unit conversion. Now `2.75rem` → 44 px, matching what the CSS `motif-drift` keyframes produce in Chromium exactly. The probe also survives `--drift` ever becoming `px`, `em`, or `calc()`.
+
+Chromium has view timelines, so it runs the CSS path and never showed this. **Do not test motif drift in Chromium alone.**
 
 ## Five bugs already fixed — don't reintroduce
 
@@ -230,6 +260,15 @@ python3 -m http.server 8811
 
 Hard-refresh after CSS edits — stale stylesheets have caused false reads before.
 
+## Fotografia mare de pe contact este acum film (2026-08-21)
+
+`.reach__frame` held `livada-drum-*.webp`, marked in the markup as provisional. Client replaced it with `img/tractor-contact.mp4` — the tractor working between the rows.
+
+- Same markup pattern as `.story__film` and `.hero__film`: `autoplay muted loop playsinline preload="metadata"`, an `aria-label` instead of `alt`, poster `tractor-contact-poster.webp` (frame 0, `cwebp -q 72`, 24 KB). The `::-webkit-media-controls` suppression is copied from despre so iOS does not draw a play badge over it.
+- Source is **960×624 (20:13)**, the box stays **8:5**, so `object-fit: cover` trims about 4% off the top and bottom. `blob-f1` is already 8:5 — no mask regeneration.
+- **Under-resolved on retina.** The box renders 896 px wide at a 1280 window, so a 2× screen wants ~1792 px and the source is 960. It will look soft. Ask the farm for a bigger export before launch; do not upscale.
+- `livada-drum-720/1440/1600.webp` are now unused. Ask before deleting.
+
 ## Pagina de contact
 
 Scaffold. Chrome and stylesheet only — the page itself is not designed and its content is not decided with the client.
@@ -298,6 +337,36 @@ The one cost: between about 900 and 1280 there is now open paper to the right of
 `margin-block-start: calc(var(--space-2xl) + 3.75%)`. The percentage is not decoration: `scale(1.12)` from the centre lifts the frame's painted top edge by 6% of the photo's **height**, the height is 0.625 of the width, and margin percentages resolve against the parent's width — so 3.75% of the width is exactly what the scale eats. Without it the gap shrank as the photo grew, which is why the photo looked stuck to the "E-MAIL" line. If the scale, the ratio or the margin base changes, this number has to be redone.
 
 Measured at 320, 375, 768, 1248, 1279, 1280, 1359, 1360, 1440, 1920 and 2560: no horizontal overflow anywhere; the road's clearance to the nearest text or field holds at every narrow width and grows above 1360; no decorative drawing sits over text below 80em (the two branches still cross the title and the photo above it, as they always have); every `.reveal` block and the photo wipe still arrive after a full scroll at 375 and at 1920. Above 1280 the only changes from what the client already approved are the two branch setbacks and the new photo file.
+
+## Banda de deschidere de pe despre (`.story`)
+
+**Talpa și topirea, 2026-08-21.** Client flagged a flat cream stripe between the film and „Cum a prins rădăcini livada" — it read as a seam between two sections, not as one melting into the other. Two things were making it, and both were changed:
+
+- `.story__fade` — the cream gradient was too strong through its middle (0.78 at 16%, 0.56 at 26%), so the film was washed out over the full 77 px band. Now only the bottom 5% is solid cream and the curve falls away fast (0.66 at 13%, 0.42 at 23%). The film reads almost to the boundary. Raise the middle values and the stripe comes back.
+- `.roots` `padding-block-start` — was `--space-xl`, now `--space-m`. `.story` already carries its own `--story-foot` (fade + `--space-s`, 97 px at 1280), so the section rhythm was stacking on top of it: about **180 px of empty page** between the last hero line and the title. `--story-foot` itself was left alone — the invariant that it must stay taller than `--story-fade` is what keeps the last line of text out of the cream.
+
+**Text contrast on the film — measured, do not "fix" it.** The `impeccable live` detector flags `.story__kicker` and `.story__lead` as low contrast. It is a false positive: the detector cannot composite a `<video>` frame, so it has no real background to measure. Measured properly — ten frames sampled across the 6.7 s loop, the brightest 10% of pixels inside each text box, composited through both wash gradients — the worst case at 1280 is:
+
+| | current `--on-dark-soft` #F4EDDB | `--on-dark` #FAF9EF | `--bark` #493017 |
+|---|---|---|---|
+| `.story__kicker` (14 px) | **4.96** | 5.48 | 2.11 |
+| `.story__lead` (18 px) | **6.58** | 7.27 | 1.59 |
+| `.story__title` (62 px) | **4.84** | 5.35 | 2.16 |
+
+The cream already clears 4.5:1 at its worst frame. Brown was tried at the client's request and is 2–4× worse: the wash sits at mid-luminance, so a dark warm text colour is the one thing that cannot work on it. Left unchanged.
+
+## Politica de confidențialitate
+
+`politica-de-confidentialitate.html` plus `css/politica-de-confidentialitate.css` and `js/politica.js`. **Read mode:** the visitor is here to understand something, so structure for comprehension first and keep the page quiet. The legal text is the client's, unchanged.
+
+- **Title is `--step-4`, not `--step-5`.** Step 5 is the hero size for a page that sells. Ninety-six pixels of heading over a document nobody comes to admire is just shouting.
+- **Section numbers hang in their own column.** `.privacy__section h2` is a two-column grid, `2.5rem 1fr`, `align-items: baseline`, with the number in `.privacy__num` at `--step-0`. Titles that wrap to two lines align on the letter, not under the digit, and the digits stay a scanning aid. Grid, **not** `position: absolute` — a number hung outside the column would leave the viewport on a phone, and no media query is written here.
+- **Sticky contents column.** The document is about 4900 px. `.privacy__summary` carries `position: sticky` **itself**, as the flex item, plus `align-self: start`. Putting sticky on an inner wrapper does nothing: the parent box is exactly the child's height, so there is no room to slide, and it only looks like it works because the page is scrolling. `max-height` plus `overflow-y: auto` keeps it inside the window on short screens.
+- `js/politica.js` marks the current section in the contents with `IntersectionObserver`, band `-25% 0px -55% 0px`. The `#id`s live on the `<h2>`, not the `<section>` (the section points at them with `aria-labelledby`), so the script climbs to `.privacy__section` before observing — observing the heading directly watches a 37 px sliver that mostly misses the band. Without the script the contents is still a complete list of links.
+- **`--earth` (#C3A278) is 2.12:1 on `--paper`.** It is a drawn-rule colour, not a text colour. Both sets of numbers use `--ink-soft` (6.58). Do not put `--earth` back on anything a visitor reads.
+- Body leading is 1.7, not `--leading-body` (1.6). Ten sections of legal prose are not one paragraph on the landing page.
+- **Not verified:** the current-section highlight could not be exercised through the Chrome extension — `IntersectionObserver` does not deliver callbacks in that tab, and a plain observer with no margin returns zero entries there. It was confirmed by eye in a normal window instead.
+- `.privacy__pending` is a live note to the site owner about the placeholder e-mail address. It is visible to visitors. Remove it with the placeholder.
 
 ## Still open
 

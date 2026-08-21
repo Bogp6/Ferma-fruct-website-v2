@@ -125,7 +125,12 @@
    din toată banda. Jos, opac (hârtie curată); sus, transparent (filmul
    neatins). 8 trepte de crem, nu 4: mai puține se văd ca dungi peste un film
    care se mișcă. --paper e rgb(246,241,225) — dacă se schimbă tokenul, se
-   schimbă și aici. */
+   schimbă și aici.
+
+   Curba e trasă spre bază: numai ultimele 5% sunt crem plin, restul lasă
+   filmul să se vadă. La valorile dinainte (0.78 la 16%, 0.56 la 26%) banda se
+   citea ca o dungă de hârtie lipită peste film, nu ca o topire. Urci
+   valorile de mijloc la loc și dunga se întoarce. */
 .story__fade {
     position: absolute;
     inset: auto 0 0 0;
@@ -133,13 +138,13 @@
     height: var(--story-fade);
     background: linear-gradient(to top,
             rgb(246, 241, 225) 0%,
-            rgba(246, 241, 225, 1) 6%,
-            rgba(246, 241, 225, 0.78) 16%,
-            rgba(246, 241, 225, 0.56) 26%,
-            rgba(246, 241, 225, 0.37) 38%,
-            rgba(246, 241, 225, 0.22) 52%,
-            rgba(246, 241, 225, 0.11) 66%,
-            rgba(246, 241, 225, 0.04) 82%,
+            rgba(246, 241, 225, 1) 5%,
+            rgba(246, 241, 225, 0.66) 13%,
+            rgba(246, 241, 225, 0.42) 23%,
+            rgba(246, 241, 225, 0.26) 35%,
+            rgba(246, 241, 225, 0.15) 49%,
+            rgba(246, 241, 225, 0.08) 64%,
+            rgba(246, 241, 225, 0.03) 80%,
             rgba(246, 241, 225, 0) 100%);
 }
 
@@ -188,15 +193,17 @@
    amesteca și rămâne alb.
    --------------------------------------------------------------------------- */
 
-/* Sus --space-xl, nu --space-section: banda de deschidere își aduce deja
+/* Sus --space-m, nu --space-section: banda de deschidere își aduce deja
    propria talpă (--story-foot), deci ritmul obișnuit dintre secțiuni s-ar
-   aduna peste ea și titlul ar cădea la un ecran de film. */
+   aduna peste ea și titlul ar cădea la un ecran de film. Era --space-xl și
+   tot se aduna prea mult: între ultimul rând al heroului și titlu rămâneau
+   ~180px goi, citiți ca o cusătură între secțiuni. */
 .roots {
     position: relative;
     isolation: isolate;
     overflow: clip;
     background: var(--paper);
-    padding: var(--space-xl) var(--gutter) var(--space-2xl);
+    padding: var(--space-m) var(--gutter) var(--space-2xl);
 
     /* Hârtia liberă dintre container și geam, ca la portret (--bleed din
        .keeper). Fotografiile momentelor o folosesc ca să crească.

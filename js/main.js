@@ -356,11 +356,30 @@
         window.CSS.supports('animation-timeline: view()');
 
     if (!hasViewTimeline) {
+        /* --drift e scris in rem si NU e inregistrat cu @property, deci
+           getPropertyValue intoarce jetonul brut ("2.75rem"), nu pixeli.
+           parseFloat pe el dadea 2.75 in loc de 44: frunzele se mișcau trei
+           pixeli, adica deloc. Sonda rezolva lungimea prin layout, deci merge
+           si daca --drift ajunge px, em sau calc(). Fara ea, deriva dispare
+           in Firefox si in orice browser fara view timelines. */
+        var probe = document.createElement('div');
+        probe.setAttribute('aria-hidden', 'true');
+        probe.style.cssText = 'position:absolute;left:-9999px;top:0;height:0;visibility:hidden;pointer-events:none';
+        document.body.appendChild(probe);
+
+        var toPx = function (value) {
+            if (!value) {
+                return 0;
+            }
+            probe.style.width = value;
+            return parseFloat(getComputedStyle(probe).width) || 0;
+        };
+
         var motifStates = Array.prototype.map.call(document.querySelectorAll('.motif'), function (el) {
             return {
                 el: el,
                 shift: 0,
-                travel: parseFloat(getComputedStyle(el).getPropertyValue('--drift')) || 48
+                travel: toPx(getComputedStyle(el).getPropertyValue('--drift').trim()) || 48
             };
         });
         var motifFrame = 0;

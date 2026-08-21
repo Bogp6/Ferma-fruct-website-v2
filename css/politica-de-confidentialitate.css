@@ -1,0 +1,312 @@
+/* Politica de confidențialitate păstrează antetul și subsolul comune.
+   Fișierul acesta stilizează numai lectura documentului juridic. */
+
+.privacy-page {
+    --p: 1;
+    --header-h: calc(3rem + var(--space-xs) * 2);
+    background: var(--paper);
+}
+
+.privacy {
+    background: var(--paper);
+    color: var(--ink);
+    caret-color: var(--action);
+}
+
+.privacy ::selection {
+    background: var(--leaf-bright);
+    color: var(--bark-deep);
+}
+
+.privacy__hero {
+    overflow: clip;
+    padding: calc(var(--header-h) + var(--space-2xl)) var(--gutter) var(--space-xl);
+    background: var(--sand);
+}
+
+.privacy__hero-inner {
+    position: relative;
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.privacy__hero-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 52rem;
+}
+
+.privacy__title {
+    max-width: 13ch;
+    color: var(--forest);
+    /* --step-4, nu --step-5: pe restul site-ului treapta 5 e pentru heroul
+       unei pagini care vinde. Aici e un document, iar 96px de titlu strigă
+       peste un text pe care oricum nimeni nu vine să-l admire. */
+    font-size: var(--step-4);
+    line-height: var(--leading-tight);
+    font-weight: var(--weight-display);
+    font-variation-settings: var(--axes-display);
+}
+
+.privacy__intro {
+    max-width: 52ch;
+    margin-block-start: var(--space-m);
+    color: var(--ink);
+    font-size: var(--step-1);
+    line-height: var(--leading-body);
+}
+
+.privacy__updated {
+    margin-block-start: var(--space-m);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: 0.03em;
+}
+
+.privacy__leaf {
+    position: absolute;
+    inset-block: 50% auto;
+    inset-inline: auto clamp(-8rem, -7vw, -3rem);
+    width: clamp(12rem, 25vw, 22rem);
+    height: auto;
+    translate: 0 -50%;
+    rotate: 12deg;
+    opacity: 0.28;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.privacy__body {
+    max-width: var(--container);
+    margin-inline: auto;
+    padding: var(--space-section) var(--gutter);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--space-xl) clamp(var(--space-xl), 6vw, var(--space-2xl));
+}
+
+/* Documentul are aproape 5000px. O coloană laterală care dispare după primul
+   ecran nu orientează pe nimeni, deci se lipește sub antet și rămâne acolo.
+
+   sticky STĂ PE ELEMENTUL DE FLEX, nu pe un div din interiorul lui: pus pe un
+   copil, cutia părintelui are exact înălțimea copilului și sticky n-are în ce
+   aluneca — nu face nimic și pare că merge doar fiindcă pagina derulează.
+   align-self: start e la fel de obligatoriu: fără el elementul se întinde pe
+   toată înălțimea rândului și, din nou, nu rămâne loc de alunecare. */
+.privacy__summary {
+    flex: 1 1 14rem;
+    align-self: start;
+    position: sticky;
+    /* --header-h e antetul fix; --space-l e aerul dintre el și rezumat. */
+    inset-block-start: calc(var(--header-h) + var(--space-l));
+    max-width: 18rem;
+    /* Pe ecrane scunde cuprinsul e mai înalt decât fereastra: derulează în el,
+       nu sub antet. */
+    max-height: calc(100svh - var(--header-h) - var(--space-l));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-block-start: var(--space-xs);
+    border-block-start: var(--rule) solid var(--earth);
+}
+
+.privacy__summary-title {
+    color: var(--forest);
+    font-size: var(--step-2);
+    font-weight: var(--weight-mid);
+    font-variation-settings: var(--axes-label);
+}
+
+.privacy__summary p {
+    margin-block-start: var(--space-s);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+}
+
+/* ---------------------------------------------------------------------------
+   CUPRINSUL
+   --------------------------------------------------------------------------- */
+
+.privacy__toc {
+    margin-block-start: var(--space-l);
+    padding-block-start: var(--space-m);
+    border-block-start: var(--hairline) solid var(--sand);
+}
+
+.privacy__toc-title {
+    color: var(--ink-soft);
+    font-family: var(--font-text);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+}
+
+.privacy__toc-list {
+    margin-block-start: var(--space-s);
+    padding-inline-start: 0;
+    list-style: none;
+}
+
+/* Fără margine între elemente: padding-block de pe legătură dă deja aerul, iar
+   zece rânduri cu amândouă nu încăpeau în fereastră și al zecelea rămânea tăiat. */
+.privacy__toc-item + .privacy__toc-item {
+    margin-block-start: 0;
+}
+
+/* grid, nu flex: cifrele stau într-o coloană proprie de lățime fixă, deci
+   titlurile din cuprins încep toate pe aceeași verticală, la fel ca titlurile
+   secțiunilor cu numărul atârnat. */
+.privacy__toc-link {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: var(--space-2xs);
+    padding-block: var(--space-2xs);
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    line-height: var(--leading-snug);
+    text-decoration: none;
+    transition: color var(--duration) var(--ease);
+}
+
+.privacy__toc-num {
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    transition: color var(--duration) var(--ease);
+}
+
+.privacy__toc-link:hover,
+.privacy__toc-link:focus-visible {
+    color: var(--action-ink);
+}
+
+.privacy__toc-link:hover .privacy__toc-num,
+.privacy__toc-link:focus-visible .privacy__toc-num {
+    color: var(--action-ink);
+}
+
+/* Secțiunea în care se află cititorul. Clasa e pusă numai de politica.js —
+   fără script, cuprinsul rămâne o listă de legături obișnuită, întreagă. */
+.privacy__toc-item.is-current .privacy__toc-link {
+    color: var(--forest);
+    font-weight: var(--weight-mid);
+}
+
+.privacy__toc-item.is-current .privacy__toc-num {
+    color: var(--forest);
+}
+
+.privacy__contact-link {
+    display: inline-block;
+    margin-block-start: var(--space-m);
+    color: var(--action-ink);
+    font-size: var(--step--1);
+    font-weight: var(--weight-mid);
+    text-underline-offset: 0.22em;
+    transition: color var(--duration) var(--ease),
+        text-decoration-thickness var(--duration) var(--ease);
+}
+
+.privacy__contact-link:hover,
+.privacy__contact-link:focus-visible {
+    color: var(--action-deep);
+    text-decoration-thickness: var(--rule);
+}
+
+.privacy__content {
+    flex: 3 1 34rem;
+    max-width: 48rem;
+}
+
+.privacy__section {
+    padding-block: var(--space-l);
+    border-block-start: var(--hairline) solid var(--sand);
+}
+
+.privacy__section:first-child {
+    padding-block-start: 0;
+    border-block-start: 0;
+}
+
+/* Cifra stă într-o coloană a ei, ca într-o carte: titlurile de două rânduri
+   se aliniază pe literă, nu se strâng sub cifră, iar cifra rămâne reperul de
+   scanare al documentului. Aceeași grilă ca la .privacy__toc-link, deci
+   cuprinsul și secțiunile au aceeași așezare.
+   grid, nu position: absolute — o cifră scoasă în afara coloanei ar ieși din
+   geam pe telefon, iar aici nu se scrie niciun media query. */
+.privacy__section h2 {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    /* baseline, nu stretch: cifra e mai mică decât titlul, iar fără asta ar
+       sta lipită de marginea de sus a rândului. */
+    align-items: baseline;
+    max-width: 24ch;
+    color: var(--forest);
+    /* 1.03 (--leading-tight) lipea rândurile titlurilor rupte în două, iar
+       șase din zece se rup. */
+    line-height: var(--leading-snug);
+    font-size: var(--step-2);
+    font-weight: var(--weight-mid);
+    font-variation-settings: var(--axes-label);
+}
+
+/* --ink-soft (6.58 pe hârtie), nu --earth: --earth iese 2.12 și cifra e text,
+   nu ornament. Rămâne oricum vizibil mai stinsă decât verdele titlului.
+   --step-0, nu mărimea titlului: la 31px „10" nu încăpea în coloana ei. */
+.privacy__num {
+    color: var(--ink-soft);
+    font-size: var(--step-0);
+    font-variant-numeric: tabular-nums;
+}
+
+/* 1.7, nu --leading-body (1.6): zece secțiuni de text juridic se citesc mai
+   greu decât un paragraf de pe pagina principală. */
+.privacy__section p,
+.privacy__section li {
+    max-width: 70ch;
+    line-height: 1.7;
+}
+
+.privacy__section p {
+    margin-block-start: var(--space-s);
+}
+
+.privacy__section a {
+    color: var(--action-ink);
+    font-weight: var(--weight-mid);
+    text-decoration-thickness: var(--hairline);
+    text-underline-offset: 0.2em;
+}
+
+.privacy__section a:hover,
+.privacy__section a:focus-visible {
+    color: var(--action-deep);
+    text-decoration-thickness: var(--rule);
+}
+
+.privacy__pending {
+    display: block;
+    margin-block-start: var(--space-xs);
+    color: var(--action-deep);
+    font-size: var(--step--1);
+}
+
+.privacy__rights {
+    margin-block-start: var(--space-s);
+    padding-inline-start: var(--space-m);
+    list-style: disc;
+}
+
+.privacy__rights li + li {
+    margin-block-start: var(--space-2xs);
+}
+
+.privacy-page .site-footer__base {
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+
+.privacy-page .site-footer__legal {
+    grid-column: auto;
+}

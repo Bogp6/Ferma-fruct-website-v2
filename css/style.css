@@ -1266,8 +1266,8 @@ main,
 .grove {
     /* Silueta fotografiilor: patru fișiere, patru perechi diferite mai jos,
        ca același contur să nu apară de două ori. */
-    --blob-a: url("../img/blob-a1.webp");
-    --blob-b: url("../img/blob-b1.webp");
+    --blob-a: url("../img/blob-a3.webp");
+    --blob-b: url("../img/blob-b3.webp");
     --rail-ink: var(--sand);
     --rail-pad: var(--space-l);
 
@@ -1307,16 +1307,16 @@ main,
 }
 
 .orchard__groves > .grove:nth-child(2) {
-    --blob-a: url("../img/blob-a2.webp");
-    --blob-b: url("../img/blob-b2.webp");
+    --blob-a: url("../img/blob-a4.webp");
+    --blob-b: url("../img/blob-b4.webp");
 }
 
 .orchard__groves > .grove:nth-child(3) {
-    --blob-a: url("../img/blob-a2.webp");
+    --blob-a: url("../img/blob-a4.webp");
 }
 
 .orchard__groves > .grove:nth-child(4) {
-    --blob-b: url("../img/blob-b2.webp");
+    --blob-b: url("../img/blob-b4.webp");
 }
 
 /* Coloana fotografiei e puțin mai lată decât cea a textului: egale, blocul
@@ -1339,13 +1339,17 @@ main,
     padding-block-start: var(--space-m);
 }
 
-/* SILUETA: fotografia nu are margini drepte — se stinge organic pe toate
-   laturile, ca o spălare de acuarelă.
+/* SILUETA: fotografia nu are margini drepte — muchia e stropită, ca la
+   momentele de pe despre.
    Masca e un webp cu silueta în canalul alfa, deci mask-image pe modul
    implicit, fără mask-mode/SVG (mask: url(#id) nu e de încredere în
    Safari); -webkit-mask-* rămâne pentru Safari. Nu radial-gradient: ar da
    un oval curat, nu conturul neregulat. Nu feTurbulence: costă la fiecare
    pictare.
+   blob-a3/a4 și blob-b3/b4 sunt rețeta blob-e: alfa tăiat la prag, deci
+   alb-negru fără degradeu. Vechile blob-a1/a2 și blob-b1/b2 aveau ~12% pixeli
+   semitransparenți, adică o bandă moale care se citea ca fotografie
+   neterminată — nu le pune înapoi.
    mask-size: 100% 100% întinde fișierul pe cutie — blob-a* e pătrat,
    blob-b* e 4:3, ca aspect-ratio al fotografiei. Schimbi raportul unei
    fotografii, regenerezi masca (altfel granulația se lățește în dungi);
@@ -2133,6 +2137,21 @@ main,
     color: var(--on-dark-soft);
     font-size: var(--step--1);
     text-align: center;
+}
+
+.site-footer__legal-link {
+    color: var(--paper);
+    text-decoration-color: var(--action);
+    text-decoration-thickness: var(--hairline);
+    text-underline-offset: 0.22em;
+    transition: color var(--duration) var(--ease),
+        text-decoration-thickness var(--duration) var(--ease);
+}
+
+.site-footer__legal-link:hover,
+.site-footer__legal-link:focus-visible {
+    color: var(--paper);
+    text-decoration-thickness: var(--rule);
 }
 
 /* Stilat înaintea conținutului: marcajul pentru telefon/e-mail stă parcat

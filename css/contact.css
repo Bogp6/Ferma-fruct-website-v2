@@ -205,10 +205,13 @@ a.line__value:hover {
     text-decoration-color: currentColor;
 }
 
-/* Marginea negativă duce fotografia fix până în geam. blob-b1 e conturul
-   pictat din machetă, întins pe cadrul panoramic ca să rămână vizibil pe toate
-   laturile. -webkit-mask-* pentru Safari. Fără radial-gradient: ar da un oval
-   curat, nu o margine de acuarelă. */
+/* Marginea negativă duce fotografia fix până în geam. blob-f1 e conturul
+   stropit, rețeta blob-e: alfa tăiat la prag, alb-negru fără degradeu.
+   E 8:5 (960x600), exact raportul lui .reach__photo — vechiul blob-b1 era 4:3
+   întins peste o cutie 8:5, ceea ce lățea granulația în dungi, și avea ~12%
+   pixeli semitransparenți, adică o bandă moale de fotografie neterminată.
+   SCHIMBI RAPORTUL FOTOGRAFIEI, REGENEREZI MASCA (rețeta e în DESIGN.md).
+   -webkit-mask-* pentru Safari. Fără radial-gradient: ar da un oval curat. */
 .reach__frame {
     flex: 1.6 1 0;
     margin: 0;
@@ -222,8 +225,8 @@ a.line__value:hover {
        pictate ies vizibil mai mult în afară. */
     transform: scale(1.12);
 
-    -webkit-mask-image: url("../img/blob-b1.webp");
-    mask-image: url("../img/blob-b1.webp");
+    -webkit-mask-image: url("../img/blob-f1.webp");
+    mask-image: url("../img/blob-f1.webp");
     -webkit-mask-size: 100% 100%;
     mask-size: 100% 100%;
     -webkit-mask-repeat: no-repeat;
@@ -232,9 +235,10 @@ a.line__value:hover {
 
 /* aspect-ratio pe imagine, nu pe ramă: pe ramă e ignorat cât timp imaginea o
    împinge la înălțimea ei naturală. Niciodată height lângă el.
-   8/5, nu 16/9: dacă rama s-ar lăți, culoarul drumului s-ar muta sub
-   fotografie și drumul ar dispărea în spatele ei (.road are z-index: -1).
-   object-fit taie ~90px pe laterale din sursa 16/9; nu se mărește nimic. */
+   8/5, nu raportul sursei: dacă rama s-ar lăți, culoarul drumului s-ar muta
+   sub fotografie și drumul ar dispărea în spatele ei (.road are z-index: -1).
+   Sursa e 960x624 (20:13), deci object-fit taie ~4% sus și jos; nu se mărește
+   nimic. Se schimbă raportul cutiei, se regenerează blob-f1. */
 .reach__photo {
     width: 100%;
     height: auto;
@@ -373,6 +377,41 @@ a.line__value:hover {
 .field__input--area {
     min-height: 9rem;
     resize: vertical;
+}
+
+.form__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-s);
+}
+
+.form__consent-check {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0.3em 0 0;
+    accent-color: var(--action-deep);
+}
+
+.form__consent-label {
+    max-width: 42ch;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    line-height: var(--leading-body);
+}
+
+.form__consent-label a {
+    color: var(--action-ink);
+    font-weight: var(--weight-mid);
+    text-decoration-thickness: var(--hairline);
+    text-underline-offset: 0.2em;
+}
+
+.form__consent-label a:hover,
+.form__consent-label a:focus-visible {
+    color: var(--action-deep);
+    text-decoration-thickness: var(--rule);
 }
 
 /* .btn + .btn--ink din style.css; aici rămâne numai distanța față de ultimul câmp. */
@@ -951,4 +990,3 @@ html:not(.no-js) .road__stop {
         inset-inline-end: calc(var(--bleed) - var(--branch-w) + 14rem);
     }
 }
-

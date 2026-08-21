@@ -18,8 +18,8 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260819-video-3">
-  <link rel="stylesheet" href="css/contact.css?v=20260820-contact-18">
+  <link rel="stylesheet" href="css/style.css?v=20260821-privacy-1">
+  <link rel="stylesheet" href="css/contact.css?v=20260821-privacy-1">
 
   <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -118,7 +118,7 @@
 
     <nav class="drawer__panel" aria-label="Meniu">
 
-      <img class="drawer__leaf" src="img/leaf-640.webp" width="640" height="640" alt="" aria-hidden="true"
+      <img class="drawer__leaf" src="img/leaf-480.webp" width="480" height="480" alt="" aria-hidden="true"
            loading="lazy" decoding="async">
 
       <div class="drawer__top">
@@ -204,12 +204,15 @@
         </div>
 
         <!-- Marginea negativă e --bleed: distanța până la marginea geamului.
-             FOTO PROVIZORIE: cadru din filmul livezii, până trimite ferma una reală. -->
+             Fotografia e primul cadru din tractor-contact.mp4. Sursa e 960x624,
+             iar cutia e 8:5 — object-fit taie ~4% sus și jos; masca (blob-f1) e
+             tot 8:5, deci nu se regenerează nimic. Peste ~900px de cutie
+             fotografia rămâne sub 2x: trebuie un cadru mai mare de la fermă. -->
         <figure class="reach__frame">
-          <img class="reach__photo" src="img/livada-drum-1440.webp"
-               srcset="img/livada-drum-720.webp 720w, img/livada-drum-1440.webp 1440w, img/livada-drum-1600.webp 1600w"
-               sizes="(min-width: 80em) 58rem, (min-width: 48em) 42rem, 95vw" width="1440" height="810"
-               alt="Livada de la Brabova văzută de sus, cu rândurile de pomi înfloriți și drumul de pământ dintre ele."
+          <img class="reach__photo" src="img/tractor-contact-960.webp"
+               srcset="img/tractor-contact-720.webp 720w, img/tractor-contact-960.webp 960w"
+               sizes="(min-width: 80em) 58rem, (min-width: 48em) 42rem, 95vw" width="960" height="624"
+               alt="Tractorul verde al fermei oprit pe pământul arat dintre rândurile tinere de pomi."
                fetchpriority="high" decoding="async">
         </figure>
 
@@ -279,6 +282,15 @@
                         rows="6" required></textarea>
             </div>
 
+            <div class="form__consent">
+              <input class="form__consent-check" id="acord-confidentialitate" name="privacy_consent"
+                     type="checkbox" value="Da" required>
+              <label class="form__consent-label" for="acord-confidentialitate">
+                Am citit <a href="politica-de-confidentialitate.html">Politica de confidențialitate</a>
+                și sunt de acord cu prelucrarea datelor mele pentru a primi un răspuns la mesaj.
+              </label>
+            </div>
+
             <!-- Varianta pe hârtie a butonului din hero: brun în repaus pentru contrast. -->
             <button class="btn btn--ink" type="submit">Trimite mesajul</button>
 
@@ -342,15 +354,15 @@
     <!-- Frunzele cresc DIN drum: prinse cu codița de linie, poziția vine din
          aceleași coordonate ca „d" — vezi contact.css secțiunea 7. Un singur
          măr, la capătul drumului lângă punctul portocaliu. -->
-    <img class="motif motif--road motif--road-leaf-a" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--road motif--road-leaf-a" src="img/leaf-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
-    <img class="motif motif--road motif--road-leaf-b" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--road motif--road-leaf-b" src="img/leaf-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
-    <img class="motif motif--road motif--road-leaf-c" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--road motif--road-leaf-c" src="img/leaf-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
-    <img class="motif motif--road motif--road-leaf-d" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--road motif--road-leaf-d" src="img/leaf-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
-    <img class="motif motif--road motif--road-leaf-e" src="img/leaf-640.webp" width="640" height="640"
+    <img class="motif motif--road motif--road-leaf-e" src="img/leaf-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
     <img class="motif motif--road motif--road-apple" src="img/apple-480.webp" width="480" height="480"
          alt="" aria-hidden="true" loading="lazy" decoding="async">
@@ -495,7 +507,11 @@
         <span class="site-footer__lang-next">EN</span>
       </p>
 
-      <p class="site-footer__legal">&copy; 2026 Ferma Fruct Brabova. Toate drepturile rezervate.</p>
+      <p class="site-footer__legal">
+        <a class="site-footer__legal-link" href="politica-de-confidentialitate.html">Politica de confidențialitate</a>
+        <span aria-hidden="true"> · </span>
+        <span>&copy; 2026 Ferma Fruct Brabova. Toate drepturile rezervate.</span>
+      </p>
 
     </div>
 
@@ -503,12 +519,11 @@
 
   <script src="js/gsap.min.js"></script>
   <!-- Același main.js ca pe index; pe pagina asta rulează practic numai meniul lateral. -->
-  <script src="js/main.js?v=20260819-video-3"></script>
+  <script src="js/main.js?v=20260821-masks-1"></script>
   <!-- Sosirea la derulare și desenarea drumului, separat ca să nu ceară ?v= nou pe index. -->
   <script src="js/contact.js?v=20260820-contact-5"></script>
 
 <!-- impeccable-live-start -->
-<script src="http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782"></script>
 <!-- impeccable-live-end -->
 </body>
 
