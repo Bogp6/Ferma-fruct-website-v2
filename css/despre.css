@@ -330,8 +330,10 @@
        Muchia e stropită, ca la portret (blob-a1): banda moale a vechilor
        blob-c* a fost lărgită, presărată cu zgomot și tăiată la prag, deci
        alfa e alb-negru, fără degradeu. Regenerare: vezi DESIGN.md.
-       mask-size: 100% 100% întinde masca pe cutie, deci fișierele sunt 16:10,
-       ca fotografiile: SCHIMBI RAPORTUL FOTOGRAFIEI, REGENEREZI MASCA. */
+       mask-size: 100% 100% întinde masca pe cutie, deci fișierele sunt 16:9,
+       exact raportul fotografiilor: SCHIMBI RAPORTUL FOTOGRAFIEI, REGENEREZI
+       MASCA. (Erau 16:10 întinse peste o cutie 16:9, ceea ce turtea burțile de
+       sus și de jos ale conturului peste tăietura lui deja dreaptă.) */
     -webkit-mask-image: var(--blob);
     mask-image: var(--blob);
     -webkit-mask-size: 100% 100%;
@@ -342,15 +344,15 @@
 
 /* Câte un contur pentru fiecare bloc, ca să nu se repete aceeași siluetă. */
 .stage__frame--a {
-    --blob: url("../img/blob-d1.webp");
+    --blob: url("../img/blob-e1.webp");
 }
 
 .stage__frame--b {
-    --blob: url("../img/blob-d2.webp");
+    --blob: url("../img/blob-e2.webp");
 }
 
 .stage__frame--c {
-    --blob: url("../img/blob-d3.webp");
+    --blob: url("../img/blob-e3.webp");
 }
 
 /* aspect-ratio stă pe fotografie, nu pe cadru: pe cadru e ignorat (dimensiunea
@@ -600,15 +602,17 @@
     padding-inline: var(--gutter);
 }
 
+/* --slide stă aici, nu pe bandă: și butoanele o citesc, ca să se așeze pe
+   marginile diapozitivului din față și nu pe marginile paginii. */
 .reel__stage {
     position: relative;
+    /* 88vw, nu 68vw: la 390px vechea valoare dădea o fotografie de 265px, mai
+       mică decât portretul de deasupra ei. Plafonul de 46rem e neatins peste
+       836px, deci ecranele mari rămân exact cum erau. */
+    --slide: clamp(16rem, 88vw, 46rem);
 }
 
 .reel__track {
-    /* Lățimea diapozitivului din față. Paddingul de mai jos e scris din ea,
-       ca diapozitivul lipit de snap să cadă exact pe mijlocul benzii. */
-    --slide: clamp(16rem, 68vw, 46rem);
-
     display: flex;
     gap: var(--space-m);
     margin: 0;
@@ -649,24 +653,62 @@
     scale: 0.93;
 }
 
+/* Aceeași muchie de acuarelă ca la momente și la portret: caruselul era
+   singurul loc de pe pagină unde fotografiile aveau colț rotunjit și umbră,
+   adică singurul lucru care arăta cumpărat de-a gata. Masca merge direct pe
+   <img> și pe <video>, fără un cadru în plus.
+
+   Trei contururi pe rând, ca la cele trei momente: cu unul singur, șase
+   fotografii una după alta ar arăta ștanțate cu același șablon. Măștile sunt
+   16:9, exact ca la .stage__frame — SCHIMBI RAPORTUL FOTOGRAFIILOR,
+   REGENEREZI MĂȘTILE (rețeta e în DESIGN.md). */
 .reel__media {
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    border-radius: var(--radius-l);
-    box-shadow: var(--shadow-lift);
     background: var(--sand);
+
+    --blob: url("../img/blob-e1.webp");
+    -webkit-mask-image: var(--blob);
+    mask-image: var(--blob);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
 }
 
+.reel__slide:nth-child(3n + 2) .reel__media {
+    --blob: url("../img/blob-e2.webp");
+}
+
+.reel__slide:nth-child(3n) .reel__media {
+    --blob: url("../img/blob-e3.webp");
+}
+
+/* Liniuța de nisip de deasupra citatului din portret, repetată aici: sub o
+   muchie zdrențuită legenda plutea, n-avea pe ce să stea. */
 .reel__caption {
-    margin-block-start: var(--space-s);
+    position: relative;
+    margin-block-start: var(--space-m);
+    padding-block-start: var(--space-s);
     text-align: center;
     color: var(--ink-soft);
     font-size: var(--step--1);
     font-weight: var(--weight-mid);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+}
+
+.reel__caption::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    width: clamp(1.75rem, 4vw, 2.75rem);
+    height: var(--hairline);
+    background: var(--sand);
 }
 
 /* Ridicat cu jumătate din înălțimea legendei, ca să cadă pe mijlocul
@@ -695,12 +737,15 @@
         transform var(--duration-fast) var(--ease);
 }
 
+/* Centrate pe marginea diapozitivului din față (jumătate din buton în afara
+   fotografiei). Legate de --gutter stăteau pe marginea paginii: la 1280 pluteau
+   la vreo 200px de fotografie, în hârtie goală. */
 .reel__nav--prev {
-    inset-inline-start: var(--gutter);
+    inset-inline-start: calc((100% - var(--slide)) / 2 - 1.5rem);
 }
 
 .reel__nav--next {
-    inset-inline-end: var(--gutter);
+    inset-inline-end: calc((100% - var(--slide)) / 2 - 1.5rem);
 }
 
 .reel__nav:hover,
@@ -714,9 +759,13 @@
     transform: scale(0.95);
 }
 
-.reel__nav:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
+/* Butonul de la capăt se ascunde (despre.js), nu se stinge: un buton gri la
+   prima privire arată ca o comandă stricată, nu ca „ești la prima fotografie".
+
+   Regula asta e obligatorie: display din .reel__nav bate display: none pe care
+   browserul îl pune pe [hidden], deci fără ea atributul nu ascunde nimic. */
+.reel__nav[hidden] {
+    display: none;
 }
 
 .reel__nav:disabled:hover {
@@ -836,30 +885,39 @@
     object-fit: cover;
 }
 
-/* Insigna de redare. Portocaliul site-ului, nu roșul YouTube: pe pagina asta
-   portocaliu înseamnă „se poate apăsa" și nu există a doua culoare de acțiune. */
+/* Insigna de redare: sigla YouTube, cerută de client, ca vizitatorul să vadă
+   dintr-o privire că e un clip și unde se deschide. E singurul loc de pe site
+   unde roșul apare — culoarea aparține mărcii YouTube, nu paletei fermei, la
+   fel ca literele din sigla Big Family Market din subsol. Portocaliul rămâne
+   peste tot altundeva singura culoare a lucrurilor pe care se poate apăsa. */
 .talk__badge {
     position: absolute;
     inset: 50% auto auto 50%;
     translate: -50% -50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 3.5rem;
-    height: 2.5rem;
-    border-radius: var(--radius-m);
-    background: var(--action);
-    color: var(--paper-lift);
-    box-shadow: var(--shadow-raise);
+    display: block;
+    /* Procent din lățimea cadrului: cartonașul mare și cele două mici țin
+       aceeași insignă proporțional, fără o interogare de lățime separată. */
+    width: clamp(3.25rem, 13%, 4.5rem);
     pointer-events: none;
-    transition: background-color var(--duration) var(--ease),
+    /* Umbra ține sigla lizibilă și pe un cadru deschis, de cer sau de floare. */
+    filter: drop-shadow(0 2px 6px rgba(58, 38, 17, 0.45));
+    opacity: 0.92;
+    transition: opacity var(--duration) var(--ease),
         transform var(--duration) var(--ease);
 }
 
 .talk__badge svg {
-    width: 1.1rem;
-    height: 1.1rem;
-    fill: currentColor;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.talk__badge-plate {
+    fill: #FF0000;
+}
+
+.talk__badge-play {
+    fill: #FFFFFF;
 }
 
 .talk__open {
@@ -875,8 +933,8 @@
 
 .talk__open:hover ~ .talk__badge,
 .talk__open:focus-visible ~ .talk__badge {
-    background: var(--action-deep);
-    transform: scale(1.08);
+    opacity: 1;
+    transform: scale(1.09);
 }
 
 .talk__open:focus-visible {
@@ -2227,6 +2285,13 @@
 /* --- Sub 48em: telefonul -------------------------------------------------- */
 
 @media (max-width: 47.99em) {
+
+    /* Fără săgeți pe telefon. Cu diapozitivul la 88vw nu mai rămâne hârtie
+       liberă pe margini, deci butonul ar sta pe jumătate în afara ecranului și
+       pe jumătate peste fotografie. Degetul, bulinele și tastatura rămân. */
+    .reel__nav {
+        display: none;
+    }
 
     /* Cele două cartonașe mici nu mai încap una lângă alta: la 640px ajung la
        280px lățime, adică 158px de film cu o legendă de două rânduri sub el. */

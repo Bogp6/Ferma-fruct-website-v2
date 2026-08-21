@@ -1,0 +1,16 @@
+[     100ms] [WARNING] GSAP target .hero__mark not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     100ms] [WARNING] GSAP target  not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     100ms] [WARNING] GSAP target .hero__title not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     101ms] [WARNING] GSAP target  not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     101ms] [WARNING] GSAP target .hero__lead not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     101ms] [WARNING] GSAP target  not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     101ms] [WARNING] GSAP target .hero__cta not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     101ms] [WARNING] GSAP target  not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[     138ms] [LOG] [impeccable] Live variant mode ready. Hover over elements to pick one. @ http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782:12770
+[     166ms] [LOG] [impeccable] Live mode connected. @ http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782:7208
+[    2005ms] [WARNING] GSAP target .hero__mark,.hero__title,.hero__lead,.hero__cta not found. https://gsap.com @ http://localhost:8811/js/gsap.min.js:9
+[ 1565139ms] [LOG] [impeccable] SSE connection lost. Retry 1/20... @ http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782:7382
+[ 1565160ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:8400/events?token=13b018b5-2844-462a-ae1f-761f0b099782:0
+[ 1568042ms] [LOG] [impeccable] Live mode connected. @ http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782:7208
+[ 2999261ms] [LOG] [impeccable] Live variant mode ready. Hover over elements to pick one. @ http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782:12770
+[ 2999281ms] [LOG] [impeccable] Live mode connected. @ http://localhost:8400/live.js?token=13b018b5-2844-462a-ae1f-761f0b099782:7208

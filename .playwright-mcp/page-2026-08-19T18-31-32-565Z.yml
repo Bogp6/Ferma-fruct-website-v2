@@ -1,0 +1,155 @@
+- generic [active] [ref=e1]:
+  - link "Sari la conținut" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Ferma Fruct Brabova, pagina principală" [ref=e5] [cursor=pointer]:
+        - /url: index.html
+        - generic [ref=e6]: Ferma Fruct
+      - navigation "Navigare principală" [ref=e7]:
+        - list [ref=e8]:
+          - listitem [ref=e9]:
+            - link "Acasă" [ref=e10] [cursor=pointer]:
+              - /url: index.html#acasa
+          - listitem [ref=e11]:
+            - link "Despre" [ref=e12] [cursor=pointer]:
+              - /url: despre.html
+          - listitem [ref=e13]:
+            - link "Contact" [ref=e14] [cursor=pointer]:
+              - /url: contact.html
+      - paragraph [ref=e15]:
+        - generic [ref=e16]: "Limba paginii:"
+        - generic [ref=e17]: RO
+        - generic [ref=e18]: EN
+  - main [ref=e19]:
+    - generic [ref=e20]:
+      - 'generic "Filmare din dronă deasupra fermei: parcelele, drumul de acces și clădirile fermei"'
+      - generic [ref=e23]:
+        - paragraph [ref=e24]: Povestea noastră
+        - heading "O livadă crescută cu răbdare." [level=1] [ref=e25]: O livadăcrescută cu răbdare.
+        - paragraph [ref=e26]: De la primii pomi până la recoltele de astăzi.
+      - button "Oprește filmul" [ref=e27] [cursor=pointer]
+    - generic [ref=e33]:
+      - heading "Cum a prins rădăcini livada" [level=2] [ref=e36]
+      - list [ref=e38]:
+        - listitem [ref=e39]:
+          - generic [ref=e40]:
+            - paragraph [ref=e41]: "2012"
+            - heading "— Începutul fermei" [level=3] [ref=e42]
+            - paragraph [ref=e43]: "Totul a început cu un vis simplu: să plantăm o livadă pe pământul nostru, cu grijă și respect pentru natură."
+          - img "Ramură de cireș în floare într-o livadă tânără, cu pomii încă legați de araci" [ref=e46]
+        - listitem [ref=e47]:
+          - generic [ref=e48]:
+            - paragraph [ref=e49]: "2014"
+            - heading "— Primii pomi plantați" [level=3] [ref=e50]
+            - paragraph [ref=e51]: Am pus în pământ primii puieți și am început să învățăm livada, zi de zi. Răbdarea și munca au devenit rădăcinile noastre.
+          - img "Rânduri de pomi tineri acoperiți cu plasă antigrindină, cu iarba cosită între ele" [ref=e54]
+        - listitem [ref=e55]:
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Astăzi
+            - heading "— Livada continuă să crească" [level=3] [ref=e58]
+            - paragraph [ref=e59]: Astăzi, livada noastră este matură, dar grija pentru fiecare pom rămâne aceeași ca în prima zi.
+          - img "Livadă matură, cu coroane late și iarbă înaltă pe intervalul dintre rânduri" [ref=e62]
+    - generic [ref=e64]:
+      - img "Proprietarul fermei, lângă un prun încărcat cu fructe" [ref=e66]
+      - generic [ref=e67]:
+        - heading "Omul din spatele livezii" [level=2] [ref=e68]
+        - paragraph [ref=e69]: Sunt aici în fiecare zi, de la răsărit până la lăsarea serii. Îmi cunosc fiecare pom, știu când are nevoie de apă, când de tăiere și când are nevoie doar de timp.
+        - paragraph [ref=e70]: Nu grăbim natura și nu căutăm drumuri ușoare. Credem în munca făcută cu grijă, în respectul pentru pământ și în bucuria de a vedea roadele muncii noastre.
+        - paragraph [ref=e71]: Livada ne învață răbdarea, iar noi îi oferim atenția noastră, în fiecare zi.
+        - paragraph [ref=e72]: „O livadă nu se grăbește.”
+    - region [ref=e73]:
+      - heading "Viața din livadă" [level=2] [ref=e77]
+      - generic [ref=e79]:
+        - list "Fotografii din livadă, derulare laterală" [ref=e80]:
+          - listitem [ref=e81]:
+            - figure "Rândurile, primăvara târziu" [ref=e82]:
+              - img "Livada văzută de pe intervalul dintre două rânduri de pomi" [ref=e83]
+          - listitem [ref=e85]:
+            - figure "Lucrul de zi cu zi" [ref=e86]:
+              - img "Tractorul fermei cu cisterna de stropit, pe drumul de pământ dintre parcele" [ref=e87]
+          - listitem [ref=e89]:
+            - figure "Printre rânduri" [ref=e90]:
+              - generic "Filmare scurtă din livadă, printre rândurile de pomi" [ref=e91]
+          - listitem [ref=e93]:
+            - figure "Drumul spre livadă" [ref=e94]:
+              - img "Drumul care intră în livadă, cu pomii de o parte și de alta" [ref=e95]
+          - listitem [ref=e97]:
+            - figure "Cireșele, la cules" [ref=e98]:
+              - img "Cireșe coapte pe ramură, gata de cules" [ref=e99]
+          - listitem [ref=e101]:
+            - figure "Prunele, la sfârșit de vară" [ref=e102]:
+              - img "Prune brumate pe ramură, la sfârșitul verii" [ref=e103]
+        - button "Fotografia dinainte" [disabled] [ref=e105]
+        - button "Fotografia următoare" [ref=e109] [cursor=pointer]
+      - tablist "Alege fotografia" [ref=e113]:
+        - tab "Fotografia 1 din 6" [selected] [ref=e114] [cursor=pointer]
+        - tab "Fotografia 2 din 6" [ref=e115] [cursor=pointer]
+        - tab "Fotografia 3 din 6" [ref=e116] [cursor=pointer]
+        - tab "Fotografia 4 din 6" [ref=e117] [cursor=pointer]
+        - tab "Fotografia 5 din 6" [ref=e118] [cursor=pointer]
+        - tab "Fotografia 6 din 6" [ref=e119] [cursor=pointer]
+    - region [ref=e120]:
+      - generic [ref=e121]:
+        - generic [ref=e122]:
+          - paragraph [ref=e123]: Interviuri
+          - heading "Interviuri din livadă" [level=2] [ref=e124]
+          - paragraph [ref=e125]: Povești spuse de oamenii care cunosc livada cel mai bine.
+        - list [ref=e126]:
+          - listitem [ref=e127]:
+            - figure "Povestea fermei" [ref=e128]:
+              - generic [ref=e129]:
+                - img "Cadru din interviul despre povestea fermei" [ref=e130]
+                - generic [ref=e131]: Link în curând
+          - listitem [ref=e133]:
+            - figure "Cum îngrijim livada" [ref=e134]:
+              - generic [ref=e135]:
+                - img "Cadru din interviul despre îngrijirea livezii" [ref=e136]
+                - generic [ref=e137]: Link în curând
+          - listitem [ref=e139]:
+            - figure "De ce culegem la timp" [ref=e140]:
+              - generic [ref=e141]:
+                - img "Cadru din interviul despre momentul culesului" [ref=e142]
+                - generic [ref=e143]: Link în curând
+  - contentinfo [ref=e145]:
+    - generic [ref=e146]:
+      - paragraph [ref=e148]: Ferma Fruct Brabova
+      - navigation "Navigare în subsol" [ref=e149]:
+        - heading "Navigare" [level=2] [ref=e150]
+        - list [ref=e151]:
+          - listitem [ref=e152]:
+            - link "Acasă" [ref=e153] [cursor=pointer]:
+              - /url: index.html#acasa
+          - listitem [ref=e154]:
+            - link "Fructe" [ref=e155] [cursor=pointer]:
+              - /url: index.html#fructe
+          - listitem [ref=e156]:
+            - link "Contact" [ref=e157] [cursor=pointer]:
+              - /url: contact.html
+    - generic [ref=e158]:
+      - heading "Fructele noastre ajung la" [level=2] [ref=e159]
+      - list [ref=e160]:
+        - listitem [ref=e161]:
+          - img "Carrefour" [ref=e162]
+        - listitem [ref=e169]:
+          - img "Auchan" [ref=e170]
+        - listitem [ref=e176]:
+          - img "Big Family Market" [ref=e177]:
+            - generic [ref=e189]: BIG
+            - generic [ref=e190]: FAMILY
+            - generic [ref=e191]: MARKET
+        - listitem [ref=e193]:
+          - img "Partener comercial" [ref=e194]
+    - generic [ref=e197]:
+      - list [ref=e198]:
+        - listitem [ref=e199]:
+          - link "Instagram" [ref=e200] [cursor=pointer]:
+            - /url: https://www.instagram.com/
+        - listitem [ref=e205]:
+          - link "Facebook" [ref=e206] [cursor=pointer]:
+            - /url: https://www.facebook.com/
+      - paragraph [ref=e211]:
+        - generic [ref=e212]: RO
+        - generic [ref=e213]: "|"
+        - generic [ref=e214]: EN
+      - paragraph [ref=e215]: © 2026 Ferma Fruct Brabova. Toate drepturile rezervate.
