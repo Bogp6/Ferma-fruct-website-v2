@@ -97,7 +97,7 @@
 
     if (canWatch) {
         var groups = [
-            { selector: '.roots__title', stagger: 0 },
+            { selector: '.roots__title, .reel__title', stagger: 0 },
             /* within: indexul decalajului repornește în fiecare bloc, altfel
                al treilea rând din blocul trei ar aștepta o secundă întreagă. */
             { selector: '.stage__year, .stage__name, .stage__body', within: '.stage', stagger: 0.07 },
@@ -525,6 +525,40 @@
            (.talk__open:hover ~ .talk__badge). */
         poster.insertAdjacentElement('afterend', open);
 
+        var shut = talk.querySelector('.talk__close');
+
+        /* Copiii cadrului dinainte de orice apăsare: fotografia, insigna,
+           butonul de pornire și cel de închidere. Se pun înapoi la închidere,
+           cu ascultătorii lor cu tot, deci cartonașul se redeschide.
+           Înainte, replaceChildren îi arunca și o apăsare greșită costa o
+           reîncărcare de pagină. */
+        var resting = Array.prototype.slice.call(frame.childNodes);
+
+        function closePlayer() {
+            /* Nimic deschis: Escape nu fură focusul de unde e. */
+            if (!frame.querySelector('iframe')) {
+                return;
+            }
+
+            if (shut) {
+                shut.hidden = true;
+            }
+
+            frame.replaceChildren.apply(frame, resting);
+            document.removeEventListener('keydown', onKey);
+            open.focus();
+        }
+
+        function onKey(event) {
+            if (event.key === 'Escape') {
+                closePlayer();
+            }
+        }
+
+        if (shut) {
+            shut.addEventListener('click', closePlayer);
+        }
+
         open.addEventListener('click', function () {
             var player = document.createElement('iframe');
             /* nocookie: YouTube nu scrie cookie-uri de urmărire până când
@@ -536,7 +570,17 @@
             player.setAttribute('allowfullscreen', '');
             player.loading = 'lazy';
 
-            frame.replaceChildren(player);
+            if (shut) {
+                shut.hidden = false;
+                frame.replaceChildren(player, shut);
+                /* Focusul trece pe închidere: butonul de pornire tocmai a
+                   dispărut din cadru, iar tastatura ar rămâne fără ancoră. */
+                shut.focus();
+            } else {
+                frame.replaceChildren(player);
+            }
+
+            document.addEventListener('keydown', onKey);
         });
     });
 

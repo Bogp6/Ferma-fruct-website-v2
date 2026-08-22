@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260821-privacy-1">
+  <link rel="stylesheet" href="css/style.css?v=20260822-b-3">
   <link rel="stylesheet" href="css/contact.css?v=20260821-privacy-1">
 
   <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
@@ -75,7 +75,7 @@
     <div class="site-header__inner">
 
       <a class="brand" href="index.html" aria-label="Ferma Fruct Brabova, pagina principală">
-        <img class="brand__mark" src="img/logo-160.webp" srcset="img/logo-160.webp 160w, img/logo-320.webp 320w"
+        <img class="brand__mark" src="img/logo-160.webp?v=20260822-logo-1" srcset="img/logo-160.webp?v=20260822-logo-1 160w, img/logo-320.webp?v=20260822-logo-1 320w"
              sizes="48px" width="320" height="320" alt="" loading="eager">
         <span class="brand__word" aria-hidden="true">Ferma Fruct</span>
       </a>
@@ -122,7 +122,7 @@
            loading="lazy" decoding="async">
 
       <div class="drawer__top">
-        <img class="drawer__mark" src="img/logo-160.webp" srcset="img/logo-160.webp 160w, img/logo-320.webp 320w"
+        <img class="drawer__mark" src="img/logo-160.webp?v=20260822-logo-1" srcset="img/logo-160.webp?v=20260822-logo-1 160w, img/logo-320.webp?v=20260822-logo-1 320w"
              sizes="44px" width="320" height="320" alt="" loading="lazy">
 
         <button class="drawer__close" type="button" data-drawer-close>
@@ -204,14 +204,14 @@
         </div>
 
         <!-- Marginea negativă e --bleed: distanța până la marginea geamului.
-             Fotografia e primul cadru din tractor-contact.mp4. Sursa e 960x624,
-             iar cutia e 8:5 — object-fit taie ~4% sus și jos; masca (blob-f1) e
-             tot 8:5, deci nu se regenerează nimic. Peste ~900px de cutie
-             fotografia rămâne sub 2x: trebuie un cadru mai mare de la fermă. -->
+             Sursa e 960x540 (16:9), iar cutia e 8:5 — object-fit taie ~10%
+             stânga-dreapta; masca (blob-f1) e tot 8:5, deci nu se regenerează
+             nimic. Peste ~900px de cutie fotografia rămâne sub 2x: trebuie un
+             cadru mai mare de la fermă. -->
         <figure class="reach__frame">
           <img class="reach__photo" src="img/tractor-contact-960.webp"
                srcset="img/tractor-contact-720.webp 720w, img/tractor-contact-960.webp 960w"
-               sizes="(min-width: 80em) 58rem, (min-width: 48em) 42rem, 95vw" width="960" height="624"
+               sizes="(min-width: 80em) 58rem, (min-width: 48em) 42rem, 95vw" width="960" height="540"
                alt="Tractorul verde al fermei oprit pe pământul arat dintre rândurile tinere de pomi."
                fetchpriority="high" decoding="async">
         </figure>
@@ -404,7 +404,7 @@
     <div class="site-footer__inner">
 
       <div class="site-footer__lead">
-        <img class="site-footer__mark" src="img/logo-160.webp" width="320" height="320" alt="" loading="lazy">
+        <img class="site-footer__mark" src="img/logo-160.webp?v=20260822-logo-1" width="320" height="320" alt="" loading="lazy">
         <p class="site-footer__name">Ferma Fruct Brabova</p>
       </div>
 
@@ -519,7 +519,7 @@
 
   <script src="js/gsap.min.js"></script>
   <!-- Același main.js ca pe index; pe pagina asta rulează practic numai meniul lateral. -->
-  <script src="js/main.js?v=20260821-masks-1"></script>
+  <script src="js/main.js?v=20260821-despre-fix-1"></script>
   <!-- Sosirea la derulare și desenarea drumului, separat ca să nu ceară ?v= nou pe index. -->
   <script src="js/contact.js?v=20260820-contact-5"></script>
 

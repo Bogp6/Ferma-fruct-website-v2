@@ -429,7 +429,10 @@
        delays. Runs once, on load.
        --------------------------------------------------------------------- */
 
-    if (gsap) {
+    /* Only index.html has a hero. Without the element check the timeline is
+       still built on despre.html, contact.html and the privacy page, and GSAP
+       logs nine "target not found" warnings on every load of each. */
+    if (gsap && document.querySelector('.hero__mark')) {
         /* Not started until the tab is actually on screen. A page opened in a
            background tab has its animation frames suspended, so a timeline
            begun there freezes part-way and the visitor arrives at a half-faded

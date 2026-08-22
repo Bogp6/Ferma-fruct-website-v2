@@ -218,8 +218,15 @@
     margin-inline: auto;
 }
 
-/* Titlu între două linii, ca titlul catalogului de pe pagina principală. */
-.roots__head {
+/* Titlu între două linii, ca titlul catalogului de pe pagina principală.
+
+   Îl folosesc două secțiuni, rădăcinile și caruselul, fiecare cu numele ei:
+   caruselul împrumuta clasele rădăcinilor, deci orice atingere a uneia o
+   muta pe cealaltă fără să se vadă. Ce le e comun stă în selectorul grupat
+   de mai jos; ce nu, stă separat (titlul rădăcinilor are două rânduri pe
+   telefon, cel al caruselului are unul — vezi interogarea de la 36em). */
+.roots__head,
+.reel__head {
     display: flex;
     align-items: center;
     gap: var(--space-m);
@@ -227,7 +234,8 @@
     margin: 0 auto var(--space-2xl);
 }
 
-.roots__rule {
+.roots__rule,
+.reel__rule {
     flex: 1 1 0;
     height: var(--hairline);
     background: var(--sand);
@@ -235,7 +243,8 @@
 
 /* Verde pe hârtie e 3.8:1 — sub prag pentru text mic, acceptat numai la
    mărimea asta (vezi DESIGN.md, tabelul de contraste semnat de client). */
-.roots__title {
+.roots__title,
+.reel__title {
     flex: 0 1 auto;
     font-size: var(--step-3);
     font-weight: var(--weight-normal);
@@ -393,6 +402,13 @@
     font-size: var(--step-1);
     font-variation-settings: var(--axes-label);
     color: var(--ink-soft);
+}
+
+/* Linia e ornament, nu face parte din numele momentului: scoasă din text ca
+   să nu ajungă în titlu la copiere, la căutare sau la cititorul de ecran.
+   Spațiul din content ține exact locul celui vechi din HTML. */
+.stage__name::before {
+    content: "— ";
 }
 
 .stage__body {
@@ -970,6 +986,62 @@
     font-size: var(--step--1);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
+}
+
+/* Butonul de închidere, pus de despre.js odată cu iframe-ul. Fără el o apăsare
+   greșită costa o reîncărcare de pagină: fotografia, insigna și butonul de
+   pornire erau înlocuite și nimic nu le mai aducea înapoi.
+
+   Aceeași pastilă ca săgețile caruselului, doar puțin mai mică: peste un film
+   se desprinde din conturul de nisip și din hârtia din fundal, nu dintr-o umbră
+   apăsată — una brună peste cadrul închis ar fi fost o aureolă, nu adâncime. */
+.talk__close {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: var(--space-2xs);
+    inset-inline-end: var(--space-2xs);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border: var(--hairline) solid var(--sand);
+    border-radius: 50%;
+    background: var(--paper-lift);
+    color: var(--bark);
+    box-shadow: var(--shadow-lift);
+    cursor: pointer;
+    transition: background-color var(--duration) var(--ease),
+        border-color var(--duration) var(--ease),
+        color var(--duration) var(--ease),
+        transform var(--duration-fast) var(--ease);
+}
+
+/* Obligatorie: display din .talk__close bate display: none pe care browserul
+   îl pune pe [hidden], deci fără ea atributul n-ar ascunde nimic. */
+.talk__close[hidden] {
+    display: none;
+}
+
+.talk__close:hover,
+.talk__close:focus-visible {
+    border-color: var(--action);
+    background: var(--action);
+    color: var(--bark-deep);
+}
+
+.talk__close:active {
+    transform: scale(0.95);
+}
+
+.talk__close svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
 }
 
 /* Iframe-ul pus la apăsare umple exact cadrul fotografiei pe care o înlocuiește. */
@@ -2329,6 +2401,34 @@
 
 
 /* --- Sub 30em: telefon mic ------------------------------------------------ */
+
+/* Titlul rădăcinilor are patru cuvinte; sub pragul ăsta trece pe două rânduri
+   și mănâncă tot rândul, iar cele două linii laterale se strâng la nimic:
+   măsurat 43px la 576, 6px la 480, 0px la 390. Un ciot de 6px arată mai rău
+   decât nicio linie, deci sub 36em liniile trec într-una singură sub titlu —
+   aceeași liniuță de nisip ca deasupra legendei din carusel.
+
+   Numai rădăcinile: titlul caruselului e de un rând și liniile lui trăiesc
+   la 50px chiar și la 390. */
+@media (max-width: 35.99em) {
+
+    .roots__head {
+        flex-direction: column;
+        gap: var(--space-s);
+    }
+
+    .roots__rule {
+        flex: 0 0 auto;
+        width: clamp(1.75rem, 4vw, 2.75rem);
+    }
+
+    /* Numai cea de dedesubt: una peste și una sub ar face din titlu o
+       etichetă încadrată. */
+    .roots__rule:first-child {
+        display: none;
+    }
+}
+
 
 @media (max-width: 29.99em) {
 

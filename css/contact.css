@@ -237,8 +237,8 @@ a.line__value:hover {
    împinge la înălțimea ei naturală. Niciodată height lângă el.
    8/5, nu raportul sursei: dacă rama s-ar lăți, culoarul drumului s-ar muta
    sub fotografie și drumul ar dispărea în spatele ei (.road are z-index: -1).
-   Sursa e 960x624 (20:13), deci object-fit taie ~4% sus și jos; nu se mărește
-   nimic. Se schimbă raportul cutiei, se regenerează blob-f1. */
+   Sursa e 960x540 (16:9), deci object-fit taie ~10% stânga-dreapta; nu se
+   mărește nimic. Se schimbă raportul cutiei, se regenerează blob-f1. */
 .reach__photo {
     width: 100%;
     height: auto;

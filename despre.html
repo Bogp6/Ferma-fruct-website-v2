@@ -18,8 +18,8 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260821-privacy-1">
-  <link rel="stylesheet" href="css/despre.css?v=20260821-masks-1">
+  <link rel="stylesheet" href="css/style.css?v=20260822-b-3">
+  <link rel="stylesheet" href="css/despre.css?v=20260821-despre-fix-1">
 
   <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -97,7 +97,7 @@
     <div class="site-header__inner">
 
       <a class="brand" href="index.html" aria-label="Ferma Fruct Brabova, pagina principală">
-        <img class="brand__mark" src="img/logo-160.webp" srcset="img/logo-160.webp 160w, img/logo-320.webp 320w"
+        <img class="brand__mark" src="img/logo-160.webp?v=20260822-logo-1" srcset="img/logo-160.webp?v=20260822-logo-1 160w, img/logo-320.webp?v=20260822-logo-1 320w"
              sizes="48px" width="320" height="320" alt="" loading="eager">
         <span class="brand__word" aria-hidden="true">Ferma Fruct</span>
       </a>
@@ -144,7 +144,7 @@
            loading="lazy" decoding="async">
 
       <div class="drawer__top">
-        <img class="drawer__mark" src="img/logo-160.webp" srcset="img/logo-160.webp 160w, img/logo-320.webp 320w"
+        <img class="drawer__mark" src="img/logo-160.webp?v=20260822-logo-1" srcset="img/logo-160.webp?v=20260822-logo-1 160w, img/logo-320.webp?v=20260822-logo-1 320w"
              sizes="44px" width="320" height="320" alt="" loading="lazy">
 
         <button class="drawer__close" type="button" data-drawer-close>
@@ -263,7 +263,7 @@
           <li class="stage">
             <div class="stage__tell">
               <p class="stage__year">2012</p>
-              <h3 class="stage__name">— Începutul fermei</h3>
+              <h3 class="stage__name">Începutul fermei</h3>
               <p class="stage__body">Totul a început cu un vis simplu: să plantăm o livadă pe pământul
                 nostru, cu grijă și respect pentru natură.</p>
             </div>
@@ -282,7 +282,7 @@
           <li class="stage stage--flip">
             <div class="stage__tell">
               <p class="stage__year">2014</p>
-              <h3 class="stage__name">— Primii pomi plantați</h3>
+              <h3 class="stage__name">Primii pomi plantați</h3>
               <p class="stage__body">Am pus în pământ primii puieți și am început să învățăm livada, zi
                 de zi. Răbdarea și munca au devenit rădăcinile noastre.</p>
             </div>
@@ -301,7 +301,7 @@
           <li class="stage">
             <div class="stage__tell">
               <p class="stage__year">Astăzi</p>
-              <h3 class="stage__name">— Livada continuă să crească</h3>
+              <h3 class="stage__name">Livada continuă să crească</h3>
               <p class="stage__body">Astăzi, livada noastră este matură, dar grija pentru fiecare pom
                 rămâne aceeași ca în prima zi.</p>
             </div>
@@ -399,10 +399,10 @@
       <img class="motif motif--reel-apple" src="img/apple-240.webp" width="240" height="240" alt="" aria-hidden="true" loading="lazy" decoding="async">
 
       <div class="reel__lead">
-        <div class="roots__head">
-          <span class="roots__rule" aria-hidden="true"></span>
-          <h2 class="roots__title" id="reel-title">Viața din livadă</h2>
-          <span class="roots__rule" aria-hidden="true"></span>
+        <div class="reel__head">
+          <span class="reel__rule" aria-hidden="true"></span>
+          <h2 class="reel__title" id="reel-title">Viața din livadă</h2>
+          <span class="reel__rule" aria-hidden="true"></span>
         </div>
       </div>
 
@@ -541,6 +541,14 @@
                   </svg>
                 </span>
                 <span class="talk__soon">Link în curând</span>
+                <!-- Se aprinde din despre.js odată cu iframe-ul și se stinge la
+                     închidere. Stă în HTML, nu construit din script, ca desenul
+                     să fie tot un SVG scris de mână ca restul. -->
+                <button class="talk__close" type="button" aria-label="Închide clipul" hidden>
+                  <svg viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                    <path d="M4 4 12 12M12 4 4 12"/>
+                  </svg>
+                </button>
               </div>
               <figcaption class="talk__caption">Povestea fermei</figcaption>
             </figure>
@@ -560,6 +568,14 @@
                   </svg>
                 </span>
                 <span class="talk__soon">Link în curând</span>
+                <!-- Se aprinde din despre.js odată cu iframe-ul și se stinge la
+                     închidere. Stă în HTML, nu construit din script, ca desenul
+                     să fie tot un SVG scris de mână ca restul. -->
+                <button class="talk__close" type="button" aria-label="Închide clipul" hidden>
+                  <svg viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                    <path d="M4 4 12 12M12 4 4 12"/>
+                  </svg>
+                </button>
               </div>
               <figcaption class="talk__caption">Cum îngrijim livada</figcaption>
             </figure>
@@ -579,6 +595,14 @@
                   </svg>
                 </span>
                 <span class="talk__soon">Link în curând</span>
+                <!-- Se aprinde din despre.js odată cu iframe-ul și se stinge la
+                     închidere. Stă în HTML, nu construit din script, ca desenul
+                     să fie tot un SVG scris de mână ca restul. -->
+                <button class="talk__close" type="button" aria-label="Închide clipul" hidden>
+                  <svg viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                    <path d="M4 4 12 12M12 4 4 12"/>
+                  </svg>
+                </button>
               </div>
               <figcaption class="talk__caption">De ce culegem la timp</figcaption>
             </figure>
@@ -611,7 +635,7 @@
     <div class="site-footer__inner">
 
       <div class="site-footer__lead">
-        <img class="site-footer__mark" src="img/logo-160.webp" width="320" height="320" alt="" loading="lazy">
+        <img class="site-footer__mark" src="img/logo-160.webp?v=20260822-logo-1" width="320" height="320" alt="" loading="lazy">
         <p class="site-footer__name">Ferma Fruct Brabova</p>
       </div>
 
@@ -728,9 +752,9 @@
   <!-- Același main.js ca pe celelalte pagini; aici rulează meniul lateral și
        deriva desenelor de fundal. Fiecare treabă din el își caută întâi
        elementul și iese dacă lipsește. -->
-  <script src="js/main.js?v=20260821-masks-1"></script>
+  <script src="js/main.js?v=20260821-despre-fix-1"></script>
   <!-- Numai pentru pagina asta: linia din mijloc, caruselul, interviurile. -->
-  <script src="js/despre.js?v=20260820-despre-25"></script>
+  <script src="js/despre.js?v=20260821-despre-fix-1"></script>
 
 <!-- impeccable-live-start -->
 <!-- impeccable-live-end -->

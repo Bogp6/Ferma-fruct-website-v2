@@ -1380,10 +1380,23 @@ main,
     margin-block-start: var(--space-2xs);
 }
 
-/* Cele trei fotografii secundare dinaintea perelor se lărgesc fără să-și
-   schimbe raportul sau masca: silueta rămâne aceeași spălare de acuarelă. */
-.orchard__groves > .grove:nth-child(-n + 3) .grove__frame--b {
-    width: 115%;
+/* Fotografiile secundare se lărgesc fără să-și schimbe raportul sau masca:
+   silueta rămâne aceeași spălare de acuarelă.
+   --b-scale mărește NUMAI a doua fotografie din fiecare bloc; prima (--a)
+   nu se atinge. Procentele de bază rămân diferite (115 pentru blocurile 1
+   și 4, 120 pentru cele două din mijloc), deci raportul dintre blocuri e
+   neschimbat — un singur număr le mișcă pe toate patru deodată. */
+/* PLAFON MĂSURAT, nu ales din ochi: peste 1.05 a doua fotografie intră peste
+   text în blocurile 1 și 4 (16px la 1.10, 39px la 1.15). Coridorul
+   calendarului nu ajută — strâns, apropie coloanele de text și suprapunerea
+   începe mai devreme. Ca să treci de 1.05 trebuie lățit --container sau
+   îngustată coloana de text, care e deja la ~46 de caractere pe rând. */
+.grove__frame--b {
+    --b-scale: 1.05;
+}
+
+.orchard__groves > .grove .grove__frame--b {
+    width: calc(115% * var(--b-scale));
 }
 
 /* Caisele și prunele primesc încă un pas de scară, ambele fotografii. Cadrul
@@ -1393,7 +1406,7 @@ main,
 }
 
 .orchard__groves > .grove:is(:nth-child(2), :nth-child(3)) .grove__frame--b {
-    width: 120%;
+    width: calc(120% * var(--b-scale));
 }
 
 /* aspect-ratio pe img nu pe ramă: pe ramă e ignorat cât timp imaginea o
