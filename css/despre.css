@@ -2166,10 +2166,17 @@
 
 @media (min-width: 48em) and (max-width: 63.99em) {
 
+    /* Fotografia ține toată coloana, deci se termină exact pe marginea din
+       dreapta a textului de deasupra ei. Plafonul de 30rem o oprea la 480px
+       într-o coloană de 612 la 768px: textul mergea până la geam, fotografia
+       nu, iar cei 131px de hârtie rămași făceau fotografia să pară mică.
+       Creșterea e numai spre dreapta — margin-inline: 0 anulează ieșirea de pe
+       telefon, iar culoarul din stânga, cu pomul și linia desenată, rămâne la
+       aceeași depărtare. */
     .stage__frame,
     .stage--flip .stage__frame {
         margin-inline: 0;
-        max-width: 30rem;
+        max-width: none;
     }
 
     .keeper__portrait {
@@ -2184,30 +2191,51 @@
     }
 
 
-    /* DESENELE DIN COLOANA LIBERĂ DE LÂNGĂ FOTOGRAFII.
+    /* CARUSELUL. Diapozitivul ține lățimea coloanei paginii, deci se termină
+       exact acolo unde se termină textul de deasupra lui și fotografia
+       momentului de mai sus. Plafonul de 46rem îl oprea la 736px pe toată
+       banda de peste 836px: la 1023px asta însemna 72% din ecran, cu 143px de
+       hârtie goală de fiecare parte.
 
-       Plafonul de mai sus lasă hârtie goală în dreptul fiecărei fotografii, pe
-       partea dinspre margine: măsurat la 768px, fotografia se termină la 78.3%
-       din lățimea secțiunii, deci rămâne o coloană de 167px pe toată înălțimea
-       ei. Coloana aia nu există pe telefon, unde fotografia iese până la geam,
-       și de aceea desenele de aici stau numai în banda de tabletă.
+       Săgețile stau tot pe muchia diapozitivului, jumătate în afara lui, deci
+       se mută odată cu el: rămân la --gutter minus 1.5rem de geam, adică 13px
+       la 768px și 19px la 1023px. Sub 3rem de la geam n-ar mai fi țintă de
+       deget, de-aia diapozitivul nu trece de coloană. */
+    /* vw, nu procent: --slide se citește în flex-basis pe diapozitiv și în
+       padding pe bandă, iar un procent s-ar raporta acolo la lățimea benzii,
+       care depinde ea însăși de --slide. */
+    .reel__stage {
+        --slide: calc(100vw - var(--gutter) * 2);
+    }
 
-       Sunt trei căderi, una lângă fiecare fotografie, plus una lângă portret:
-       frunzele coboară pe dreapta în timp ce pomul și linia desenată urcă pe
-       stânga, deci pagina are ceva de fiecare parte la orice înălțime.
+    /* 16:10, ca fotografiile momentelor. Pe lat carul de 16:9 e cât trebuie
+       lângă text, dar aici stă singur pe ecran și scundează: la 847px, 414px
+       înălțime într-o fereastră de peste 1000. Aceleași trei măști blob-e —
+       sunt 16:9 întinse pe 16:10 exact ca la .stage__photo, unde raportul
+       ăsta e deja acceptat, deci nu se regenerează nimic. */
+    .reel__media {
+        aspect-ratio: 16 / 10;
+    }
 
-       La 1023px coloana liberă se lărgește (fotografia rămâne la 30rem, pagina
-       nu), deci procentele de aici cad tot în ea — verificat la amândouă
-       capetele benzii. */
 
-    .motif--roots-leaf-d,
-    .motif--roots-leaf-e,
-    .motif--roots-leaf-f,
-    .motif--roots-leaf-g,
-    .motif--roots-leaf-h,
-    .motif--roots-leaf-i,
-    .motif--roots-leaf-j,
-    .motif--roots-apple,
+    /* DESENELE DIN COLOANA LIBERĂ DE LÂNGĂ PORTRET.
+
+       Plafonul portretului lasă hârtie goală lângă el: 253px la 768px, pe
+       toată înălțimea fotografiei. Coloana aia nu există pe telefon, unde
+       portretul iese până la geam, și de aceea desenele de aici stau numai în
+       banda de tabletă.
+
+       Lângă momente NU mai există o astfel de coloană: fotografia ține acum
+       toată lățimea coloanei ei. Cele opt frunze care stăteau acolo
+       (.motif--roots-leaf-d până la -j și .motif--roots-apple) rămân stinse pe
+       toată banda îngustă, ca pe telefon — la z-index: -1 ar fi trecut sub
+       fotografie și ar fi dispărut cu totul. Secțiunea își păstrează crengile
+       de pe margini și frunzele din golurile dintre blocuri.
+
+       La 1023px coloana de lângă portret se lărgește (portretul rămâne la
+       30rem, pagina nu), deci procentele de aici cad tot în ea — verificat la
+       amândouă capetele benzii. */
+
     .motif--keeper-leaf-b,
     .motif--keeper-leaf-c,
     .motif--keeper-leaf-e,
@@ -2218,68 +2246,6 @@
     .motif--talks-leaf-d,
     .motif--talks-leaf-i {
         display: block;
-    }
-
-    /* Lângă prima fotografie. */
-    .motif--roots-leaf-d {
-        inset-block-start: 18.5%;
-        inset-inline-start: 81%;
-        inset-inline-end: auto;
-        width: clamp(4rem, 8vw, 6rem);
-        opacity: 0.3;
-    }
-
-    .motif--roots-leaf-e {
-        inset-block-start: 27%;
-        inset-inline-start: 89%;
-        inset-inline-end: auto;
-        width: clamp(3.25rem, 6.5vw, 5rem);
-        opacity: 0.26;
-    }
-
-    .motif--roots-apple {
-        inset-block-start: 35.5%;
-        inset-inline-start: 82%;
-        width: clamp(2.25rem, 4.5vw, 3.5rem);
-        opacity: 0.34;
-    }
-
-    /* Lângă a doua. */
-    .motif--roots-leaf-f {
-        inset-block-start: 50%;
-        inset-inline-start: 86%;
-        inset-inline-end: auto;
-        width: clamp(4.25rem, 8.5vw, 6.5rem);
-        opacity: 0.28;
-    }
-
-    .motif--roots-leaf-g {
-        inset-block-start: 58.5%;
-        inset-inline-start: 80.5%;
-        width: clamp(3.5rem, 7vw, 5.25rem);
-        opacity: 0.26;
-    }
-
-    /* Lângă a treia. */
-    .motif--roots-leaf-h {
-        inset-block-start: 79%;
-        inset-inline-start: 82%;
-        width: clamp(3.75rem, 7.5vw, 5.75rem);
-        opacity: 0.3;
-    }
-
-    .motif--roots-leaf-i {
-        inset-block-start: 87%;
-        inset-inline-start: 89%;
-        width: clamp(3rem, 6vw, 4.5rem);
-        opacity: 0.24;
-    }
-
-    .motif--roots-leaf-j {
-        inset-block-start: 94.5%;
-        inset-inline-start: 81%;
-        width: clamp(3.5rem, 7vw, 5.25rem);
-        opacity: 0.27;
     }
 
     /* Coloana de lângă portret: 253px la 768px, cea mai largă de pe pagină.
