@@ -2331,32 +2331,49 @@
 
 @media (max-width: 47.99em) {
 
-    /* MOMENTELE. Fotografia trece de la 16:10 la 4:3 — 234px înălțime în loc
-       de 195 la 390px.
+    /* MOMENTELE. Fotografia ține toată fereastra și e pătrată — 390x390 la
+       390px, în loc de 312x195. Adică exact portretul de mai jos, care e
+       pătrat și cât geamul de când s-a scris pagina.
 
-       Lățimea e blocată de amândouă părțile și nu mai are de unde crește: la
-       stânga e culoarul pomului și al liniei desenate (48px de desen plus
-       golul, iar linia chiar leagănă până la marginea lui — vezi drumul scris
-       de despre.js), iar la dreapta fotografia iese deja pe sub geam. Rămâne
-       înălțimea, deci raportul.
+       Culoarul de 78px (marginea, desenul pomului, golul) mânca aproape un
+       sfert din ecran și împingea fotografia în ce rămânea. Pe un ecran de
+       390px raportul ăla e pe dos: fotografia e motivul pentru care se intră
+       pe pagină.
 
-       Măștile trec pe fișierele de 4:3. Un blob-e (16:9) întins peste o cutie
-       4:3 ar trage stropii de pe muchie în dungi verticale: aceeași greșeală
+       Ce se schimbă, exact: pomul rămâne unde e, dar ține numai rândul
+       textului, deci nu mai stă sub fotografie și nu mai dispare sub ea;
+       bulina liniei se mută odată cu el, tot lângă text, unde se vede.
+       Linia desenată trece PE SUB fotografii — nu se stinge, nu se scurtează,
+       intră sub muchia stropită și iese pe partea cealaltă. Dacă asta nu
+       place, întoarcerea e o linie: scoți grid-column și margin-inline de pe
+       .stage__frame și fotografia se așază iar în coloana ei.
+
+       Măștile trec pe fișierele pătrate. Un blob-e (16:9) întins peste o cutie
+       1:1 ar trage stropii de pe muchie în dungi verticale: aceeași greșeală
        ca la blob-b1 pe .reach__photo, scrisă în DESIGN.md. */
+    .stage__sign {
+        grid-row: 1;
+    }
+
+    .stage__frame {
+        grid-column: 1 / -1;
+        margin-inline: calc(var(--gutter) * -1);
+    }
+
     .stage__photo {
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 1;
     }
 
     .stage__frame--a {
-        --blob: url("../img/blob-b5.webp");
+        --blob: url("../img/blob-a5.webp");
     }
 
     .stage__frame--b {
-        --blob: url("../img/blob-b6.webp");
+        --blob: url("../img/blob-a6.webp");
     }
 
     .stage__frame--c {
-        --blob: url("../img/blob-b7.webp");
+        --blob: url("../img/blob-a7.webp");
     }
 
 
@@ -2379,18 +2396,24 @@
         padding-inline: 0;
     }
 
-    /* 4:3, ca fotografiile momentelor, cu aceleași trei măști. */
+    /* Pătrat, ca fotografiile momentelor și ca portretul, cu aceleași trei
+       măști. 390x390 în loc de 390x293: fotografia câștigă o treime în
+       înălțime, iar subiectul din ea crește cu tot atât, fiindcă object-fit
+       taie din laturi și scalează ce rămâne.
+
+       Fișierele de 1440x810 dau un pătrat de 810x810 pe o cutie de 390, adică
+       2.08x — destul fără fișiere noi. */
     .reel__media {
-        aspect-ratio: 4 / 3;
-        --blob: url("../img/blob-b5.webp");
+        aspect-ratio: 1;
+        --blob: url("../img/blob-a5.webp");
     }
 
     .reel__slide:nth-child(3n + 2) .reel__media {
-        --blob: url("../img/blob-b6.webp");
+        --blob: url("../img/blob-a6.webp");
     }
 
     .reel__slide:nth-child(3n) .reel__media {
-        --blob: url("../img/blob-b7.webp");
+        --blob: url("../img/blob-a7.webp");
     }
 
     /* Fără săgeți pe telefon. Cu diapozitivul cât fereastra nu mai rămâne

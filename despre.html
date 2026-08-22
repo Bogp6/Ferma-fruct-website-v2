@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css?v=20260822-b-3">
-  <link rel="stylesheet" href="css/despre.css?v=20260822-phone-photos-1">
+  <link rel="stylesheet" href="css/despre.css?v=20260823-phone-square-1">
 
   <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -271,11 +271,20 @@
             <img class="stage__sign" src="img/young-tree-v2-480.webp" srcset="img/young-tree-v2-240.webp 240w, img/young-tree-v2-480.webp 480w" sizes="7rem" width="480" height="720" alt="" aria-hidden="true" loading="lazy" decoding="async">
 
             <div class="stage__frame stage__frame--a">
-              <img class="stage__photo" src="img/about-start-1200.webp"
-                   srcset="img/about-start-640.webp 640w, img/about-start-1200.webp 1200w"
-                   sizes="(min-width: 64em) 46vw, 92vw" width="1200" height="675"
-                   alt="Ramură de cireș în floare într-o livadă tânără, cu pomii încă legați de araci"
-                   loading="lazy" decoding="async">
+              <!-- Pe telefon fotografia e pătrată și cât fereastra, deci poartă alt
+                   decupaj, nu aceeași poză turtită: <source>, nu srcset. Pătratul e
+                   tăiat din originalul mare, nu din fișierul de 1200x675 — vezi
+                   DESIGN.md. Praguri identice cu cele din despre.css. -->
+              <picture>
+                <source media="(max-width: 47.99em)"
+                        srcset="img/about-start-a800.webp 800w, img/about-start-a1200.webp 1200w"
+                        sizes="100vw" width="1200" height="1200">
+                <img class="stage__photo" src="img/about-start-1200.webp"
+                     srcset="img/about-start-640.webp 640w, img/about-start-1200.webp 1200w"
+                     sizes="(min-width: 64em) 46vw, 82vw" width="1200" height="675"
+                     alt="Ramură de cireș în floare într-o livadă tânără, cu pomii încă legați de araci"
+                     loading="lazy" decoding="async">
+              </picture>
             </div>
           </li>
 
@@ -290,11 +299,20 @@
             <img class="stage__sign" src="img/medium-tree-v2-480.webp" srcset="img/medium-tree-v2-240.webp 240w, img/medium-tree-v2-480.webp 480w" sizes="7rem" width="480" height="720" alt="" aria-hidden="true" loading="lazy" decoding="async">
 
             <div class="stage__frame stage__frame--b">
-              <img class="stage__photo" src="img/about-rows-1200.webp"
-                   srcset="img/about-rows-640.webp 640w, img/about-rows-1200.webp 1200w"
-                   sizes="(min-width: 64em) 46vw, 92vw" width="1200" height="675"
-                   alt="Rânduri de pomi tineri acoperiți cu plasă antigrindină, cu iarba cosită între ele"
-                   loading="lazy" decoding="async">
+              <!-- Pe telefon fotografia e pătrată și cât fereastra, deci poartă alt
+                   decupaj, nu aceeași poză turtită: <source>, nu srcset. Pătratul e
+                   tăiat din originalul mare, nu din fișierul de 1200x675 — vezi
+                   DESIGN.md. Praguri identice cu cele din despre.css. -->
+              <picture>
+                <source media="(max-width: 47.99em)"
+                        srcset="img/about-rows-a800.webp 800w, img/about-rows-a1200.webp 1200w"
+                        sizes="100vw" width="1200" height="1200">
+                <img class="stage__photo" src="img/about-rows-1200.webp"
+                     srcset="img/about-rows-640.webp 640w, img/about-rows-1200.webp 1200w"
+                     sizes="(min-width: 64em) 46vw, 82vw" width="1200" height="675"
+                     alt="Rânduri de pomi tineri acoperiți cu plasă antigrindină, cu iarba cosită între ele"
+                     loading="lazy" decoding="async">
+              </picture>
             </div>
           </li>
 
@@ -309,11 +327,20 @@
             <img class="stage__sign" src="img/big-tree-v2-480.webp" srcset="img/big-tree-v2-240.webp 240w, img/big-tree-v2-480.webp 480w" sizes="7rem" width="480" height="720" alt="" aria-hidden="true" loading="lazy" decoding="async">
 
             <div class="stage__frame stage__frame--c">
-              <img class="stage__photo" src="img/about-today-1200.webp"
-                   srcset="img/about-today-640.webp 640w, img/about-today-1200.webp 1200w"
-                   sizes="(min-width: 64em) 46vw, 92vw" width="1200" height="675"
-                   alt="Livadă matură, cu coroane late și iarbă înaltă pe intervalul dintre rânduri"
-                   loading="lazy" decoding="async">
+              <!-- Pe telefon fotografia e pătrată și cât fereastra, deci poartă alt
+                   decupaj, nu aceeași poză turtită: <source>, nu srcset. Pătratul e
+                   tăiat din originalul mare, nu din fișierul de 1200x675 — vezi
+                   DESIGN.md. Praguri identice cu cele din despre.css. -->
+              <picture>
+                <source media="(max-width: 47.99em)"
+                        srcset="img/about-today-a800.webp 800w, img/about-today-a1200.webp 1200w"
+                        sizes="100vw" width="1200" height="1200">
+                <img class="stage__photo" src="img/about-today-1200.webp"
+                     srcset="img/about-today-640.webp 640w, img/about-today-1200.webp 1200w"
+                     sizes="(min-width: 64em) 46vw, 82vw" width="1200" height="675"
+                     alt="Livadă matură, cu coroane late și iarbă înaltă pe intervalul dintre rânduri"
+                     loading="lazy" decoding="async">
+              </picture>
             </div>
           </li>
 
