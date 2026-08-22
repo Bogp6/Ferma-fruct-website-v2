@@ -2331,35 +2331,19 @@
 
 @media (max-width: 47.99em) {
 
-    /* MOMENTELE. Fotografia ține toată fereastra și e pătrată — 390x390 la
-       390px, în loc de 312x195. Adică exact portretul de mai jos, care e
-       pătrat și cât geamul de când s-a scris pagina.
+    /* MOMENTELE. Fotografia e pătrată — 312x312 la 390px, în loc de 312x195.
+       Crește numai în jos, în coloana ei.
 
-       Culoarul de 78px (marginea, desenul pomului, golul) mânca aproape un
-       sfert din ecran și împingea fotografia în ce rămânea. Pe un ecran de
-       390px raportul ăla e pe dos: fotografia e motivul pentru care se intră
-       pe pagină.
-
-       Ce se schimbă, exact: pomul rămâne unde e, dar ține numai rândul
-       textului, deci nu mai stă sub fotografie și nu mai dispare sub ea;
-       bulina liniei se mută odată cu el, tot lângă text, unde se vede.
-       Linia desenată trece PE SUB fotografii — nu se stinge, nu se scurtează,
-       intră sub muchia stropită și iese pe partea cealaltă. Dacă asta nu
-       place, întoarcerea e o linie: scoți grid-column și margin-inline de pe
-       .stage__frame și fotografia se așază iar în coloana ei.
+       AȘEZAREA NU SE ATINGE. Fotografia a fost o dată lățită peste tot ecranul
+       (grid-column: 1 / -1 plus margin-inline negativ, iar pomul mutat pe
+       grid-row: 1): clientul a refuzat, și pe bună dreptate — pomul rămânea
+       mic lângă text, linia desenată intra pe sub fotografii, iar blocul își
+       pierdea culoarul. Nu se reîncearcă. Lățimea aici e cât e; ce mai poate
+       crește e înălțimea, deci raportul.
 
        Măștile trec pe fișierele pătrate. Un blob-e (16:9) întins peste o cutie
        1:1 ar trage stropii de pe muchie în dungi verticale: aceeași greșeală
        ca la blob-b1 pe .reach__photo, scrisă în DESIGN.md. */
-    .stage__sign {
-        grid-row: 1;
-    }
-
-    .stage__frame {
-        grid-column: 1 / -1;
-        margin-inline: calc(var(--gutter) * -1);
-    }
-
     .stage__photo {
         aspect-ratio: 1;
     }
