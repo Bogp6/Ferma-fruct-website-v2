@@ -2331,9 +2331,72 @@
 
 @media (max-width: 47.99em) {
 
-    /* Fără săgeți pe telefon. Cu diapozitivul la 88vw nu mai rămâne hârtie
-       liberă pe margini, deci butonul ar sta pe jumătate în afara ecranului și
-       pe jumătate peste fotografie. Degetul, bulinele și tastatura rămân. */
+    /* MOMENTELE. Fotografia trece de la 16:10 la 4:3 — 234px înălțime în loc
+       de 195 la 390px.
+
+       Lățimea e blocată de amândouă părțile și nu mai are de unde crește: la
+       stânga e culoarul pomului și al liniei desenate (48px de desen plus
+       golul, iar linia chiar leagănă până la marginea lui — vezi drumul scris
+       de despre.js), iar la dreapta fotografia iese deja pe sub geam. Rămâne
+       înălțimea, deci raportul.
+
+       Măștile trec pe fișierele de 4:3. Un blob-e (16:9) întins peste o cutie
+       4:3 ar trage stropii de pe muchie în dungi verticale: aceeași greșeală
+       ca la blob-b1 pe .reach__photo, scrisă în DESIGN.md. */
+    .stage__photo {
+        aspect-ratio: 4 / 3;
+    }
+
+    .stage__frame--a {
+        --blob: url("../img/blob-b5.webp");
+    }
+
+    .stage__frame--b {
+        --blob: url("../img/blob-b6.webp");
+    }
+
+    .stage__frame--c {
+        --blob: url("../img/blob-b7.webp");
+    }
+
+
+    /* CARUSELUL. Diapozitivul ține toată fereastra, nu 88vw: săgețile sunt
+       stinse aici (vezi mai jos), deci hârtia de pe margini nu mai are ce
+       ține. Fotografia tot nu ajunge lipită de geam — conturul măștii se
+       oprește la 93.5% din cutie, adică vreo 13px de fiecare parte la 390.
+
+       100%, nu 100vw: fără paddingul benzii procentul se rezolvă pe lățimea
+       benzii, care e chiar fereastra, iar o bară de derulare nu-l mai umflă.
+
+       Banda își pierde paddingul dinadins: cu el, primul diapozitiv n-ar mai
+       putea ajunge în centrul ferestrei (derularea nu trece de zero) și ar
+       rămâne împins spre dreapta. */
+    .reel__stage {
+        --slide: 100%;
+    }
+
+    .reel__track {
+        padding-inline: 0;
+    }
+
+    /* 4:3, ca fotografiile momentelor, cu aceleași trei măști. */
+    .reel__media {
+        aspect-ratio: 4 / 3;
+        --blob: url("../img/blob-b5.webp");
+    }
+
+    .reel__slide:nth-child(3n + 2) .reel__media {
+        --blob: url("../img/blob-b6.webp");
+    }
+
+    .reel__slide:nth-child(3n) .reel__media {
+        --blob: url("../img/blob-b7.webp");
+    }
+
+    /* Fără săgeți pe telefon. Cu diapozitivul cât fereastra nu mai rămâne
+       hârtie liberă pe margini, deci butonul ar sta pe jumătate în afara
+       ecranului și pe jumătate peste fotografie. Degetul, bulinele și
+       tastatura rămân. */
     .reel__nav {
         display: none;
     }

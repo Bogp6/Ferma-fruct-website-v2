@@ -102,6 +102,9 @@ Do not reintroduce `salvage/salvage.css` fonts (Bricolage Grotesque, DM Mono, Ca
       - `blob-b3` / `blob-b4` — 900×675, `.grove__frame--b` (4:3).
       - `blob-f1` — 960×600, `.reach__frame` on contact. **New ratio:** `.reach__photo` is 8:5 and was wearing the 4:3 `blob-b1` stretched over it, which pulled the granulation into streaks.
       - Letter is the aspect ratio, number is the recipe generation. `a1`/`a2` are still live on `despre.html` (`.keeper__frame`) — do not delete them, and do not put them back on index or contact.
+    - **`blob-{b5,b6,b7}.webp` (2026-08-22), the phone masks on despre.** 900×675 (4:3), same `blob-e` recipe and the same `REACH = 0.935` rescaling, seeds 71 / 204 / 613. Fill 58.5 / 61.1 / 57.1%, 0.00% semi-transparent, every edge 0% solid — measured, in family with `b3` (56.9%) and `b4` (58.7%).
+      - They exist because under 48em both `.stage__photo` and `.reel__media` turn 4:3: the photos there can only grow in height, and a 16:9 `blob-e` stretched over a 4:3 box would comb the granulation into vertical dashes. Three of them, not two, so the carousel's `3n` cycle never repeats a silhouette inside one screen.
+      - `b3`/`b4` were left alone on index rather than reused here, so a change to the phone masks cannot reach the landing page.
       - Contour rescaling differs from the `blob-e` write-up above: the harmonic sum is normalised so the contour's own maximum lands at `REACH = 0.935`, which guarantees the granulation spray stays inside `r = 1` no matter which seed comes up. Base radius `0.96` plus raw harmonics could reach 1.14 and clip.
   - No `border-radius`, no `overflow` — `clip-path: inset(...)` is only the arrival wipe now; the mask does the shape. No `box-shadow` (would be clipped off); photos sit flat on cream.
   - `.grove__rail` — the harvest calendar, a real column of the block, not a margin label. `order: -1` puts it opposite `.motif--grove-branch` without moving it in the DOM.
