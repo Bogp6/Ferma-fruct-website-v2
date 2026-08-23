@@ -2579,6 +2579,105 @@ main,
 
 @media (min-width: 48em) and (max-width: 63.99em) {
 
+    /* URMA CARE COBOARĂ, LA TABLETĂ. Aceeași frunză în cădere ca pe telefon,
+       dar blocul e o grilă de două coloane, deci golurile sunt altele:
+       fotografia mare și calendarul împart rândul din mijloc, iar coloana de
+       lângă a doua fotografie rămâne goală de sus până jos.
+
+       Deplasarea pozitivă cade mereu peste calendar, cea negativă peste
+       coloana liberă, fiindcă blocul oglindit întoarce și grila, și semnul.
+       Cele trei care trec peste calendar sunt mai palide: acolo sunt litere
+       scrise cu --ink-soft, care pe nervura cea mai închisă a frunzei dau
+       3.6:1 la 0.72 și 4.6:1 la 0.45. */
+    .grove .motif--fall {
+        --shift: var(--fall-shift, 0rem);
+        --drift: 1rem;
+
+        display: block;
+    }
+
+    .motif--fall-a {
+        inset-block-start: 4%;
+        --w: clamp(5rem, 9vw, 6.5rem);
+        --fall-shift: -4rem;
+        rotate: 14deg;
+        opacity: 0.6;
+    }
+
+    .motif--fall-b {
+        inset-block-start: 10%;
+        --w: clamp(4rem, 7vw, 5rem);
+        --fall-shift: 5rem;
+        rotate: 128deg;
+        opacity: 0.5;
+    }
+
+    .motif--fall-c {
+        inset-block-start: 21%;
+        --w: clamp(5.5rem, 10vw, 7rem);
+        --fall-shift: 15rem;
+        rotate: 58deg;
+        opacity: 0.45;
+    }
+
+    .motif--fall-d {
+        inset-block-start: 33%;
+        --w: clamp(4rem, 7.5vw, 5.5rem);
+        --fall-shift: 14rem;
+        rotate: -32deg;
+        opacity: 0.42;
+    }
+
+    .motif--fall-e {
+        inset-block-start: 45%;
+        --w: clamp(5rem, 9vw, 6.5rem);
+        --fall-shift: 7rem;
+        rotate: 96deg;
+        opacity: 0.45;
+    }
+
+    .motif--fall-f {
+        inset-block-start: 55%;
+        --w: clamp(4.5rem, 8vw, 6rem);
+        --fall-shift: -8rem;
+        rotate: 158deg;
+        opacity: 0.55;
+    }
+
+    .motif--fall-g {
+        inset-block-start: 64%;
+        --w: clamp(6rem, 11vw, 7.5rem);
+        --fall-shift: 3rem;
+        rotate: 22deg;
+        opacity: 0.6;
+    }
+
+    .motif--fall-h {
+        inset-block-start: 69%;
+        --w: clamp(4.5rem, 8vw, 6rem);
+        --fall-shift: -12rem;
+        rotate: 112deg;
+        opacity: 0.52;
+    }
+
+    .motif--fall-i {
+        inset-block-start: 61%;
+        --w: clamp(6rem, 11vw, 7.5rem);
+        --fall-shift: 15rem;
+        rotate: -48deg;
+        opacity: 0.62;
+    }
+
+    .motif--fall-j {
+        inset-block-start: 104%;
+        --w: clamp(4.5rem, 8vw, 6rem);
+        /* în procente, nu în rem: la 1024px blocul e cu 200px mai lat,
+           iar o valoare fixă ajungea peste frunza de viță de jos. */
+        --fall-shift: -42%;
+        rotate: 74deg;
+        opacity: 0.5;
+    }
+
     /* La tabletă fotografia mare lasă liberă jumătate de rând, în timp ce
        calendarul cădea după tot conținutul. Grila folosește numai acel gol;
        capul, proza și restul blocului își păstrează ordinea. */
