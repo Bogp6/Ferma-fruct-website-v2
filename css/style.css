@@ -2780,71 +2780,108 @@ main,
         display: none;
     }
 
-    /* URMA CARE COBOARĂ. Șase frunze în plus pe bloc, pe mijloc, alternând
-       stânga-dreapta cu câțiva rem, ca o urmă care cade. --fall-shift e
-       distanța față de axa blocului; blocul oglindit îi schimbă semnul
-       singur, deci urma șerpuiește invers de la un fruct la altul.
+    /* URMA CARE COBOARĂ. Zece frunze pe bloc, ca o singură frunză filmată în
+       cădere: coboară pe axa blocului și se leagănă în lături, o dată la
+       stânga, o dată la dreapta, la fiecare nouă procente de înălțime.
 
-       Înălțimile ocolesc cele două fotografii (17-40% și 58-77%): cele două
-       de lângă ele stau în afara petei de acuarelă, care e mai îngustă decât
-       cadrul. Cele două de la calendar merg pe latura dinăuntru, unde nu e
-       text, și sunt mai palide: --ink-soft pe nervura cea mai închisă la
-       0.72 dă 3.6:1, la 0.45 dă 4.6:1. */
+       Bătaia se lărgește la 8.5rem exact acolo unde trece pe lângă cele două
+       fotografii (24-34% și 63-72%), fiindcă pata de acuarelă e mai îngustă
+       decât cadrul și frunza trebuie să treacă pe lângă ea; în rest se
+       întoarce lângă axă. Fiecare are alt unghi, altă mărime și altă
+       transparență: la același unghi zece frunze se citeau ca un șablon
+       ștampilat, nu ca ceva care cade.
+
+       Blocul oglindit inversează semnul deplasării, deci urma șerpuiește
+       invers de la un fruct la altul. */
     .grove .motif--fall {
         --shift: var(--fall-shift, 0rem);
         --drift: 0.5rem;
 
         display: block;
-        opacity: 0.62;
     }
 
     .motif--fall-a {
-        inset-block-start: 4%;
-        --w: clamp(4.5rem, 20vw, 6rem);
-        --fall-shift: -3rem;
-        rotate: 68deg;
+        inset-block-start: 5%;
+        --w: clamp(4rem, 20vw, 5rem);
+        --fall-shift: -2.5rem;
+        rotate: 14deg;
+        opacity: 0.62;
     }
 
     .motif--fall-b {
-        inset-block-start: 21%;
-        --w: clamp(4rem, 17vw, 5.5rem);
-        --fall-shift: -8.5rem;
-        rotate: 96deg;
+        inset-block-start: 15%;
+        --w: clamp(3.25rem, 16vw, 4rem);
+        --fall-shift: 3.5rem;
+        rotate: 128deg;
+        opacity: 0.5;
     }
 
     .motif--fall-c {
-        inset-block-start: 41%;
-        --w: clamp(5rem, 23vw, 6.5rem);
-        --fall-shift: 2.5rem;
-        rotate: 76deg;
+        inset-block-start: 24%;
+        --w: clamp(4.5rem, 24vw, 6rem);
+        --fall-shift: -7rem;
+        rotate: 58deg;
+        opacity: 0.66;
     }
 
     .motif--fall-d {
-        inset-block-start: 62%;
-        --w: clamp(4rem, 17vw, 5.5rem);
+        inset-block-start: 34%;
+        --w: clamp(3.5rem, 18vw, 4.5rem);
         --fall-shift: 8.5rem;
-        rotate: 100deg;
-    }
-
-    /* Latura dinăuntru: la blocurile drepte calendarul e aliniat la dreapta,
-       la cele oglindite la stânga, deci golul e mereu pe partea asta. */
-    .motif--fall-e,
-    .motif--fall-f {
-        --fall-shift: calc(var(--w) / 2 + 1rem - 50%);
-
-        opacity: 0.45;
+        rotate: -32deg;
+        opacity: 0.54;
     }
 
     .motif--fall-e {
-        inset-block-start: 84%;
-        --w: clamp(4.5rem, 20vw, 6rem);
-        rotate: 84deg;
+        inset-block-start: 44%;
+        --w: clamp(4.25rem, 22vw, 5.5rem);
+        --fall-shift: -3rem;
+        rotate: 96deg;
+        opacity: 0.6;
     }
 
     .motif--fall-f {
+        inset-block-start: 53%;
+        --w: clamp(3rem, 15vw, 3.75rem);
+        --fall-shift: 2.5rem;
+        rotate: 158deg;
+        opacity: 0.48;
+    }
+
+    .motif--fall-g {
+        inset-block-start: 63%;
+        --w: clamp(4.75rem, 25vw, 6.25rem);
+        --fall-shift: -7rem;
+        rotate: 22deg;
+        opacity: 0.64;
+    }
+
+    .motif--fall-h {
+        inset-block-start: 72%;
+        --w: clamp(3.25rem, 17vw, 4.25rem);
+        --fall-shift: 8.5rem;
+        rotate: 112deg;
+        opacity: 0.52;
+    }
+
+    /* Ultimele două trec pe lângă calendar: merg pe latura dinăuntru, unde nu
+       e text (lunile sunt aliniate spre linie), și mai palide, fiindcă
+       --ink-soft pe nervura cea mai închisă a frunzei dă 3.6:1 la 0.72 și
+       4.6:1 la 0.45. */
+    .motif--fall-i {
+        inset-block-start: 84%;
+        --w: clamp(4rem, 20vw, 5rem);
+        --fall-shift: calc(var(--w) / 2 + 0.75rem - 50%);
+        rotate: -48deg;
+        opacity: 0.45;
+    }
+
+    .motif--fall-j {
         inset-block-start: 93%;
-        --w: clamp(4rem, 18vw, 5.5rem);
-        rotate: 70deg;
+        --w: clamp(3.25rem, 16vw, 4rem);
+        --fall-shift: calc(var(--w) / 2 + 5rem - 50%);
+        rotate: 74deg;
+        opacity: 0.42;
     }
 
     /* Ramura intră din marginea cadrului, nu stă pe jumătate în afara lui:
