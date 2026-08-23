@@ -1,0 +1,193 @@
+- generic [active] [ref=f9e1]:
+  - link "Sari la conținut" [ref=f9e2] [cursor=pointer]:
+    - /url: "#main"
+  - banner [ref=f9e3]:
+    - generic [ref=f9e4]:
+      - link "Ferma Fruct Brabova, pagina principală" [ref=f9e5] [cursor=pointer]:
+        - /url: index.html
+      - button "Meniu" [ref=f9e6] [cursor=pointer]
+  - main [ref=f9e9]:
+    - generic [ref=f9e10]:
+      - generic "Filmare din dronă deasupra livezii înflorite"
+      - generic [ref=f9e11]:
+        - heading "Patru fructe, o singură livadă" [level=1] [ref=f9e12]
+        - paragraph [ref=f9e13]: Cireșe, pere, prune și caise, crescute la Brabova, în județul Dolj.
+        - paragraph [ref=f9e14]:
+          - link "Contactați-ne" [ref=f9e15] [cursor=pointer]:
+            - /url: contact.html
+    - region "Ferma în cifre" [ref=f9e16]:
+      - list [ref=f9e17]:
+        - listitem [ref=f9e18]:
+          - generic [ref=f9e19]: "0"
+          - generic [ref=f9e20]: hectare de livadă
+        - listitem [ref=f9e21]:
+          - generic [ref=f9e22]: "0"
+          - generic [ref=f9e23]: ani de recoltă
+        - listitem [ref=f9e24]:
+          - generic [ref=f9e25]: "0"
+          - generic [ref=f9e26]: tone culese anual
+      - paragraph [ref=f9e27]: Cifre exemplificative, până la valorile reale de la fermă.
+    - generic [ref=f9e29]:
+      - generic [ref=f9e30]:
+        - paragraph [ref=f9e31]: Fructele se coc puțin altfel aici. Se simte de la prima mușcătură.
+        - paragraph [ref=f9e32]: Aceleași patru în fiecare an, pe același deal. Nimic altceva nu se plantează aici.
+      - heading "Fructele noastre" [level=2] [ref=f9e37]
+      - list [ref=f9e39]:
+        - listitem [ref=f9e40]:
+          - generic [ref=f9e41]:
+            - generic [ref=f9e42]:
+              - heading "Cireșe" [level=3] [ref=f9e43]
+              - paragraph [ref=f9e44]: Mai — Iunie
+            - paragraph [ref=f9e45]: Primele care se culeg și primele care se termină. Se coc pe pom până la capăt, iar pielița crapă dacă mai stau o zi în plus, așa că sezonul lor se măsoară în zile, nu în săptămâni.
+            - img "Frunze de cireș și cireșe coapte, văzute de aproape" [ref=f9e47]
+          - generic [ref=f9e48]:
+            - img "Cireșe roșii coapte, atârnând în ciorchine pe ram" [ref=f9e50]
+            - generic [ref=f9e51]:
+              - heading "Din livadă, direct la tine." [level=4] [ref=f9e52]
+              - paragraph [ref=f9e56]: Se mănâncă din ladă, înainte să apuce cineva să le spele. Cine a copilărit cu un cireș în curte le recunoaște gustul din prima; de aceea nu le culegem devreme, oricât ar fi de comod.
+              - paragraph [ref=f9e57]: Cultivate cu grijă. Culese la timp.
+          - list "Calendarul recoltei de cireșe" [ref=f9e58]:
+            - listitem [ref=f9e59]: Mai
+            - listitem [ref=f9e60]:
+              - heading "Începutul sezonului" [level=4] [ref=f9e61]
+              - paragraph [ref=f9e62]: Primele se colorează, dar rămân pe pom până se coc de tot.
+            - listitem [ref=f9e63]:
+              - heading "Vârful recoltei" [level=4] [ref=f9e64]
+              - paragraph [ref=f9e65]: "Se culege zilnic: pielița crapă dacă mai stau o zi."
+            - listitem [ref=f9e66]: Iunie
+        - listitem [ref=f9e67]:
+          - generic [ref=f9e68]:
+            - generic [ref=f9e69]:
+              - heading "Caise" [level=3] [ref=f9e70]
+              - paragraph [ref=f9e71]: Iunie — Iulie
+            - paragraph [ref=f9e72]: Cel mai scurt sezon dintre toate patru. Se coc aproape toate deodată, iar drumul de la galben la portocaliu îl fac în două zile.
+            - img "Ramură încărcată cu caise coapte" [ref=f9e74]
+          - generic [ref=f9e75]:
+            - img "Caise galben-portocalii coapte, pe creangă" [ref=f9e77]
+            - generic [ref=f9e78]:
+              - heading "Culese coapte, nu tari." [level=4] [ref=f9e79]
+              - paragraph [ref=f9e83]: Sunt moi la atingere și se simt de la un rând distanță. Le culegem coapte, nu tari, ceea ce înseamnă că nu au timp să stea prin depozite.
+              - paragraph [ref=f9e84]: Cel mai scurt sezon dintre toate patru.
+          - list "Calendarul recoltei de caise" [ref=f9e85]:
+            - listitem [ref=f9e86]: Iunie
+            - listitem [ref=f9e87]:
+              - heading "Primele coapte" [level=4] [ref=f9e88]
+              - paragraph [ref=f9e89]: Galbenul trece în portocaliu în două zile.
+            - listitem [ref=f9e90]:
+              - heading "Toate deodată" [level=4] [ref=f9e91]
+              - paragraph [ref=f9e92]: Se coc în același timp, iar culesul ține foarte puțin.
+            - listitem [ref=f9e93]: Iulie
+        - listitem [ref=f9e94]:
+          - generic [ref=f9e95]:
+            - generic [ref=f9e96]:
+              - heading "Prune" [level=3] [ref=f9e97]
+              - paragraph [ref=f9e98]: August — Septembrie
+            - paragraph [ref=f9e99]: Vin cu bruma încă pe ele, stratul acela fin care se șterge dacă le atingi. Este semnul că nu au fost umblate după cules.
+            - img "Prune coapte între frunzele pomului" [ref=f9e101]
+          - generic [ref=f9e102]:
+            - img "Prune vinete cu brumă, strânse pe creangă" [ref=f9e104]
+            - generic [ref=f9e105]:
+              - heading "Cu bruma încă pe ele." [level=4] [ref=f9e106]
+              - paragraph [ref=f9e110]: Se coc târziu și se țin bine. Sunt singurele dintre cele patru care suportă un drum lung fără să-și piardă forma, iar dulceața li se așază abia după câteva zile de odihnă.
+              - paragraph [ref=f9e111]: Se coc târziu, se țin bine.
+          - list "Calendarul recoltei de prune" [ref=f9e112]:
+            - listitem [ref=f9e113]: August
+            - listitem [ref=f9e114]:
+              - heading "Se face bruma" [level=4] [ref=f9e115]
+              - paragraph [ref=f9e116]: Stratul fin se așază pe fruct și nu se mai atinge.
+            - listitem [ref=f9e117]:
+              - heading "Culesul mare" [level=4] [ref=f9e118]
+              - paragraph [ref=f9e119]: Suportă drumul lung fără să-și piardă forma.
+            - listitem [ref=f9e120]: Septembrie
+        - listitem [ref=f9e121]:
+          - generic [ref=f9e122]:
+            - generic [ref=f9e123]:
+              - heading "Pere" [level=3] [ref=f9e124]
+              - paragraph [ref=f9e125]: August — Octombrie
+            - paragraph [ref=f9e126]: Se culeg ferme și se lasă să se înmoaie singure, câteva zile, la temperatura camerei. Este singura parte pe care o lăsăm în seama celui care le mănâncă.
+            - img "Pere coapte printre frunzele pomului" [ref=f9e128]
+          - generic [ref=f9e129]:
+            - img "Pere galben-roșiatice atârnând în pom" [ref=f9e131]
+            - generic [ref=f9e132]:
+              - heading "Se coc la tine acasă." [level=4] [ref=f9e133]
+              - paragraph [ref=f9e137]: Închid sezonul livezii, în octombrie, când ceilalți pomi sunt deja goi. Zeama se simte de la prima mușcătură; dacă nu curge pe mână, mai au nevoie de o zi.
+              - paragraph [ref=f9e138]: Închid sezonul livezii.
+          - list "Calendarul recoltei de pere" [ref=f9e139]:
+            - listitem [ref=f9e140]: August
+            - listitem [ref=f9e141]:
+              - heading "Începutul coacerii" [level=4] [ref=f9e142]
+              - paragraph [ref=f9e143]: Zeamele se strâng și fructul începe să se îndulcească.
+            - listitem [ref=f9e144]:
+              - heading "Ultimele din livadă" [level=4] [ref=f9e145]
+              - paragraph [ref=f9e146]: Se culeg ferme și se înmoaie singure, în câteva zile.
+            - listitem [ref=f9e147]: Octombrie
+      - paragraph [ref=f9e148]: Lunile de recoltă sunt orientative, până la datele reale de la fermă.
+    - generic [ref=f9e150]:
+      - generic "Filmare din dronă printre rândurile de pomi" [ref=f9e152]
+      - paragraph [ref=f9e153]: Livada, filmată din dronă, în primăvara aceasta.
+    - generic [ref=f9e155]:
+      - generic [ref=f9e156]:
+        - heading "Întrebări frecvente" [level=2] [ref=f9e157]
+        - paragraph [ref=f9e158]: Ce ne întreabă cel mai des cei care ne caută după ce au gustat fructele.
+      - list [ref=f9e159]:
+        - listitem [ref=f9e160]:
+          - group [ref=f9e161]:
+            - generic "Ce fructe cultivați?" [ref=f9e162] [cursor=pointer]
+        - listitem [ref=f9e165]:
+          - group [ref=f9e166]:
+            - generic "Când se culege fiecare fruct?" [ref=f9e167] [cursor=pointer]
+        - listitem [ref=f9e170]:
+          - group [ref=f9e171]:
+            - generic "De ce au fructele alt gust?" [ref=f9e172] [cursor=pointer]
+        - listitem [ref=f9e175]:
+          - group [ref=f9e176]:
+            - generic "Livrați și în afara județului Dolj?" [ref=f9e177] [cursor=pointer]
+        - listitem [ref=f9e180]:
+          - group [ref=f9e181]:
+            - generic "Care este cantitatea minimă la o comandă?" [ref=f9e182] [cursor=pointer]
+      - paragraph [ref=f9e185]: Răspunsuri orientative, până la formulările finale de la fermă.
+  - contentinfo [ref=f9e186]:
+    - generic [ref=f9e187]:
+      - paragraph [ref=f9e189]: Ferma Fruct Brabova
+      - navigation "Navigare în subsol" [ref=f9e190]:
+        - heading "Navigare" [level=2] [ref=f9e191]
+        - list [ref=f9e192]:
+          - listitem [ref=f9e193]:
+            - link "Acasă" [ref=f9e194] [cursor=pointer]:
+              - /url: "#acasa"
+          - listitem [ref=f9e195]:
+            - link "Despre" [ref=f9e196] [cursor=pointer]:
+              - /url: despre.html
+          - listitem [ref=f9e197]:
+            - link "Contact" [ref=f9e198] [cursor=pointer]:
+              - /url: contact.html
+    - generic [ref=f9e199]:
+      - heading "Fructele noastre ajung la" [level=2] [ref=f9e200]
+      - list [ref=f9e201]:
+        - listitem [ref=f9e202]:
+          - img "Carrefour" [ref=f9e203]
+        - listitem [ref=f9e210]:
+          - img "Auchan" [ref=f9e211]
+        - listitem [ref=f9e217]:
+          - img "Big Family Market" [ref=f9e218]:
+            - generic [ref=f9e230]: BIG
+            - generic [ref=f9e231]: FAMILY
+            - generic [ref=f9e232]: MARKET
+        - listitem [ref=f9e234]:
+          - img "Partener comercial" [ref=f9e235]
+    - generic [ref=f9e238]:
+      - list [ref=f9e239]:
+        - listitem [ref=f9e240]:
+          - link "Instagram" [ref=f9e241] [cursor=pointer]:
+            - /url: https://www.instagram.com/
+        - listitem [ref=f9e246]:
+          - link "Facebook" [ref=f9e247] [cursor=pointer]:
+            - /url: https://www.facebook.com/
+      - paragraph [ref=f9e252]:
+        - generic [ref=f9e253]: RO
+        - generic [ref=f9e254]: "|"
+        - generic [ref=f9e255]: EN
+      - paragraph [ref=f9e256]:
+        - link "Politica de confidențialitate" [ref=f9e257] [cursor=pointer]:
+          - /url: politica-de-confidentialitate.html
+        - text: · © 2026 Ferma Fruct Brabova. Toate drepturile rezervate.

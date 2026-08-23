@@ -2579,6 +2579,46 @@ main,
 
 @media (min-width: 48em) and (max-width: 63.99em) {
 
+    /* DECLARAȚIA LA TABLETĂ. Fraza și nota nu mai încap pe același rând:
+       nota trecea pe al doilea rând al flexului, lipită de marginea stângă,
+       dar cu textul aliniat la dreapta, deci atârna într-un gol. Aici stau
+       una sub alta, iar nota coboară în colțul din dreapta, ca să păstreze
+       diagonala pe care rândul o face pe ecran lat.
+
+       Rigla de deasupra notei e aceeași ca a titlului "Fructele noastre":
+       leagă nota de ceva, altfel textul aliniat la dreapta plutește. */
+    .orchard__head {
+        display: block;
+        /* Fără padding sus: secțiunea are deja padding-block-start, iar cele
+           două paragrafe nu susțin două spații suprapuse. */
+        padding-block: 0 var(--space-l);
+    }
+
+    .orchard__statement {
+        max-width: 22ch;
+    }
+
+    .orchard__note {
+        /* auto la stânga: cutia se lipește de capătul din dreapta. */
+        margin-block-start: var(--space-m);
+        margin-inline-start: auto;
+        max-width: 30ch;
+        padding-block-start: var(--space-s);
+        border-block-start: var(--hairline) solid var(--sand);
+    }
+
+    /* Aerul din jurul declarației e croit pentru conținutul ei: două
+       paragrafe. Cu --space-section sus și la prag, blocul ajungea la 580px
+       înălțime pentru 215px de text și se citea cât secțiunea de întrebări.
+       Dacă aici intră vreodată mai mult text, valorile astea cresc la loc. */
+    .orchard {
+        padding-block-start: var(--space-xl);
+    }
+
+    .orchard__catalog {
+        margin-block: var(--space-xl) var(--space-l);
+    }
+
     /* URMA CARE COBOARĂ, LA TABLETĂ. Aceeași frunză în cădere ca pe telefon,
        dar blocul e o grilă de două coloane, deci golurile sunt altele:
        fotografia mare și calendarul împart rândul din mijloc, iar coloana de
@@ -2701,6 +2741,14 @@ main,
 
     .grove__intro {
         grid-row: 2;
+    }
+
+    /* Cutia poartă masca, iar imaginea îi dă înălțimea. Ca element de
+       grilă se întindea pe tot rândul, care e înalt cât calendarul de
+       alături, nu cât fotografia: sub poză rămânea capătul de jos al
+       blobului gol (fond --sand-soft) și silueta ieșea lungită. */
+    .grove__frame {
+        align-self: start;
     }
 
     .grove__frame--a {
