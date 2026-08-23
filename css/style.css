@@ -2722,6 +2722,72 @@ main,
         rotate: -14deg;
     }
 
+    /* DESENELE DIN BLOCURILE DE FRUCT PE TELEFON. Pe o coloană frunzele
+       împinse cu --shift ieșeau pe jumătate din ecran, iar cele din mijlocul
+       blocului cădeau peste fotografii și se rupeau în muchia măștii.
+
+       Aici toate se agață de linia care coboară pe latura de afară a
+       blocului: dreapta la blocurile drepte, stânga la cele oglindite. --in
+       e distanța dintre frunză și marginea ferestrei, deci nimic nu mai iese
+       din cadru; una lipită de linie, una trasă înăuntru, alternând, ca pe
+       ecran lat. Înălțimile sunt benzile fără litere măsurate la 390px:
+       51% e golul dintre povestea blocului și rândul cursiv, 76.5% e golul
+       dintre a doua fotografie și calendar. Se schimbă înălțimea unui bloc,
+       se remăsoară. */
+    .grove .motif--vine {
+        --shift: calc(50% - var(--w) / 2 - var(--in, 0.5rem));
+        /* Legănarea de la derulare era 4rem: pe telefon benzile libere dintre
+           blocuri au 70px, deci frunza ajungea oriunde. 0.5rem se vede tot,
+           dar rămâne unde a fost pusă. */
+        --drift: 0.5rem;
+    }
+
+    /* 9%, nu deasupra titlului: sus stă ramura, iar două desene în același
+       colț se citeau ca o pată. Aici frunza iese din marginea paragrafului,
+       care e scris cu --ink (5.9:1 peste nervura cea mai închisă). */
+    .motif--vine-leaf-b {
+        inset-block-start: 9%;
+        inset-block-end: auto;
+        --w: clamp(5.5rem, 27vw, 7.5rem);
+        --in: 0.5rem;
+    }
+
+    .motif--vine-leaf-c {
+        inset-block-start: 46.5%;
+        --w: clamp(5.5rem, 27vw, 7.5rem);
+        --in: 0.75rem;
+    }
+
+    /* Mai mică decât surorile ei: golul dintre a doua fotografie și primul
+       rând al calendarului are numai 70px, iar rândul cursiv de dedesubt e
+       scris cu --ink-soft, care pe nervura cea mai închisă a frunzei cade la
+       3.6:1. Nicio literă nu ajunge deasupra. */
+    .motif--vine-leaf-a {
+        inset-block-start: 76.8%;
+        --w: clamp(4.5rem, 21vw, 6rem);
+        --in: 8rem;
+    }
+
+    /* A patra frunză nu mai are bandă liberă: pe o coloană ar cădea fie pe o
+       fotografie, fie peste calendar. Mărul ține locul ei jos. */
+    .motif--vine-leaf-d {
+        display: none;
+    }
+
+    /* Ramura intră din marginea cadrului, nu stă pe jumătate în afara lui:
+       la -8rem rămâneau vizibile două frunze din desen. */
+    .motif--grove-branch {
+        inset-block-start: 0;
+        inset-inline-end: -2rem;
+        width: clamp(8rem, 34vw, 12rem);
+        /* 5rem de legănare o cobora peste frunza de la 9%. */
+        --drift: 1.5rem;
+    }
+
+    .grove--flip .motif--grove-branch {
+        inset-inline-start: -2rem;
+    }
+
     /* BANDA CU CIFRE. Trei perechi nu mai încap pe un rând; pe coloană,
        liniile despărțitoare trec deasupra în loc de lateral. */
     .brief__list {
