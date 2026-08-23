@@ -147,6 +147,12 @@
     rotate: 8deg;
 }
 
+/* Frunzele care cad pe telefon. Pe ecran lat coloana are deja vița și
+   ramura; astea se aprind numai sub 48em, unde rămân goluri mari. */
+.motif--fall {
+    display: none;
+}
+
 /* Ramura de trecere dintre secțiuni: cea mai mare bucată de desen, deci cea
    mai palidă opacitate. */
 .motif--cross {
@@ -2772,6 +2778,73 @@ main,
        fotografie, fie peste calendar. Mărul ține locul ei jos. */
     .motif--vine-leaf-d {
         display: none;
+    }
+
+    /* URMA CARE COBOARĂ. Șase frunze în plus pe bloc, pe mijloc, alternând
+       stânga-dreapta cu câțiva rem, ca o urmă care cade. --fall-shift e
+       distanța față de axa blocului; blocul oglindit îi schimbă semnul
+       singur, deci urma șerpuiește invers de la un fruct la altul.
+
+       Înălțimile ocolesc cele două fotografii (17-40% și 58-77%): cele două
+       de lângă ele stau în afara petei de acuarelă, care e mai îngustă decât
+       cadrul. Cele două de la calendar merg pe latura dinăuntru, unde nu e
+       text, și sunt mai palide: --ink-soft pe nervura cea mai închisă la
+       0.72 dă 3.6:1, la 0.45 dă 4.6:1. */
+    .grove .motif--fall {
+        --shift: var(--fall-shift, 0rem);
+        --drift: 0.5rem;
+
+        display: block;
+        opacity: 0.62;
+    }
+
+    .motif--fall-a {
+        inset-block-start: 4%;
+        --w: clamp(4.5rem, 20vw, 6rem);
+        --fall-shift: -3rem;
+        rotate: 68deg;
+    }
+
+    .motif--fall-b {
+        inset-block-start: 21%;
+        --w: clamp(4rem, 17vw, 5.5rem);
+        --fall-shift: -8.5rem;
+        rotate: 96deg;
+    }
+
+    .motif--fall-c {
+        inset-block-start: 41%;
+        --w: clamp(5rem, 23vw, 6.5rem);
+        --fall-shift: 2.5rem;
+        rotate: 76deg;
+    }
+
+    .motif--fall-d {
+        inset-block-start: 62%;
+        --w: clamp(4rem, 17vw, 5.5rem);
+        --fall-shift: 8.5rem;
+        rotate: 100deg;
+    }
+
+    /* Latura dinăuntru: la blocurile drepte calendarul e aliniat la dreapta,
+       la cele oglindite la stânga, deci golul e mereu pe partea asta. */
+    .motif--fall-e,
+    .motif--fall-f {
+        --fall-shift: calc(var(--w) / 2 + 1rem - 50%);
+
+        opacity: 0.45;
+    }
+
+    .motif--fall-e {
+        inset-block-start: 84%;
+        --w: clamp(4.5rem, 20vw, 6rem);
+        rotate: 84deg;
+    }
+
+    .motif--fall-f {
+        inset-block-start: 93%;
+        --w: clamp(4rem, 18vw, 5.5rem);
+        rotate: 70deg;
     }
 
     /* Ramura intră din marginea cadrului, nu stă pe jumătate în afara lui:
