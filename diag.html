@@ -12,7 +12,11 @@
   #out { white-space: pre-wrap; word-break: break-word; background: #000; padding: 1rem;
          border: 1px solid #444; border-radius: 6px; }
   button { font: inherit; padding: .6rem 1rem; margin: .75rem .5rem .75rem 0; cursor: pointer; }
-  .frame { position: absolute; left: -20000px; top: 0; border: 0; }
+  /* Cadrul trebuie să fie chiar pe ecran. Un iframe scos din vedere e oprit
+     din desenat de browser, iar observatorul dinăuntru nu mai raportează nimic:
+     măsurătoarea ar spune „nu se mișcă" chiar și acolo unde se mișcă. */
+  .frame { display: block; width: 100%; height: 60vh; border: 1px solid #444;
+           border-radius: 6px; margin-top: 1rem; background: #fff; }
   .ok { color: #7f7; } .bad { color: #f77; }
 </style>
 </head>
@@ -21,7 +25,9 @@
 <button id="copy">Copiază tot</button>
 <button id="again">Rulează din nou</button>
 <div id="out">se măsoară…</div>
-<iframe id="f" class="frame" title="test"></iframe>
+<p>Cadrul de mai jos e pagina reală, cea măsurată. Lasă-l în pace cât scrie
+„se măsoară".</p>
+<iframe id="f" class="frame" title="pagina măsurată"></iframe>
 
 <script>
 (function () {
@@ -49,9 +55,6 @@
     rows.push(line('supports mix-blend-mode: multiply', sup('mix-blend-mode: multiply')));
     rows.push('');
 
-    frame.style.width = window.innerWidth + 'px';
-    frame.style.height = window.innerHeight + 'px';
-
     frame.onload = function () {
       var d, w;
       try { d = frame.contentDocument; w = frame.contentWindow; }
@@ -70,6 +73,7 @@
       var js = [].slice.call(d.querySelectorAll('script[src]')).map(function (s) {
         return s.getAttribute('src');
       });
+      rows.push(line('cadrul măsurat', w.innerWidth + ' x ' + w.innerHeight));
       rows.push(line('css încărcat', css.join('  |  ')));
       rows.push(line('js încărcat', js.join('  |  ')));
       rows.push(line('gsap prezent', typeof w.gsap));
@@ -84,12 +88,6 @@
         return b.width > 0 && b.height > 0;
       });
       rows.push(line('.motif cu dimensiune', vis.length));
-
-      var loaded = all.filter(function (e) { return e.naturalWidth > 0; });
-      rows.push(line('.motif cu imaginea încărcată', loaded.length + ' / ' + all.length));
-      if (all.length && !all[0].naturalWidth) {
-        rows.push(line('  primul src', all[0].currentSrc || all[0].src));
-      }
 
       if (!vis.length) { rows.push('OPRIT: niciun desen nu are dimensiune.'); return done(rows); }
 
@@ -125,6 +123,16 @@
 
       (function walk() {
         if (step >= steps) {
+          /* Abia acum, după ce cadrul a trecut peste ele. Imaginile au
+             loading="lazy", deci înainte de derulare cele de departe chiar
+             sunt neîncărcate și numărul ar speria degeaba. */
+          var loaded = all.filter(function (e) { return e.naturalWidth > 0; });
+          rows.push('');
+          rows.push(line('.motif cu imaginea încărcată după derulare',
+            loaded.length + ' / ' + all.length));
+          rows.push(line('  exemplul are imaginea',
+            sample.naturalWidth > 0 ? 'da (' + sample.naturalWidth + 'px)' : 'NU — ' + (sample.currentSrc || sample.src)));
+
           var uniq = seen.filter(function (v, i, a) { return a.indexOf(v) === i; });
           rows.push('');
           rows.push(line('poziții distincte pe un parcurs', uniq.length + ' din ' + steps));
