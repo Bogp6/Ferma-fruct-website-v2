@@ -481,225 +481,40 @@
         };
 
 
-        /* Cât s-a mutat frunza acum, în pixeli, oricine ar fi scris mutarea. */
-        var shiftOf = function (el) {
-            var written = getComputedStyle(el).translate;
+        /* CINE FACE MIȘCAREA
+           Nu se mai ghicește și nu se mai verifică nimic la derulare. Am
+           încercat trei feluri de a afla singur dacă mișcarea din CSS chiar se
+           întâmplă, și fiecare a mers pe unele aparate și a picat pe altele.
+           Verificarea era ea însăși partea stricată.
 
-            if (!written || written === 'none') {
-                return 0;
-            }
+           Se știe însă exact, din încercări pe aparate adevărate, care drum
+           merge unde:
 
-            var parts = written.split(' ');
+             - WebKit, adică Safari pe iPhone și pe Mac: parcursul de derulare
+               din CSS merge, iar mișcarea scrisă din JS se târăște, fiindcă
+               rămâne în urma derulării cu inerție. Deci CSS.
+             - Restul, Chrome și Firefox: pe calculatorul clientului mișcarea
+               din CSS nu se produce deloc, oricât de mult zice browserul că o
+               ştie, iar cea scrisă din JS merge curat, fiindcă derularea pe
+               calculator nu are inerția de pe telefon. Deci JS.
 
-            return parseFloat(parts.length > 1 ? parts[1] : '0') || 0;
-        };
+           Da, e o alegere după numele motorului, nu după o însușire a lui, și
+           în mod obișnuit asta se evită. Aici e singurul lucru care nu se poate
+           înșela: cele două însușiri pe care le-am putut întreba au răspuns
+           amândouă „da" pe un browser unde mișcarea nu se producea.
 
-        /* SE MIȘCĂ SAU NU
-           Întrebarea e chiar asta, pusă direct, pentru că fiecare test mai
-           deștept a picat pe câte un caz:
+           Preţul: un telefon cu Android primeşte drumul din JS, deci o mişcare
+           ceva mai puţin lină decât ar putea avea. Preferabil unei mişcări care
+           lipseşte cu totul pe calculator. */
+        var webkit = /apple/i.test(navigator.vendor || '');
 
-           - „unde ar trebui să fie frunza" cere refacerea intervalului `cover`,
-             iar desenele au `rotate`, care schimbă chenarul măsurat. Pagina de
-             contact ieșea stricată fiind sănătoasă.
-           - „stă înțepenită la un capăt" prinde animația cu durata 0, dar nu și
-             una care se aplică o dată, la o valoare oarecare de la mijloc, și
-             pe urmă nu mai e împinsă niciodată. Exact asta se întâmplă pe
-             calculatorul cu Windows, și trecea drept sănătoasă.
+        var cssCanDrift = webkit &&
+            !!(window.CSS && typeof window.CSS.supports === 'function' &&
+                window.CSS.supports('animation-timeline: view()') &&
+                window.CSS.supports('animation-duration: auto'));
 
-           Deci: alegem câteva frunze care sunt chiar acum pe ecran, deci în
-           plin drum, le ținem minte poziția, și după o derulare adevărată ne
-           uităm dacă s-a schimbat vreuna. Numai cele de pe ecran, altfel am
-           întreba una care stă cuminte la capăt fiindcă încă n-a intrat. Și
-           destulă derulare: pe telefon deriva e de o jumătate de rem întinsă
-           pe două ecrane, deci la o mișcare scurtă schimbarea reală e sub un
-           pixel și n-ar dovedi nimic. La 400 de pixeli derulați e limpede. */
-        var DRIFT_PROOF_SCROLL = 200;
-
-        var scrollNow = function () {
-            return window.scrollY || window.pageYOffset || 0;
-        };
-
-        var pickWitnesses = function () {
-            var viewport = window.innerHeight || document.documentElement.clientHeight;
-            var picked = [];
-
-            for (var i = 0; i < motifStates.length && picked.length < 6; i++) {
-                var state = motifStates[i];
-                var rect = state.el.getBoundingClientRect();
-
-                if (!rect.width && !rect.height) {
-                    continue;
-                }
-
-                if (rect.bottom < 0 || rect.top > viewport) {
-                    continue;
-                }
-
-                picked.push({ el: state.el, was: shiftOf(state.el) });
-            }
-
-            return picked;
-        };
-
-        /* O frunză aflată chiar acum între capete, nu la +drift sau -drift.
-           O animație cu durata zero nu produce niciodată așa ceva: își aruncă
-           frunza dintr-un capăt în celălalt și atât. */
-        var seesMiddle = function () {
-            var viewport = window.innerHeight || document.documentElement.clientHeight;
-            var looked = 0;
-
-            for (var i = 0; i < motifStates.length && looked < 12; i++) {
-                var state = motifStates[i];
-                var rect = state.el.getBoundingClientRect();
-
-                if ((!rect.width && !rect.height) || rect.bottom < 0 || rect.top > viewport) {
-                    continue;
-                }
-
-                looked++;
-
-                var written = getComputedStyle(state.el).translate;
-
-                if (!written || written === 'none') {
-                    continue;
-                }
-
-                if (Math.abs(Math.abs(shiftOf(state.el)) - state.travel) >
-                        state.travel * 0.15) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
-
-        /* Se cer amândouă, pentru că fiecare singură lasă o portiță:
-             - numai „s-a schimbat ceva" trece o animație cu durata zero, care
-               chiar schimbă valoarea, sărind între capete;
-             - numai „stă la mijloc" trece o animație înghețată la o valoare
-               oarecare, cum se întâmplă pe calculatorul cu Windows.
-           O mișcare sănătoasă le arată pe amândouă în prima rundă. */
-        var sawMiddle = false;
-        var sawChange = false;
-        var rounds = 0;
-        var witnesses = null;
-        var witnessedAt = 0;
-
-        var settleDrift = function () {
-            if (!sawMiddle && seesMiddle()) {
-                sawMiddle = true;
-            }
-
-            if (!witnesses || !witnesses.length) {
-                witnesses = pickWitnesses();
-                witnessedAt = scrollNow();
-                return;
-            }
-
-            if (Math.abs(scrollNow() - witnessedAt) < DRIFT_PROOF_SCROLL) {
-                return;
-            }
-
-            witnesses.forEach(function (witness) {
-                if (Math.abs(shiftOf(witness.el) - witness.was) > 1) {
-                    sawChange = true;
-                }
-            });
-
-            rounds++;
-            witnesses = null;
-
-            if (sawMiddle && sawChange) {
-                window.removeEventListener('scroll', onDriftCheck);
-                rememberVerdict(false);
-                return;
-            }
-
-            if (rounds >= 4) {
-                window.removeEventListener('scroll', onDriftCheck);
-                rememberVerdict(true);
-                takeOverDrift();
-            }
-        };
-
-        var driftCheckedAt = 0;
-        var driftRolled = 0;
-        var driftLastY = 0;
-
-        function onDriftCheck() {
-            /* Măsurat în pixeli derulați, nu în timp. Cu un prag de timp, o
-               aruncătură rapidă de deget trecea toată pagina în vreo secundă și
-               apuca doar câteva verificări: nu se aduna nimic de spus și
-               mișcarea moartă scăpa nedescoperită. Pe derulare pragul se ține
-               după deget, oricât de repede merge.
-
-               Marginea de timp rămâne, mică, doar cât să nu ajungă verificarea
-               la fiecare cadru: citește stiluri calculate, și tocmai asta ar
-               face zgâlțâiala pe care o caută. */
-            var now = scrollNow();
-
-            driftRolled += Math.abs(now - driftLastY);
-            driftLastY = now;
-
-            if (driftRolled < 150) {
-                return;
-            }
-
-            var stamp = Date.now();
-
-            if (stamp - driftCheckedAt < 60) {
-                return;
-            }
-
-            driftRolled = 0;
-            driftCheckedAt = stamp;
-            settleDrift();
-        }
-
-        /* Verdictul se ține minte cât ține vizita. Pagina de contact are opt
-           desene în total și rareori mai mult de unul pe ecran deodată, deci
-           acolo verificarea rămâne fără subiect și nu se pronunță. Pagina
-           principală are 89 și se pronunță în câteva sute de pixeli. Odată aflat
-           răspunsul pe orice pagină, îl folosesc toate celelalte: e o însușire a
-           browserului, nu a paginii. */
-        var DRIFT_MEMORY = 'motif-drift-css-dead';
-
-        var rememberVerdict = function (dead) {
-            try {
-                window.sessionStorage.setItem(DRIFT_MEMORY, dead ? '1' : '0');
-            } catch (e) {
-                /* Navigare privată sau memorie plină: se verifică din nou. */
-            }
-        };
-
-        var recalledVerdict = function () {
-            try {
-                return window.sessionStorage.getItem(DRIFT_MEMORY);
-            } catch (e) {
-                return null;
-            }
-        };
-
-        var cssMightDrift = !!(window.CSS && typeof window.CSS.supports === 'function' &&
-            window.CSS.supports('animation-timeline: view()') &&
-            window.CSS.supports('animation-duration: auto'));
-
-        var recalled = recalledVerdict();
-
-        if (!cssMightDrift || recalled === '1') {
+        if (!cssCanDrift) {
             takeOverDrift();
-        } else if (recalled !== '0') {
-            var startDriftCheck = function () {
-                driftLastY = scrollNow();
-                settleDrift();
-                window.addEventListener('scroll', onDriftCheck, { passive: true });
-            };
-
-            if (document.readyState === 'complete') {
-                startDriftCheck();
-            } else {
-                window.addEventListener('load', startDriftCheck);
-            }
         }
     }
 
