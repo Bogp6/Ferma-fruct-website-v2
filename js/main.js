@@ -350,18 +350,11 @@
 
 
     /* ---------------------------------------------------------------------
-       DERIVA DESENELOR DE FUNDAL, REZERVA
-       Mișcarea se face în style.css, pe un parcurs de derulare. Acolo stă pe
-       firul de compoziție al browserului, și pe iPhone asta e diferența dintre
-       lin și târât: pozițiile scrise de aici rămân în urma derulării cu inerție
-       și frunzele înoată pe lângă pagină. Deci JS nu preia decât dacă trebuie.
-
-       Când preia, verifică întâi. Am întrebat de două ori browserul dacă știe
-       să facă mișcarea, și de două ori a răspuns da fără să o facă: Safari
-       accepta parcursul dar lăsa durata pe 0s, iar pe un calculator cu Windows
-       și Chrome și Firefox spuneau da și stăteau. Așa că nu se mai întreabă
-       nimeni nimic: după încărcare ne uităm unde sunt frunzele față de unde ar
-       trebui să fie, și numai dacă nu se potrivesc preia JS.
+       DERIVA DESENELOR DE FUNDAL
+       WebKit face mișcarea în style.css, pe firul de compoziție al browserului.
+       Chrome o face aici, fiindcă pe unele calculatoare parcursul din CSS era
+       acceptat dar nu se mișca. Firefox păstrează aceleași desene statice:
+       multe imagini în mișcare cu multiply îi pot face derularea să tresară.
 
        --drift e scris in rem si NU e inregistrat cu @property, deci
        getPropertyValue intoarce jetonul brut ("2.75rem"), nu pixeli. parseFloat
@@ -371,8 +364,16 @@
        --------------------------------------------------------------------- */
 
     var motifs = document.querySelectorAll('.motif');
+    var motifDriftIsStatic = /firefox/i.test(navigator.userAgent || '');
 
-    if (motifs.length) {
+    if (motifs.length && motifDriftIsStatic) {
+        /* Firefox redesenează sacadat multe imagini în mișcare cu multiply.
+           Clasa păstrează desenele și amestecul, dar nu pornește nici animația
+           din CSS, nici calculele și straturile temporare din JS. */
+        document.documentElement.classList.add('motif-drift-static');
+    }
+
+    if (motifs.length && !motifDriftIsStatic) {
         var probe = document.createElement('div');
         probe.setAttribute('aria-hidden', 'true');
         probe.style.cssText = 'position:absolute;left:-9999px;top:0;height:0;visibility:hidden;pointer-events:none';
@@ -494,10 +495,9 @@
 
 
         /* CINE FACE MIȘCAREA
-           Nu se mai ghicește și nu se mai verifică nimic la derulare. Am
-           încercat trei feluri de a afla singur dacă mișcarea din CSS chiar se
-           întâmplă, și fiecare a mers pe unele aparate și a picat pe altele.
-           Verificarea era ea însăși partea stricată.
+           Alegerea se face o dată, înainte să fie legat vreun ascultător de
+           derulare. Testele de suport au răspuns da și pe aparate unde mișcarea
+           nu se producea, deci nu pot decide drumul.
 
            Se știe însă exact, din încercări pe aparate adevărate, care drum
            merge unde:
@@ -505,10 +505,10 @@
              - WebKit, adică Safari pe iPhone și pe Mac: parcursul de derulare
                din CSS merge, iar mișcarea scrisă din JS se târăște, fiindcă
                rămâne în urma derulării cu inerție. Deci CSS.
-             - Restul, Chrome și Firefox: pe calculatorul clientului mișcarea
-               din CSS nu se produce deloc, oricât de mult zice browserul că o
-               ştie, iar cea scrisă din JS merge curat, fiindcă derularea pe
-               calculator nu are inerția de pe telefon. Deci JS.
+             - Firefox: desene statice. Rămân amestecate în pagină, dar fără
+               redesenarea costisitoare la fiecare cadru de derulare.
+             - Restul, inclusiv Chrome: JS, fiindcă pe calculatorul clientului
+               parcursul din CSS nu se producea deși browserul îl accepta.
 
            Da, e o alegere după numele motorului, nu după o însușire a lui, și
            în mod obișnuit asta se evită. Aici e singurul lucru care nu se poate
@@ -516,8 +516,7 @@
            amândouă „da" pe un browser unde mișcarea nu se producea.
 
            Preţul: un telefon cu Android primeşte drumul din JS, deci o mişcare
-           ceva mai puţin lină decât ar putea avea. Preferabil unei mişcări care
-           lipseşte cu totul pe calculator. */
+           ceva mai puţin lină decât ar putea avea. */
         var webkit = /apple/i.test(navigator.vendor || '');
 
         var cssCanDrift = webkit &&

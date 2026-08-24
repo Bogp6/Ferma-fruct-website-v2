@@ -404,9 +404,8 @@
    valoarea inițială a browserului, care în Chrome e `auto` dar în WebKit e `0s`.
    Cu `0s` frunza își termina drumul înainte să înceapă.
 
-   main.js verifică după încărcare dacă mișcarea asta chiar se întâmplă și preia
-   el treaba dacă nu. Verifică, nu întreabă: browserele au declarat deja suport
-   pentru o mișcare care nu se producea. */
+   main.js lasă drumul acesta numai pe WebKit. Chrome primește rezerva din JS,
+   iar Firefox păstrează desenele statice ca să nu tresară la derulare. */
 @supports (animation-timeline: view()) {
 
     .motif {
@@ -417,11 +416,18 @@
     }
 }
 
-/* Pusă de main.js când a văzut că deriva de mai sus nu mișcă nimic și publică el
-   pozițiile. Animațiile bat stilul inline în cascadă, deci fără oprirea asta cea
-   moartă ar câștiga și frunza ar rămâne pe loc. */
+/* Pusă de main.js când publică el pozițiile. Animațiile bat stilul inline în
+   cascadă, deci fără oprirea asta cea moartă ar câștiga și frunza ar rămâne pe
+   loc. */
 .motif-drift-js .motif {
     animation-name: none;
+}
+
+/* Firefox păstrează desenele amestecate în pagină, dar fără deriva care cere
+   redesenarea lor la fiecare cadru și poate face derularea să tresară. */
+.motif-drift-static .motif {
+    animation-name: none;
+    translate: none;
 }
 
 @keyframes motif-drift {
