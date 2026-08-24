@@ -832,6 +832,20 @@ html:not(.no-js) .road__stop {
     opacity: 1;
 }
 
+/* normalize.css și base.css scurtează toate tranzițiile când aparatul anunță
+   mișcare redusă. Compoziția aprobată păstrează însă mișcările ei, la fel ca
+   pagina principală; fără excepția asta drumul apare întreg într-o clipă. */
+@media (prefers-reduced-motion: reduce) {
+
+    html:not(.no-js) .road {
+        transition-duration: 2600ms !important;
+    }
+
+    html:not(.no-js) .road__stop {
+        transition-duration: var(--duration-slow) !important;
+    }
+}
+
 
 /* ---------------------------------------------------------------------------
    9. LĂȚIMI — interogări în em, nu px, ca textul mărit din browser să
