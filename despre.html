@@ -12,7 +12,7 @@
   <title>Despre fermă — Ferma Fruct Brabova</title>
   <meta name="description" content="Povestea Fermei Fruct Brabova: cum a prins rădăcini livada, omul din spatele ei și viața de zi cu zi printre pomi.">
 
-  <link rel="canonical" href="">
+  <link rel="canonical" href="https://fermafructbrabova.ro/despre.html">
 
   <!-- despre.css vine ULTIMUL. CSS-ul acestei pagini nu se scrie în style.css. -->
   <link rel="stylesheet" href="css/normalize.css">
@@ -24,36 +24,50 @@
   <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Open Graph: how the link looks when shared on Facebook/WhatsApp -->
-  <meta property="og:title" content="TODO: titlu pentru distribuire">
-  <meta property="og:description" content="TODO: descriere pentru distribuire">
-  <meta property="og:image" content="TODO: adresa completă a imaginii de distribuire">
-  <meta property="og:url" content="TODO: adresa site-ului">
+  <!-- Open Graph: cum arată linkul când e distribuit pe Facebook sau WhatsApp -->
+  <meta property="og:site_name" content="Ferma Fruct Brabova">
+  <meta property="og:title" content="Despre Ferma Fruct Brabova">
+  <meta property="og:description" content="Cum a prins rădăcini livada, omul din spatele ei și viața de zi cu zi printre pomi.">
+  <meta property="og:image" content="https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp">
+  <!-- Lățimea și înălțimea scutesc Facebook de o primă preluare a imaginii; fără ele prima distribuire apare fără poză. -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Livada Fermei Fruct Brabova văzută de sus: rânduri de pomi tineri și drumul de pământ care le desparte.">
+  <meta property="og:url" content="https://fermafructbrabova.ro/despre.html">
   <meta property="og:type" content="website">
-
-  <!-- Same page in English. No English page exists yet; fill both when it does. -->
-  <link rel="alternate" hreflang="en" href="TODO">
-  <link rel="alternate" hreflang="x-default" href="TODO">
   <meta property="og:locale" content="ro_RO">
+
+  <!-- Nu există hreflang: site-ul are o singură limbă. Se adaugă odată cu paginile în engleză. -->
+
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta name="theme-color" content="#3E6027">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image:alt" content="TODO: ce se vede în imaginea de distribuire">
 
-  <!-- TODO: fapte încă nefurnizate de client — nu ghici, doar șterge la lansare dacă lipsesc. -->
+  <!-- Datele fermei. Telefonul și strada lipsesc din tot fișierul fiindcă ferma
+       nu le-a dat încă: un câmp lipsă e corect, unul ghicit nu. Coordonatele
+       sunt aceleași cu harta din contact.html; dacă se schimbă una, se schimbă
+       amândouă. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Farm",
+      "@id": "https://fermafructbrabova.ro/#ferma",
       "name": "Ferma Fruct Brabova",
-      "telephone": "TODO",
+      "url": "https://fermafructbrabova.ro/",
+      "logo": "https://fermafructbrabova.ro/img/logo-320.webp",
+      "image": "https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp",
+      "description": "Livadă de cireșe, pere, prune și caise la Brabova, în județul Dolj.",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "TODO",
         "addressLocality": "Brabova",
         "addressRegion": "Dolj",
         "addressCountry": "RO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.375004,
+        "longitude": 23.457348
       },
       "areaServed": "România"
     }

@@ -9,59 +9,66 @@
   <!-- În <head>, nu în main.js: fără clasa asta CSS-ul ascunde butonul de meniu până la parsare, altfel bara clipește. -->
   <script>document.documentElement.classList.remove('no-js');</script>
 
-  <!-- Core four (part 1): title and description -->
-  <title>Ferma Fruct Brabova</title>
-  <meta name="description" content="Ferma Fruct Brabova - Fructe de calitate superioară.">
+  <title>Ferma Fruct Brabova — cireșe, pere, prune și caise din Dolj</title>
+  <meta name="description" content="Cireșe, pere, prune și caise crescute la Brabova, în județul Dolj. Patru fructe, o singură livadă, culese la copt.">
 
-  <!-- Canonical: ignores the ?fbclid junk from Facebook clicks -->
-  <link rel="canonical" href="">
+  <!-- Canonical: ignoră coada ?fbclid pe care o lipește Facebook la click -->
+  <link rel="canonical" href="https://fermafructbrabova.ro/">
 
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/style.css?v=20260823-declaratie-tableta-2">
 
-  <!-- Preloads only the latin font file; latin-ext (ș, ț) loads later via unicode-range. Without this, hero text flashes in a fallback face. -->
+  <!-- Preîncarcă doar fișierul latin; latin-ext (ș, ț) vine mai târziu prin unicode-range. Fără asta, titlul din hero clipește într-un font de rezervă. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Open Graph: how the link looks when shared on Facebook/WhatsApp -->
-  <meta property="og:title" content="TODO: titlu pentru distribuire">
-  <meta property="og:description" content="TODO: descriere pentru distribuire">
-  <meta property="og:image" content="TODO: adresa completă a imaginii de distribuire">
-  <meta property="og:url" content="TODO: adresa site-ului">
+  <!-- Open Graph: cum arată linkul când e distribuit pe Facebook sau WhatsApp -->
+  <meta property="og:site_name" content="Ferma Fruct Brabova">
+  <meta property="og:title" content="Ferma Fruct Brabova — patru fructe, o singură livadă">
+  <meta property="og:description" content="Cireșe, pere, prune și caise crescute la Brabova, în județul Dolj.">
+  <meta property="og:image" content="https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp">
+  <!-- Lățimea și înălțimea scutesc Facebook de o primă preluare a imaginii; fără ele prima distribuire apare fără poză. -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Livada Fermei Fruct Brabova văzută de sus: rânduri de pomi tineri și drumul de pământ care le desparte.">
+  <meta property="og:url" content="https://fermafructbrabova.ro/">
   <meta property="og:type" content="website">
-
-  <!-- Same page in English. No English page exists yet; fill both when it does. -->
-  <link rel="alternate" hreflang="en" href="TODO">
-
-  <!-- Which version to serve when the visitor's language matches none of the above -->
-  <link rel="alternate" hreflang="x-default" href="TODO">
-
-  <!-- Language of THIS page for Facebook and WhatsApp previews -->
   <meta property="og:locale" content="ro_RO">
 
-  <!-- Tab icon, modern browsers. SVG scales to any size and can react to dark mode -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <!-- .ico fallback not linked: file doesn't exist yet. Add together with the file. -->
-  <meta name="theme-color" content="#3E6027">
-  <!-- Makes the shared link on Twitter show a wide banner instead of a small square thumbnail -->
-  <meta name="twitter:card" content="summary_large_image">
-  <!-- Alt text for the share image, read by screen readers on social feeds -->
-  <meta property="og:image:alt" content="TODO: ce se vede în imaginea de distribuire">
+  <!-- Nu există hreflang: site-ul are o singură limbă. Se adaugă odată cu paginile în engleză. -->
 
-  <!-- LocalBusiness structured data, no stars. TODO fields are facts the client hasn't supplied — delete before launch, never guess. -->
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Iconița din filă. SVG-ul se scalează la orice mărime și poate reacționa la modul întunecat -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Varianta .ico nu e legată: fișierul nu există încă. Se adaugă odată cu el. -->
+  <meta name="theme-color" content="#3E6027">
+
+  <!-- Datele fermei. Telefonul și strada lipsesc din tot fișierul fiindcă ferma
+       nu le-a dat încă: un câmp lipsă e corect, unul ghicit nu. Coordonatele
+       sunt aceleași cu harta din contact.html; dacă se schimbă una, se schimbă
+       amândouă. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Farm",
+      "@id": "https://fermafructbrabova.ro/#ferma",
       "name": "Ferma Fruct Brabova",
-      "telephone": "TODO",
+      "url": "https://fermafructbrabova.ro/",
+      "logo": "https://fermafructbrabova.ro/img/logo-320.webp",
+      "image": "https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp",
+      "description": "Livadă de cireșe, pere, prune și caise la Brabova, în județul Dolj.",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "TODO",
         "addressLocality": "Brabova",
         "addressRegion": "Dolj",
         "addressCountry": "RO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.375004,
+        "longitude": 23.457348
       },
       "areaServed": "România"
     }
