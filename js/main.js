@@ -463,6 +463,18 @@
                 var motifWatcher = new IntersectionObserver(function (entries) {
                     entries.forEach(function (entry) {
                         entry.target.motifState.near = entry.isIntersecting;
+
+                        /* Stratul propriu, cerut numai cât desenul e pe ecran.
+                           Firefox scria noua poziție fără să o deseneze: un
+                           desen cu z-index negativ și mix-blend-mode se pictează
+                           în fundalul secțiunii din jur, iar mutarea lui nu
+                           marca fundalul acela ca fiind de redesenat.
+
+                           Cerut pe toate 89 deodată, din foaia de stil, ținea
+                           tot atâtea straturi vii în permanență și derularea
+                           începea să tresară. Sub ochi sunt rareori mai mult de
+                           un sfert. */
+                        entry.target.style.willChange = entry.isIntersecting ? 'translate' : '';
                     });
 
                     queueMotifs();
