@@ -350,15 +350,18 @@
 
 
     /* ---------------------------------------------------------------------
-       DERIVA DESENELOR DE FUNDAL
-       Un singur drum, în JS, în toate browserele.
+       DERIVA DESENELOR DE FUNDAL, REZERVA
+       Mișcarea se face în style.css, pe un parcurs de derulare. Acolo stă pe
+       firul de compoziție al browserului, și pe iPhone asta e diferența dintre
+       lin și târât: pozițiile scrise de aici rămân în urma derulării cu inerție
+       și frunzele înoată pe lângă pagină. Deci JS nu preia decât dacă trebuie.
 
-       A existat și unul în CSS, cu animation-timeline: view(), iar pagina
-       alegea între ele după ce declara browserul despre sine. Safari spunea că
-       știe parcursuri de derulare, dar lăsa durata animației pe 0s: frunza
-       ajungea în starea finală din primul cadru și stătea acolo. Și tocmai
-       fiindcă declarase suport, rezerva nu pornea. Un drum unic nu poate minți
-       în felul ăsta, și e un singur loc de reparat când ceva nu merge.
+       Când preia, verifică întâi. Am întrebat de două ori browserul dacă știe
+       să facă mișcarea, și de două ori a răspuns da fără să o facă: Safari
+       accepta parcursul dar lăsa durata pe 0s, iar pe un calculator cu Windows
+       și Chrome și Firefox spuneau da și stăteau. Așa că nu se mai întreabă
+       nimeni nimic: după încărcare ne uităm unde sunt frunzele față de unde ar
+       trebui să fie, și numai dacă nu se potrivesc preia JS.
 
        --drift e scris in rem si NU e inregistrat cu @property, deci
        getPropertyValue intoarce jetonul brut ("2.75rem"), nu pixeli. parseFloat
@@ -447,29 +450,162 @@
             }
         };
 
-        if (canWatch) {
-            /* Cadrul atinge numai desenele de pe ecran. Sunt 89 pe pagina
-               principală și rareori un sfert sub ochi deodată. Marginea le
-               prinde înainte să intre, ca să fie deja pe poziția potrivită când
-               apar, nu să sară la prima mișcare. */
-            var motifWatcher = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    entry.target.motifState.near = entry.isIntersecting;
+        var takeOverDrift = function () {
+            /* Oprește animația din CSS. Fără asta ea ar bate stilul inline
+               scris mai sus și frunza ar rămâne tot pe loc. */
+            document.documentElement.classList.add('motif-drift-js');
+
+            if (canWatch) {
+                /* Cadrul atinge numai desenele de pe ecran. Sunt 89 pe pagina
+                   principală și rareori un sfert sub ochi deodată. Marginea le
+                   prinde înainte să intre, ca să fie deja pe poziția potrivită
+                   când apar, nu să sară la prima mișcare. */
+                var motifWatcher = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        entry.target.motifState.near = entry.isIntersecting;
+                    });
+
+                    queueMotifs();
+                }, {
+                    rootMargin: '25% 0px'
                 });
 
-                queueMotifs();
-            }, {
-                rootMargin: '25% 0px'
-            });
+                motifStates.forEach(function (state) {
+                    motifWatcher.observe(state.el);
+                });
+            }
 
-            motifStates.forEach(function (state) {
-                motifWatcher.observe(state.el);
-            });
+            updateMotifs();
+            window.addEventListener('scroll', queueMotifs, { passive: true });
+            window.addEventListener('resize', queueMotifs);
+        };
+
+
+        /* Cât s-a mutat frunza acum, în pixeli, oricine ar fi scris mutarea. */
+        var shiftOf = function (el) {
+            var written = getComputedStyle(el).translate;
+
+            if (!written || written === 'none') {
+                return 0;
+            }
+
+            var parts = written.split(' ');
+
+            return parseFloat(parts.length > 1 ? parts[1] : '0') || 0;
+        };
+
+        /* CUM SE VEDE O DERIVĂ MOARTĂ
+           Nu se calculează unde ar trebui să fie frunza. Ar însemna să refacem
+           exact intervalul `cover` al parcursului de derulare, iar multe desene
+           au `rotate`, care schimbă chenarul măsurat și scoate răspunsuri
+           greșite. Nici „s-a clintit ceva?" nu merge: pe telefon deriva e de
+           o jumătate de rem întinsă pe două ecrane, deci la o derulare scurtă
+           mișcarea reală e sub o zecime de pixel.
+
+           Semnul sigur e altul. O animație moartă își duce frunza direct la un
+           capăt și o ține acolo: fiecare desen stă fix la +drift sau la -drift,
+           niciodată între. Una vie are mereu, printre desenele de pe ecran,
+           câteva prinse la mijlocul drumului. Deci căutăm o singură frunză
+           aflată între capete. Găsim una, e viu, și nu mai verificăm. */
+        var driftSeenAlive = function () {
+            var looked = 0;
+            var viewport = window.innerHeight || document.documentElement.clientHeight;
+
+            for (var i = 0; i < motifStates.length && looked < 12; i++) {
+                var state = motifStates[i];
+                var rect = state.el.getBoundingClientRect();
+
+                if (!rect.width && !rect.height) {
+                    continue;
+                }
+
+                /* Numai ce e pe ecran. Un desen încă neintrat stă la capăt pe
+                   bună dreptate și nu spune nimic despre sănătatea mișcării. */
+                if (rect.bottom < 0 || rect.top > viewport) {
+                    continue;
+                }
+
+                looked++;
+
+                var written = getComputedStyle(state.el).translate;
+
+                /* Nimic aplicat: animația nu ajunge deloc la element. */
+                if (!written || written === 'none') {
+                    continue;
+                }
+
+                if (Math.abs(Math.abs(shiftOf(state.el)) - state.travel) >
+                        state.travel * 0.15) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
+        var cssMightDrift = !!(window.CSS && typeof window.CSS.supports === 'function' &&
+            window.CSS.supports('animation-timeline: view()') &&
+            window.CSS.supports('animation-duration: auto'));
+
+        if (!cssMightDrift) {
+            takeOverDrift();
+        } else {
+            /* Cât trebuie derulat fără să vedem nicio frunză la mijloc înainte
+               să declarăm mișcarea moartă. Pe o pagină vie prima se arată aproape
+               imediat. Plafonat la ce se poate derula, pentru pagini scurte. */
+            var driftPatience = 0;
+            var driftLastY = window.scrollY || window.pageYOffset || 0;
+            var driftCheckedAt = 0;
+
+            var giveUpAfter = function () {
+                var room = Math.max(document.documentElement.scrollHeight -
+                    (window.innerHeight || 0), 1);
+
+                return Math.min(800, room * 0.6);
+            };
+
+            var settleDrift = function () {
+                if (driftSeenAlive()) {
+                    window.removeEventListener('scroll', onDriftCheck);
+                    return;
+                }
+
+                if (driftPatience >= giveUpAfter()) {
+                    window.removeEventListener('scroll', onDriftCheck);
+                    takeOverDrift();
+                }
+            };
+
+            function onDriftCheck() {
+                var now = window.scrollY || window.pageYOffset || 0;
+
+                driftPatience += Math.abs(now - driftLastY);
+                driftLastY = now;
+
+                /* Cel mult de patru ori pe secundă. Verificarea citește stiluri
+                   calculate, și pe telefon sunt zeci de desene: la fiecare cadru
+                   ar face chiar ea zgâlțâiala pe care o caută. */
+                var stamp = Date.now();
+
+                if (stamp - driftCheckedAt < 250) {
+                    return;
+                }
+
+                driftCheckedAt = stamp;
+                settleDrift();
+            }
+
+            var startDriftCheck = function () {
+                settleDrift();
+                window.addEventListener('scroll', onDriftCheck, { passive: true });
+            };
+
+            if (document.readyState === 'complete') {
+                startDriftCheck();
+            } else {
+                window.addEventListener('load', startDriftCheck);
+            }
         }
-
-        updateMotifs();
-        window.addEventListener('scroll', queueMotifs, { passive: true });
-        window.addEventListener('resize', queueMotifs);
     }
 
 
