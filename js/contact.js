@@ -99,14 +99,18 @@
        După load, nu la DOMContentLoaded: fonturile și fotografia mai mișcă
        înălțimea paginii, iar linia e desenată în procente din ea.
 
-       Fără requestAnimationFrame: starea de plecare (linia ascunsă) e scrisă
-       în CSS sub html:not(.no-js), deci există de la prima pictare și n-are
-       nevoie de un cadru ca să se înregistreze. În plus, rAF e încetinit în
-       filele din fundal și drumul ar fi rămas nedesenat acolo.
+       Două cadre sunt intenționate: primul lasă browserul să picteze starea de
+       plecare ascunsă, al doilea pornește tranziția. Fără cadrul pictat între
+       ele, unele aparate aplică ambele stări înainte de prima imagine și linia
+       apare întreagă, fără coborâre.
        ----------------------------------------------------------------------- */
 
     function drawRoad() {
-        page.classList.add('is-drawn');
+        window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function () {
+                page.classList.add('is-drawn');
+            });
+        });
     }
 
     if (document.readyState === 'complete') {
