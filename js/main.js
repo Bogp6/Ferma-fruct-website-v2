@@ -494,24 +494,36 @@
             return parseFloat(parts.length > 1 ? parts[1] : '0') || 0;
         };
 
-        /* CUM SE VEDE O DERIVĂ MOARTĂ
-           Nu se calculează unde ar trebui să fie frunza. Ar însemna să refacem
-           exact intervalul `cover` al parcursului de derulare, iar multe desene
-           au `rotate`, care schimbă chenarul măsurat și scoate răspunsuri
-           greșite. Nici „s-a clintit ceva?" nu merge: pe telefon deriva e de
-           o jumătate de rem întinsă pe două ecrane, deci la o derulare scurtă
-           mișcarea reală e sub o zecime de pixel.
+        /* SE MIȘCĂ SAU NU
+           Întrebarea e chiar asta, pusă direct, pentru că fiecare test mai
+           deștept a picat pe câte un caz:
 
-           Semnul sigur e altul. O animație moartă își duce frunza direct la un
-           capăt și o ține acolo: fiecare desen stă fix la +drift sau la -drift,
-           niciodată între. Una vie are mereu, printre desenele de pe ecran,
-           câteva prinse la mijlocul drumului. Deci căutăm o singură frunză
-           aflată între capete. Găsim una, e viu, și nu mai verificăm. */
-        var driftSeenAlive = function () {
-            var looked = 0;
+           - „unde ar trebui să fie frunza" cere refacerea intervalului `cover`,
+             iar desenele au `rotate`, care schimbă chenarul măsurat. Pagina de
+             contact ieșea stricată fiind sănătoasă.
+           - „stă înțepenită la un capăt" prinde animația cu durata 0, dar nu și
+             una care se aplică o dată, la o valoare oarecare de la mijloc, și
+             pe urmă nu mai e împinsă niciodată. Exact asta se întâmplă pe
+             calculatorul cu Windows, și trecea drept sănătoasă.
+
+           Deci: alegem câteva frunze care sunt chiar acum pe ecran, deci în
+           plin drum, le ținem minte poziția, și după o derulare adevărată ne
+           uităm dacă s-a schimbat vreuna. Numai cele de pe ecran, altfel am
+           întreba una care stă cuminte la capăt fiindcă încă n-a intrat. Și
+           destulă derulare: pe telefon deriva e de o jumătate de rem întinsă
+           pe două ecrane, deci la o mișcare scurtă schimbarea reală e sub un
+           pixel și n-ar dovedi nimic. La 400 de pixeli derulați e limpede. */
+        var DRIFT_PROOF_SCROLL = 200;
+
+        var scrollNow = function () {
+            return window.scrollY || window.pageYOffset || 0;
+        };
+
+        var pickWitnesses = function () {
             var viewport = window.innerHeight || document.documentElement.clientHeight;
+            var picked = [];
 
-            for (var i = 0; i < motifStates.length && looked < 12; i++) {
+            for (var i = 0; i < motifStates.length && picked.length < 6; i++) {
                 var state = motifStates[i];
                 var rect = state.el.getBoundingClientRect();
 
@@ -519,9 +531,28 @@
                     continue;
                 }
 
-                /* Numai ce e pe ecran. Un desen încă neintrat stă la capăt pe
-                   bună dreptate și nu spune nimic despre sănătatea mișcării. */
                 if (rect.bottom < 0 || rect.top > viewport) {
+                    continue;
+                }
+
+                picked.push({ el: state.el, was: shiftOf(state.el) });
+            }
+
+            return picked;
+        };
+
+        /* O frunză aflată chiar acum între capete, nu la +drift sau -drift.
+           O animație cu durata zero nu produce niciodată așa ceva: își aruncă
+           frunza dintr-un capăt în celălalt și atât. */
+        var seesMiddle = function () {
+            var viewport = window.innerHeight || document.documentElement.clientHeight;
+            var looked = 0;
+
+            for (var i = 0; i < motifStates.length && looked < 12; i++) {
+                var state = motifStates[i];
+                var rect = state.el.getBoundingClientRect();
+
+                if ((!rect.width && !rect.height) || rect.bottom < 0 || rect.top > viewport) {
                     continue;
                 }
 
@@ -529,7 +560,6 @@
 
                 var written = getComputedStyle(state.el).translate;
 
-                /* Nimic aplicat: animația nu ajunge deloc la element. */
                 if (!written || written === 'none') {
                     continue;
                 }
@@ -543,59 +573,124 @@
             return false;
         };
 
+        /* Se cer amândouă, pentru că fiecare singură lasă o portiță:
+             - numai „s-a schimbat ceva" trece o animație cu durata zero, care
+               chiar schimbă valoarea, sărind între capete;
+             - numai „stă la mijloc" trece o animație înghețată la o valoare
+               oarecare, cum se întâmplă pe calculatorul cu Windows.
+           O mișcare sănătoasă le arată pe amândouă în prima rundă. */
+        var sawMiddle = false;
+        var sawChange = false;
+        var rounds = 0;
+        var witnesses = null;
+        var witnessedAt = 0;
+
+        var settleDrift = function () {
+            if (!sawMiddle && seesMiddle()) {
+                sawMiddle = true;
+            }
+
+            if (!witnesses || !witnesses.length) {
+                witnesses = pickWitnesses();
+                witnessedAt = scrollNow();
+                return;
+            }
+
+            if (Math.abs(scrollNow() - witnessedAt) < DRIFT_PROOF_SCROLL) {
+                return;
+            }
+
+            witnesses.forEach(function (witness) {
+                if (Math.abs(shiftOf(witness.el) - witness.was) > 1) {
+                    sawChange = true;
+                }
+            });
+
+            rounds++;
+            witnesses = null;
+
+            if (sawMiddle && sawChange) {
+                window.removeEventListener('scroll', onDriftCheck);
+                rememberVerdict(false);
+                return;
+            }
+
+            if (rounds >= 4) {
+                window.removeEventListener('scroll', onDriftCheck);
+                rememberVerdict(true);
+                takeOverDrift();
+            }
+        };
+
+        var driftCheckedAt = 0;
+        var driftRolled = 0;
+        var driftLastY = 0;
+
+        function onDriftCheck() {
+            /* Măsurat în pixeli derulați, nu în timp. Cu un prag de timp, o
+               aruncătură rapidă de deget trecea toată pagina în vreo secundă și
+               apuca doar câteva verificări: nu se aduna nimic de spus și
+               mișcarea moartă scăpa nedescoperită. Pe derulare pragul se ține
+               după deget, oricât de repede merge.
+
+               Marginea de timp rămâne, mică, doar cât să nu ajungă verificarea
+               la fiecare cadru: citește stiluri calculate, și tocmai asta ar
+               face zgâlțâiala pe care o caută. */
+            var now = scrollNow();
+
+            driftRolled += Math.abs(now - driftLastY);
+            driftLastY = now;
+
+            if (driftRolled < 150) {
+                return;
+            }
+
+            var stamp = Date.now();
+
+            if (stamp - driftCheckedAt < 60) {
+                return;
+            }
+
+            driftRolled = 0;
+            driftCheckedAt = stamp;
+            settleDrift();
+        }
+
+        /* Verdictul se ține minte cât ține vizita. Pagina de contact are opt
+           desene în total și rareori mai mult de unul pe ecran deodată, deci
+           acolo verificarea rămâne fără subiect și nu se pronunță. Pagina
+           principală are 89 și se pronunță în câteva sute de pixeli. Odată aflat
+           răspunsul pe orice pagină, îl folosesc toate celelalte: e o însușire a
+           browserului, nu a paginii. */
+        var DRIFT_MEMORY = 'motif-drift-css-dead';
+
+        var rememberVerdict = function (dead) {
+            try {
+                window.sessionStorage.setItem(DRIFT_MEMORY, dead ? '1' : '0');
+            } catch (e) {
+                /* Navigare privată sau memorie plină: se verifică din nou. */
+            }
+        };
+
+        var recalledVerdict = function () {
+            try {
+                return window.sessionStorage.getItem(DRIFT_MEMORY);
+            } catch (e) {
+                return null;
+            }
+        };
+
         var cssMightDrift = !!(window.CSS && typeof window.CSS.supports === 'function' &&
             window.CSS.supports('animation-timeline: view()') &&
             window.CSS.supports('animation-duration: auto'));
 
-        if (!cssMightDrift) {
+        var recalled = recalledVerdict();
+
+        if (!cssMightDrift || recalled === '1') {
             takeOverDrift();
-        } else {
-            /* Cât trebuie derulat fără să vedem nicio frunză la mijloc înainte
-               să declarăm mișcarea moartă. Pe o pagină vie prima se arată aproape
-               imediat. Plafonat la ce se poate derula, pentru pagini scurte. */
-            var driftPatience = 0;
-            var driftLastY = window.scrollY || window.pageYOffset || 0;
-            var driftCheckedAt = 0;
-
-            var giveUpAfter = function () {
-                var room = Math.max(document.documentElement.scrollHeight -
-                    (window.innerHeight || 0), 1);
-
-                return Math.min(800, room * 0.6);
-            };
-
-            var settleDrift = function () {
-                if (driftSeenAlive()) {
-                    window.removeEventListener('scroll', onDriftCheck);
-                    return;
-                }
-
-                if (driftPatience >= giveUpAfter()) {
-                    window.removeEventListener('scroll', onDriftCheck);
-                    takeOverDrift();
-                }
-            };
-
-            function onDriftCheck() {
-                var now = window.scrollY || window.pageYOffset || 0;
-
-                driftPatience += Math.abs(now - driftLastY);
-                driftLastY = now;
-
-                /* Cel mult de patru ori pe secundă. Verificarea citește stiluri
-                   calculate, și pe telefon sunt zeci de desene: la fiecare cadru
-                   ar face chiar ea zgâlțâiala pe care o caută. */
-                var stamp = Date.now();
-
-                if (stamp - driftCheckedAt < 250) {
-                    return;
-                }
-
-                driftCheckedAt = stamp;
-                settleDrift();
-            }
-
+        } else if (recalled !== '0') {
             var startDriftCheck = function () {
+                driftLastY = scrollNow();
                 settleDrift();
                 window.addEventListener('scroll', onDriftCheck, { passive: true });
             };
