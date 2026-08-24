@@ -487,6 +487,9 @@
 
     .keeper__photo {
         animation: keeper-settle linear both;
+        /* Ca la .motif din style.css: forma scurtă lasă durata pe 0s în WebKit
+           și fotografia ar sări direct la scara finală. */
+        animation-duration: auto;
         animation-timeline: view();
         animation-range: entry 10% cover 55%;
     }

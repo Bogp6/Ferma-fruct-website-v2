@@ -349,13 +349,48 @@
     }
 
 
-    /* Firefox și browserele mai vechi nu au view timelines. În ele, aceeași
-       derivă a desenelor este publicată la fiecare cadru de derulare; fără
-       această rezervă frunzele rămân în poziția de pornire. */
-    var hasViewTimeline = window.CSS && typeof window.CSS.supports === 'function' &&
-        window.CSS.supports('animation-timeline: view()');
+    /* Firefox și browserele mai vechi nu au parcursuri de derulare. În ele,
+       aceeași derivă a desenelor este publicată la fiecare cadru de derulare;
+       fără această rezervă frunzele rămân în poziția de pornire.
 
-    if (!hasViewTimeline) {
+       Întrebarea nu mai e "știe browserul de animation-timeline", pentru că
+       Safari răspundea da și tot nu mișca nimic: accepta proprietatea, dar
+       lăsa durata pe 0s, deci frunza sărea în starea finală din primul cadru.
+       Suport raportat, mișcare zero, și rezerva asta nu pornea.
+
+       Așa că întrebăm animația care chiar rulează cât ține. Numai o durată
+       scrisă în procente acoperă parcursul de derulare. Orice alt răspuns, sau
+       niciun răspuns, înseamnă că CSS-ul nu duce mișcarea și o preia JS.
+       Greșeala în direcția asta e ieftină: JS desenează aceeași derivă. */
+    var motifs = document.querySelectorAll('.motif');
+
+    var driftRunsInCss = function () {
+        var probeMotif = motifs[0];
+
+        if (!probeMotif || typeof probeMotif.getAnimations !== 'function') {
+            return false;
+        }
+
+        var running = probeMotif.getAnimations();
+
+        for (var i = 0; i < running.length; i++) {
+            var timing = running[i].effect && running[i].effect.getComputedTiming();
+            var span = timing && timing.duration;
+
+            if (span && span.unit === 'percent' && span.value > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    if (motifs.length && !driftRunsInCss()) {
+        /* Oprește din CSS deriva care nu merge. O animație bate stilul inline
+           în cascadă, deci fără clasa asta translate-ul scris mai jos ar fi
+           ignorat. */
+        document.documentElement.classList.add('motif-drift-js');
+
         /* --drift e scris in rem si NU e inregistrat cu @property, deci
            getPropertyValue intoarce jetonul brut ("2.75rem"), nu pixeli.
            parseFloat pe el dadea 2.75 in loc de 44: frunzele se mișcau trei
@@ -375,7 +410,7 @@
             return parseFloat(getComputedStyle(probe).width) || 0;
         };
 
-        var motifStates = Array.prototype.map.call(document.querySelectorAll('.motif'), function (el) {
+        var motifStates = Array.prototype.map.call(motifs, function (el) {
             return {
                 el: el,
                 shift: 0,
@@ -386,15 +421,25 @@
 
         var updateMotifs = function () {
             var viewport = window.innerHeight || document.documentElement.clientHeight;
-            var next = motifStates.map(function (state) {
+            var next = [];
+
+            motifStates.forEach(function (state) {
                 var rect = state.el.getBoundingClientRect();
+
+                /* Desenele stinse de o interogare de lățime măsoară zero pe
+                   ambele laturi. Pe telefon și pe tabletă sunt zeci, și fără
+                   ieșirea asta primeau un translate nou la fiecare cadru. */
+                if (!rect.width && !rect.height) {
+                    return;
+                }
+
                 var top = rect.top - state.shift;
                 var progress = Math.min(Math.max((viewport - top) / (viewport + rect.height), 0), 1);
 
-                return {
+                next.push({
                     state: state,
                     shift: state.travel * (1 - progress * 2)
-                };
+                });
             });
 
             next.forEach(function (item) {

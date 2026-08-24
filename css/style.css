@@ -392,15 +392,32 @@
     rotate: 172deg;
 }
 
-/* animation-timeline: view(), nu JS — fără suport browser, desenul stă pe loc
-   (starea dinainte de mișcare), nu se rupe nimic. */
+/* animation-timeline: view(), nu JS.
+
+   Durata stă scrisă separat, deși pare de prisos. Pe un parcurs de derulare
+   doar `auto` întinde animația peste tot intervalul; forma scurtă `animation:`
+   pune în schimb valoarea inițială a browserului, care în Chrome e `auto` dar
+   în WebKit e `0s`. Cu `0s` frunza își termină drumul înainte să înceapă: sărea
+   direct în starea finală și stătea acolo, nemișcată, pe iPhone.
+
+   Dacă un browser refuză și `auto`, main.js vede că deriva nu acoperă
+   parcursul și preia mișcarea. */
 @supports (animation-timeline: view()) {
 
     .motif {
         animation: motif-drift linear both;
+        animation-duration: auto;
         animation-timeline: view();
         animation-range: cover;
     }
+}
+
+/* Pusă de main.js când el publică translate-ul, adică în browserele fără
+   parcursuri de derulare care chiar funcționează. Animațiile bat stilul
+   inline în cascadă, deci fără oprirea asta cea ruptă ar câștiga și frunza ar
+   rămâne tot pe loc. */
+.motif-drift-js .motif {
+    animation-name: none;
 }
 
 @keyframes motif-drift {
