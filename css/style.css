@@ -422,6 +422,17 @@
    moartă ar câștiga și frunza ar rămâne pe loc. */
 .motif-drift-js .motif {
     animation-name: none;
+
+    /* Firefox scria noua poziție dar nu o desena: frunzele rămâneau imagini
+       fixe, deși pagina de diagnostic le măsura mișcându-se. Cauza e că un
+       desen cu z-index negativ și mix-blend-mode se pictează în fundalul
+       secțiunii din jur, nu pe stratul lui, iar mutarea lui nu marca fundalul
+       acela ca fiind de redesenat.
+
+       Anunțul de aici îi dă fiecărui desen stratul lui, deci mutarea se vede.
+       Stă numai pe drumul din JS: unde mișcarea o duce CSS-ul, browserul știe
+       deja singur ce se schimbă. */
+    will-change: translate;
 }
 
 @keyframes motif-drift {
