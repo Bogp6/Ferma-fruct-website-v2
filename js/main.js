@@ -349,47 +349,27 @@
     }
 
 
-    /* Firefox și browserele mai vechi nu au parcursuri de derulare. În ele,
-       aceeași derivă a desenelor este publicată la fiecare cadru de derulare;
-       fără această rezervă frunzele rămân în poziția de pornire.
+    /* ---------------------------------------------------------------------
+       DERIVA DESENELOR DE FUNDAL
+       Un singur drum, în JS, în toate browserele.
 
-       Nu ajunge să întrebăm de animation-timeline: Safari răspundea da și tot
-       nu mișca nimic. Accepta parcursul, dar nu și `animation-duration: auto`,
-       iar fără durata aceea animația ține 0s pe un parcurs de derulare: frunza
-       sărea în starea finală din primul cadru și stătea acolo. Suport raportat,
-       mișcare zero, și rezerva asta nu pornea.
+       A existat și unul în CSS, cu animation-timeline: view(), iar pagina
+       alegea între ele după ce declara browserul despre sine. Safari spunea că
+       știe parcursuri de derulare, dar lăsa durata animației pe 0s: frunza
+       ajungea în starea finală din primul cadru și stătea acolo. Și tocmai
+       fiindcă declarase suport, rezerva nu pornea. Un drum unic nu poate minți
+       în felul ăsta, și e un singur loc de reparat când ceva nu merge.
 
-       Deci întrebăm de amândouă, exact cele două declarații pe care se sprijină
-       .motif în style.css. Dacă una lipsește, CSS-ul nu duce mișcarea și o
-       preia JS. Greșeala în direcția asta e ieftină: JS desenează aceeași
-       derivă.
+       --drift e scris in rem si NU e inregistrat cu @property, deci
+       getPropertyValue intoarce jetonul brut ("2.75rem"), nu pixeli. parseFloat
+       pe el dadea 2.75 in loc de 44: frunzele se mișcau trei pixeli, adica
+       deloc. Sonda rezolva lungimea prin layout, deci merge si daca --drift
+       ajunge px, em sau calc().
+       --------------------------------------------------------------------- */
 
-       Întrebăm browserul, nu animația pornită. O animație legată de derulare nu
-       e gata în momentul în care rulează scriptul ăsta, la capătul paginii: nu
-       s-a așezat încă nimic, deci ar răspunde "nu merge" în orice browser, iar
-       Chrome ar cădea degeaba pe JS. */
     var motifs = document.querySelectorAll('.motif');
 
-    var supports = function (declaration) {
-        return !!(window.CSS && typeof window.CSS.supports === 'function' &&
-            window.CSS.supports(declaration));
-    };
-
-    var driftRunsInCss = supports('animation-timeline: view()') &&
-        supports('animation-duration: auto');
-
-    if (motifs.length && !driftRunsInCss) {
-        /* Oprește din CSS deriva care nu merge. O animație bate stilul inline
-           în cascadă, deci fără clasa asta translate-ul scris mai jos ar fi
-           ignorat. */
-        document.documentElement.classList.add('motif-drift-js');
-
-        /* --drift e scris in rem si NU e inregistrat cu @property, deci
-           getPropertyValue intoarce jetonul brut ("2.75rem"), nu pixeli.
-           parseFloat pe el dadea 2.75 in loc de 44: frunzele se mișcau trei
-           pixeli, adica deloc. Sonda rezolva lungimea prin layout, deci merge
-           si daca --drift ajunge px, em sau calc(). Fara ea, deriva dispare
-           in Firefox si in orice browser fara view timelines. */
+    if (motifs.length) {
         var probe = document.createElement('div');
         probe.setAttribute('aria-hidden', 'true');
         probe.style.cssText = 'position:absolute;left:-9999px;top:0;height:0;visibility:hidden;pointer-events:none';
@@ -404,11 +384,22 @@
         };
 
         var motifStates = Array.prototype.map.call(motifs, function (el) {
-            return {
+            var state = {
                 el: el,
                 shift: 0,
-                travel: toPx(getComputedStyle(el).getPropertyValue('--drift').trim()) || 48
+                travel: toPx(getComputedStyle(el).getPropertyValue('--drift').trim()) || 48,
+                /* Toate pornesc în lucru, ca prima așezare să fie corectă peste
+                   tot. Observatorul le scoate imediat pe cele de sub ecran. Cu
+                   `false` aici, desenele de sus rămâneau o clipă nemișcate și
+                   apoi săreau, la fiecare încărcare. */
+                near: true
             };
+
+            /* Legătura înapoi de la element la starea lui, pentru observator.
+               Căutarea în listă la fiecare intrare ar fi 89 de comparații. */
+            el.motifState = state;
+
+            return state;
         });
         var motifFrame = 0;
 
@@ -416,7 +407,14 @@
             var viewport = window.innerHeight || document.documentElement.clientHeight;
             var next = [];
 
+            /* Toate măsurătorile înaintea tuturor scrierilor. Amestecate, fiecare
+               scriere ar invalida stilul și citirea următoare ar cere din nou
+               așezarea paginii. */
             motifStates.forEach(function (state) {
+                if (!state.near) {
+                    return;
+                }
+
                 var rect = state.el.getBoundingClientRect();
 
                 /* Desenele stinse de o interogare de lățime măsoară zero pe
@@ -448,6 +446,26 @@
                 motifFrame = window.requestAnimationFrame(updateMotifs);
             }
         };
+
+        if (canWatch) {
+            /* Cadrul atinge numai desenele de pe ecran. Sunt 89 pe pagina
+               principală și rareori un sfert sub ochi deodată. Marginea le
+               prinde înainte să intre, ca să fie deja pe poziția potrivită când
+               apar, nu să sară la prima mișcare. */
+            var motifWatcher = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    entry.target.motifState.near = entry.isIntersecting;
+                });
+
+                queueMotifs();
+            }, {
+                rootMargin: '25% 0px'
+            });
+
+            motifStates.forEach(function (state) {
+                motifWatcher.observe(state.el);
+            });
+        }
 
         updateMotifs();
         window.addEventListener('scroll', queueMotifs, { passive: true });

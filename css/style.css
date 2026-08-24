@@ -392,44 +392,11 @@
     rotate: 172deg;
 }
 
-/* animation-timeline: view(), nu JS.
-
-   Durata stă scrisă separat, deși pare de prisos. Pe un parcurs de derulare
-   doar `auto` întinde animația peste tot intervalul; forma scurtă `animation:`
-   pune în schimb valoarea inițială a browserului, care în Chrome e `auto` dar
-   în WebKit e `0s`. Cu `0s` frunza își termină drumul înainte să înceapă: sărea
-   direct în starea finală și stătea acolo, nemișcată, pe iPhone.
-
-   Dacă un browser refuză și `auto`, main.js vede că deriva nu acoperă
-   parcursul și preia mișcarea. */
-@supports (animation-timeline: view()) {
-
-    .motif {
-        animation: motif-drift linear both;
-        animation-duration: auto;
-        animation-timeline: view();
-        animation-range: cover;
-    }
-}
-
-/* Pusă de main.js când el publică translate-ul, adică în browserele fără
-   parcursuri de derulare care chiar funcționează. Animațiile bat stilul
-   inline în cascadă, deci fără oprirea asta cea ruptă ar câștiga și frunza ar
-   rămâne tot pe loc. */
-.motif-drift-js .motif {
-    animation-name: none;
-}
-
-@keyframes motif-drift {
-
-    from {
-        translate: 0 var(--drift, 3rem);
-    }
-
-    to {
-        translate: 0 calc(var(--drift, 3rem) * -1);
-    }
-}
+/* Deriva desenelor se scrie din main.js, nu de aici. A stat în CSS, cu
+   animation-timeline: view(), și acolo depindea de ce declară fiecare browser
+   despre sine: Safari accepta parcursul dar lăsa durata pe 0s, deci frunza
+   sărea în starea finală și rămânea acolo. --drift de mai sus e distanța pe
+   care o citește JS; restul mișcării nu mai are nicio urmă în foaia asta. */
 
 /* Antetul este fix, cu z-index propriu, deci nu apare aici. */
 main,
@@ -3355,11 +3322,9 @@ main,
    deși main.js continuă să construiască meniul și linia livezii. */
 @media (prefers-reduced-motion: reduce) {
 
-    .motif {
-        animation-duration: auto !important;
-        animation-iteration-count: 1 !important;
-    }
-
+    /* .motif nu mai apare aici: deriva lui se scrie din main.js, iar un
+       translate pus direct nu trece prin nicio animație sau tranziție pe care
+       normalize.css să o poată scurta. */
     .skip,
     .nav__link,
     .nav__link::after,

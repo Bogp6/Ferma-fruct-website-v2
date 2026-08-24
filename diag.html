@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Diagnostic fundal</title>
+<style>
+  body { font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; margin: 0; padding: 1rem;
+         background: #111; color: #eee; }
+  h1 { font-size: 1rem; margin: 0 0 .75rem; }
+  #out { white-space: pre-wrap; word-break: break-word; background: #000; padding: 1rem;
+         border: 1px solid #444; border-radius: 6px; }
+  button { font: inherit; padding: .6rem 1rem; margin: .75rem .5rem .75rem 0; cursor: pointer; }
+  .frame { position: absolute; left: -20000px; top: 0; border: 0; }
+  .ok { color: #7f7; } .bad { color: #f77; }
+</style>
+</head>
+<body>
+<h1>Diagnostic fundal — deschide pe calculatorul unde nu merge</h1>
+<button id="copy">Copiază tot</button>
+<button id="again">Rulează din nou</button>
+<div id="out">se măsoară…</div>
+<iframe id="f" class="frame" title="test"></iframe>
+
+<script>
+(function () {
+  var out = document.getElementById('out');
+  var frame = document.getElementById('f');
+
+  var line = function (k, v) { return k + ': ' + v; };
+
+  function run() {
+    out.textContent = 'se măsoară…';
+
+    var rows = [];
+    rows.push(line('data', new Date().toISOString()));
+    rows.push(line('userAgent', navigator.userAgent));
+    rows.push(line('fereastra', window.innerWidth + ' x ' + window.innerHeight));
+    rows.push(line('ecran', screen.width + ' x ' + screen.height));
+    rows.push(line('devicePixelRatio', window.devicePixelRatio));
+    rows.push(line('reduced-motion', matchMedia('(prefers-reduced-motion: reduce)').matches));
+    var sup = function (d) {
+      try { return CSS.supports(d); } catch (e) { return 'eroare'; }
+    };
+    rows.push(line('supports animation-timeline: view()', sup('animation-timeline: view()')));
+    rows.push(line('supports animation-duration: auto', sup('animation-duration: auto')));
+    rows.push(line('supports translate: 0 10px', sup('translate: 0 10px')));
+    rows.push(line('supports mix-blend-mode: multiply', sup('mix-blend-mode: multiply')));
+    rows.push('');
+
+    frame.style.width = window.innerWidth + 'px';
+    frame.style.height = window.innerHeight + 'px';
+
+    frame.onload = function () {
+      var d, w;
+      try { d = frame.contentDocument; w = frame.contentWindow; }
+      catch (e) { rows.push('NU POT CITI IFRAME: ' + e); return done(rows); }
+
+      setTimeout(function () { measure(rows, d, w); }, 1200);
+    };
+    frame.src = 'index.html?diag=1&cb=' + Date.now();
+  }
+
+  function measure(rows, d, w) {
+    try {
+      var css = [].slice.call(d.querySelectorAll('link[rel=stylesheet]')).map(function (l) {
+        return l.getAttribute('href');
+      });
+      var js = [].slice.call(d.querySelectorAll('script[src]')).map(function (s) {
+        return s.getAttribute('src');
+      });
+      rows.push(line('css încărcat', css.join('  |  ')));
+      rows.push(line('js încărcat', js.join('  |  ')));
+      rows.push(line('gsap prezent', typeof w.gsap));
+      rows.push(line('clasa motif-drift-js', d.documentElement.classList.contains('motif-drift-js')));
+      rows.push(line('clasa no-js rămasă', d.documentElement.classList.contains('no-js')));
+
+      var all = [].slice.call(d.querySelectorAll('.motif'));
+      rows.push(line('.motif în pagină', all.length));
+
+      var vis = all.filter(function (e) {
+        var b = e.getBoundingClientRect();
+        return b.width > 0 && b.height > 0;
+      });
+      rows.push(line('.motif cu dimensiune', vis.length));
+
+      var loaded = all.filter(function (e) { return e.naturalWidth > 0; });
+      rows.push(line('.motif cu imaginea încărcată', loaded.length + ' / ' + all.length));
+      if (all.length && !all[0].naturalWidth) {
+        rows.push(line('  primul src', all[0].currentSrc || all[0].src));
+      }
+
+      if (!vis.length) { rows.push('OPRIT: niciun desen nu are dimensiune.'); return done(rows); }
+
+      var sample = vis.sort(function (a, b) {
+        return (a.getBoundingClientRect().top) - (b.getBoundingClientRect().top);
+      })[Math.min(3, vis.length - 1)];
+
+      var cs = w.getComputedStyle(sample);
+      rows.push('');
+      rows.push(line('exemplu', sample.className));
+      ['display', 'opacity', 'visibility', 'zIndex', 'mixBlendMode', 'position',
+       'animationName', 'animationDuration', 'animationTimeline', 'animationRange',
+       'animationFillMode', 'animationPlayState', 'translate', 'transform']
+        .forEach(function (k) { rows.push(line('  ' + k, cs[k])); });
+      rows.push(line('  --drift', cs.getPropertyValue('--drift')));
+
+      var anims = sample.getAnimations ? sample.getAnimations() : [];
+      rows.push(line('  getAnimations()', anims.length));
+      if (anims.length) {
+        var t = anims[0].effect && anims[0].effect.getComputedTiming();
+        var dur = t && t.duration;
+        rows.push(line('  durata calculată',
+          (dur && typeof dur === 'object') ? (dur.unit + ' ' + dur.value) : String(dur)));
+        rows.push(line('  playState', anims[0].playState));
+        rows.push(line('  timeline', anims[0].timeline ? anims[0].timeline.constructor.name : 'null'));
+      }
+
+      // Plimbă cadrul peste desen și notează pozițiile.
+      var base = sample.getBoundingClientRect().top + w.scrollY;
+      var seen = [];
+      var step = 0;
+      var steps = 12;
+
+      (function walk() {
+        if (step >= steps) {
+          var uniq = seen.filter(function (v, i, a) { return a.indexOf(v) === i; });
+          rows.push('');
+          rows.push(line('poziții distincte pe un parcurs', uniq.length + ' din ' + steps));
+          rows.push(line('traseu', seen.join('  ')));
+          rows.push(uniq.length > 3 ? '>>> SE MIȘCĂ' : '>>> NU SE MIȘCĂ');
+          return done(rows);
+        }
+        var k = -1 + step * (2.2 / (steps - 1));
+        w.scrollTo(0, Math.max(0, base - w.innerHeight * (1 - k)));
+        step++;
+        setTimeout(function () {
+          seen.push(w.getComputedStyle(sample).translate);
+          walk();
+        }, 160);
+      }());
+    } catch (e) {
+      rows.push('EROARE: ' + (e && e.message ? e.message : e));
+      done(rows);
+    }
+  }
+
+  function done(rows) { out.textContent = rows.join('\n'); }
+
+  document.getElementById('copy').onclick = function () {
+    var t = out.textContent;
+    if (navigator.clipboard) { navigator.clipboard.writeText(t); }
+    else {
+      var ta = document.createElement('textarea');
+      ta.value = t; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    this.textContent = 'copiat';
+    var b = this;
+    setTimeout(function () { b.textContent = 'Copiază tot'; }, 1500);
+  };
+  document.getElementById('again').onclick = run;
+
+  run();
+}());
+</script>
+</body>
+</html>
