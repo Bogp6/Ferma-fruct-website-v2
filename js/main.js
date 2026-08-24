@@ -353,39 +353,32 @@
        aceeași derivă a desenelor este publicată la fiecare cadru de derulare;
        fără această rezervă frunzele rămân în poziția de pornire.
 
-       Întrebarea nu mai e "știe browserul de animation-timeline", pentru că
-       Safari răspundea da și tot nu mișca nimic: accepta proprietatea, dar
-       lăsa durata pe 0s, deci frunza sărea în starea finală din primul cadru.
-       Suport raportat, mișcare zero, și rezerva asta nu pornea.
+       Nu ajunge să întrebăm de animation-timeline: Safari răspundea da și tot
+       nu mișca nimic. Accepta parcursul, dar nu și `animation-duration: auto`,
+       iar fără durata aceea animația ține 0s pe un parcurs de derulare: frunza
+       sărea în starea finală din primul cadru și stătea acolo. Suport raportat,
+       mișcare zero, și rezerva asta nu pornea.
 
-       Așa că întrebăm animația care chiar rulează cât ține. Numai o durată
-       scrisă în procente acoperă parcursul de derulare. Orice alt răspuns, sau
-       niciun răspuns, înseamnă că CSS-ul nu duce mișcarea și o preia JS.
-       Greșeala în direcția asta e ieftină: JS desenează aceeași derivă. */
+       Deci întrebăm de amândouă, exact cele două declarații pe care se sprijină
+       .motif în style.css. Dacă una lipsește, CSS-ul nu duce mișcarea și o
+       preia JS. Greșeala în direcția asta e ieftină: JS desenează aceeași
+       derivă.
+
+       Întrebăm browserul, nu animația pornită. O animație legată de derulare nu
+       e gata în momentul în care rulează scriptul ăsta, la capătul paginii: nu
+       s-a așezat încă nimic, deci ar răspunde "nu merge" în orice browser, iar
+       Chrome ar cădea degeaba pe JS. */
     var motifs = document.querySelectorAll('.motif');
 
-    var driftRunsInCss = function () {
-        var probeMotif = motifs[0];
-
-        if (!probeMotif || typeof probeMotif.getAnimations !== 'function') {
-            return false;
-        }
-
-        var running = probeMotif.getAnimations();
-
-        for (var i = 0; i < running.length; i++) {
-            var timing = running[i].effect && running[i].effect.getComputedTiming();
-            var span = timing && timing.duration;
-
-            if (span && span.unit === 'percent' && span.value > 0) {
-                return true;
-            }
-        }
-
-        return false;
+    var supports = function (declaration) {
+        return !!(window.CSS && typeof window.CSS.supports === 'function' &&
+            window.CSS.supports(declaration));
     };
 
-    if (motifs.length && !driftRunsInCss()) {
+    var driftRunsInCss = supports('animation-timeline: view()') &&
+        supports('animation-duration: auto');
+
+    if (motifs.length && !driftRunsInCss) {
         /* Oprește din CSS deriva care nu merge. O animație bate stilul inline
            în cascadă, deci fără clasa asta translate-ul scris mai jos ar fi
            ignorat. */
