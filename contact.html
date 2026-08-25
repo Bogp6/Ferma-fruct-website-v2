@@ -27,7 +27,7 @@
   <!-- Open Graph: cum arată linkul când e distribuit pe Facebook sau WhatsApp -->
   <meta property="og:site_name" content="Ferma Fruct Brabova">
   <meta property="og:title" content="Contact — Ferma Fruct Brabova">
-  <meta property="og:description" content="Drumul spre livadă începe aici. Scrie-ne sau sună-ne pentru comenzi, disponibilitate sau colaborări.">
+  <meta property="og:description" content="Drumul spre livadă începe aici. Scrie-ne sau sună-ne pentru mai multe informații.">
   <meta property="og:image" content="https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp">
   <!-- Lățimea și înălțimea scutesc Facebook de o primă preluare a imaginii; fără ele prima distribuire apare fără poză. -->
   <meta property="og:image:width" content="1200">
@@ -41,13 +41,14 @@
 
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
   <meta name="theme-color" content="#3E6027">
 
-  <!-- Datele fermei. Telefonul și strada lipsesc din tot fișierul fiindcă ferma
-       nu le-a dat încă: un câmp lipsă e corect, unul ghicit nu. Coordonatele
-       sunt aceleași cu harta din contact.html; dacă se schimbă una, se schimbă
-       amândouă. -->
+  <!-- Datele fermei. Strada lipsește din tot fișierul fiindcă ferma nu a dat-o
+       încă: un câmp lipsă e corect, unul ghicit nu. Telefonul e în format
+       internațional, cerut de schema.org. Coordonatele sunt aceleași cu harta
+       din contact.html; dacă se schimbă una, se schimbă amândouă. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -58,6 +59,11 @@
       "logo": "https://fermafructbrabova.ro/img/logo-320.webp",
       "image": "https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp",
       "description": "Livadă de cireșe, pere, prune și caise la Brabova, în județul Dolj.",
+      "telephone": "+40745051892",
+      "email": "agroftech@gmail.com",
+      "sameAs": [
+        "https://www.facebook.com/ferma.fruct"
+      ],
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Brabova",
@@ -80,9 +86,9 @@
 <body class="page-inner">
 
   <!-- DIRECTION CONTRACT — nu șterge. Vezi index.html pentru contractul întreg.
-       CONȚINUT DE SCRIS: telefon, e-mail, adresă, harta și adresa serviciului
-       de formulare lipsesc încă — vezi „Still open" în DESIGN.md. Nimic
-       inventat: 07xx xxx xxx și @exemplu.ro tocmai ca să nu ajungă la public. -->
+       CONȚINUT DE SCRIS: numai strada exactă mai lipsește — vezi „Still open"
+       în DESIGN.md. Telefonul, e-mailul, harta și adresa serviciului de
+       formulare sunt cele reale ale fermei. -->
 
   <a class="skip" href="#main">Sari la conținut</a>
 
@@ -167,10 +173,10 @@
 
   <main id="main" class="contact">
 
-    <!-- 1. REACH — titlul paginii, cele trei date de contact, fotografia.
-         Datele sunt provizorii: 07xx xxx xxx și nume@exemplu.ro. Când vin cele
-         reale, valoarea se învelește în <a href="tel:...">/<a href="mailto:...">;
-         .line__value e deja stilizat pentru amândouă. -->
+    <!-- 1. REACH — titlul paginii, datele de contact, fotografia.
+         href="tel:" poartă numărul în format internațional (+40, fără primul
+         zero), altfel apelul pică de pe o cartelă străină; textul rămâne cel
+         local. .line__value e stilizat și ca <span>, și ca <a>. -->
     <section class="reach">
       <div class="reach__inner">
 
@@ -182,7 +188,7 @@
 
           <!-- Cratimele sunt U+2011 (nu rup rândul); cu cratima obișnuită
                rândul s-ar tăia și s-ar citi ca despărțire în silabe greșită. -->
-          <p class="reach__lead">Pentru comenzi, disponibilitate sau colaborări,
+          <p class="reach__lead">Pentru mai multe informații,
             scrie‑ne sau sună‑ne.</p>
 
           <!-- Sigle desenate de mână, grosime de linie 1.5 ca la butonul de meniu. -->
@@ -197,7 +203,7 @@
               </span>
               <span class="line__body">
                 <span class="line__label">Sună-ne</span>
-                <span class="line__value">07xx xxx xxx</span>
+                <a class="line__value" href="tel:+40745051892">0745 051 892</a>
               </span>
             </li>
 
@@ -211,7 +217,7 @@
               </span>
               <span class="line__body">
                 <span class="line__label">E-mail</span>
-                <span class="line__value">nume@exemplu.ro</span>
+                <a class="line__value" href="mailto:agroftech@gmail.com">agroftech@gmail.com</a>
               </span>
             </li>
 
@@ -277,7 +283,7 @@
                    serviciul folosește câmpul „email" ca adresă de răspuns și
                    refuză trimiterea când găsește un număr de telefon în el. -->
               <div class="field">
-                <label class="field__label" for="legatura">Telefon sau e-mail</label>
+                <label class="field__label" for="legatura">E-mail</label>
                 <input class="field__input" id="legatura" name="Telefon sau e-mail" type="text"
                        autocomplete="email" required>
               </div>
@@ -493,19 +499,10 @@
 
     <div class="site-footer__base">
 
-      <!-- TODO: adrese reale de profil; până atunci duc spre pagina de start a rețelei. -->
+      <!-- Facebook e singura rețea a fermei. Instagram nu există; nu adăuga o siglă fără cont în spate. -->
       <ul class="site-footer__social">
         <li>
-          <a class="site-footer__social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <rect x="3" y="3" width="18" height="18" rx="5"/>
-              <circle cx="12" cy="12" r="4.1"/>
-              <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" stroke="none"/>
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="site-footer__social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <a class="site-footer__social-link" href="https://www.facebook.com/ferma.fruct" target="_blank" rel="noopener noreferrer" aria-label="Ferma Fruct Brabova pe Facebook">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"/>
               <path d="M15.2 8.4h-1.7a1.8 1.8 0 0 0-1.8 1.8v10.6"/>

@@ -287,7 +287,7 @@ What is already settled:
 
 **All four Contact links now go to the page** (`href="contact.html"`) — previously the top bar, side menu, hero button, and footer nav all pointed at `#contact`, an `id` on `index.html`'s own footer, so clicking Contact scrolled to the bottom of the landing page. Nothing in CSS or `main.js` ever keyed off that `id`, checked before removing it.
 
-Not written and not to be guessed: phone, email, address, opening hours. They are on the "Still open" list below. A form cannot be submitted from here (Cloudflare Pages, no server code) — it would have to post to a third-party endpoint.
+Phone, e-mail and the Facebook page are the farm's real ones (see "Date de contact" below). Still not written and not to be guessed: the street and the opening hours. They are on the "Still open" list. The form posts to Web3Forms (`api.web3forms.com/submit`), because Cloudflare Pages runs no server code: `contact.js` sends it with `fetch` so the visitor stays on the page, and without JavaScript the plain POST still delivers. The `access_key` is public by design — it names the mailbox, it does not open it.
 
 ## Lățimi — pagina de contact
 
@@ -370,7 +370,17 @@ The cream already clears 4.5:1 at its worst frame. Brown was tried at the client
 - **`--earth` (#C3A278) is 2.12:1 on `--paper`.** It is a drawn-rule colour, not a text colour. Both sets of numbers use `--ink-soft` (6.58). Do not put `--earth` back on anything a visitor reads.
 - Body leading is 1.7, not `--leading-body` (1.6). Ten sections of legal prose are not one paragraph on the landing page.
 - **Not verified:** the current-section highlight could not be exercised through the Chrome extension — `IntersectionObserver` does not deliver callbacks in that tab, and a plain observer with no margin returns zero entries there. It was confirmed by eye in a normal window instead.
-- `.privacy__pending` is a live note to the site owner about the placeholder e-mail address. It is visible to visitors. Remove it with the placeholder.
+- `.privacy__pending` was a visitor-visible note warning that the e-mail address was a placeholder. The real address is in, so both the `<strong>` and its CSS rule are deleted. Do not reintroduce the class — a placeholder address should not reach this page again.
+
+## Date de contact
+
+Given by the farm on 25 August 2026. Real, safe to publish.
+
+- **Phone `0745 051 892`** — written as `href="tel:+40745051892"`. International form, because a foreign SIM cannot dial the national one; the visible text stays local.
+- **E-mail `agroftech@gmail.com`** — on `contact.html`, and in section 1 of the privacy policy as the address for data requests.
+- **Facebook `https://www.facebook.com/ferma.fruct`** — the farm's only network. **There is no Instagram.** Its icon came out of the footer on all three pages; do not put it back as decoration.
+
+Phone and e-mail live on `contact.html` only, not in the footer. All three pages carry the same `telephone`, `email` and `sameAs` inside their JSON-LD `Farm` block — change one, change all three.
 
 ## Still open
 
@@ -379,7 +389,7 @@ The cream already clears 4.5:1 at its worst frame. Brown was tried at the client
 - Responsive pass done (see Lățimi); not yet opened on a real phone, only measured in-browser at 320/768/1280.
 - Other pages: 3-4 planned. `contact.html` has its layout and its widths done (see „Lățimi — pagina de contact"); still needs polish in places, and none of it has been opened on a real phone — only measured in-browser.
 - Placeholder policy: square-bracket placeholders banned; round numbers are the one exception (cifre, FAQ), both flagged for removal once real. Still owed by the farm:
-  - phone + email — nothing on the site carries either yet. The real place for these is `contact.html`, not the footer.
+  - street address and opening hours — the farm gave phone, e-mail and Facebook (see „Date de contact"); these two are still missing and nothing on the site guesses them.
   - real hectares/years/tonnage (removes `.brief__note`)
   - two quotes with names (brings back testimoniale)
   - FAQ answers in the farm's own words (removes `.faq__note`)

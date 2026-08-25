@@ -285,13 +285,6 @@
     text-decoration-thickness: var(--rule);
 }
 
-.privacy__pending {
-    display: block;
-    margin-block-start: var(--space-xs);
-    color: var(--action-deep);
-    font-size: var(--step--1);
-}
-
 .privacy__rights {
     margin-block-start: var(--space-s);
     padding-inline-start: var(--space-m);

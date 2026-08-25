@@ -41,14 +41,15 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Iconița din filă. SVG-ul se scalează la orice mărime și poate reacționa la modul întunecat -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
   <!-- Varianta .ico nu e legată: fișierul nu există încă. Se adaugă odată cu el. -->
   <meta name="theme-color" content="#3E6027">
 
-  <!-- Datele fermei. Telefonul și strada lipsesc din tot fișierul fiindcă ferma
-       nu le-a dat încă: un câmp lipsă e corect, unul ghicit nu. Coordonatele
-       sunt aceleași cu harta din contact.html; dacă se schimbă una, se schimbă
-       amândouă. -->
+  <!-- Datele fermei. Strada lipsește din tot fișierul fiindcă ferma nu a dat-o
+       încă: un câmp lipsă e corect, unul ghicit nu. Telefonul e în format
+       internațional, cerut de schema.org. Coordonatele sunt aceleași cu harta
+       din contact.html; dacă se schimbă una, se schimbă amândouă. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -59,6 +60,11 @@
       "logo": "https://fermafructbrabova.ro/img/logo-320.webp",
       "image": "https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp",
       "description": "Livadă de cireșe, pere, prune și caise la Brabova, în județul Dolj.",
+      "telephone": "+40745051892",
+      "email": "agroftech@gmail.com",
+      "sameAs": [
+        "https://www.facebook.com/ferma.fruct"
+      ],
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Brabova",
@@ -206,8 +212,8 @@
 
       <div class="hero__inner">
         <img class="hero__mark" src="img/logo-320.webp?v=20260822-logo-1" width="320" height="320" alt="" loading="eager">
-        <h1 class="hero__title">Patru fructe, o singură livadă</h1>
-        <p class="hero__lead">Cireșe, pere, prune și caise, crescute la Brabova, în județul Dolj.</p>
+        <h1 class="hero__title">Ferma Fruct Brabova</h1>
+        <p class="hero__lead">O livada, patru fructe crescute și îngrijite în județul Dolj.</p>
         <p class="hero__cta"><a class="btn" href="contact.html">Contactați-ne</a></p>
       </div>
 
@@ -224,22 +230,22 @@
       <ul class="brief__list">
 
         <li class="brief__item">
-          <span class="brief__number" data-count-to="12">0</span>
+          <span class="brief__number" data-count-to="80">0</span>
           <span class="brief__unit">hectare de livadă</span>
         </li>
 
         <li class="brief__item">
-          <span class="brief__number" data-count-to="8">0</span>
-          <span class="brief__unit">ani de recoltă</span>
+          <span class="brief__number" data-count-to="30">0</span>
+          <span class="brief__unit">+ Soiuri de pomi</span>
         </li>
 
         <li class="brief__item">
-          <span class="brief__number" data-count-to="40">0</span>
-          <span class="brief__unit">tone culese anual</span>
+          <span class="brief__number" data-count-to="10">0</span>
+          <span class="brief__unit">hectare plantate anual</span>
         </li>
 
       </ul>
-      <p class="brief__note">Cifre exemplificative, până la valorile reale de la fermă.</p>
+      <p class="brief__note"></p>
     </section>
 
     <!-- ======================================================================
@@ -276,7 +282,7 @@
       <div class="orchard__inner">
 
         <div class="orchard__head">
-          <p class="orchard__statement">Fructele se coc puțin altfel aici. Se simte de la prima mușcătură.</p>
+          <p class="orchard__statement">Fructele noastre aduc aminte de gustul copilariei.</p>
           <p class="orchard__note">Aceleași patru în fiecare an, pe același deal. Nimic altceva nu se plantează aici.</p>
         </div>
 
@@ -384,7 +390,7 @@
                 <p class="grove__season">Iunie <span>—</span> Iulie</p>
               </div>
 
-              <p class="grove__intro">Cel mai scurt sezon dintre toate patru. Se coc aproape toate deodată, iar drumul de la galben la portocaliu îl fac în două zile.</p>
+              <p class="grove__intro">Cultivăm mai multe soiuri moderne, cu pulpă fermă, gust dulce și aromă bogată. Nu se coc toate odată: fiecare soi ajunge la maturitate pe rând, prelungind firesc perioada de recoltare.</p>
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/caise-b420.webp" srcset="img/caise-b420.webp 420w, img/caise-b840.webp 840w"
@@ -403,24 +409,24 @@
               <div class="grove__aside">
                 <h4 class="grove__cue">
                   <svg class="grove__leaf" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.15" aria-hidden="true"><path d="M17.2 2.8c0 7.4-4.6 11.4-11.4 11.4H2.8C2.8 6.8 7.4 2.8 14.2 2.8h3z"/><path d="M3.4 16.6c2.9-4.9 6.8-8.2 11.6-9.9" stroke-linecap="round"/></svg>
-                  Culese coapte, nu tari.
+                  Fermitate bună, aromă deplină.
                 </h4>
 
-                <p class="grove__detail">Sunt moi la atingere și se simt de la un rând distanță. Le culegem coapte, nu tari, ceea ce înseamnă că nu au timp să stea prin depozite.</p>
+                <p class="grove__detail">La maturitate, fructele îmbină portocaliul cu un roșu luminos. Pulpa rămâne fermă, dar este dulce și foarte aromată, iar caisele își păstrează bine calitatea în timpul transportului și la raft.</p>
 
-                <p class="grove__seal">Cel mai scurt sezon dintre toate patru.</p>
+                <p class="grove__seal">Pe cele coapte le recunoști după miros, înainte să le guști.</p>
               </div>
             </div>
 
             <ol class="grove__rail" aria-label="Calendarul recoltei de caise">
               <li class="grove__stage grove__stage--edge"><span class="grove__month">Iunie</span></li>
               <li class="grove__stage">
-                <h4 class="grove__stage-name">Primele coapte</h4>
-                <p class="grove__stage-note">Galbenul trece în portocaliu în două zile.</p>
+                <h4 class="grove__stage-name">Coacere treptată</h4>
+                <p class="grove__stage-note">În cadrul fiecărui soi, caisele ajung la maturitate pe parcursul a șapte până la zece zile.</p>
               </li>
               <li class="grove__stage">
-                <h4 class="grove__stage-name">Toate deodată</h4>
-                <p class="grove__stage-note">Se coc în același timp, iar culesul ține foarte puțin.</p>
+                <h4 class="grove__stage-name">Soi după soi</h4>
+                <p class="grove__stage-note">Când se încheie recoltarea unui soi, următorul începe să se coacă.</p>
               </li>
               <li class="grove__stage grove__stage--edge"><span class="grove__month">Iulie</span></li>
             </ol>
@@ -447,10 +453,10 @@
             <div class="grove__tell">
               <div class="grove__head">
                 <h3 class="grove__name">Prune</h3>
-                <p class="grove__season">August <span>—</span> Septembrie</p>
+                <p class="grove__season">Iunie <span>—</span> Octombrie</p>
               </div>
 
-              <p class="grove__intro">Vin cu bruma încă pe ele, stratul acela fin care se șterge dacă le atingi. Este semnul că nu au fost umblate după cules.</p>
+              <p class="grove__intro">Vin cu bruma încă pe ele, stratul acela fin care se șterge dacă le atingi. Este semnul că nu au fost umblate după cules. Primul soi se coace la sfârșitul lui iunie, iar celelalte îi urmează succesiv până în octombrie.</p>
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/prune-b420.webp" srcset="img/prune-b420.webp 420w, img/prune-b840.webp 840w"
@@ -472,23 +478,23 @@
                   Cu bruma încă pe ele.
                 </h4>
 
-                <p class="grove__detail">Se coc târziu și se țin bine. Sunt singurele dintre cele patru care suportă un drum lung fără să-și piardă forma, iar dulceața li se așază abia după câteva zile de odihnă.</p>
+                <p class="grove__detail">Se coc târziu și se țin bine. Sunt singurele dintre cele patru care suportă un drum lung fără să-și piardă fermitatea, iar dulceața li se așază abia după câteva zile de odihnă.</p>
 
                 <p class="grove__seal">Se coc târziu, se țin bine.</p>
               </div>
             </div>
 
             <ol class="grove__rail" aria-label="Calendarul recoltei de prune">
-              <li class="grove__stage grove__stage--edge"><span class="grove__month">August</span></li>
+              <li class="grove__stage grove__stage--edge"><span class="grove__month">Iunie</span></li>
               <li class="grove__stage">
                 <h4 class="grove__stage-name">Se face bruma</h4>
                 <p class="grove__stage-note">Stratul fin se așază pe fruct și nu se mai atinge.</p>
               </li>
               <li class="grove__stage">
                 <h4 class="grove__stage-name">Culesul mare</h4>
-                <p class="grove__stage-note">Suportă drumul lung fără să-și piardă forma.</p>
+                <p class="grove__stage-note">Suportă drumul până la tine fără să-și piardă fermitatea.</p>
               </li>
-              <li class="grove__stage grove__stage--edge"><span class="grove__month">Septembrie</span></li>
+              <li class="grove__stage grove__stage--edge"><span class="grove__month">Octombrie</span></li>
             </ol>
           </li>
 
@@ -513,10 +519,10 @@
             <div class="grove__tell">
               <div class="grove__head">
                 <h3 class="grove__name">Pere</h3>
-                <p class="grove__season">August <span>—</span> Octombrie</p>
+                <p class="grove__season">Iunie <span>—</span> Octombrie</p>
               </div>
 
-              <p class="grove__intro">Se culeg ferme și se lasă să se înmoaie singure, câteva zile, la temperatura camerei. Este singura parte pe care o lăsăm în seama celui care le mănâncă.</p>
+              <p class="grove__intro">Se culeg ferme și se lasă să se înmoaie singure, câteva zile, la temperatura camerei. Este singura parte pe care o lăsăm în seama celui care le savurează.</p>
 
               <div class="grove__frame grove__frame--b">
                 <img class="grove__photo" src="img/pere-b420.webp" srcset="img/pere-b420.webp 420w, img/pere-b840.webp 840w"
@@ -535,24 +541,24 @@
               <div class="grove__aside">
                 <h4 class="grove__cue">
                   <svg class="grove__leaf" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.15" aria-hidden="true"><path d="M17.2 2.8c0 7.4-4.6 11.4-11.4 11.4H2.8C2.8 6.8 7.4 2.8 14.2 2.8h3z"/><path d="M3.4 16.6c2.9-4.9 6.8-8.2 11.6-9.9" stroke-linecap="round"/></svg>
-                  Se coc la tine acasă.
+                  Gust bogat, aromă intensă.
                 </h4>
 
                 <p class="grove__detail">Închid sezonul livezii, în octombrie, când ceilalți pomi sunt deja goi. Zeama se simte de la prima mușcătură; dacă nu curge pe mână, mai au nevoie de o zi.</p>
 
-                <p class="grove__seal">Închid sezonul livezii.</p>
+                <p class="grove__seal">Culese ferme. Coapte la tine acasă.</p>
               </div>
             </div>
 
             <ol class="grove__rail" aria-label="Calendarul recoltei de pere">
-              <li class="grove__stage grove__stage--edge"><span class="grove__month">August</span></li>
+              <li class="grove__stage grove__stage--edge"><span class="grove__month">Iunie</span></li>
               <li class="grove__stage">
-                <h4 class="grove__stage-name">Începutul coacerii</h4>
-                <p class="grove__stage-note">Zeamele se strâng și fructul începe să se îndulcească.</p>
+                <h4 class="grove__stage-name">Primele soiuri</h4>
+                <p class="grove__stage-note">Ajung la maturitate în ultima săptămână din iunie, cu gust bogat și aromă intensă.</p>
               </li>
               <li class="grove__stage">
-                <h4 class="grove__stage-name">Ultimele din livadă</h4>
-                <p class="grove__stage-note">Se culeg ferme și se înmoaie singure, în câteva zile.</p>
+                <h4 class="grove__stage-name">Ultimele soiuri</h4>
+                <p class="grove__stage-note">Încheie sezonul perelor în luna octombrie.</p>
               </li>
               <li class="grove__stage grove__stage--edge"><span class="grove__month">Octombrie</span></li>
             </ol>
@@ -560,7 +566,7 @@
 
         </ul>
 
-        <p class="orchard__foot">Lunile de recoltă sunt orientative, până la datele reale de la fermă.</p>
+        <p class="orchard__foot"></p>
       </div>
 
       <!-- Ultimul desen al secțiunii: se termină pe muchia de jos, adică pe
@@ -634,13 +640,13 @@
           <li class="faq__item">
             <details class="faq__row" name="faq">
               <summary class="faq__q">
-                <span class="faq__qtext">Ce fructe cultivați?</span>
+                <span class="faq__qtext">Gustul diferă de la un soi la altul?</span>
                 <span class="faq__sign" aria-hidden="true"></span>
               </summary>
               <div class="faq__body">
                 <div class="faq__a">
-                  <p>Cireșe, caise, prune și pere. Patru fructe, aceeași livadă, în fiecare an. Nimic altceva nu se
-                    plantează aici.</p>
+                  <p>Da. Fiecare soi are gustul și aroma lui, iar perioada de coacere face și ea diferența. Soiurile
+                    care se culeg mai târziu petrec mai mult timp la soare și pot avea o aromă mai intensă.</p>
                 </div>
               </div>
             </details>
@@ -649,13 +655,12 @@
           <li class="faq__item">
             <details class="faq__row" name="faq">
               <summary class="faq__q">
-                <span class="faq__qtext">Când se culege fiecare fruct?</span>
+                <span class="faq__qtext">Vreți să vă limitați la doar patru tipuri de fructe?</span>
                 <span class="faq__sign" aria-hidden="true"></span>
               </summary>
               <div class="faq__body">
                 <div class="faq__a">
-                  <p>Cireșele în mai și iunie, caisele în iunie și iulie, prunele în august și septembrie, perele din
-                    august până în octombrie. Ordinea nu se schimbă de la un an la altul; săptămânile, da.</p>
+                  <p>Nu. Avem în plan să extindem livada cu aproximativ zece hectare de vișini, piersici și nectarini.</p>
                 </div>
               </div>
             </details>
@@ -669,8 +674,9 @@
               </summary>
               <div class="faq__body">
                 <div class="faq__a">
-                  <p>Se culeg mai târziu decât se obișnuiește și se lasă să se coacă pe pom. Oamenii ne spun că au
-                    gustul fructelor de care își aduc aminte din copilărie.</p>
+                  <p>Fructele noastre sunt crescute aici, nu aduse din import, iar tratamentele sunt folosite doar când
+                    este nevoie. Le lăsăm să se coacă în pom și le culegem când sunt gata, nu înainte de vreme. Așa își
+                    păstrează gustul și aroma, iar multora le amintesc de fructele copilăriei.</p>
                 </div>
               </div>
             </details>
@@ -684,8 +690,9 @@
               </summary>
               <div class="faq__body">
                 <div class="faq__a">
-                  <p>Fructele noastre ajung deja în magazine din mai multe județe. Pentru o livrare în altă parte,
-                    scrieți-ne și stabilim împreună transportul.</p>
+                  <p>Da. Livrăm în Dolj și în județele învecinate, inclusiv Vâlcea, Gorj și Argeș, precum și către
+                    depozite din București care distribuie fructele în toată țara. Colaborăm și cu operatori economici
+                    interesați să aducă fructele noastre mai aproape de consumatori.</p>
                 </div>
               </div>
             </details>
@@ -694,13 +701,13 @@
           <li class="faq__item">
             <details class="faq__row" name="faq">
               <summary class="faq__q">
-                <span class="faq__qtext">Care este cantitatea minimă la o comandă?</span>
+                <span class="faq__qtext">Cum recunosc fructele Ferma Fruct în magazin?</span>
                 <span class="faq__sign" aria-hidden="true"></span>
               </summary>
               <div class="faq__body">
                 <div class="faq__a">
-                  <p>Depinde de fruct și de momentul din sezon. Spuneți-ne ce vă trebuie și vă răspundem cu ce putem
-                    trimite în perioada aceea.</p>
+                  <p>Fiecare lădiță cu fructe livrată magazinelor are o etichetă cu datele firmei noastre, locația
+                    fermei și soiul fructelor.</p>
                 </div>
               </div>
             </details>
@@ -708,7 +715,7 @@
 
         </ul>
 
-        <p class="faq__note">Răspunsuri orientative, până la formulările finale de la fermă.</p>
+        <p class="faq__note"></p>
 
       </div>
     </section>
@@ -822,19 +829,10 @@
 
     <div class="site-footer__base">
 
-      <!-- TODO: adrese reale de profil când le trimite ferma; până atunci duc spre pagina de start a rețelei. -->
+      <!-- Facebook e singura rețea a fermei. Instagram nu există; nu adăuga o siglă fără cont în spate. -->
       <ul class="site-footer__social">
         <li>
-          <a class="site-footer__social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <rect x="3" y="3" width="18" height="18" rx="5"/>
-              <circle cx="12" cy="12" r="4.1"/>
-              <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" stroke="none"/>
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="site-footer__social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <a class="site-footer__social-link" href="https://www.facebook.com/ferma.fruct" target="_blank" rel="noopener noreferrer" aria-label="Ferma Fruct Brabova pe Facebook">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"/>
               <path d="M15.2 8.4h-1.7a1.8 1.8 0 0 0-1.8 1.8v10.6"/>

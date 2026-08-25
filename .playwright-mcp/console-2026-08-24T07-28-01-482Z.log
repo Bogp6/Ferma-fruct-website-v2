@@ -1,0 +1,4 @@
+[      39ms] TypeError: Cannot read properties of null (reading 'appendChild')
+    at <anonymous>:7:49
+    at <anonymous>:8:5
+    at <anonymous>:9:7

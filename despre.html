@@ -41,13 +41,14 @@
 
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico">
   <meta name="theme-color" content="#3E6027">
 
-  <!-- Datele fermei. Telefonul și strada lipsesc din tot fișierul fiindcă ferma
-       nu le-a dat încă: un câmp lipsă e corect, unul ghicit nu. Coordonatele
-       sunt aceleași cu harta din contact.html; dacă se schimbă una, se schimbă
-       amândouă. -->
+  <!-- Datele fermei. Strada lipsește din tot fișierul fiindcă ferma nu a dat-o
+       încă: un câmp lipsă e corect, unul ghicit nu. Telefonul e în format
+       internațional, cerut de schema.org. Coordonatele sunt aceleași cu harta
+       din contact.html; dacă se schimbă una, se schimbă amândouă. -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -58,6 +59,11 @@
       "logo": "https://fermafructbrabova.ro/img/logo-320.webp",
       "image": "https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp",
       "description": "Livadă de cireșe, pere, prune și caise la Brabova, în județul Dolj.",
+      "telephone": "+40745051892",
+      "email": "agroftech@gmail.com",
+      "sameAs": [
+        "https://www.facebook.com/ferma.fruct"
+      ],
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Brabova",
@@ -214,8 +220,8 @@
 
       <div class="story__inner">
         <p class="story__kicker">Povestea noastră</p>
-        <h1 class="story__title">O livadă<br>crescută cu răbdare.</h1>
-        <p class="story__lead">De la primii pomi până la recoltele de astăzi.</p>
+        <h1 class="story__title">O livadă<br>cu mare potențial</h1>
+        <p class="story__lead">Progresia, de la primii pomi până la recoltele de astăzi.</p>
       </div>
 
     </section>
@@ -276,10 +282,10 @@
 
           <li class="stage">
             <div class="stage__tell">
-              <p class="stage__year">2012</p>
-              <h3 class="stage__name">Începutul fermei</h3>
-              <p class="stage__body">Totul a început cu un vis simplu: să plantăm o livadă pe pământul
-                nostru, cu grijă și respect pentru natură.</p>
+              <p class="stage__year">2017</p>
+              <h3 class="stage__name">Pământul prinde viață</h3>
+              <p class="stage__body">După trei decenii de repaus, pământul a prins din nou viață. Au urmat
+                trei ani de muncă până la primele plantări.</p>
             </div>
 
             <img class="stage__sign" src="img/young-tree-v2-480.webp" srcset="img/young-tree-v2-240.webp 240w, img/young-tree-v2-480.webp 480w" sizes="7rem" width="480" height="720" alt="" aria-hidden="true" loading="lazy" decoding="async">
@@ -304,10 +310,10 @@
 
           <li class="stage stage--flip">
             <div class="stage__tell">
-              <p class="stage__year">2014</p>
-              <h3 class="stage__name">Primii pomi plantați</h3>
-              <p class="stage__body">Am pus în pământ primii puieți și am început să învățăm livada, zi
-                de zi. Răbdarea și munca au devenit rădăcinile noastre.</p>
+              <p class="stage__year">2020</p>
+              <h3 class="stage__name">Livada prinde rădăcini</h3>
+              <p class="stage__body">Primele parcele au fost plantate. Recolta a venit în 2024, iar livada
+                a crescut cu peste zece hectare în fiecare an.</p>
             </div>
 
             <img class="stage__sign" src="img/medium-tree-v2-480.webp" srcset="img/medium-tree-v2-240.webp 240w, img/medium-tree-v2-480.webp 480w" sizes="7rem" width="480" height="720" alt="" aria-hidden="true" loading="lazy" decoding="async">
@@ -333,9 +339,9 @@
           <li class="stage">
             <div class="stage__tell">
               <p class="stage__year">Astăzi</p>
-              <h3 class="stage__name">Livada continuă să crească</h3>
-              <p class="stage__body">Astăzi, livada noastră este matură, dar grija pentru fiecare pom
-                rămâne aceeași ca în prima zi.</p>
+              <h3 class="stage__name">Peste 80 de hectare</h3>
+              <p class="stage__body">Livada continuă să crească. În plan sunt încă aproximativ zece
+                hectare de piersici și nectarine.</p>
             </div>
 
             <img class="stage__sign" src="img/big-tree-v2-480.webp" srcset="img/big-tree-v2-240.webp 240w, img/big-tree-v2-480.webp 480w" sizes="7rem" width="480" height="720" alt="" aria-hidden="true" loading="lazy" decoding="async">
@@ -397,7 +403,7 @@
                neterminat până atunci — un nume inventat ar putea ajunge din
                greșeală pe site. -->
           <p class="keeper__cred">
-            <span class="keeper__name">Nume de completat
+            <span class="keeper__name">Pavel Daniel
               <span class="keeper__role">Proprietar, Ferma Fruct Brabova</span>
             </span>
           </p>
@@ -407,16 +413,16 @@
         <div class="keeper__tell">
           <h2 class="keeper__title">Omul din spatele livezii</h2>
 
-          <p class="keeper__body">Sunt aici în fiecare zi, de la răsărit până la lăsarea serii. Îmi cunosc
-            fiecare pom, știu când are nevoie de apă, când de tăiere și când are nevoie doar de timp.</p>
+          <p class="keeper__body">Ferma Fruct Brabova a pornit din pasiunea lui Daniel Pavel pentru
+            horticultură și alimentație sănătoasă. Ambiția și grija lui au dus ferma mai departe.</p>
 
-          <p class="keeper__body">Nu grăbim natura și nu căutăm drumuri ușoare. Credem în munca făcută cu
-            grijă, în respectul pentru pământ și în bucuria de a vedea roadele muncii noastre.</p>
+          <p class="keeper__body">Daniel crede că fructele bune își au locul în fiecare zi. De aceea, și-a
+            propus să ofere cât mai multor oameni fructe proaspete, cu gust bun și valoare nutritivă.</p>
 
-          <p class="keeper__body">Livada ne învață răbdarea, iar noi îi oferim atenția noastră, în
-            fiecare zi.</p>
+          <p class="keeper__body">Pentru livada de la Brabova, a ales soiuri moderne de cais, prun, cireș
+            și păr, dezvoltate în Germania și Franța pentru gust și aromă.</p>
 
-          <p class="keeper__seal">&bdquo;O livadă nu se grăbește.&rdquo;</p>
+          <p class="keeper__seal">&bdquo;Creștem livada cu grijă și ambiție.&rdquo;</p>
         </div>
 
       </div>
@@ -457,7 +463,7 @@
                    srcset="img/slide-row3-720.webp 720w, img/slide-row3-1440.webp 1440w"
                    sizes="(min-width: 64em) 46rem, (min-width: 48em) 91vw, 100vw" width="1440" height="810"
                    alt="Livada văzută de pe intervalul dintre două rânduri de pomi" loading="lazy" decoding="async">
-              <figcaption class="reel__caption">Rândurile, primăvara târziu</figcaption>
+              <figcaption class="reel__caption">Cireși, primăvara târzie</figcaption>
             </figure>
           </li>
 
@@ -482,7 +488,7 @@
                      aria-label="Filmare scurtă din livadă, printre rândurile de pomi">
                 <source src="img/about-extra-540.mp4" type="video/mp4">
               </video>
-              <figcaption class="reel__caption">Printre rânduri</figcaption>
+              <figcaption class="reel__caption">Prunii, înainte de înflorire</figcaption>
             </figure>
           </li>
 
@@ -492,7 +498,7 @@
                    srcset="img/slide-livada-720.webp 720w, img/slide-livada-1440.webp 1440w"
                    sizes="(min-width: 64em) 46rem, (min-width: 48em) 91vw, 100vw" width="1440" height="810"
                    alt="Intervalul dintre două rânduri de pomi tineri, cu livada urcând spre deal" loading="lazy" decoding="async">
-              <figcaption class="reel__caption">Livada, rând cu rând</figcaption>
+              <figcaption class="reel__caption">Perii, primăvară devreme</figcaption>
             </figure>
           </li>
 
@@ -502,7 +508,7 @@
                    srcset="img/slide-pere-720.webp 720w, img/slide-pere-1080.webp 1080w"
                    sizes="(min-width: 64em) 46rem, (min-width: 48em) 91vw, 100vw" width="1080" height="608"
                    alt="Lăzi pline cu pere culese, una lângă alta" loading="lazy" decoding="async">
-              <figcaption class="reel__caption">Perele, după cules</figcaption>
+              <figcaption class="reel__caption">Perele, în lăzi</figcaption>
             </figure>
           </li>
 
@@ -512,7 +518,7 @@
                    srcset="img/slide-ciresi-720.webp 720w, img/slide-ciresi-1200.webp 1200w"
                    sizes="(min-width: 64em) 46rem, (min-width: 48em) 91vw, 100vw" width="1200" height="675"
                    alt="Ladă de lemn plină cu cireșe roșii, proaspăt culese" loading="lazy" decoding="async">
-              <figcaption class="reel__caption">Cireșele, la cules</figcaption>
+              <figcaption class="reel__caption">Cireșele, în lăzi</figcaption>
             </figure>
           </li>
 
@@ -573,7 +579,7 @@
 
         <div class="talks__head">
           <h2 class="talks__title" id="talks-title">Interviuri din livadă</h2>
-          <p class="talks__lead">Povești spuse de oamenii care cunosc livada cel mai bine.</p>
+          <p class="talks__lead">Interviuri și reportaje din fermă.</p>
         </div>
 
         <ul class="talks__grid">
@@ -584,7 +590,7 @@
                 <img class="talk__poster" src="img/talk-poveste-1280.webp"
                      srcset="img/talk-poveste-640.webp 640w, img/talk-poveste-1280.webp 1280w"
                      sizes="(min-width: 64em) 43rem, 92vw" width="1280" height="720"
-                     alt="Miniatura interviului despre povestea fermei" loading="lazy" decoding="async">
+                     alt="Miniatura interviului despre utilajul antiîngheț al fermei" loading="lazy" decoding="async">
                 <span class="talk__badge" aria-hidden="true">
                   <svg viewBox="0 0 28.57 20" focusable="false">
                     <path class="talk__badge-plate" d="M27.97 3.12A3.59 3.59 0 0 0 25.45.6C23.22 0 14.29 0 14.29 0S5.35 0 3.12.6A3.59 3.59 0 0 0 .6 3.12C0 5.35 0 10 0 10s0 4.65.6 6.88a3.59 3.59 0 0 0 2.52 2.52C5.35 20 14.29 20 14.29 20s8.93 0 11.16-.6a3.59 3.59 0 0 0 2.52-2.52C28.57 14.65 28.57 10 28.57 10s0-4.65-.6-6.88z"/>
@@ -601,7 +607,7 @@
                   </svg>
                 </button>
               </div>
-              <figcaption class="talk__caption">Povestea fermei</figcaption>
+              <figcaption class="talk__caption">Utilajul antiîngheț din livadă</figcaption>
             </figure>
           </li>
 
@@ -638,7 +644,7 @@
                 <img class="talk__poster" src="img/talk-cules-960.webp"
                      srcset="img/talk-cules-480.webp 480w, img/talk-cules-960.webp 960w"
                      sizes="(min-width: 64em) 28rem, (min-width: 48em) 45vw, 92vw" width="960" height="540"
-                     alt="Miniatura interviului despre momentul culesului" loading="lazy" decoding="async">
+                     alt="Miniatura materialului despre Ferma Fruct Brabova" loading="lazy" decoding="async">
                 <span class="talk__badge" aria-hidden="true">
                   <svg viewBox="0 0 28.57 20" focusable="false">
                     <path class="talk__badge-plate" d="M27.97 3.12A3.59 3.59 0 0 0 25.45.6C23.22 0 14.29 0 14.29 0S5.35 0 3.12.6A3.59 3.59 0 0 0 .6 3.12C0 5.35 0 10 0 10s0 4.65.6 6.88a3.59 3.59 0 0 0 2.52 2.52C5.35 20 14.29 20 14.29 20s8.93 0 11.16-.6a3.59 3.59 0 0 0 2.52-2.52C28.57 14.65 28.57 10 28.57 10s0-4.65-.6-6.88z"/>
@@ -655,7 +661,7 @@
                   </svg>
                 </button>
               </div>
-              <figcaption class="talk__caption">De ce culegem la timp</figcaption>
+              <figcaption class="talk__caption">Ferma Fruct Brabova, pe scurt</figcaption>
             </figure>
           </li>
 
@@ -760,19 +766,10 @@
 
     <div class="site-footer__base">
 
-      <!-- TODO: adrese reale de profil; până atunci duc spre pagina de start a rețelei. -->
+      <!-- Facebook e singura rețea a fermei. Instagram nu există; nu adăuga o siglă fără cont în spate. -->
       <ul class="site-footer__social">
         <li>
-          <a class="site-footer__social-link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-              <rect x="3" y="3" width="18" height="18" rx="5"/>
-              <circle cx="12" cy="12" r="4.1"/>
-              <circle cx="17.3" cy="6.7" r="1.15" fill="currentColor" stroke="none"/>
-            </svg>
-          </a>
-        </li>
-        <li>
-          <a class="site-footer__social-link" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <a class="site-footer__social-link" href="https://www.facebook.com/ferma.fruct" target="_blank" rel="noopener noreferrer" aria-label="Ferma Fruct Brabova pe Facebook">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"/>
               <path d="M15.2 8.4h-1.7a1.8 1.8 0 0 0-1.8 1.8v10.6"/>
