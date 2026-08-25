@@ -198,11 +198,13 @@
            older count still writing digits over the new one. */
         var figureJobs = [];
 
+        /* Romanian groups thousands with a full stop (1.200), English with a
+           comma (1,200). Taken from <html lang>, not from the visitor's browser:
+           the separator has to match the page, not the reader's machine. */
+        var figureLocale = document.documentElement.lang === 'en' ? 'en-GB' : 'ro-RO';
+
         var formatFigure = function (value) {
-            /* Romanian groups thousands with a full stop, so 1200 has to read
-               1.200. Named explicitly rather than left to the visitor's
-               browser: the page is in Romanian whoever is reading it. */
-            return value.toLocaleString('ro-RO');
+            return value.toLocaleString(figureLocale);
         };
 
         var stopFigures = function () {

@@ -17,6 +17,24 @@
      3. trimiterea formularului fără să se schimbe pagina.
    =========================================================================== */
 
+/* Textele scrise din JS, în cele două limbi. Limba se citește din <html lang>,
+   nu din adresă: e singurul loc corect și când fișierul e deschis de pe disc.
+   Subiectul de rezervă rămâne românesc în ambele: ajunge în inboxul fermei,
+   nu pe ecranul vizitatorului. */
+var CONTACT_TEXT = document.documentElement.lang === 'en' ? {
+    sending: 'Sending…',
+    ok: 'Your message is on its way. We will reply as soon as we can.',
+    failed: 'The message did not go through. Try again, or give us a call.',
+    offline: 'The message did not go through. Check your internet connection and try again.',
+    subject: 'Mesaj de pe site'
+} : {
+    sending: 'Se trimite…',
+    ok: 'Mesajul a plecat. Îți răspundem cât putem de repede.',
+    failed: 'Mesajul nu a plecat. Încearcă din nou sau sună-ne.',
+    offline: 'Mesajul nu a plecat. Verifică legătura la internet și încearcă din nou.',
+    subject: 'Mesaj de pe site'
+};
+
 (function () {
     'use strict';
 
@@ -169,12 +187,12 @@
             event.preventDefault();
 
             if (subject && !subject.value.trim()) {
-                subject.value = 'Mesaj de pe site';
+                subject.value = CONTACT_TEXT.subject;
             }
 
             if (button) {
                 button.disabled = true;
-                button.textContent = 'Se trimite…';
+                button.textContent = CONTACT_TEXT.sending;
             }
 
             say('', null);
@@ -188,12 +206,12 @@
             }).then(function (result) {
                 if (result && result.success) {
                     form.reset();
-                    say('Mesajul a plecat. Îți răspundem cât putem de repede.', 'ok');
+                    say(CONTACT_TEXT.ok, 'ok');
                 } else {
-                    say('Mesajul nu a plecat. Încearcă din nou sau sună-ne.', 'bad');
+                    say(CONTACT_TEXT.failed, 'bad');
                 }
             }).catch(function () {
-                say('Mesajul nu a plecat. Verifică legătura la internet și încearcă din nou.', 'bad');
+                say(CONTACT_TEXT.offline, 'bad');
             }).then(unlock);
         });
     }

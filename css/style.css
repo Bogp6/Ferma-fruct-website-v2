@@ -3359,6 +3359,64 @@ main,
 }
 
 
+/* ===========================================================================
+   15. COMUTATORUL DE LIMBĂ — RO și EN stau mereu în ordinea asta, în antet,
+   în panoul lateral și în subsol. Limba curentă e <span>, cealaltă e <a>:
+   o pagină nu se leagă de ea însăși.
+
+   Aprinsul și stinsul vin de la clasa de stare, NU de la poziție. Regulile
+   de mai sus (.lang__soon, .drawer__lang-soon, .site-footer__lang-next)
+   leagă stinsul de locul al doilea, fiindcă acolo stă și despărțitorul, iar
+   despărțitorul chiar aparține locului al doilea. Selectorii de aici au
+   două clase, deci le bat pe acelea și mută numai culoarea și opacitatea.
+   Pe paginile românești ies exact aceleași valori ca înainte.
+   =========================================================================== */
+
+.lang .is-lang-here,
+.drawer__lang .is-lang-here {
+    opacity: 1;
+}
+
+.drawer__lang .is-lang-here {
+    color: var(--bark);
+}
+
+.site-footer__lang .is-lang-here {
+    color: var(--paper);
+}
+
+.lang .is-lang-away,
+.drawer__lang .is-lang-away {
+    opacity: 0.6;
+}
+
+.drawer__lang .is-lang-away {
+    color: var(--ink-soft);
+}
+
+.site-footer__lang .is-lang-away {
+    color: var(--on-dark-soft);
+}
+
+/* base.css dă doar color: inherit linkurilor; sublinierea implicită a
+   browserului ar tăia rândul de limbi în două. */
+.lang .is-lang-away,
+.drawer__lang .is-lang-away,
+.site-footer__lang .is-lang-away {
+    text-decoration: none;
+    transition: opacity var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+.lang .is-lang-away:hover,
+.drawer__lang .is-lang-away:hover {
+    opacity: 1;
+}
+
+.site-footer__lang .is-lang-away:hover {
+    color: var(--paper);
+}
+
+
 /* Mișcarea este parte din compoziția aprobată. normalize.css păstrează
    preferința sistemului ca bază sigură, iar pagina principală o suprascrie
    numai pentru elementele ei animate. Fără lista asta iOS taie tranzițiile,

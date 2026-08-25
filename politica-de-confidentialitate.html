@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260824-drift-firefox-static-10">
+  <link rel="stylesheet" href="css/style.css?v=20260825-en-1">
   <link rel="stylesheet" href="css/politica-de-confidentialitate.css?v=20260821-privacy-4">
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
 
@@ -32,8 +32,13 @@
   <meta property="og:url" content="https://fermafructbrabova.ro/politica-de-confidentialitate.html">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ro_RO">
+  <meta property="og:locale:alternate" content="en_GB">
 
-  <!-- Nu există hreflang: site-ul are o singură limbă. Se adaugă odată cu paginile în engleză. -->
+  <!-- Perechea de limbi a ACESTEI pagini, nu a site-ului: fiecare pagină își
+       arată propriul echivalent. x-default e româna, limba fermei. -->
+  <link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/politica-de-confidentialitate.html">
+  <link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/privacy-policy.html">
+  <link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/politica-de-confidentialitate.html">
 
   <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -61,10 +66,12 @@
         </ul>
       </nav>
 
+      <!-- Limba curentă e <span>, cealaltă e <a>: pagina nu se leagă de ea
+           însăși. Linkul duce la pagina pereche, nu la prima pagină engleză. -->
       <p class="lang">
         <span class="visually-hidden">Limba paginii:</span>
-        <span class="lang__current">RO</span>
-        <span class="lang__soon">EN</span>
+        <span class="lang__current is-lang-here">RO</span>
+        <a class="lang__soon is-lang-away" href="en/privacy-policy.html" lang="en" hreflang="en">EN</a>
       </p>
 
       <button class="burger" type="button" aria-expanded="false" aria-controls="meniu">
@@ -103,8 +110,8 @@
       </ul>
       <p class="drawer__lang">
         <span class="visually-hidden">Limba paginii:</span>
-        <span class="drawer__lang-now">RO</span>
-        <span class="drawer__lang-soon">EN</span>
+        <span class="drawer__lang-now is-lang-here">RO</span>
+        <a class="drawer__lang-soon is-lang-away" href="en/privacy-policy.html" lang="en" hreflang="en">EN</a>
       </p>
     </nav>
   </div>
@@ -277,7 +284,7 @@
   </footer>
 
   <script src="js/gsap.min.js"></script>
-  <script src="js/main.js?v=20260824-drift-firefox-static-10"></script>
+  <script src="js/main.js?v=20260825-en-1"></script>
   <!-- Doar evidențierea secțiunii curente în cuprins, separat ca să nu ceară ?v= nou pe celelalte pagini. -->
   <script src="js/politica.js?v=20260821-privacy-4"></script>
 <!-- impeccable-live-start -->

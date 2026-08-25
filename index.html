@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/style.css?v=20260824-drift-firefox-static-10">
+  <link rel="stylesheet" href="css/style.css?v=20260825-en-1">
 
   <!-- Preîncarcă doar fișierul latin; latin-ext (ș, ț) vine mai târziu prin unicode-range. Fără asta, titlul din hero clipește într-un font de rezervă. -->
   <link rel="preload" href="fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -35,8 +35,13 @@
   <meta property="og:url" content="https://fermafructbrabova.ro/">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ro_RO">
+  <meta property="og:locale:alternate" content="en_GB">
 
-  <!-- Nu există hreflang: site-ul are o singură limbă. Se adaugă odată cu paginile în engleză. -->
+  <!-- Perechea de limbi a ACESTEI pagini, nu a site-ului: fiecare pagină își
+       arată propriul echivalent. x-default e româna, limba fermei. -->
+  <link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/">
+  <link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/">
+  <link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/">
 
   <meta name="twitter:card" content="summary_large_image">
 
@@ -130,11 +135,12 @@
         </ul>
       </nav>
 
-      <!-- EN rămâne <span>, nu <a>: nu există încă pagina engleză. -->
+      <!-- Limba curentă e <span>, cealaltă e <a>: pagina nu se leagă de ea
+           însăși. Linkul duce la pagina pereche, nu la prima pagină engleză. -->
       <p class="lang">
         <span class="visually-hidden">Limba paginii:</span>
-        <span class="lang__current">RO</span>
-        <span class="lang__soon">EN</span>
+        <span class="lang__current is-lang-here">RO</span>
+        <a class="lang__soon is-lang-away" href="en/index.html" lang="en" hreflang="en">EN</a>
       </p>
 
       <!-- Sub 64em navigarea trece în panoul lateral. aria-expanded e scris în HTML, nu adăugat de JS, ca să existe de la prima pictare. -->
@@ -188,8 +194,8 @@
 
       <p class="drawer__lang">
         <span class="visually-hidden">Limba paginii:</span>
-        <span class="drawer__lang-now">RO</span>
-        <span class="drawer__lang-soon">EN</span>
+        <span class="drawer__lang-now is-lang-here">RO</span>
+        <a class="drawer__lang-soon is-lang-away" href="en/index.html" lang="en" hreflang="en">EN</a>
       </p>
 
     </nav>
@@ -842,11 +848,10 @@
         </li>
       </ul>
 
-      <!-- EN devine <a href> când există pagina engleză; până atunci text simplu, nu link mort. -->
       <p class="site-footer__lang">
-        <span class="site-footer__lang-now">RO</span>
+        <span class="site-footer__lang-now is-lang-here">RO</span>
         <span class="site-footer__lang-sep" aria-hidden="true">|</span>
-        <span class="site-footer__lang-next">EN</span>
+        <a class="site-footer__lang-next is-lang-away" href="en/index.html" lang="en" hreflang="en">EN</a>
       </p>
 
       <p class="site-footer__legal">
@@ -861,7 +866,7 @@
 
   <script src="js/gsap.min.js"></script>
   <!-- ?v= crește la fiecare schimbare, ca la style.css, altfel browserul poate servi scriptul vechi cu CSS-ul nou. -->
-  <script src="js/main.js?v=20260824-drift-firefox-static-10"></script>
+  <script src="js/main.js?v=20260825-en-1"></script>
 
 <!-- impeccable-live-start -->
 <!-- impeccable-live-end -->

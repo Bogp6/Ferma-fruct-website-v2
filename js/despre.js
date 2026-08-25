@@ -18,6 +18,28 @@
      5. interviurile — iframe-ul YouTube pus abia la apăsare.
    =========================================================================== */
 
+/* Textele scrise din JS, în cele două limbi. Limba se citește din <html lang>,
+   nu din adresă: e singurul loc corect și când fișierul e deschis de pe disc.
+   Toate ajung în aria-label sau în .visually-hidden, deci se aud, nu se văd. */
+var DESPRE_TEXT = document.documentElement.lang === 'en' ? {
+    prevPhoto: 'Previous photo',
+    nextPhoto: 'Next photo',
+    pickPhoto: 'Choose a photo',
+    /* Se lipesc: 'Photo ' + n + ' of ' + total. */
+    photo: 'Photo ',
+    of: ' of ',
+    play: 'Play: ',
+    interview: 'interview'
+} : {
+    prevPhoto: 'Fotografia dinainte',
+    nextPhoto: 'Fotografia următoare',
+    pickPhoto: 'Alege fotografia',
+    photo: 'Fotografia ',
+    of: ' din ',
+    play: 'Redă: ',
+    interview: 'interviu'
+};
+
 (function () {
     'use strict';
 
@@ -363,8 +385,8 @@
             return b;
         };
 
-        var prev = button('reel__nav--prev', 'Fotografia dinainte', 'M15 5l-7 7 7 7');
-        var next = button('reel__nav--next', 'Fotografia următoare', 'M9 5l7 7-7 7');
+        var prev = button('reel__nav--prev', DESPRE_TEXT.prevPhoto, 'M15 5l-7 7 7 7');
+        var next = button('reel__nav--next', DESPRE_TEXT.nextPhoto, 'M9 5l7 7-7 7');
 
         stage.appendChild(prev);
         stage.appendChild(next);
@@ -372,14 +394,14 @@
         var dotList = document.createElement('div');
         dotList.className = 'reel__dots';
         dotList.setAttribute('role', 'tablist');
-        dotList.setAttribute('aria-label', 'Alege fotografia');
+        dotList.setAttribute('aria-label', DESPRE_TEXT.pickPhoto);
 
         var dots = slides.map(function (slide, i) {
             var dot = document.createElement('button');
             dot.type = 'button';
             dot.className = 'reel__dot';
             dot.setAttribute('role', 'tab');
-            dot.setAttribute('aria-label', 'Fotografia ' + (i + 1) + ' din ' + slides.length);
+            dot.setAttribute('aria-label', DESPRE_TEXT.photo + (i + 1) + DESPRE_TEXT.of + slides.length);
             dot.addEventListener('click', function () { goTo(i); });
             dotList.appendChild(dot);
             return dot;
@@ -513,13 +535,13 @@
             return;
         }
 
-        var title = caption ? caption.textContent.trim() : 'interviu';
+        var title = caption ? caption.textContent.trim() : DESPRE_TEXT.interview;
         var open = document.createElement('button');
         open.type = 'button';
         open.className = 'talk__open';
         /* Butonul e transparent peste toată fotografia, deci n-are text pe
            ecran; numele lui trăiește în aria-label, pentru cititorul de ecran. */
-        open.setAttribute('aria-label', 'Redă: ' + title);
+        open.setAttribute('aria-label', DESPRE_TEXT.play + title);
 
         /* Înaintea insignei în DOM: CSS-ul o aprinde cu selectorul de frate
            (.talk__open:hover ~ .talk__badge). */
