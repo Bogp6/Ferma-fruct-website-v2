@@ -285,12 +285,13 @@
                        autocomplete="name" required>
               </div>
 
-              <!-- Un singur câmp pentru amândouă, deci NU se cheamă „email":
-                   serviciul folosește câmpul „email" ca adresă de răspuns și
-                   refuză trimiterea când găsește un număr de telefon în el. -->
+              <!-- Se cheamă exact „email": serviciul ia din câmpul cu numele
+                   ăsta adresa de răspuns a mesajului, deci Reply din inboxul
+                   fermei pleacă direct către vizitator. Formularul cere numai
+                   e-mail, nu și telefon. -->
               <div class="field">
-                <label class="field__label" for="legatura">E-mail</label>
-                <input class="field__input" id="legatura" name="Telefon sau e-mail" type="text"
+                <label class="field__label" for="email">E-mail</label>
+                <input class="field__input" id="email" name="email" type="email"
                        autocomplete="email" required>
               </div>
             </div>
@@ -334,10 +335,11 @@
 
           <!-- Interogarea conține numai coordonatele: linkul lung Google avea
                și identificatorul localității, iar Maps alegea localitatea în
-               locul pinului pus manual. -->
+               locul pinului pus manual. hl= fixează limba din hartă: fără el
+               Google o alege după server și scria franțuzește. -->
           <div class="place__map">
             <iframe
-              src="https://www.google.com/maps?q=44.375004%2C23.457348&amp;z=18&amp;output=embed"
+              src="https://www.google.com/maps?q=44.375004%2C23.457348&amp;z=18&amp;hl=en&amp;output=embed"
               width="600" height="450" style="border:0;" allowfullscreen
               loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
               title="Map of the farm at 44.375004, 23.457348"></iframe>
