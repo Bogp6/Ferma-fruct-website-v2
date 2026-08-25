@@ -15,9 +15,9 @@
   <!-- Canonical: ignoră coada ?fbclid pe care o lipește Facebook la click -->
   <link rel="canonical" href="https://fermafructbrabova.ro/">
 
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/normalize.css?v=20260825-launch-1">
+  <link rel="stylesheet" href="css/tokens.css?v=20260825-launch-1">
+  <link rel="stylesheet" href="css/base.css?v=20260825-launch-1">
   <link rel="stylesheet" href="css/style.css?v=20260825-en-1">
 
   <!-- Preîncarcă doar fișierul latin; latin-ext (ș, ț) vine mai târziu prin unicode-range. Fără asta, titlul din hero clipește într-un font de rezervă. -->
@@ -45,10 +45,13 @@
 
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Iconița din filă. SVG-ul se scalează la orice mărime și poate reacționa la modul întunecat -->
+  <!-- Iconița din filă: 32 pentru filă, 512 pentru ecrane dese și pentru
+       scurtături, .ico pentru browsere vechi. apple-touch-icon are fundal
+       plin, fiindcă iOS pune negru în spatele transparenței. -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
   <link rel="shortcut icon" href="favicon.ico">
-  <!-- Varianta .ico nu e legată: fișierul nu există încă. Se adaugă odată cu el. -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="theme-color" content="#3E6027">
 
   <!-- Datele fermei. Strada lipsește din tot fișierul fiindcă ferma nu a dat-o
