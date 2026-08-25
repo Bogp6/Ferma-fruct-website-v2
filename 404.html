@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ro" class="no-js">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script>document.documentElement.classList.remove('no-js');</script>
+
+  <title>Pagina nu există — Ferma Fruct Brabova</title>
+  <meta name="description" content="Adresa cerută nu duce nicăieri pe site-ul Ferma Fruct Brabova.">
+
+  <!-- Fără canonical: pagina asta se arată la orice adresă greșită, deci nu are
+       o adresă a ei. noindex ca să nu ajungă în căutări. -->
+  <meta name="robots" content="noindex, follow">
+
+  <!-- Căile pornesc de la rădăcină, nu relativ: Cloudflare Pages întoarce
+       fișierul ăsta pentru ORICE adresă greșită, inclusiv /en/ceva, iar o cale
+       relativă s-ar căuta atunci în /en/ și n-ar găsi nimic. -->
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/style.css?v=20260825-en-1">
+  <link rel="stylesheet" href="/css/404.css?v=20260825-lost-1">
+  <link rel="preload" href="/fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <meta name="theme-color" content="#698240">
+</head>
+
+<body class="page-inner lost-page">
+
+  <a class="skip" href="#main">Sari la conținut</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/" aria-label="Ferma Fruct Brabova, pagina principală">
+        <img class="brand__mark" src="/img/logo-160.webp?v=20260822-logo-1" srcset="/img/logo-160.webp?v=20260822-logo-1 160w, /img/logo-320.webp?v=20260822-logo-1 320w"
+             sizes="48px" width="320" height="320" alt="" loading="eager">
+        <span class="brand__word" aria-hidden="true">Ferma Fruct</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigare principală">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="/#acasa">Acasă</a></li>
+          <li><a class="nav__link" href="/despre">Despre</a></li>
+          <li><a class="nav__link" href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Aici nu există pagină pereche, deci EN duce la prima pagină engleză. -->
+      <p class="lang">
+        <span class="visually-hidden">Limba paginii:</span>
+        <span class="lang__current is-lang-here">RO</span>
+        <a class="lang__soon is-lang-away" href="/en/" lang="en" hreflang="en">EN</a>
+      </p>
+
+      <button class="burger" type="button" aria-expanded="false" aria-controls="meniu">
+        <span class="visually-hidden">Meniu</span>
+        <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" aria-hidden="true">
+          <path d="M3.5 7h17" />
+          <path d="M3.5 12h17" />
+          <path d="M3.5 17h17" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="drawer" id="meniu" inert>
+    <div class="drawer__scrim" data-drawer-close></div>
+    <nav class="drawer__panel" aria-label="Meniu">
+      <img class="drawer__leaf" src="/img/leaf-480.webp" width="480" height="480" alt="" aria-hidden="true"
+           loading="lazy" decoding="async">
+      <div class="drawer__top">
+        <img class="drawer__mark" src="/img/logo-160.webp?v=20260822-logo-1" srcset="/img/logo-160.webp?v=20260822-logo-1 160w, /img/logo-320.webp?v=20260822-logo-1 320w"
+             sizes="44px" width="320" height="320" alt="" loading="lazy">
+        <button class="drawer__close" type="button" data-drawer-close>
+          <span class="visually-hidden">Închide meniul</span>
+          <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12" />
+            <path d="M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+      <ul class="drawer__list">
+        <li><a class="drawer__link" href="/#acasa">Acasă</a></li>
+        <li><a class="drawer__link" href="/despre">Despre</a></li>
+        <li><a class="drawer__link" href="/contact">Contact</a></li>
+      </ul>
+      <p class="drawer__lang">
+        <span class="visually-hidden">Limba paginii:</span>
+        <span class="drawer__lang-now is-lang-here">RO</span>
+        <a class="drawer__lang-soon is-lang-away" href="/en/" lang="en" hreflang="en">EN</a>
+      </p>
+    </nav>
+  </div>
+
+  <main id="main" class="lost">
+    <div class="lost__inner">
+
+      <!-- Numărul e decor: cifrele stau în aria-hidden ca cititorul de ecran să
+           audă titlul, nu „patru sute patru". -->
+      <p class="lost__code" aria-hidden="true">404</p>
+
+      <h1 class="lost__title">Pagina asta nu există</h1>
+      <p class="lost__text">Poate adresa are o literă în plus, poate pagina s-a mutat. Livada e tot acolo unde ai lăsat-o.</p>
+      <p class="lost__text lost__text--en" lang="en">This page does not exist. The address may have a typo, or the page may have moved.</p>
+
+      <p class="lost__actions">
+        <a class="btn btn--ink" href="/">Înapoi la prima pagină</a>
+        <a class="lost__link" href="/contact">Scrie-ne</a>
+      </p>
+
+      <img class="lost__leaf" src="/img/leaf-480.webp" width="480" height="480" alt="" aria-hidden="true"
+           loading="lazy" decoding="async">
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <img class="site-footer__leaf site-footer__leaf--top" src="/img/top-leaf-branch-1024.webp"
+         srcset="/img/top-leaf-branch-640.webp 640w, /img/top-leaf-branch-1024.webp 1024w"
+         sizes="(min-width: 85em) 40vw, 30vw" width="1024" height="768" alt="" aria-hidden="true"
+         loading="lazy" decoding="async">
+    <img class="site-footer__leaf site-footer__leaf--bottom" src="/img/bottom-leaf-branch-1024.webp"
+         srcset="/img/bottom-leaf-branch-640.webp 640w, /img/bottom-leaf-branch-1024.webp 1024w"
+         sizes="(min-width: 85em) 40vw, 26vw" width="1024" height="768" alt="" aria-hidden="true"
+         loading="lazy" decoding="async">
+
+    <div class="site-footer__inner">
+      <div class="site-footer__lead">
+        <img class="site-footer__mark" src="/img/logo-160.webp?v=20260822-logo-1" width="320" height="320" alt="" loading="lazy">
+        <p class="site-footer__name">Ferma Fruct Brabova</p>
+      </div>
+      <nav class="site-footer__nav" aria-label="Navigare în subsol">
+        <h2 class="site-footer__heading">Navigare</h2>
+        <ul class="site-footer__links">
+          <li><a class="site-footer__nav-link" href="/#acasa">Acasă</a></li>
+          <li><a class="site-footer__nav-link" href="/despre">Despre</a></li>
+          <li><a class="site-footer__nav-link" href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__base">
+      <p class="site-footer__legal">
+        <a class="site-footer__legal-link" href="/politica-de-confidentialitate">Politica de confidențialitate</a>
+        <span aria-hidden="true"> · </span>
+        <span>&copy; 2026 Ferma Fruct Brabova. Toate drepturile rezervate.</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="/js/gsap.min.js"></script>
+  <script src="/js/main.js?v=20260825-en-1"></script>
+</body>
+
+</html>

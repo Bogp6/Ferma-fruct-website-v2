@@ -1,0 +1,122 @@
+/* ===========================================================================
+   404.css — numai pentru 404.html.
+
+   Fișier separat, ca celelalte pagini să nu-și schimbe ?v= din cauza unei
+   pagini pe care aproape nimeni n-o vede.
+
+   Pagina se arată la orice adresă greșită, inclusiv sub /en/, deci nu se
+   sprijină pe nimic din ce e specific unei pagini anume.
+   =========================================================================== */
+
+/* .page-inner trăiește în contact.css și despre.css, pe care pagina asta nu
+   le încarcă. Fără --header-h, antetul fix ar sta peste titlu; fără --p,
+   main.js n-ar avea de unde umple bara verde din antet. */
+.page-inner {
+    --p: 1;
+    --header-h: calc(3rem + var(--space-xs) * 2);
+
+    background-color: var(--paper);
+}
+
+
+.lost {
+    /* Antetul e fixed și nu ocupă loc în flux. */
+    padding-block-start: calc(var(--header-h) + var(--space-2xl));
+    padding-block-end: var(--space-section);
+    padding-inline: var(--gutter);
+    /* Frunza iese dinadins din bloc. */
+    overflow: clip;
+    background-color: var(--paper);
+}
+
+.lost__inner {
+    position: relative;
+    max-width: var(--container-narrow);
+    margin-inline: auto;
+}
+
+/* Cifrele stau în spatele titlului ca un filigran, nu deasupra lui: e decor,
+   nu informație. Culoarea e nisipul, la un pas de hârtie — mai închis ar
+   concura cu titlul. */
+.lost__code {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 var(--space-xs);
+    color: var(--sand);
+    font-family: var(--font-display);
+    font-variation-settings: var(--axes-display);
+    font-weight: var(--weight-display);
+    font-size: var(--step-5);
+    /* Sub 1: cifrele n-au coborâtoare, iar interlinia normală ar lăsa sub ele
+       un gol care nu se vede în text, dar se vede aici. */
+    line-height: 0.82;
+    letter-spacing: var(--tracking-tight);
+}
+
+.lost__title {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    max-width: 16ch;
+    color: var(--forest);
+    font-family: var(--font-display);
+    font-variation-settings: var(--axes-display);
+    font-weight: var(--weight-display);
+    font-size: var(--step-4);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+}
+
+.lost__text {
+    position: relative;
+    z-index: 1;
+    margin: var(--space-m) 0 0;
+    max-width: 46ch;
+    color: var(--ink-soft);
+    font-size: var(--step-1);
+    line-height: var(--leading-body);
+}
+
+/* Rândul englezesc e al doilea gând, nu al doilea titlu. */
+.lost__text--en {
+    margin-block-start: var(--space-xs);
+    font-size: var(--step-0);
+}
+
+.lost__actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-m) var(--space-l);
+    margin: var(--space-xl) 0 0;
+}
+
+.lost__link {
+    color: var(--action-ink);
+    font-weight: var(--weight-mid);
+    text-decoration: none;
+    text-underline-offset: 0.25em;
+    transition: color var(--duration) var(--ease);
+}
+
+.lost__link:hover,
+.lost__link:focus-visible {
+    color: var(--action-hot);
+    text-decoration: underline;
+}
+
+/* Fără mix-blend-mode: e un singur desen, dar tot nu merită hârtia pe care
+   ar trebui s-o citească la fiecare cadru. Opacitatea face aceeași treabă. */
+.lost__leaf {
+    position: absolute;
+    z-index: 0;
+    inset-block-start: -12%;
+    inset-inline-end: -18%;
+    width: min(26rem, 48vw);
+    height: auto;
+    opacity: 0.5;
+    pointer-events: none;
+    transform: rotate(14deg);
+}

@@ -1,0 +1,23 @@
+# Anteturi trimise de Cloudflare Pages. Fișierul nu are extensie și stă în
+# rădăcină; Pages îl citește singur, nu se leagă de nicăieri.
+#
+# Cloudflare pune deja de la el x-content-type-options: nosniff și
+# referrer-policy: strict-origin-when-cross-origin, deci nu se repetă aici.
+#
+# Nu există Content-Security-Policy: paginile au <style> în cap, atribute
+# style= și un <script> scurt inline, deci o politică strictă ar cere hash
+# pentru fiecare și s-ar rupe în tăcere la prima modificare de pagină.
+
+/*
+  # Nimeni nu are voie să pună site-ul într-un iframe pe alt domeniu.
+  X-Frame-Options: SAMEORIGIN
+  # Site-ul nu cere niciodată cameră, microfon sau poziție.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+# Fonturile nu se schimbă niciodată sub același nume: se pot ține un an.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Pozele și clipurile la fel: o poză nouă primește nume nou.
+/img/*
+  Cache-Control: public, max-age=31536000, immutable

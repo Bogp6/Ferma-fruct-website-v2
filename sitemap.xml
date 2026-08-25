@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Adresele sunt cele pe care le servește Cloudflare Pages, fără .html:
+     varianta cu .html răspunde 308 către asta, iar în sitemap n-are ce căuta
+     o adresă care redirecționează. Perechile de limbă sunt aceleași ca
+     <link rel="alternate"> din capul fiecărei pagini. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://fermafructbrabova.ro/</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/"/>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/despre</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/despre"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/despre"/>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/contact"/>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/politica-de-confidentialitate</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/"/>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/en/about</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/despre"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/despre"/>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/en/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/contact"/>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://fermafructbrabova.ro/en/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
