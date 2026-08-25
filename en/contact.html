@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport-fit=cover: fără el env(safe-area-inset-*) e 0, marginea nu ocolește crestătura în peisaj. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- Scoate .no-js înainte de prima pictare, altfel bara de meniu clipește. -->
+  <script>document.documentElement.classList.remove('no-js');</script>
+
+  <title>Contact — Ferma Fruct Brabova</title>
+  <meta name="description" content="Write to us or call: contact form, a map of the orchard and the route to Ferma Fruct Brabova, Dolj county, Romania.">
+
+  <link rel="canonical" href="https://fermafructbrabova.ro/en/contact.html">
+
+  <!-- contact.css vine ULTIMUL; CSS de contact nu se scrie în style.css. -->
+  <link rel="stylesheet" href="../css/normalize.css">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/style.css?v=20260825-en-1">
+  <link rel="stylesheet" href="../css/contact.css?v=20260824-road-motion-2">
+
+  <!-- Doar setul latin; latin-ext (ș, ț) vine mai târziu via unicode-range. -->
+  <link rel="preload" href="../fonts/fraunces-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Open Graph: cum arată linkul când e distribuit pe Facebook sau WhatsApp -->
+  <meta property="og:site_name" content="Ferma Fruct Brabova">
+  <meta property="og:title" content="Contact — Ferma Fruct Brabova">
+  <meta property="og:description" content="The road to the orchard starts here. Write to us or call for anything you need to know.">
+  <meta property="og:image" content="https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp">
+  <!-- Lățimea și înălțimea scutesc Facebook de o primă preluare a imaginii; fără ele prima distribuire apare fără poză. -->
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ferma Fruct Brabova’s orchard from above: rows of young trees and the dirt road that separates them.">
+  <meta property="og:url" content="https://fermafructbrabova.ro/en/contact.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:locale:alternate" content="ro_RO">
+
+  <!-- Perechea de limbi a ACESTEI pagini, nu a site-ului: fiecare pagină își
+       arată propriul echivalent. x-default e româna, limba fermei. -->
+  <link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/contact.html">
+  <link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/contact.html">
+  <link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/contact.html">
+
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" sizes="512x512" href="../favicon.png">
+  <link rel="shortcut icon" href="../favicon.ico">
+  <meta name="theme-color" content="#3E6027">
+
+  <!-- Datele fermei. Strada lipsește din tot fișierul fiindcă ferma nu a dat-o
+       încă: un câmp lipsă e corect, unul ghicit nu. Telefonul e în format
+       internațional, cerut de schema.org. Coordonatele sunt aceleași cu harta
+       din en/contact.html; dacă se schimbă una, se schimbă amândouă. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Farm",
+      "@id": "https://fermafructbrabova.ro/#ferma",
+      "name": "Ferma Fruct Brabova",
+      "url": "https://fermafructbrabova.ro/",
+      "logo": "https://fermafructbrabova.ro/img/logo-320.webp",
+      "image": "https://fermafructbrabova.ro/img/og-ferma-fruct-1200.webp",
+      "description": "An orchard of cherries, pears, plums and apricots at Brabova, in Dolj county, Romania.",
+      "telephone": "+40745051892",
+      "email": "agroftech@gmail.com",
+      "sameAs": [
+        "https://www.facebook.com/ferma.fruct"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Brabova",
+        "addressRegion": "Dolj",
+        "addressCountry": "RO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.375004,
+        "longitude": 23.457348
+      },
+      "hasMap": "https://www.google.com/maps?q=44.375004,23.457348",
+      "areaServed": "Romania"
+    }
+  </script>
+</head>
+
+<!-- .page-inner: pagină fără hero. Fără ea, --p rămâne 0 (main.js îl publică
+     numai când există .hero) și antetul e text crem pe hârtie cremă. -->
+<body class="page-inner">
+
+  <!-- DIRECTION CONTRACT — nu șterge. Vezi index.html pentru contractul întreg.
+       CONȚINUT DE SCRIS: numai strada exactă mai lipsește — vezi „Still open"
+       în DESIGN.md. Telefonul, e-mailul, harta și adresa serviciului de
+       formulare sunt cele reale ale fermei. -->
+
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+
+      <a class="brand" href="index.html" aria-label="Ferma Fruct Brabova, home page">
+        <img class="brand__mark" src="../img/logo-160.webp?v=20260822-logo-1" srcset="../img/logo-160.webp?v=20260822-logo-1 160w, ../img/logo-320.webp?v=20260822-logo-1 320w"
+             sizes="48px" width="320" height="320" alt="" loading="eager">
+        <span class="brand__word" aria-hidden="true">Ferma Fruct</span>
+      </a>
+
+      <!-- Linkuri absolute la fișier (index.html#...): secțiunile alea nu există aici. -->
+      <nav class="nav" aria-label="Main navigation">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html#acasa">Home</a></li>
+          <li><a class="nav__link" href="about.html">About</a></li>
+          <li><a class="nav__link" href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Limba curentă e <span>, cealaltă e <a>: pagina nu se leagă de ea
+           însăși. Linkul duce la pagina pereche, nu la prima pagină engleză. -->
+      <p class="lang">
+        <span class="visually-hidden">Page language:</span>
+        <a class="lang__current is-lang-away" href="../contact.html" lang="ro" hreflang="ro">RO</a>
+        <span class="lang__soon is-lang-here">EN</span>
+      </p>
+
+      <!-- aria-expanded scris în HTML, nu adăugat de JS, ca să existe de la prima pictare. -->
+      <button class="burger" type="button" aria-expanded="false" aria-controls="meniu">
+        <span class="visually-hidden">Menu</span>
+        <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" aria-hidden="true">
+          <path d="M3.5 7h17" />
+          <path d="M3.5 12h17" />
+          <path d="M3.5 17h17" />
+        </svg>
+      </button>
+
+    </div>
+  </header>
+
+  <!-- MENIUL LATERAL — frate al antetului, nu copil: ca fiu ar moșteni
+       stivuirea lui și ar rămâne sub bandă. main.js îi pune inert când e închis. -->
+  <div class="drawer" id="meniu" inert>
+
+    <div class="drawer__scrim" data-drawer-close></div>
+
+    <nav class="drawer__panel" aria-label="Menu">
+
+      <img class="drawer__leaf" src="../img/leaf-480.webp" width="480" height="480" alt="" aria-hidden="true"
+           loading="lazy" decoding="async">
+
+      <div class="drawer__top">
+        <img class="drawer__mark" src="../img/logo-160.webp?v=20260822-logo-1" srcset="../img/logo-160.webp?v=20260822-logo-1 160w, ../img/logo-320.webp?v=20260822-logo-1 320w"
+             sizes="44px" width="320" height="320" alt="" loading="lazy">
+
+        <button class="drawer__close" type="button" data-drawer-close>
+          <span class="visually-hidden">Close the menu</span>
+          <svg class="burger__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+               stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12" />
+            <path d="M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+
+      <ul class="drawer__list">
+        <li><a class="drawer__link" href="index.html#acasa">Home</a></li>
+        <li><a class="drawer__link" href="about.html">About</a></li>
+        <li><a class="drawer__link" href="contact.html" aria-current="page">Contact</a></li>
+      </ul>
+
+      <p class="drawer__lang">
+        <span class="visually-hidden">Page language:</span>
+        <a class="drawer__lang-now is-lang-away" href="../contact.html" lang="ro" hreflang="ro">RO</a>
+        <span class="drawer__lang-soon is-lang-here">EN</span>
+      </p>
+
+    </nav>
+  </div>
+
+  <main id="main" class="contact">
+
+    <!-- 1. REACH — titlul paginii, datele de contact, fotografia.
+         href="tel:" poartă numărul în format internațional (+40, fără primul
+         zero), altfel apelul pică de pe o cartelă străină; textul rămâne cel
+         local. .line__value e stilizat și ca <span>, și ca <a>. -->
+    <section class="reach">
+      <div class="reach__inner">
+
+        <div class="reach__tell">
+
+          <p class="reach__eyebrow">Contact</p>
+
+          <h1 class="reach__title">The road to the orchard starts here.</h1>
+
+          <!-- Cratimele sunt U+2011 (nu rup rândul); cu cratima obișnuită
+               rândul s-ar tăia și s-ar citi ca despărțire în silabe greșită. -->
+          <p class="reach__lead">For anything else,
+            write to us or give us a call.</p>
+
+          <!-- Sigle desenate de mână, grosime de linie 1.5 ca la butonul de meniu. -->
+          <ul class="reach__lines">
+
+            <li class="line">
+              <span class="line__mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M6.4 3.6h3l1.5 4-2.1 1.5a12.4 12.4 0 0 0 6.1 6.1l1.5-2.1 4 1.5v3a2 2 0 0 1-2.2 2A16.6 16.6 0 0 1 4.6 5.8a2 2 0 0 1 1.8-2.2z"/>
+                </svg>
+              </span>
+              <span class="line__body">
+                <span class="line__label">Call us</span>
+                <a class="line__value" href="tel:+40745051892">0745 051 892</a>
+              </span>
+            </li>
+
+            <li class="line">
+              <span class="line__mark">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <rect x="3.2" y="5.4" width="17.6" height="13.2" rx="2.2"/>
+                  <path d="M3.9 7.4 12 13.1l8.1-5.7"/>
+                </svg>
+              </span>
+              <span class="line__body">
+                <span class="line__label">E-mail</span>
+                <a class="line__value" href="mailto:agroftech@gmail.com">agroftech@gmail.com</a>
+              </span>
+            </li>
+
+          </ul>
+        </div>
+
+        <!-- Marginea negativă e --bleed: distanța până la marginea geamului.
+             Sursa e 960x540 (16:9), iar cutia e 8:5 — object-fit taie ~10%
+             stânga-dreapta; masca (blob-f1) e tot 8:5, deci nu se regenerează
+             nimic. Peste ~900px de cutie fotografia rămâne sub 2x: trebuie un
+             cadru mai mare de la fermă. -->
+        <figure class="reach__frame">
+          <img class="reach__photo" src="../img/tractor-contact-960.webp"
+               srcset="../img/tractor-contact-720.webp 720w, ../img/tractor-contact-960.webp 960w"
+               sizes="(min-width: 80em) 58rem, (min-width: 48em) 42rem, 95vw" width="960" height="540"
+               alt="The farm’s green tractor at rest on ploughed ground between the young rows of trees."
+               fetchpriority="high" decoding="async">
+        </figure>
+
+      </div>
+    </section>
+
+
+    <!-- 2. MEET — formularul și harta, unul lângă altul.
+
+         Formularul postează la Web3Forms: Cloudflare Pages nu rulează cod pe
+         server, deci nu are unde să ajungă altundeva. Cheia (access_key) e
+         publică prin construcție — ea spune serviciului către ce cutie poștală
+         să trimită, nu deschide nimic.
+
+         Trimiterea o face contact.js prin fetch, ca omul să rămână pe pagină.
+         Fără script, formularul postează normal și browserul ajunge pe pagina
+         de confirmare a serviciului: mai urât, dar mesajul tot pleacă — de
+         aceea action= și method= sunt scrise aici, nu puse din JS. -->
+    <section class="meet">
+      <div class="meet__inner">
+
+        <div class="write">
+          <h2 class="write__title">Leave us a message</h2>
+          <p class="write__lead">Fill in your details and we will come back to you.</p>
+
+          <form class="form" method="post" action="https://api.web3forms.com/submit">
+
+            <!-- Cele trei câmpuri ale serviciului. access_key spune unde ajunge
+                 mesajul; from_name e numele expeditorului din inbox-ul fermei;
+                 botcheck e capcana pentru roboți — un robot bifează tot ce
+                 găsește în formular, iar serviciul aruncă trimiterea dacă vine
+                 bifată. Rămâne ascunsă din CSS, nu din atributul hidden: un
+                 input hidden n-ar fi bifabil, deci n-ar prinde nimic. -->
+            <input type="hidden" name="access_key" value="2c642312-de90-4ac6-84e6-ede4f378c489">
+            <input type="hidden" name="from_name" value="Formular — fermafructbrabova.ro/en">
+            <input class="form__trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <!-- Se rup singure când nu mai încap (flex-wrap), fără media query. -->
+            <div class="form__pair">
+              <div class="field">
+                <label class="field__label" for="nume">Name</label>
+                <input class="field__input" id="nume" name="name" type="text"
+                       autocomplete="name" required>
+              </div>
+
+              <!-- Un singur câmp pentru amândouă, deci NU se cheamă „email":
+                   serviciul folosește câmpul „email" ca adresă de răspuns și
+                   refuză trimiterea când găsește un număr de telefon în el. -->
+              <div class="field">
+                <label class="field__label" for="legatura">E-mail</label>
+                <input class="field__input" id="legatura" name="Telefon sau e-mail" type="text"
+                       autocomplete="email" required>
+              </div>
+            </div>
+
+            <!-- „subject" e și linia de subiect a e-mailului care ajunge la
+                 fermă. Lăsat gol, contact.js îi pune „Mesaj de pe site". -->
+            <div class="field">
+              <label class="field__label" for="subiect">Subject</label>
+              <input class="field__input" id="subiect" name="subject" type="text"
+                     placeholder="What it is about">
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="mesaj">Message</label>
+              <textarea class="field__input field__input--area" id="mesaj" name="message"
+                        rows="6" required></textarea>
+            </div>
+
+            <div class="form__consent">
+              <input class="form__consent-check" id="acord-confidentialitate" name="privacy_consent"
+                     type="checkbox" value="Da" required>
+              <label class="form__consent-label" for="acord-confidentialitate">
+                I have read the <a href="privacy-policy.html">privacy policy</a>
+                and I agree to my data being processed so that you can reply to my message.
+              </label>
+            </div>
+
+            <!-- Varianta pe hârtie a butonului din hero: brun în repaus pentru contrast. -->
+            <button class="btn btn--ink" type="submit">Send the message</button>
+
+            <!-- Gol în repaus și fără înălțime proprie, ca butonul să nu se
+                 miște când apare răspunsul. role="status" îl citește cititorul
+                 de ecran fără să întrerupă ce spunea. -->
+            <p class="form__status" role="status" aria-live="polite"></p>
+
+          </form>
+        </div>
+
+        <div class="place">
+          <h2 class="place__title">Where to find us</h2>
+
+          <!-- Interogarea conține numai coordonatele: linkul lung Google avea
+               și identificatorul localității, iar Maps alegea localitatea în
+               locul pinului pus manual. -->
+          <div class="place__map">
+            <iframe
+              src="https://www.google.com/maps?q=44.375004%2C23.457348&amp;z=18&amp;output=embed"
+              width="600" height="450" style="border:0;" allowfullscreen
+              loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+              title="Map of the farm at 44.375004, 23.457348"></iframe>
+          </div>
+
+          <p class="place__where">
+            <svg class="place__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M12 21.2s6.9-6.3 6.9-11.1a6.9 6.9 0 1 0-13.8 0c0 4.8 6.9 11.1 6.9 11.1z"/>
+              <circle cx="12" cy="9.8" r="2.6"/>
+            </svg>
+            Brabova, Dolj
+          </p>
+
+          <!-- Aceleași coordonate ca harta de mai sus. -->
+          <a class="place__route"
+             href="https://www.google.com/maps/dir/?api=1&amp;destination=44.375004%2C23.457348"
+             target="_blank" rel="noopener noreferrer">
+            Open directions
+            <span class="visually-hidden">(opens in a new tab)</span>
+            <svg class="place__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M4 12h15"/>
+              <path d="m13.2 6 6 6-6 6"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- DESENELE DE FUNDAL — multiply pe fundal crem, sub text (z-index: -1).
+         Nu pune z-index, opacity sau transform pe secțiunile care le găzduiesc:
+         oricare dintre ele face context de stivuire și desenul rămâne alb. -->
+    <img class="motif motif--branch-left" src="../img/branch-1024.webp" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--branch-right" src="../img/branch-1024.webp" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+    <!-- Frunzele cresc DIN drum: prinse cu codița de linie, poziția vine din
+         aceleași coordonate ca „d" — vezi contact.css secțiunea 7. Un singur
+         măr, la capătul drumului lângă punctul portocaliu. -->
+    <img class="motif motif--road motif--road-leaf-a" src="../img/leaf-480.webp" width="480" height="480"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-b" src="../img/leaf-480.webp" width="480" height="480"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-c" src="../img/leaf-480.webp" width="480" height="480"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-d" src="../img/leaf-480.webp" width="480" height="480"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-leaf-e" src="../img/leaf-480.webp" width="480" height="480"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <img class="motif motif--road motif--road-apple" src="../img/apple-480.webp" width="480" height="480"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+    <!-- DRUMUL — linia care coboară de sub fotografie până lângă buton.
+         SVG întins cu preserveAspectRatio="none", deci coordonatele viewBox
+         sunt procente din pagină (500 = jumătate orizontal, 936 = 93,6%
+         vertical); se întinde singur fără JavaScript.
+         vector-effect="non-scaling-stroke": fără el, întinderea neuniformă ar
+         face linia groasă pe verticală și subțire pe orizontală.
+         Desenarea la intrare e clip-path pe <svg>, nu stroke-dasharray —
+         motivul e în contact.css secțiunea 8.
+         Punctul portocaliu e element separat: în SVG-ul întins ar ieși oval. -->
+    <svg class="road" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="road__line" fill="none"
+            d="M392 316 C400 392 454 436 470 494 C488 556 416 592 424 652 C432 716 496 738 500 802 C504 860 476 892 500 936" />
+    </svg>
+    <span class="road__stop" aria-hidden="true"></span>
+
+  </main>
+
+  <!-- SUBSOL — copie a celui din index.html. Orice modificare se face în
+       AMBELE fișiere; nu există include, e HTML scris de mână. -->
+  <footer class="site-footer">
+
+    <!-- Decorative (alt gol, aria-hidden). Copii direct ai subsolului, nu ai __inner, altfel ar intra în reveal-ul din main.js și ar sări la derulare. -->
+    <img class="site-footer__leaf site-footer__leaf--top"
+         src="../img/top-leaf-branch-1024.webp"
+         srcset="../img/top-leaf-branch-640.webp 640w, ../img/top-leaf-branch-1024.webp 1024w"
+         sizes="(min-width: 85em) 40vw, 30vw" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+    <img class="site-footer__leaf site-footer__leaf--bottom"
+         src="../img/bottom-leaf-branch-1024.webp"
+         srcset="../img/bottom-leaf-branch-640.webp 640w, ../img/bottom-leaf-branch-1024.webp 1024w"
+         sizes="(min-width: 85em) 40vw, 26vw" width="1024" height="768"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+
+    <div class="site-footer__inner">
+
+      <div class="site-footer__lead">
+        <img class="site-footer__mark" src="../img/logo-160.webp?v=20260822-logo-1" width="320" height="320" alt="" loading="lazy">
+        <p class="site-footer__name">Ferma Fruct Brabova</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <h2 class="site-footer__heading">Navigation</h2>
+        <ul class="site-footer__links">
+          <li><a class="site-footer__nav-link" href="index.html#acasa">Home</a></li>
+          <li><a class="site-footer__nav-link" href="about.html">About</a></li>
+          <li><a class="site-footer__nav-link" href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <!-- SVG inline ca fill/stroke să primească currentColor. Albul din siglă
+         e var(--knockout). Nu înlocui cu mask-image: siglele nu se văd în Firefox. -->
+    <div class="partners">
+      <h2 class="partners__label">You will find our fruit at</h2>
+
+      <ul class="partners__list">
+        <li class="partners__item">
+          <svg class="partners__logo" viewBox="0 0 192.756 192.756" role="img" aria-label="Carrefour" focusable="false">
+            <g fill-rule="evenodd" clip-rule="evenodd"><path d="M64.926 33.533S50.69 48.431 50.69 77.235s12.581 47.343 12.581 47.343L17.25 77.897l47.676-44.364z" fill="currentColor"/><path d="M72.541 78.559c1.282-29.769 8.394-48.683 26.586-47.899C117.318 31.444 120 46.14 120 46.14s-13.189-1.562-13.801 12.661c-.613 14.223 13.279 14.821 13.609 14.835s13.176-1.103 16.299-10.969c4.197-13.263-5.297-27.811-5.297-27.811l45.688 44.695-47.012 45.358s5.959-11.258 4.635-27.148c-.859-10.313-14.236-12.25-14.568-12.25-.33 0-14.236 0-14.236 14.236s13.244 13.242 13.244 13.242-3.311 14.568-21.52 14.568c-18.21.002-24.5-19.202-24.5-48.998zM18.277 149.707c1.689-2.584 4.669-3.941 7.748-3.941 2.251 0 4.139.695 5.662 2.352l.066-.066c-.166-1.258.728-2.152 2.052-2.152 1.259 0 2.12.861 2.12 2.119 0 1.125-.265 2.219-.265 3.344 0 .895.265 1.787.265 2.682 0 1.523-1.424 2.285-2.782 2.285-1.788 0-2.582-.828-2.516-2.615.034-.961.034-1.424-.596-2.186-.695-.828-1.788-1.027-2.814-1.027-3.079 0-4.602 1.955-4.602 7.352 0 5.064 1.523 7.152 4.768 7.152.894 0 1.887-.133 2.549-.762.794-.729.828-1.457.828-2.451 0-.762 0-1.357.43-2.02.431-.662 1.225-.928 2.02-.928 2.152 0 3.112 1.557 3.112 3.543 0 5-4.734 7.318-9.171 7.318-3.013 0-5.927-.861-8.046-3.146-1.986-2.152-2.848-5.76-2.848-8.641 0-2.616.564-5.995 2.02-8.212zM44.596 156.096c0 1.523-1.457 2.219-2.847 2.219-1.623 0-3.046-1.158-3.046-2.848 0-2.086 2.119-3.973 7.218-3.973 1.655 0 3.907.166 5.364.994 1.754.992 2.119 2.582 2.119 5.098v6.225c0 1.291.199 1.557.563 1.557.265 0 .53-.066.795-.066 1.06 0 1.655.895 1.655 1.854 0 1.855-1.854 2.551-3.411 2.551-1.522 0-3.211-.562-3.773-2.119-1.557 1.49-3.577 2.119-5.663 2.119-3.013 0-5.893-1.59-5.893-4.967 0-7.848 10.264-3.775 10.264-8.145 0-1.26-1.159-1.855-2.251-1.855-.563 0-1.093.1-1.093.762v.594h-.001zm3.344 5.595c-.96 1.027-4.801.529-4.801 2.285 0 1.158.927 1.557 1.887 1.557 1.954 0 2.914-1.16 2.914-3.113v-.729zM64.356 155.898h.066c.53-2.715 2.55-4.238 5.331-4.238 2.317 0 4.37 1.754 4.37 4.139 0 1.688-1.06 3.244-2.847 3.244-1.258 0-2.318-.828-2.318-2.152 0-.463.199-.895.397-1.291-3.708-.266-3.808 4.768-3.808 7.416 0 1.955.198 2.318.596 2.318.166 0 .331-.066.497-.133.198-.066.397-.1.596-.1 1.093 0 1.457.895 1.457 1.889 0 1.258-.563 2.283-1.655 2.283-1.788 0-3.112-.33-4.47-.33-1.258 0-2.516.33-3.708.33-1.092 0-1.655-1.025-1.655-2.283 0-.994.364-1.889 1.457-1.889.231 0 .397.066.596.1.166.033.331.133.497.133.397 0 .596-.33.596-2.318v-4.768c0-2.053-.166-2.316-.596-2.316-.331 0-.663.23-1.093.23-1.093 0-1.457-.895-1.457-1.887 0-1.258.563-2.285 1.655-2.285.96 0 1.623.332 2.285.332.728 0 1.423-.332 2.185-.332.729 0 1.026.232 1.026 1.424v2.484z" fill="currentColor"/><path d="M80.572 155.898h.066c.529-2.715 2.549-4.238 5.331-4.238 2.317 0 4.371 1.754 4.371 4.139 0 1.688-1.06 3.244-2.848 3.244-1.259 0-2.318-.828-2.318-2.152 0-.463.199-.895.397-1.291-3.708-.266-3.808 4.768-3.808 7.416 0 1.955.199 2.318.596 2.318.165 0 .331-.066.496-.133.199-.066.397-.1.597-.1 1.092 0 1.457.895 1.457 1.889 0 1.258-.563 2.283-1.656 2.283-1.788 0-3.112-.33-4.47-.33-1.258 0-2.517.33-3.708.33-1.092 0-1.655-1.025-1.655-2.283 0-.994.364-1.889 1.457-1.889.232 0 .398.066.596.1.166.033.332.133.497.133.397 0 .596-.33.596-2.318v-4.768c0-2.053-.166-2.316-.596-2.316-.331 0-.662.23-1.093.23-1.092 0-1.457-.895-1.457-1.887 0-1.258.563-2.285 1.655-2.285.96 0 1.623.332 2.285.332.729 0 1.424-.332 2.186-.332.729 0 1.026.232 1.026 1.424v2.484zM96.397 161.527c-.86 0-.96.131-.96.693 0 1.889 1.49 3.312 3.411 3.312 1.158 0 1.756-.299 2.682-1.291 1.061-1.127 1.424-1.326 2.516-1.326 1.293 0 2.285.762 2.285 2.088 0 2.516-3.244 4.701-7.549 4.701-5.43 0-8.807-3.643-8.807-9.006 0-5.232 3.245-9.205 8.674-9.205 5.1 0 7.98 3.047 7.98 7.947 0 1.521-.199 2.086-2.186 2.086h-8.046v.001zm3.941-3.675c.762 0 .828-.199.828-.562 0-.895-.828-2.053-2.484-2.053-1.688 0-3.079 1.291-3.079 2.152 0 .43.43.463 1.391.463h3.344zM110.66 156.957c0-1.291-.1-1.291-1.125-1.291-1.293 0-2.02-.299-2.02-1.754 0-1.357.496-1.955 1.854-1.955 1.258 0 1.291-.131 1.324-1.092.133-3.609 3.244-5.1 6.523-5.1 1.092 0 2.449.199 3.41.695 1.125.596 1.986 1.656 1.986 2.947 0 1.457-.994 2.582-2.484 2.582-1.092 0-2.25-.762-2.25-1.953 0-.363.1-.562.297-.895-.23-.1-.396-.133-.662-.133-1.225 0-1.654.729-1.654 1.889 0 1.059.066 1.059 1.125 1.059 1.986 0 2.352.531 2.352 1.789 0 1.521-.432 1.92-2.781 1.92-.598 0-.695.396-.695 1.291v6.059c0 1.988.131 2.318.596 2.318.199 0 .363-.066.529-.133.166-.033.365-.1.562-.1 1.094 0 1.457.895 1.457 1.889 0 1.258-.562 2.283-1.953 2.283-1.424 0-2.748-.33-4.105-.33-1.258 0-2.518.297-3.609.33-1.258 0-1.82-1.025-1.82-2.283 0-.994.363-1.889 1.457-1.889.23 0 .43.066.596.1.197.066.363.133.496.133.529 0 .596-.695.596-2.318v-6.058h-.002z" fill="currentColor"/><path d="M137.186 160.4c0 5.496-2.781 9.305-8.574 9.305-5.762 0-8.842-3.443-8.842-9.105 0-5.629 3.08-9.105 8.809-9.105 5.429-.001 8.607 3.575 8.607 8.905zm-11.952.2c0 3.84 1.721 4.934 3.078 4.934 1.16 0 2.152-.332 2.682-1.424.496-1.027.729-2.385.729-3.51 0-3.842-1.457-4.934-3.244-4.934-1.557 0-3.245 1.225-3.245 4.934zM144.795 161.725c0 .695 0 1.855.396 2.518a2.241 2.241 0 0 0 1.855 1.025 2.83 2.83 0 0 0 2.383-1.324c.695-1.059.762-2.186.762-3.41v-2.285c0-1.787-.133-2.316-.596-2.316-.166 0-.33.064-.496.1-.199.064-.365.131-.596.131-1.094 0-1.457-.895-1.457-1.887 0-1.258.562-2.285 2.02-2.285 1.092 0 1.82.332 2.914.332.893 0 1.521-.332 2.35-.332.861 0 1.061.365 1.061 1.094v9.932c0 1.988.23 2.318.596 2.318.33 0 .662-.232 1.092-.232 1.094 0 1.457.895 1.457 1.889 0 1.258-.562 2.283-1.953 2.283-.828 0-1.59-.33-2.352-.33-.729 0-1.457.33-2.086.33-.828 0-1.191-.562-1.191-1.092v-1.324h-.066c-1.225 1.82-3.609 2.848-5.826 2.848-3.412 0-5.463-1.986-5.463-5.332v-6.125c0-2.02-.232-2.316-.598-2.316-.166 0-.33.064-.496.1-.199.064-.363.131-.596.131-1.092 0-1.457-.895-1.457-1.887 0-1.258.562-2.285 2.119-2.285 1.059 0 1.92.332 3.014.332 1.025 0 1.521-.332 2.35-.332.861 0 .861.629.861 1.49v8.241h-.001z" fill="currentColor"/><path d="M165.318 155.898h.066c.529-2.715 2.549-4.238 5.33-4.238 2.318 0 4.371 1.754 4.371 4.139 0 1.688-1.059 3.244-2.848 3.244-1.258 0-2.316-.828-2.316-2.152 0-.463.197-.895.396-1.291-3.709-.266-3.809 4.768-3.809 7.416 0 1.955.199 2.318.598 2.318.164 0 .33-.066.496-.133.199-.066.396-.1.596-.1 1.092 0 1.457.895 1.457 1.889 0 1.258-.562 2.283-1.656 2.283-1.787 0-3.111-.33-4.469-.33-1.258 0-2.518.33-3.709.33-1.092 0-1.654-1.025-1.654-2.283 0-.994.363-1.889 1.457-1.889.23 0 .396.066.596.1.164.033.33.133.496.133.396 0 .596-.33.596-2.318v-4.768c0-2.053-.166-2.316-.596-2.316-.332 0-.662.23-1.092.23-1.094 0-1.457-.895-1.457-1.887 0-1.258.562-2.285 1.654-2.285.961 0 1.623.332 2.285.332.729 0 1.424-.332 2.186-.332.729 0 1.025.232 1.025 1.424v2.484h.001z" fill="currentColor"/></g>
+          </svg>
+        </li>
+        <li class="partners__item">
+          <svg class="partners__logo" viewBox="0 0 192.756 192.756" role="img" aria-label="Auchan" focusable="false">
+            <g fill-rule="evenodd" clip-rule="evenodd"><path d="M30.742 98.49l-16.15 47.006h40.002l11.371-36.27h24.696l10.892 36.27h73.07s-20.121-58.968-20.131-58.952c-3.66 7.075-10.688 17.559-25.492 24.614l-.891-2.82c5.49-2.604 20.863-11.016 27.043-31.397.602-2.233 3.361-13.726 3.705-15.444.344-1.717 1.418-5.75 4.768-8.112 4.104-2.999 7.551-.396 16.475-4.482.963-.354.955-.667-.004-1.024-2.469-.987-6.99-2.589-12.537-2.568-3.432.013-5.363-.792-8.354-3.739-1.467-1.448-4.83-8.826-17.863-8.826-1.875 0-3.889.07-5.48.388l-8.382-24.63H61.487L40.726 69.185l-28.642-.014c-.654 6.07 2.117 11.732 6.82 14.963-4.545 3.122-7.336 8.496-6.928 14.333l18.766.023zM174.188 176.451c0 4.033.197 7.369.197 7.369h-8.693l-.027-11.158c0-3.795-1.139-5.156-3.217-5.156-2.723 0-4.121 2.059-4.121 6.395l-.016 9.92h-8.535c.266-6.641.008-16.609-.203-22.756h7.711s.172.918.172 2.402l-.008.863c1.059-1.459 4.223-3.945 8.037-3.754 3.812.189 6.57 2.023 7.777 4.535.684 1.422.887 3.576.934 5.178l-.008 6.162zM64.824 180.939c-1.323 1.463-4.313 3.543-7.731 3.293-4.815-.355-8.609-2.512-8.609-9.631l.019-13.533h8.59l.005 11.16c0 3.795 1.035 5.154 3.115 5.154 2.722 0 4.037-2.486 4.037-6.395l.007-9.92h8.461c-.266 6.641-.008 16.609.204 22.756h-7.711c-.429-.702-.387-2.884-.387-2.884zM138.887 180.959c0 2.029.166 2.871.166 2.871h7.377s-.205-3.896-.209-11.469c0-.105.039-4.766-.57-6.09s-1.877-4.436-7.311-5.516-11.199.984-12.057 1.623v5.604s3.736-2.029 6.629-2.029c2.188 0 5.27.145 5.432 3.35 0 0-1.139-.041-2.787-.041-5.305 0-11.957 1.016-12.076 7.479-.092 5.057 4.359 7.408 8.268 7.297-.001-.001 4.487.237 7.138-3.079zM112.797 172.678c0-3.799-1.336-5.119-3.139-5.119-2.725 0-4.125 2.018-4.125 6.359l.016 9.902h-8.453l-.016-29.398h8.512l.027 8.949c1.422-1.26 3.982-2.928 7.096-2.771 3.809.191 8.684 1.951 8.684 10.162v13.059h-8.602v-11.143zM93.955 168.459c-3.071-2.471-10.508-2.215-10.508 3.699 0 6.59 8.056 6.406 11.104 4.162l.222 6.455c-4.326 2.242-19.95 3.008-19.95-10.494 0-13.51 15.405-12.818 19.707-10.238l-.575 6.416zM26.141 177.906l-2.178 5.989h-9.111l11.656-30.301h9.952l11.655 30.23h-9.603l-2.111-5.918h-10.26z" fill="currentColor"/><path d="M34.073 171.135l-2.758-8.67-2.819 8.681 5.577-.011zM118.602 111.711l9.121 30.113h8.033l-9.902-32.508c-1.909.834-4.563 1.717-7.252 2.395zM149.189 45.71l-6.723 3.322c-.709.34-1.029.028-.711-.691l3.115-6.683a6.903 6.903 0 0 0-9.011 6.574 6.904 6.904 0 1 0 13.33-2.522z" style="fill:var(--knockout)"/><path d="M133.012 32.213a.725.725 0 0 1 .854.554c.082.384-.186.757-.57.838-10.961 2.645-13.969 11.879-13.572 17.752.061.899.197 2.373.414 3.019-17.264 8.219-32.22 17.609-49.391 37.93l42.913-.016c-2.576 1.546-5.428 3.869-8.584 6.574l4.064 14.301 8.641 28.615-8.217-.057-12.33-40.389H47.338c1.718-4.059 4.63-8.01 7.122-10.372l-31.843.022c.399-3.622 3.349-6.741 7.79-6.741a.252.252 0 0 0 .255-.252.253.253 0 0 0-.251-.258c-4.287 0-7.209-2.769-7.762-6.595H77.07c10.478-9.791 26.247-19.106 36.224-23.624-.757-10.376 5.2-19.938 19.718-21.301z" style="fill:var(--knockout)"/><path d="M79.648 65.633l14.133-45.641 9.452 30.864c-.001 0-15.831 8.429-23.585 14.777zM131.613 176.523c-.176-3.189 6.002-2.77 6.787-2.486.036 5.402-6.591 6.025-6.787 2.486z" style="fill:var(--knockout)"/></g>
+          </svg>
+        </li>
+        <li class="partners__item">
+          <svg class="partners__logo" viewBox="0 0 403 485" role="img" aria-label="Big Family Market" focusable="false">
+            <defs>
+            <style>
+            .blue { fill: currentColor; }
+            .black { fill: currentColor; }
+            .orange { fill: currentColor; }
+            .heavy { font-family: Arial, Helvetica, sans-serif; font-weight: 900; }
+            .bold { font-family: Arial, Helvetica, sans-serif; font-weight: 800; }
+            </style>
+            </defs>
+            <circle cx="201.5" cy="188" r="155" fill="none" stroke="currentColor" stroke-width="3.5"/>
+            <circle cx="201.5" cy="188" r="170" fill="none" stroke-width="2.5" style="stroke:var(--knockout)"/>
+            <circle cx="201.5" cy="188" r="173.5" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="202" cy="83" r="30" class="orange"/>
+            <g transform="translate(176 60) scale(1.0)" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--knockout)">
+            <path d="M5 8 H14 L18 25 H39"/>
+            <path d="M16 12 H40 L36 24 H19"/>
+            <path d="M22 12 L24 24 M28 12 L29 24 M34 12 L33 24"/>
+            <path d="M18 16 H39 M19 20 H38"/>
+            <circle cx="22" cy="31" r="2.3" stroke="none" style="fill:var(--knockout)"/>
+            <circle cx="35" cy="31" r="2.3" stroke="none" style="fill:var(--knockout)"/>
+            </g>
+            <text x="82" y="176" class="blue heavy" font-size="81" letter-spacing="0">BIG</text>
+            <text x="110" y="231" class="black heavy" font-size="53" letter-spacing="0">FAMILY</text>
+            <text x="110" y="267" class="blue heavy" font-size="45" letter-spacing="0">MARKET</text>
+            <path d="M138 290 C164 317, 229 322, 269 288" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+          </svg>
+        </li>
+        <li class="partners__item">
+          <svg class="partners__logo" viewBox="0 0 240 240" role="img" aria-label="Retail partner" focusable="false">
+            <path fill="currentColor" fill-rule="evenodd" d="M103.276 181.006 L55.471 105.882 L130.982 57.829 L178.788 132.953 Z
+            M120.947 97.928
+            a21.481 21.481 0 1 0 42.962 0
+            a21.481 21.481 0 1 0 -42.962 0 Z"/>
+            <circle cx="167.5" cy="74.5" r="15.5" fill="currentColor"/>
+          </svg>
+        </li>
+      </ul>
+    </div>
+
+    <div class="site-footer__base">
+
+      <!-- Facebook e singura rețea a fermei. Instagram nu există; nu adăuga o siglă fără cont în spate. -->
+      <ul class="site-footer__social">
+        <li>
+          <a class="site-footer__social-link" href="https://www.facebook.com/ferma.fruct" target="_blank" rel="noopener noreferrer" aria-label="Ferma Fruct Brabova on Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M15.2 8.4h-1.7a1.8 1.8 0 0 0-1.8 1.8v10.6"/>
+              <path d="M9.9 12.9h5.2"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+
+      <p class="site-footer__lang">
+        <a class="site-footer__lang-now is-lang-away" href="../contact.html" lang="ro" hreflang="ro">RO</a>
+        <span class="site-footer__lang-sep" aria-hidden="true">|</span>
+        <span class="site-footer__lang-next is-lang-here">EN</span>
+      </p>
+
+      <p class="site-footer__legal">
+        <a class="site-footer__legal-link" href="privacy-policy.html">Privacy policy</a>
+        <span aria-hidden="true"> · </span>
+        <span>&copy; 2026 Ferma Fruct Brabova. All rights reserved.</span>
+      </p>
+
+    </div>
+
+  </footer>
+
+  <script src="../js/gsap.min.js"></script>
+  <!-- Același main.js ca pe index; pe pagina asta rulează practic numai meniul lateral. -->
+  <script src="../js/main.js?v=20260825-en-1"></script>
+  <!-- Sosirea la derulare și desenarea drumului, separat ca să nu ceară ?v= nou pe index. -->
+  <script src="../js/contact.js?v=20260825-en-1"></script>
+
+<!-- impeccable-live-start -->
+<!-- impeccable-live-end -->
+</body>
+
+</html>
