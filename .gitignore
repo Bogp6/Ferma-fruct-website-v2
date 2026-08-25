@@ -8,3 +8,11 @@
 
 # Claude Code machine-local settings
 .claude/settings.local.json
+
+# Fotografii și clipuri rămase din lucru: nu le folosește nicio pagină, dar
+# rămân pe disc. Mutate aici după o verificare care a încărcat toate cele opt
+# pagini și n-a găsit nicio cerere căzută.
+img/_unused/
+
+# Capturi și jurnale lăsate de Playwright în timpul verificărilor.
+.playwright-mcp/
