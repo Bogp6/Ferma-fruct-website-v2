@@ -16,3 +16,14 @@ img/_unused/
 
 # Capturi și jurnale lăsate de Playwright în timpul verificărilor.
 .playwright-mcp/
+
+# Notele de proiect și configurările uneltelor. Cloudflare Pages publică
+# depozitul așa cum e și servește inclusiv fișierele care încep cu punct, iar
+# _redirects nu poate acoperi un fișier care chiar există: la Pages fișierul
+# static are întâietate în fața regulii. Singurul mod sigur de a le ține în
+# afara internetului e să nu ajungă în depozit. Rămân pe disc, unde le citește
+# oricum sesiunea următoare, iar istoricul git le păstrează pe toate.
+DESIGN.md
+PRODUCT.md
+.codex/
+.impeccable/

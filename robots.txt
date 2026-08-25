@@ -3,9 +3,4 @@
 User-agent: *
 Allow: /
 
-# Notele interne de proiect. Rămân în depozit fiindcă le citește următoarea
-# sesiune de lucru, dar n-au ce căuta în căutări. _redirects le și întoarce 404.
-Disallow: /DESIGN.md
-Disallow: /PRODUCT.md
-
 Sitemap: https://fermafructbrabova.ro/sitemap.xml
