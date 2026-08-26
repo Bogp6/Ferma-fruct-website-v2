@@ -27,3 +27,7 @@ DESIGN.md
 PRODUCT.md
 .codex/
 .impeccable/
+
+# Marcatorul care deschide trecerea responsivă (vezi hook-ul Playwright).
+# Gol, dar Pages publică tot depozitul, deci nu are ce căuta acolo.
+.responsive-pass
