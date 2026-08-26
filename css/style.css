@@ -254,9 +254,11 @@
     rotate: 8deg;
 }
 
-/* Copil al .orchard, nu al .film (.film n-are padding sus). Se termină la
-   marginea de jos, unde overflow: clip o taie chiar pe muchia ramei video —
-   pare că intră în spatele filmului. */
+/* Copil al .orchard, nu al .film (.film n-are padding sus sub ~1544px). Se
+   termină la marginea de jos, unde overflow: clip o taie chiar pe muchia ramei
+   video — pare că intră în spatele filmului. Peste 85em banda primește padding
+   sus, deci tăietura ajunge deasupra filmului; se vede numai cât desenul are
+   cerneală acolo, iar în dreptul ei branch-1024.webp e aproape gol. */
 .motif--film-branch {
     inset-block-end: 0;
     inset-inline-end: -4rem;
@@ -3265,6 +3267,19 @@ main,
 
     .motif--film-branch {
         width: min(clamp(16rem, 28vw, 28rem) + var(--lane), 64rem);
+    }
+
+    /* Ramura .motif--film crește cu --lane, banda video nu: peste ~1600px
+       desenul e mai înalt decât secțiunea și overflow: clip îi reteza vârful
+       drept, în hârtia goală din stânga filmului, unde tăietura se vede.
+       Padding-ul de sus ține pasul cu creșterea ramurii: 0.85 e înălțimea
+       cutiei rotite raportată la lățime (rotate: 6deg), 4.875rem e jocul pe
+       care banda îl are deja la prag. Plafon la 14.5rem, unde ramura atinge
+       cele 64rem și nu mai crește. Zero până pe la 1544px, deci trecerea prin
+       85em rămâne continuă. Se recalculează dacă se schimbă --space-section,
+       înălțimea ramei video sau plafonul de 64rem. */
+    .film {
+        padding-block-start: clamp(0px, var(--lane) * 0.85 - 4.875rem, 14.5rem);
     }
 
     /* FRUNZELE RĂZLEȚE erau așezate în procente din secțiune (cât fereastra);
