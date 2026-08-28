@@ -111,6 +111,21 @@
     border-block-start: var(--rule) solid var(--earth);
 }
 
+/* Sub 900px coloana laterală nu mai încape lângă text (14rem plus 34rem plus
+   spațiul dintre ele) și trece dedesubt. Lipită, ar rămâne agățată sub antet
+   pe tot documentul și articolul i-ar trece pe sub: blocul ei de referință e
+   .privacy__body, înalt de aproape 5000px, nu rândul de flex.
+   Valoarea vine din chiar punctul unde flex-wrap rupe rândul; dacă se schimbă
+   flex-basis la .privacy__summary sau .privacy__content, se schimbă și ea. */
+@media (max-width: 56.25rem) {
+    .privacy__summary {
+        position: static;
+        max-width: none;
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
 .privacy__summary-title {
     color: var(--forest);
     font-size: var(--step-2);
