@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fermafructbrabova.ro/sitemap.xml
+Sitemap: https://fermafruct.com/sitemap.xml

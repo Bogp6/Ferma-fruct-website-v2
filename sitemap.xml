@@ -7,66 +7,66 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
-    <loc>https://fermafructbrabova.ro/</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/"/>
+    <loc>https://fermafruct.com/</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/"/>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/despre</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/despre"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/about"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/despre"/>
+    <loc>https://fermafruct.com/despre</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/despre"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/despre"/>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/contact</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/contact"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/contact"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/contact"/>
+    <loc>https://fermafruct.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/contact"/>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/politica-de-confidentialitate</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/privacy-policy"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
+    <loc>https://fermafruct.com/politica-de-confidentialitate</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/politica-de-confidentialitate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/politica-de-confidentialitate"/>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/en/</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/"/>
+    <loc>https://fermafruct.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/"/>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/en/about</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/despre"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/about"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/despre"/>
+    <loc>https://fermafruct.com/en/about</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/despre"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/about"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/despre"/>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/en/contact</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/contact"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/contact"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/contact"/>
+    <loc>https://fermafruct.com/en/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/contact"/>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://fermafructbrabova.ro/en/privacy-policy</loc>
-    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fermafructbrabova.ro/en/privacy-policy"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafructbrabova.ro/politica-de-confidentialitate"/>
+    <loc>https://fermafruct.com/en/privacy-policy</loc>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://fermafruct.com/politica-de-confidentialitate"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fermafruct.com/en/privacy-policy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://fermafruct.com/politica-de-confidentialitate"/>
     <priority>0.3</priority>
   </url>
 
